@@ -1,18 +1,21 @@
-package relish.permoveo.com.relish;
+package relish.permoveo.com.relish.activities;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.TextView;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import relish.permoveo.com.relish.R;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,9 @@ public class MainActivity extends ActionBarActivity {
      */
     public static class PlaceholderFragment extends Fragment {
 
+        @Bind(R.id.hello_world)
+        TextView helloWorld;
+
         public PlaceholderFragment() {
         }
 
@@ -60,6 +66,8 @@ public class MainActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            ButterKnife.bind(this, rootView);
+            helloWorld.setText("Hello!");
             return rootView;
         }
     }
