@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -43,10 +42,15 @@ public class LoginActivity extends RelishActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getString(R.string.button_login));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        toolbar.setTitle(getString(R.string.button_login));
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
+                finish();
+            }
+        });
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +67,8 @@ public class LoginActivity extends RelishActivity {
                 return false;
             }
         });
+
+        updateStatusBar();
     }
 
     private void auth() {
@@ -97,15 +103,5 @@ public class LoginActivity extends RelishActivity {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            setResult(RESULT_CANCELED);
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

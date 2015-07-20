@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
@@ -23,7 +22,7 @@ import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.util.CustomTypefaceSpan;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends RelishActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -47,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
+
+        updateStatusBar();
     }
 
 
