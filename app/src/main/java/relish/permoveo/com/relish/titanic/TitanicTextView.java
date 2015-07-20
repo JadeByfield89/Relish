@@ -1,4 +1,4 @@
-package com.romainpiel.titanic.library;
+package relish.permoveo.com.relish.titanic;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -10,6 +10,8 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.TextView;
+
+import relish.permoveo.com.relish.R;
 
 /**
  * Titanic

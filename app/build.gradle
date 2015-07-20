@@ -30,5 +30,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:7.5.0'
     compile 'com.google.android.gms:play-services-maps:7.5.0'
     compile 'com.parse.bolts:bolts-android:1.+'
-    compile project(':modules:titanic')
+    compile 'com.android.support:design:22.2.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.1.0'
+    compile 'com.pnikosis:materialish-progress:1.5'
 }

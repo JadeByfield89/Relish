@@ -2,6 +2,7 @@ package relish.permoveo.com.relish.application;
 
 import android.app.Application;
 
+import com.facebook.FacebookSdk;
 import com.parse.Parse;
 
 import relish.permoveo.com.relish.util.ConstantUtil;
@@ -15,5 +16,6 @@ public class RelishApplication extends Application {
     public void onCreate() {
         super.onCreate();
         Parse.initialize(this, ConstantUtil.PARSE_APPLICATION_ID, ConstantUtil.PARSE_CLIENT_KEY);
+        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 }

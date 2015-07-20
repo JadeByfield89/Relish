@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/loader_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80000000">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="15dp"
+        android:background="@drawable/loader_background"
+        android:layout_centerInParent="true">
+
+        <com.pnikosis.materialishprogress.ProgressWheel
+            android:id="@+id/loader_progress"
+            android:layout_alignParentLeft="true"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            app:matProg_barWidth="3dp"
+            app:matProg_barColor="@android:color/black"
+            app:matProg_progressIndeterminate="true"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/loader_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/loader_progress"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:layout_below="@+id/loader_progress"
+            android:textColor="@android:color/black"
+            android:text="Loading..." />
+
+
+        <!--<Button-->
+            <!--android:id="@+id/loader_cancel"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_below="@+id/loader_progress"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:background="@color/main_color"-->
+            <!--style="@style/Base.TextAppearance.AppCompat.Button"-->
+            <!--android:text="Отмена" />-->
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
