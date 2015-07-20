@@ -1,13 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context="relish.permoveo.com.relish.activities.LoginActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="relish.permoveo.com.relish.activities.LoginActivity">
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
     <ScrollView
-        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -32,7 +32,7 @@
                     android:singleLine="true"
                     android:imeOptions="actionNext"
                     android:inputType="textNoSuggestions"
-                    android:hint="@string/hint_username"/>
+                    android:hint="@string/hint_username" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -47,7 +47,7 @@
                     android:singleLine="true"
                     android:imeOptions="actionDone"
                     android:inputType="textWebPassword"
-                    android:hint="@string/hint_password"/>
+                    android:hint="@string/hint_password" />
             </android.support.design.widget.TextInputLayout>
 
             <Button
@@ -59,7 +59,7 @@
                 android:paddingTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/button_login"/>
+                android:text="@string/button_login" />
 
         </LinearLayout>
 
