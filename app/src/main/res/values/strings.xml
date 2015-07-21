@@ -16,6 +16,13 @@
     <string name="signing_up_loader_text">Signing up…</string>
     <string name="logging_in_loader_text">Logging in…</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <string name="places_nav_drawer_item">Places</string>
+    <string name="invites_nav_drawer_item">Invites</string>
+    <string name="friends_nav_drawer_item">Friends</string>
+    <string name="settings_nav_drawer_item">Settings</string>
+    <string name="help_nav_drawer_item">Help</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -16,7 +16,7 @@ import relish.permoveo.com.relish.titanic.TitanicTextView;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final int SPLASH_DELAY = 6000;
+    private static final int SPLASH_DELAY = 100;
     private MediaPlayer mediaPlayer;
     private boolean isActivityOnScreen;
 

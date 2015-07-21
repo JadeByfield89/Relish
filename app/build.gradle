@@ -33,5 +33,6 @@ dependencies {
     compile 'com.android.support:design:22.2.0'
     compile 'com.facebook.android:facebook-android-sdk:4.1.0'
     compile 'com.pnikosis:materialish-progress:1.5'
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     compile 'com.etsy.android.grid:library:1.0.5'
 }
