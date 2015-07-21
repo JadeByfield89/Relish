@@ -12,6 +12,8 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.readystatesoftware.systembartint.SystemBarTintManager;
+
 import relish.permoveo.com.relish.R;
 
 /**
@@ -41,17 +43,18 @@ public class RelishActivity extends AppCompatActivity {
 
     protected void updateStatusBar() {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-//            Window w = getWindow();
-//            WindowManager.LayoutParams winParams = w.getAttributes();
+            Window w = getWindow();
+//            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, );
+            WindowManager.LayoutParams winParams = w.getAttributes();
 //
-//            final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-//            winParams.flags |= bits;
-//            w.setAttributes(winParams);
+            final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+            winParams.flags |= bits;
+            w.setAttributes(winParams);
 //
-//            SystemBarTintManager tintManager = new SystemBarTintManager(this);
+            SystemBarTintManager tintManager = new SystemBarTintManager(this);
 //            // enable status bar tint
-//            tintManager.setStatusBarTintEnabled(true);
-//            tintManager.setTintColor(getResources().getColor(R.color.main_color_dark));
+            tintManager.setStatusBarTintEnabled(true);
+            tintManager.setTintColor(getResources().getColor(R.color.main_color_dark));
 //            ViewGroup content = (ViewGroup) this.findViewById(android.R.id.content);
 //            content.setPadding(content.getPaddingLeft(), getStatusBarHeight(), content.getPaddingRight(), content.getPaddingRight());
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
