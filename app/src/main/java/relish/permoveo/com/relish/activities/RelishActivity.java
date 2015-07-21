@@ -23,7 +23,7 @@ public class RelishActivity extends AppCompatActivity {
 
     private View loader = null;
 
-    private int getActionBarHeight() {
+    protected int getActionBarHeight() {
         int actionBarHeight = 0;
         TypedValue tv = new TypedValue();
         if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
@@ -60,7 +60,7 @@ public class RelishActivity extends AppCompatActivity {
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(getResources().getColor(R.color.main_color_dark));
         }
     }
