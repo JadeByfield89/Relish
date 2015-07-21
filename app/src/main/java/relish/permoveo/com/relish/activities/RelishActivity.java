@@ -32,7 +32,7 @@ public class RelishActivity extends AppCompatActivity {
         return actionBarHeight;
     }
 
-    private int getStatusBarHeight() {
+    protected int getStatusBarHeight() {
         int result = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
@@ -41,7 +41,7 @@ public class RelishActivity extends AppCompatActivity {
         return result;
     }
 
-    protected void updateStatusBar() {
+    protected void updateStatusBar(int color) {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             Window w = getWindow();
 //            w.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, );
@@ -54,14 +54,14 @@ public class RelishActivity extends AppCompatActivity {
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
 //            // enable status bar tint
             tintManager.setStatusBarTintEnabled(true);
-            tintManager.setTintColor(getResources().getColor(R.color.main_color_dark));
+            tintManager.setTintColor(color);
 //            ViewGroup content = (ViewGroup) this.findViewById(android.R.id.content);
 //            content.setPadding(content.getPaddingLeft(), getStatusBarHeight(), content.getPaddingRight(), content.getPaddingRight());
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(getResources().getColor(R.color.main_color_dark));
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(color);
         }
     }
 

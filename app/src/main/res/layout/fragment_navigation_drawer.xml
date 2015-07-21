@@ -4,7 +4,6 @@
     android:id="@+id/drawer_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:fitsSystemWindows="true"
     android:background="@android:color/white">
 
     <RelativeLayout
@@ -21,12 +20,10 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/nav_header_avatar"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_me"
-            app:border_width="2dp"
-            app:border_color="@android:color/white" />
+            android:src="@drawable/ic_me" />
 
         <TextView
             android:id="@+id/nav_header_username"
