@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@drawable/nav_drawer_background"
+    android:layout_height="48dp">
+
+    <ImageView
+        android:id="@+id/nav_drawer_item_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp" />
+
+    <TextView
+        android:id="@+id/nav_drawer_item_title"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/nav_drawer_title_color"
+        android:text="Places"
+        android:layout_marginLeft="72dp" />
+
+
+    <TextView
+        android:id="@+id/nav_drawer_item_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_centerVertical="true"
+        android:textStyle="bold"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingRight="8dp"
+        android:paddingLeft="8dp"
+        android:background="@drawable/nav_drawer_badge_background"
+        android:textColor="@android:color/white"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp" />
+
+</RelativeLayout>

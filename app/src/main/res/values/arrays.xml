@@ -4,15 +4,17 @@
         <item>@string/places_nav_drawer_item</item>
         <item>@string/invites_nav_drawer_item</item>
         <item>@string/friends_nav_drawer_item</item>
+        <item></item>
         <item>@string/settings_nav_drawer_item</item>
         <item>@string/help_nav_drawer_item</item>
     </string-array>
 
     <array name="nav_drawer_icons">
+        <item>@drawable/ic_places_selector</item>
+        <item>@drawable/ic_invites_selector</item>
+        <item>@drawable/ic_friends_selector</item>
         <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
+        <item>@drawable/ic_settings_selector</item>
+        <item>@drawable/ic_help_selector</item>
     </array>
 </resources>
