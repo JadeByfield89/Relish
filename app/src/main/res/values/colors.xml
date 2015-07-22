@@ -6,4 +6,5 @@
     <color name="drawer_item_text_color">#5d5d5d</color>
     <color name="drawer_item_pressed_background">#ededed</color>
     <color name="drawer_item_section_background">#dddddd</color>
+    <color name="place_image_dim">#80000000</color>
 </resources>
