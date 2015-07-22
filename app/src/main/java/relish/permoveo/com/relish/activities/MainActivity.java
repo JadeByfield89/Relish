@@ -100,7 +100,12 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         drawerLayout.setDrawerListener(drawerToggle);
         drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.main_color_dark));
 
-        updateStatusBar();
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+            toolbar.setPadding(toolbar.getPaddingLeft(), getStatusBarHeight(), toolbar.getPaddingRight(), toolbar.getPaddingBottom());
+            toolbar.requestLayout();
+        }
+
+        updateStatusBar(getResources().getColor(R.color.status_bar_color));
     }
 
     private void hideMenuItems(Menu menu, boolean visible) {

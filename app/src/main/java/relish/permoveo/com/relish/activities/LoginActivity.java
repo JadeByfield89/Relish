@@ -64,7 +64,7 @@ public class LoginActivity extends RelishActivity {
             }
         });
 
-        updateStatusBar();
+        updateStatusBar(getResources().getColor(R.color.main_color_dark));
     }
 
     @Override

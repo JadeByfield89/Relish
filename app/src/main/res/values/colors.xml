@@ -2,6 +2,7 @@
 <resources>
     <color name="main_color">#FF6724</color>
     <color name="main_color_dark">#da5e2a</color>
+    <color name="status_bar_color">#40000000</color>
     <color name="drawer_item_text_color">#5d5d5d</color>
     <color name="drawer_item_pressed_background">#ededed</color>
     <color name="drawer_item_section_background">#dddddd</color>
