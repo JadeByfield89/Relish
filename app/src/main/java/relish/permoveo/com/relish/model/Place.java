@@ -20,6 +20,28 @@ public class Place implements Serializable {
         this.priceRanking = priceRanking;
     }
 
-    public enum PriceRanking {LOW, MEDIUM, HIGH}
+    public enum PriceRanking {
+        LOW, MEDIUM, HIGH;
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case LOW:
+                    return "$";
+                case MEDIUM:
+                    return "$$";
+                case HIGH:
+                    return "$$$";
+            }
+            return "";
+        }
+    }
+
+    public String formatDistance() {
+        if (distance == (long) distance)
+            return String.format("%d", (long) distance);
+        else
+            return String.format("%s", distance);
+    }
 
 }

@@ -1,15 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:descendantFocusability="blocksDescendants"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/place_image"
+    <com.etsy.android.grid.util.DynamicHeightImageView
+        android:id="@+id/grid_item_place_image"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/place_image_dim" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="bottom|left"
+        android:orientation="vertical"
+        android:gravity="bottom">
+
+        <relish.permoveo.com.relish.widget.RatingView
+            android:id="@+id/grid_item_rating_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp" />
+
+        <com.etsy.android.grid.util.DynamicHeightTextView
+            android:id="@+id/grid_item_place_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:text="Rest"
+            android:textSize="16sp" />
+
+        <com.etsy.android.grid.util.DynamicHeightTextView
+            android:id="@+id/grid_item_place_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:text="0.5 miles"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <com.etsy.android.grid.util.DynamicHeightTextView
+        android:id="@+id/grid_item_place_cost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:textColor="@android:color/white"
+        android:text="$$"
+        android:textSize="12sp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp" />
 
 
-</RelativeLayout>
+</FrameLayout>

@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.parse.ParseUser;
 
@@ -32,16 +34,20 @@ import relish.permoveo.com.relish.fragments.InvitesFragment;
 import relish.permoveo.com.relish.fragments.NavigationDrawerFragment;
 import relish.permoveo.com.relish.fragments.PlacesFragment;
 import relish.permoveo.com.relish.fragments.SettingsFragment;
+import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
 import relish.permoveo.com.relish.util.CustomTypefaceSpan;
 
 
-public class MainActivity extends RelishActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+public class MainActivity extends RelishActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, ToolbarCallbacks {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+
+    @Bind(R.id.content_frame)
+    FrameLayout contentFrame;
 
     ActionBarDrawerToggle drawerToggle;
     boolean drawerOpen = false;
@@ -70,7 +76,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
                 }
                 Display display = getWindowManager().getDefaultDisplay();
                 int width = display.getWidth();  // deprecated
-                navDrawer.getView().getLayoutParams().width = width - (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56.0f , getResources().getDisplayMetrics());
+                navDrawer.getView().getLayoutParams().width = width - (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56.0f, getResources().getDisplayMetrics());
                 navDrawer.getView().requestLayout();
             }
         });
@@ -189,6 +195,8 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         }
 
         if (current != null) {
+            updateContent(!(current instanceof PlacesFragment));
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame, current).commitAllowingStateLoss();
@@ -199,5 +207,21 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
             // error in creating fragment
             Log.e("MainActivity", "Error in creating fragment");
         }
+    }
+
+    private void updateContent(boolean belowToolbar) {
+        if (contentFrame == null) return;
+
+        if (belowToolbar) {
+            ((RelativeLayout.LayoutParams) contentFrame.getLayoutParams()).addRule(RelativeLayout.BELOW, R.id.toolbar);
+        } else {
+            ((RelativeLayout.LayoutParams) contentFrame.getLayoutParams()).addRule(RelativeLayout.BELOW);
+        }
+        contentFrame.requestLayout();
+    }
+
+    @Override
+    public Toolbar getToolbar() {
+        return toolbar;
     }
 }
