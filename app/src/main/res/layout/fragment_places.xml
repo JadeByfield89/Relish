@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/header_layout"
         android:layout_width="match_parent"
-        android:layout_height="224dp">
+        android:layout_height="@dimen/featured_image_size">
 
         <ImageView
             android:id="@+id/header_place_image"
@@ -66,12 +66,17 @@
 
     </RelativeLayout>
 
-    <com.etsy.android.grid.StaggeredGridView
+    <View
+        android:id="@+id/recycler_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white" />
+
+    <com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView
         android:id="@+id/staggered_grid"
-        android:layout_below="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:item_margin="4dp" />
+        android:scrollbars="none"/>
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab_places"
@@ -80,6 +85,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
+        android:elevation="10dp"
         android:src="@drawable/ic_add_white_24dp"
         app:fab_colorNormal="@color/main_color"
         app:fab_colorPressed="@color/main_color_dark"

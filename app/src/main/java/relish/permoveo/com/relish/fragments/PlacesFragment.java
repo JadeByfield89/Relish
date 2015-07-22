@@ -3,21 +3,21 @@ package relish.permoveo.com.relish.fragments;
 
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.etsy.android.grid.StaggeredGridView;
+import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
+import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
+import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.melnykov.fab.FloatingActionButton;
+import com.nineoldandroids.view.ViewHelper;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -26,41 +26,40 @@ import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.PlacesAdapter;
 import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
 import relish.permoveo.com.relish.util.FakeData;
+import relish.permoveo.com.relish.util.SpacesItemDecoration;
 import relish.permoveo.com.relish.widget.RatingView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PlacesFragment extends Fragment {
+public class PlacesFragment extends Fragment implements ObservableScrollViewCallbacks{
 
-    private int lastDampedScroll;
     private ToolbarCallbacks toolbarCallbacks;
-    private Drawable actionBarBackgroundDrawable;
+    private int parallaxImageHeight;
     private PlacesAdapter adapter;
-    private boolean mHasRequestedMore;
 
     @Bind(R.id.staggered_grid)
-    StaggeredGridView observableStaggeredGridView;
+    ObservableRecyclerView recyclerView;
+
+    @Bind(R.id.recycler_background)
+    View recyclerBackground;
 
     @Bind(R.id.fab_places)
     FloatingActionButton fab;
 
-    @Bind(R.id.header_layout)
-    RelativeLayout headerLayout;
-
     @Bind(R.id.header_place_image)
     ImageView headerImage;
-
+//
     @Bind(R.id.header_place_name)
     TextView headerPlaceName;
-
+//
     @Bind(R.id.header_place_distance)
     TextView headerPlaceDistance;
-
+//
     @Bind(R.id.header_place_cost)
     TextView headerPlaceCost;
-
+//
     @Bind(R.id.header_rating_view)
     RatingView headerRating;
 
@@ -73,7 +72,6 @@ public class PlacesFragment extends Fragment {
         super.onAttach(activity);
 
         toolbarCallbacks = (ToolbarCallbacks) activity;
-        actionBarBackgroundDrawable = toolbarCallbacks.getToolbar().getBackground();
         adapter = new PlacesAdapter(activity);
     }
 
@@ -91,11 +89,21 @@ public class PlacesFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_places, container, false);
         ButterKnife.bind(this, v);
 
-        final FrameLayout mMarginView = new FrameLayout(observableStaggeredGridView.getContext());
-        mMarginView.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, 0));
-        observableStaggeredGridView.addHeaderView(mMarginView, null, false);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.column_count), StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+//        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), getResources().getInteger(R.integer.column_count));
+//        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+//            @Override
+//            public int getSpanSize(int position) {
+//                return position == 0 ? gridLayoutManager.getSpanCount() : 1;
+//            }
+//        });
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+        recyclerView.setHasFixedSize(false);
+        int spacing = getResources().getDimensionPixelSize(R.dimen.places_grid_spacing);
+        recyclerView.addItemDecoration(new SpacesItemDecoration(spacing));
 
-        fab.attachToListView(observableStaggeredGridView);
+        fab.attachToRecyclerView(recyclerView);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,39 +111,28 @@ public class PlacesFragment extends Fragment {
             }
         });
 
-        observableStaggeredGridView.setAdapter(adapter);
-        observableStaggeredGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-        });
-
-        observableStaggeredGridView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                View topChild = view.getChildAt(0);
-                if (topChild == null) {
-                    onNewScroll(0);
-                } else if (topChild != mMarginView) {
-                    onNewScroll(headerLayout.getHeight());
-                } else {
-                    onNewScroll(-topChild.getTop());
-                }
-            }
-        });
-
+        recyclerView.setAdapter(adapter);
         renderHeader();
         adapter.swap(FakeData.getFakePlaces());
 
-        onNewScroll(0);
+        parallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.featured_image_size);
+
+        toolbarCallbacks.getToolbar().setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.main_color)));
+
+        recyclerView.setScrollViewCallbacks(this);
+//        recyclerView.setPadding(recyclerView.getPaddingLeft(), parallaxImageHeight/ 2, recyclerView.getPaddingRight(), recyclerView.getPaddingBottom());
+//        recyclerView.setClipToPadding(false);
+//        View paddingView = new View(getActivity());
+//        AbsListView.LayoutParams lp = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT,
+//                parallaxImageHeight);
+//        paddingView.setLayoutParams(lp);
+//        paddingView.setClickable(true);
+//
+//            recyclerView.addHeaderView(paddingView);
+
         return v;
     }
+
 
     private void renderHeader() {
         Picasso.with(getActivity())
@@ -148,29 +145,24 @@ public class PlacesFragment extends Fragment {
         headerPlaceCost.setText(FakeData.HEADER_PRICE_RANKING.toString());
     }
 
+    @Override
+    public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+        int baseColor = getResources().getColor(R.color.main_color);
+        float alpha = Math.min(1, (float) scrollY / parallaxImageHeight);
+        toolbarCallbacks.getToolbar().setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
+        ViewHelper.setTranslationY(headerImage, -scrollY / 2);
 
-    private void updateActionBarTransparency(float scrollRatio) {
-        int newAlpha = (int) (scrollRatio * 255);
-        actionBarBackgroundDrawable.setAlpha(newAlpha);
-        toolbarCallbacks.getToolbar().setBackgroundDrawable(actionBarBackgroundDrawable);
+        // Translate list background
+        ViewHelper.setTranslationY(recyclerBackground, Math.max(0, -scrollY + parallaxImageHeight));
     }
 
-    private void updateParallaxEffect(int scrollPosition) {
-        float damping = 0.5f;
-        int dampedScroll = (int) (scrollPosition * damping);
-        int offset = lastDampedScroll - dampedScroll;
-        headerLayout.offsetTopAndBottom(-offset);
+    @Override
+    public void onDownMotionEvent() {
 
-        lastDampedScroll = dampedScroll;
     }
 
-    public void onNewScroll(int scrollPosition) {
-        int headerHeight = headerLayout.getHeight() - toolbarCallbacks.getToolbar().getHeight();
-        float ratio = 0;
-        if (scrollPosition > 0 && headerHeight > 0)
-            ratio = (float) Math.min(Math.max(scrollPosition, 0), headerHeight) / headerHeight;
+    @Override
+    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
 
-        updateActionBarTransparency(ratio);
-        updateParallaxEffect(scrollPosition);
     }
 }
