@@ -12,9 +12,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableStringBuilder;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,9 +74,13 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
                     drawerLayout.getViewTreeObserver()
                             .removeGlobalOnLayoutListener(this);
                 }
-                Display display = getWindowManager().getDefaultDisplay();
-                int width = display.getWidth();  // deprecated
-                navDrawer.getView().getLayoutParams().width = width - (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56.0f, getResources().getDisplayMetrics());
+                DisplayMetrics metrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                float widthDp = metrics.widthPixels / metrics.density;
+                float heightDp = metrics.heightPixels / metrics.density;
+                float smallestWidth = Math.min(widthDp, heightDp);
+
+                navDrawer.getView().getLayoutParams().width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, smallestWidth, metrics) - (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56.0f, getResources().getDisplayMetrics());
                 navDrawer.getView().requestLayout();
             }
         });
