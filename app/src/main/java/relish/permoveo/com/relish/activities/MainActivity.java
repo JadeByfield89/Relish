@@ -1,20 +1,26 @@
 package relish.permoveo.com.relish.activities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableStringBuilder;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,8 +28,11 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.parse.ParseUser;
+
+import java.lang.reflect.Field;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,8 +43,10 @@ import relish.permoveo.com.relish.fragments.InvitesFragment;
 import relish.permoveo.com.relish.fragments.NavigationDrawerFragment;
 import relish.permoveo.com.relish.fragments.PlacesFragment;
 import relish.permoveo.com.relish.fragments.SettingsFragment;
+import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
-import relish.permoveo.com.relish.util.CustomTypefaceSpan;
+import relish.permoveo.com.relish.util.ConstantUtil;
+import relish.permoveo.com.relish.util.TypefaceUtil;
 
 
 public class MainActivity extends RelishActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, ToolbarCallbacks {
@@ -52,7 +63,21 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
     ActionBarDrawerToggle drawerToggle;
     boolean drawerOpen = false;
     Fragment current = null;
+    Dialog d;
     NavigationDrawerFragment navDrawer;
+
+    BroadcastReceiver locationReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (d != null && d.isShowing())
+                d.dismiss();
+
+            hideLoader();
+//            if (Alerts.get.alertTypes.size() == 0)
+//                initLoading();
+            LocalBroadcastManager.getInstance(MainActivity.this).unregisterReceiver(this);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,18 +99,22 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
                     drawerLayout.getViewTreeObserver()
                             .removeGlobalOnLayoutListener(this);
                 }
-                Display display = getWindowManager().getDefaultDisplay();
-                int width = display.getWidth();  // deprecated
-                navDrawer.getView().getLayoutParams().width = width - (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56.0f, getResources().getDisplayMetrics());
+                DisplayMetrics metrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                float widthDp = metrics.widthPixels / metrics.density;
+                float heightDp = metrics.heightPixels / metrics.density;
+                float smallestWidth = Math.min(widthDp, heightDp);
+
+                navDrawer.getView().getLayoutParams().width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, smallestWidth, metrics) - (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56.0f, getResources().getDisplayMetrics());
                 navDrawer.getView().requestLayout();
             }
         });
 
-        Typeface satisfy = Typeface.createFromAsset(getAssets(), "fonts/Satisfy-Regular.ttf");
-        String appName = getString(R.string.app_name);
-        SpannableStringBuilder SS = new SpannableStringBuilder(appName);
-        SS.setSpan(new CustomTypefaceSpan("", satisfy), 0, appName.length(), 0);
-        getSupportActionBar().setTitle(SS);
+//        String appName = getString(R.string.app_name);
+//        SpannableStringBuilder SS = new SpannableStringBuilder(appName);
+//        SS.setSpan(new CustomTypefaceSpan("", TypefaceUtil.BRANNBOLL_BOLD), 0, appName.length(), 0);
+        getActionBarTextView().setTypeface(TypefaceUtil.BRANNBOLL_BOLD);
+        getActionBarTextView().setIncludeFontPadding(false);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer) {
             @Override
@@ -112,6 +141,37 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         }
 
         updateStatusBar(getResources().getColor(R.color.status_bar_color));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!GPSTracker.get.isGpsEnabled()) {
+            d = new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Your location")
+                    .setCancelable(false)
+                    .setMessage(getString(R.string.gps_disabled_message))
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent viewIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(viewIntent);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    })
+                    .show();
+        } else if (GPSTracker.get.getLocation() == null || GPSTracker.get.getLocation().getLatitude() == 0 || GPSTracker.get.getLocation().getLongitude() == 0) {
+            LocalBroadcastManager.getInstance(this).registerReceiver(locationReceiver, new IntentFilter(ConstantUtil.ACTION_GET_LOCATION));
+            showLoader(getString(R.string.detecting_location));
+        } else {
+
+        }
     }
 
     private void hideMenuItems(Menu menu, boolean visible) {
@@ -224,4 +284,18 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
     public Toolbar getToolbar() {
         return toolbar;
     }
+
+    private TextView getActionBarTextView() {
+        TextView titleTextView = null;
+
+        try {
+            Field f = toolbar.getClass().getDeclaredField("mTitleTextView");
+            f.setAccessible(true);
+            titleTextView = (TextView) f.get(toolbar);
+        } catch (NoSuchFieldException e) {
+        } catch (IllegalAccessException e) {
+        }
+        return titleTextView;
+    }
+
 }

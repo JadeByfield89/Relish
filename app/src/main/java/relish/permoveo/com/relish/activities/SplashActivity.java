@@ -1,7 +1,6 @@
 package relish.permoveo.com.relish.activities;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +12,7 @@ import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.titanic.Titanic;
 import relish.permoveo.com.relish.titanic.TitanicTextView;
+import relish.permoveo.com.relish.util.TypefaceUtil;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -28,8 +28,7 @@ public class SplashActivity extends AppCompatActivity {
 
         TitanicTextView splashText = ButterKnife.findById(this, R.id.tv_splash);
 
-        Typeface satisfy = Typeface.createFromAsset(getAssets(), "fonts/Satisfy-Regular.ttf");
-        splashText.setTypeface(satisfy);
+        splashText.setTypeface(TypefaceUtil.BRANNBOLL_BOLD);
 
         mediaPlayer = MediaPlayer.create(this, R.raw.wine_pour);
         Titanic titanic = new Titanic();

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/places_background"
     tools:context="relish.permoveo.com.relish.fragments.PlacesFragment">
 
     <RelativeLayout
@@ -13,56 +14,57 @@
         <ImageView
             android:id="@+id/header_place_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:scaleType="centerCrop" />
 
-        <View
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/place_image_dim" />
-
-
-        <relish.permoveo.com.relish.widget.RatingView
-            android:id="@+id/header_rating_view"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/header_place_name"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="16dp" />
+            android:background="@color/place_image_dim"
+            android:padding="12dp"
+            android:layout_alignParentBottom="true">
 
-        <TextView
-            android:id="@+id/header_place_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:text="Rest"
-            android:textSize="18sp"
-            android:layout_above="@+id/header_place_distance"
-            android:layout_marginLeft="16dp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="bottom|left">
 
-        <TextView
-            android:id="@+id/header_place_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:textColor="@android:color/white"
-            android:text="0.5 miles"
-            android:textSize="14sp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp" />
+                <relish.permoveo.com.relish.widget.RatingView
+                    android:id="@+id/header_rating_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_above="@+id/header_place_name" />
 
-        <TextView
-            android:id="@+id/header_place_cost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:textColor="@android:color/white"
-            android:text="$$"
-            android:textSize="14sp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp" />
+                <TextView
+                    android:id="@+id/header_place_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:text="Rest"
+                    android:textSize="16sp"
+                    android:layout_above="@+id/header_place_distance" />
+
+                <TextView
+                    android:id="@+id/header_place_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:textColor="@android:color/white"
+                    android:text="0.5 miles"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/header_place_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:textColor="@color/main_color"
+                android:text="$$"
+                android:textSize="14sp" />
+        </FrameLayout>
 
     </RelativeLayout>
 
@@ -70,13 +72,14 @@
         android:id="@+id/recycler_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white" />
+        android:background="@color/places_background" />
 
     <com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView
         android:id="@+id/staggered_grid"
+        android:clipToPadding="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"/>
+        android:scrollbars="none" />
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab_places"

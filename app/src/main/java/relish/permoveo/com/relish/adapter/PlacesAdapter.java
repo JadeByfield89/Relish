@@ -1,6 +1,7 @@
 package relish.permoveo.com.relish.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.SparseArray;
@@ -18,6 +19,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.model.Place;
+import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.widget.DynamicHeightImageView;
 import relish.permoveo.com.relish.widget.RatingView;
 
@@ -41,6 +43,9 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.place_grid_item_root)
+        public CardView placeRoot;
+
         @Bind(R.id.grid_item_place_image)
         public DynamicHeightImageView placeImage;
 
@@ -94,8 +99,9 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         if (viewHolder instanceof PlacesAdapter.ViewHolder) {
             Place place = (Place) getItem(position);
-
             PlacesAdapter.ViewHolder vh = (PlacesAdapter.ViewHolder) viewHolder;
+
+            vh.placeRoot.setPreventCornerOverlap(false);
 
             double positionHeight = getPositionRatio(position);
             vh.placeImage.setHeightRatio(positionHeight);
@@ -105,18 +111,26 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     .into(vh.placeImage);
 
             vh.placeCost.setText(place.priceRanking.toString());
+            vh.placeCost.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+            vh.placeCost.setIncludeFontPadding(false);
 
             int quantity = place.distance == 1.0d ? 1 : 2;
             vh.placeDistance.setText(place.formatDistance()
                     + " "
                     + context.getResources().getQuantityString(R.plurals.miles, quantity, place.distance));
+            vh.placeDistance.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+            vh.placeDistance.setIncludeFontPadding(false);
 
             vh.placeName.setText(place.name);
+            vh.placeName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+            vh.placeName.setIncludeFontPadding(false);
+
             vh.placeRating.setRating(place.rating);
         } else if (viewHolder instanceof HeaderViewHolder) {
             StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
-            if(params == null) {
-                params = new StaggeredGridLayoutManager.LayoutParams(StaggeredGridLayoutManager.LayoutParams.MATCH_PARENT, StaggeredGridLayoutManager.LayoutParams.WRAP_CONTENT);
+            if (params == null) {
+                params = new StaggeredGridLayoutManager.LayoutParams(StaggeredGridLayoutManager.LayoutParams.MATCH_PARENT,
+                        context.getResources().getDimensionPixelSize(R.dimen.featured_image_size));
             }
             params.setFullSpan(true);
             viewHolder.itemView.setLayoutParams(params);
@@ -157,7 +171,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     private double getRandomHeightRatio() {
-        return (random.nextDouble() / 2.0) + 1.0; // height will be 1.0 - 1.5
+        return (random.nextDouble() / 2.0) + 0.6; // height will be 1.0 - 1.5
         // the width
     }
 }
