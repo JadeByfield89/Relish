@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import relish.permoveo.com.relish.adapter.PlacesAdapter;
 import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
 import relish.permoveo.com.relish.util.FakeData;
 import relish.permoveo.com.relish.util.SpacesItemDecoration;
+import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.widget.RatingView;
 
 
@@ -111,6 +113,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             }
         });
 
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         renderHeader();
         adapter.swap(FakeData.getFakePlaces());
@@ -140,9 +143,18 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
                 .into(headerImage);
 
         headerPlaceName.setText(FakeData.HEADER_PLACE_NAME);
+        headerPlaceName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+        headerPlaceName.setIncludeFontPadding(false);
+
         headerPlaceDistance.setText(FakeData.HEADER_PLACE_DISTANCE + " miles");
+        headerPlaceDistance.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        headerPlaceDistance.setIncludeFontPadding(false);
+
         headerRating.setRating(FakeData.HEADER_PLACE_RATING);
+
         headerPlaceCost.setText(FakeData.HEADER_PRICE_RANKING.toString());
+        headerPlaceCost.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        headerPlaceCost.setIncludeFontPadding(false);
     }
 
     @Override

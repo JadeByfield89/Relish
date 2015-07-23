@@ -5,7 +5,9 @@ import android.app.Application;
 import com.facebook.FacebookSdk;
 import com.parse.Parse;
 
+import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.util.ConstantUtil;
+import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
  * Created by rom4ek on 20.07.2015.
@@ -17,5 +19,7 @@ public class RelishApplication extends Application {
         super.onCreate();
         Parse.initialize(this, ConstantUtil.PARSE_APPLICATION_ID, ConstantUtil.PARSE_CLIENT_KEY);
         FacebookSdk.sdkInitialize(getApplicationContext());
+        TypefaceUtil.init(this);
+        GPSTracker.get.init(this);
     }
 }
