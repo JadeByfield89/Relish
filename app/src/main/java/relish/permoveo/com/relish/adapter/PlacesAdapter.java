@@ -1,14 +1,14 @@
 package relish.permoveo.com.relish.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.TextView;
 
-import com.etsy.android.grid.util.DynamicHeightImageView;
-import com.etsy.android.grid.util.DynamicHeightTextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -18,45 +18,54 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.model.Place;
+import relish.permoveo.com.relish.widget.DynamicHeightImageView;
 import relish.permoveo.com.relish.widget.RatingView;
 
 /**
  * Created by Roman on 20.07.15.
  */
-public class PlacesAdapter extends BaseAdapter {
+public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<Place> dataset;
-    private LayoutInflater inflater;
-    private final Random random;
     private Context context;
+    private Random random;
     private static final SparseArray<Double> positionHeightRatios = new SparseArray<>();
 
 
-    static class ViewHolder {
+    static class HeaderViewHolder extends RecyclerView.ViewHolder {
+
+        public HeaderViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.grid_item_place_image)
         public DynamicHeightImageView placeImage;
 
         @Bind(R.id.grid_item_place_name)
-        public DynamicHeightTextView placeName;
+        public TextView placeName;
 
         @Bind(R.id.grid_item_place_distance)
-        public DynamicHeightTextView placeDistance;
+        public TextView placeDistance;
 
         @Bind(R.id.grid_item_place_cost)
-        public DynamicHeightTextView placeCost;
+        public TextView placeCost;
 
         @Bind(R.id.grid_item_rating_view)
         public RatingView placeRating;
 
         public ViewHolder(View view) {
+            super(view);
             ButterKnife.bind(this, view);
         }
     }
 
     public PlacesAdapter(Context context) {
+        super();
+        this.random = new Random();
         this.context = context;
-        inflater = LayoutInflater.from(context);
-        random = new Random();
         dataset = new ArrayList<>();
     }
 
@@ -71,12 +80,56 @@ public class PlacesAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() {
-        return dataset.size();
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        if (viewType == 1) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.place_grid_item, viewGroup, false);
+            return new ViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.place_grid_header, viewGroup, false);
+            return new HeaderViewHolder(view);
+        }
     }
 
     @Override
-    public Object getItem(int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        if (viewHolder instanceof PlacesAdapter.ViewHolder) {
+            Place place = (Place) getItem(position);
+
+            PlacesAdapter.ViewHolder vh = (PlacesAdapter.ViewHolder) viewHolder;
+
+            double positionHeight = getPositionRatio(position);
+            vh.placeImage.setHeightRatio(positionHeight);
+            Picasso.with(context)
+                    .load(place.image)
+                    .resize(320, 320)
+                    .into(vh.placeImage);
+
+            vh.placeCost.setText(place.priceRanking.toString());
+
+            int quantity = place.distance == 1.0d ? 1 : 2;
+            vh.placeDistance.setText(place.formatDistance()
+                    + " "
+                    + context.getResources().getQuantityString(R.plurals.miles, quantity, place.distance));
+
+            vh.placeName.setText(place.name);
+            vh.placeRating.setRating(place.rating);
+        } else if (viewHolder instanceof HeaderViewHolder) {
+            StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+            if(params == null) {
+                params = new StaggeredGridLayoutManager.LayoutParams(StaggeredGridLayoutManager.LayoutParams.MATCH_PARENT, StaggeredGridLayoutManager.LayoutParams.WRAP_CONTENT);
+            }
+            params.setFullSpan(true);
+            viewHolder.itemView.setLayoutParams(params);
+        }
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        return position == 0 ? 0 : 1;
+    }
+
+    public Object getItem(final int position) {
         return dataset.get(position);
     }
 
@@ -86,36 +139,8 @@ public class PlacesAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.place_grid_item, parent, false);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-
-        Place place = (Place) getItem(position);
-        double positionHeight = getPositionRatio(position);
-
-        viewHolder.placeImage.setHeightRatio(positionHeight);
-        Picasso.with(context)
-                .load(place.image)
-                .resize(320, 320)
-                .into(viewHolder.placeImage);
-
-        viewHolder.placeCost.setText(place.priceRanking.toString());
-
-        int quantity = place.distance == 1.0d ? 1 : 2;
-        viewHolder.placeDistance.setText(place.formatDistance()
-                + " "
-                + context.getResources().getQuantityString(R.plurals.miles, quantity, place.distance));
-
-        viewHolder.placeName.setText(place.name);
-        viewHolder.placeRating.setRating(place.rating);
-
-        return convertView;
+    public int getItemCount() {
+        return dataset.size();
     }
 
     private double getPositionRatio(final int position) {
