@@ -18,7 +18,9 @@
             android:scaleType="centerCrop" />
 
         <FrameLayout
+            android:id="@+id/header_place_details_frame"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="wrap_content"
             android:background="@color/place_image_dim"
             android:padding="12dp"
@@ -42,7 +44,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
-                    android:text="Rest"
                     android:textSize="16sp"
                     android:layout_above="@+id/header_place_distance" />
 
@@ -52,7 +53,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:textColor="@android:color/white"
-                    android:text="0.5 miles"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -62,9 +62,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|bottom"
                 android:textColor="@color/main_color"
-                android:text="$$"
                 android:textSize="14sp" />
         </FrameLayout>
+
+        <com.pnikosis.materialishprogress.ProgressWheel
+            android:id="@+id/places_header_progress"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            app:matProg_barColor="@color/main_color"
+            app:matProg_progressIndeterminate="true"
+            android:layout_centerInParent="true" />
 
     </RelativeLayout>
 
@@ -80,6 +87,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none" />
+
+    <TextView
+        android:id="@+id/places_inform_message"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.pnikosis.materialishprogress.ProgressWheel
+        android:id="@+id/places_progress"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        app:matProg_barColor="@color/main_color"
+        app:matProg_progressIndeterminate="true"
+        android:layout_centerInParent="true" />
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab_places"

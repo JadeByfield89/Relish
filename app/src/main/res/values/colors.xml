@@ -9,4 +9,5 @@
     <color name="place_image_dim">#99000000</color>
     <color name="places_background">#ebeff2</color>
     <color name="place_grid_distance_color">#747474</color>
+    <color name="photo_placeholder">#BDBDBD</color>
 </resources>

@@ -1,6 +1,5 @@
 package relish.permoveo.com.relish.activities;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,7 +9,6 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -44,8 +42,11 @@ import relish.permoveo.com.relish.fragments.NavigationDrawerFragment;
 import relish.permoveo.com.relish.fragments.PlacesFragment;
 import relish.permoveo.com.relish.fragments.SettingsFragment;
 import relish.permoveo.com.relish.gps.GPSTracker;
+import relish.permoveo.com.relish.interfaces.OnResumeLoadingCallbacks;
 import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
+import relish.permoveo.com.relish.util.ConnectionUtil;
 import relish.permoveo.com.relish.util.ConstantUtil;
+import relish.permoveo.com.relish.util.DialogUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 
@@ -73,8 +74,9 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
                 d.dismiss();
 
             hideLoader();
-//            if (Alerts.get.alertTypes.size() == 0)
-//                initLoading();
+            if (current != null && current instanceof OnResumeLoadingCallbacks && current.isAdded()) {
+                ((OnResumeLoadingCallbacks) current).loadData();
+            }
             LocalBroadcastManager.getInstance(MainActivity.this).unregisterReceiver(this);
         }
     };
@@ -146,32 +148,27 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
     @Override
     protected void onResume() {
         super.onResume();
-        if (!GPSTracker.get.isGpsEnabled()) {
-            d = new AlertDialog.Builder(MainActivity.this)
-                    .setTitle("Your location")
-                    .setCancelable(false)
-                    .setMessage(getString(R.string.gps_disabled_message))
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent viewIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                            startActivity(viewIntent);
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    })
-                    .show();
+        if (!ConnectionUtil.isInternetAvailable(this)) {
+            d = DialogUtil.showErrorDialog(this, getString(R.string.internet_disabled_message), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+        } else if (!GPSTracker.get.isGpsEnabled()) {
+            d = DialogUtil.showSettingsDialog(this, getString(R.string.gps_disabled_message));
         } else if (GPSTracker.get.getLocation() == null || GPSTracker.get.getLocation().getLatitude() == 0 || GPSTracker.get.getLocation().getLongitude() == 0) {
             LocalBroadcastManager.getInstance(this).registerReceiver(locationReceiver, new IntentFilter(ConstantUtil.ACTION_GET_LOCATION));
             showLoader(getString(R.string.detecting_location));
-        } else {
-
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (d != null && d.isShowing())
+            d.dismiss();
     }
 
     private void hideMenuItems(Menu menu, boolean visible) {
