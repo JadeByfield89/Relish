@@ -12,7 +12,7 @@ public class FakeData {
     public static final String HEADER_PLACE_NAME = "Resto";
     public static final int HEADER_PLACE_RATING = 4;
     public static final double HEADER_PLACE_DISTANCE = 2;
-    public static final Place.PriceRanking HEADER_PRICE_RANKING = Place.PriceRanking.MEDIUM;
+    public static final int HEADER_PRICE_RANKING = 2;
 
     public static String[] PLACES_IMAGES = new String[]{
             "https://static.cntraveller.ru/media/material/0001/42/4f7cf433812a956f78024f49616713b3503a9d67.jpeg",
@@ -31,7 +31,7 @@ public class FakeData {
         ArrayList<Place> fakePlaces = new ArrayList();
 
         for (int i = 0; i < PLACES_IMAGES.length; i++) {
-            fakePlaces.add(new Place(PLACES_IMAGES[i], "Rest " + i, i, 3, Place.PriceRanking.HIGH));
+            fakePlaces.add(new Place(PLACES_IMAGES[i], "Rest " + i, i, 3.5, 3));
         }
 
         return fakePlaces;

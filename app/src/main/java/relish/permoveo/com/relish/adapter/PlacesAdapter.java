@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,19 +106,22 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             double positionHeight = getPositionRatio(position);
             vh.placeImage.setHeightRatio(positionHeight);
-            Picasso.with(context)
-                    .load(place.image)
-                    .resize(320, 320)
-                    .into(vh.placeImage);
+            if (TextUtils.isEmpty(place.getImage())) {
+                vh.placeImage.setImageDrawable(null);
+            } else {
+                Picasso.with(context)
+                        .load(place.getImage())
+                        .into(vh.placeImage);
+            }
 
-            vh.placeCost.setText(place.priceRanking.toString());
+            vh.placeCost.setText(place.getPriceLevel());
             vh.placeCost.setTypeface(TypefaceUtil.PROXIMA_NOVA);
             vh.placeCost.setIncludeFontPadding(false);
 
-            int quantity = place.distance == 1.0d ? 1 : 2;
-            vh.placeDistance.setText(place.formatDistance()
-                    + " "
-                    + context.getResources().getQuantityString(R.plurals.miles, quantity, place.distance));
+            int quantity = (int) Math.floor(place.getCalculatedDistance());
+            vh.placeDistance.setText(place.formatDistance() +
+                    " " +
+                    context.getResources().getQuantityString(R.plurals.miles, quantity, place.getCalculatedDistance()));
             vh.placeDistance.setTypeface(TypefaceUtil.PROXIMA_NOVA);
             vh.placeDistance.setIncludeFontPadding(false);
 
@@ -125,7 +129,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             vh.placeName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
             vh.placeName.setIncludeFontPadding(false);
 
-            vh.placeRating.setRating(place.rating);
+            vh.placeRating.setRating((int) place.rating);
         } else if (viewHolder instanceof HeaderViewHolder) {
             StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
             if (params == null) {
