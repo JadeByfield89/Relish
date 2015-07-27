@@ -146,6 +146,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
 
         if (TextUtils.isEmpty(place.getLargeImage())) {
             headerImage.setBackgroundColor(getResources().getColor(R.color.photo_placeholder));
+            placesHeaderProgress.setVisibility(View.GONE);
         } else {
             Picasso.with(getActivity())
                     .load(place.getLargeImage())
@@ -215,6 +216,8 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
         } else if (!ConnectionUtil.isInternetAvailable(getActivity())) {
             showErrorText(getString(R.string.unable_get_places_internet));
         } else {
+            recyclerView.setVisibility(View.GONE);
+            recyclerBackground.setVisibility(View.GONE);
             placesHeaderProgress.setVisibility(View.VISIBLE);
             fab.hide();
             placesProgress.setVisibility(View.VISIBLE);
@@ -266,7 +269,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
 
             @Override
             public void failed(Object... params) {
-                if (params == null) {
+                if (params == null || params.length == 0) {
                     showErrorText(getString(R.string.problems_with_loading));
                 } else {
                     showErrorText((String) params[0]);
