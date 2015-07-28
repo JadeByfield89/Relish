@@ -2,7 +2,6 @@ package relish.permoveo.com.relish.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +20,7 @@ import com.parse.ParseUser;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.util.TypefaceUtil;
 
 public class LoginActivity extends RelishActivity {
 
@@ -31,11 +32,23 @@ public class LoginActivity extends RelishActivity {
     @Bind(R.id.et_password)
     EditText passwordEt;
 
-    @Bind(R.id.btn_login)
-    Button login;
+    @Bind(R.id.btn_signin)
+    Button signin;
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
+    @Bind(R.id.signup_label)
+    TextView signupLabel;
+
+    @Bind(R.id.dont_have_account_label)
+    TextView dontHaveAccountLabel;
+
+    @Bind(R.id.btn_signup)
+    LinearLayout signup;
+
+    @Bind(R.id.relish_label)
+    TextView relishLabel;
+
+    @Bind(R.id.slogan_label)
+    TextView sloganLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +56,28 @@ public class LoginActivity extends RelishActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getString(R.string.button_login));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        sloganLabel.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        relishLabel.setTypeface(TypefaceUtil.BRANNBOLL_BOLD);
+        relishLabel.setIncludeFontPadding(false);
+        usernameEt.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        passwordEt.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        signin.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        signupLabel.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        dontHaveAccountLabel.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
-        login.setOnClickListener(new View.OnClickListener() {
+        signin.setTransformationMethod(null);
+        signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 auth();
+            }
+        });
+
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
+                finish();
             }
         });
 

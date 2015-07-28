@@ -10,4 +10,7 @@
     <color name="places_background">#ebeff2</color>
     <color name="place_grid_distance_color">#747474</color>
     <color name="photo_placeholder">#BDBDBD</color>
+    <color name="signup_divider">#80FFFFFF</color>
+    <color name="signup_or_color">#CCFFFFFF</color>
+    <color name="facebook_color">#33499F</color>
 </resources>

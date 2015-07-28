@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.parse.SignUpCallback;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.util.TypefaceUtil;
 
 public class SignupActivity extends RelishActivity {
 
@@ -32,17 +34,45 @@ public class SignupActivity extends RelishActivity {
     @Bind(R.id.et_password)
     EditText passwordEt;
 
-    @Bind(R.id.btn_login)
-    Button login;
+    @Bind(R.id.btn_facebook)
+    Button facebook;
 
     @Bind(R.id.btn_signup)
     Button signup;
+
+    @Bind(R.id.or_label)
+    TextView orLabel;
+
+    @Bind(R.id.relish_label)
+    TextView relishLabel;
+
+    @Bind(R.id.slogan_label)
+    TextView sloganLabel;
+
+    @Bind(R.id.already_have_account_label)
+    TextView alreadyHaveAccountLabel;
+
+    @Bind(R.id.signin_label)
+    TextView signInLabel;
+
+    @Bind(R.id.btn_login)
+    LinearLayout login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
+
+        usernameEt.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        passwordEt.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        emailEt.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        orLabel.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        sloganLabel.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        relishLabel.setTypeface(TypefaceUtil.BRANNBOLL_BOLD);
+        relishLabel.setIncludeFontPadding(false);
+        alreadyHaveAccountLabel.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        signInLabel.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
         passwordEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -55,6 +85,7 @@ public class SignupActivity extends RelishActivity {
             }
         });
 
+        signup.setTransformationMethod(null);
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,12 +93,16 @@ public class SignupActivity extends RelishActivity {
             }
         });
 
+        facebook.setTransformationMethod(null);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(SignupActivity.this, LoginActivity.class), LoginActivity.LOGIN_REQUEST);
+                startActivity(new Intent(SignupActivity.this, LoginActivity.class));
+                finish();
             }
         });
+
+        updateStatusBar(getResources().getColor(R.color.main_color_dark));
     }
 
     private void signup() {
