@@ -5,6 +5,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,6 +113,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 Picasso.with(context)
                         .load(place.getImage())
                         .into(vh.placeImage);
+                Log.d("Place Photo URL", place.getImage());
             }
 
             vh.placeCost.setText(place.getPriceLevel());

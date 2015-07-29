@@ -1,6 +1,7 @@
 package relish.permoveo.com.relish.network;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpHeaders;
@@ -91,10 +92,13 @@ public class API {
                 request.getUrl().put("key", ConstantUtil.GOOGLE_API_KEY);
                 request.getUrl().put("location", GPSTracker.get.getLocation().getLatitude() + "," + GPSTracker.get.getLocation().getLongitude());
                 request.getUrl().put("rankby", "distance");
-//                request.getUrl().put("radius", ConstantUtil.NEAREST_PLACES_RADIUS);
-                request.getUrl().put("types", "restaurant");
+                Log.d("API location", "Latitude -> " + GPSTracker.get.getLocation().getLatitude() + "Longitude -> " + GPSTracker.get.getLocation().getLongitude());
+                Log.d("API URL -> ",  request.getUrl().toString());
+                //request.getUrl().put("radius", ConstantUtil.NEAREST_PLACES_RADIUS);
+                request.getUrl().put("types", "food|restaurant");
 
                 PlacesResponse response = request.execute().parseAs(PlacesResponse.class);
+                Log.d("API Response", response.results.toString());
                 return response;
             } catch (IOException e) {
                 e.printStackTrace();
