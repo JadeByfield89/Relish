@@ -2,10 +2,9 @@ package relish.permoveo.com.relish.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 
-import com.joooonho.SelectableRoundedImageView;
-
-public class DynamicHeightImageView extends SelectableRoundedImageView {
+public class DynamicHeightImageView extends ImageView {
 
     private double mHeightRatio;
 

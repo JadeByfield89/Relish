@@ -94,6 +94,13 @@ public class SignupActivity extends RelishActivity {
         });
 
         facebook.setTransformationMethod(null);
+        facebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
