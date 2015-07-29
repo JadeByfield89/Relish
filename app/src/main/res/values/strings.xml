@@ -36,7 +36,7 @@
     <string name="unable_get_places_gps">Could not load places, GPS must be turned on</string>
     <string name="unable_get_places_internet">Could not load places, no internet connection</string>
     <string name="problems_with_loading">There are some problems with connection to server</string>
-    <string name="no_places">There are no places near with you</string>
+    <string name="no_places">There are no places around you</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

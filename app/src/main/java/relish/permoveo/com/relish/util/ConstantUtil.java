@@ -15,7 +15,10 @@ public class ConstantUtil {
     public static final String YELP_TOKEN_SECRET = "dwwH_xBGH_YJGHZB2KVUrkAEMdM";
 
     /*========================= YELP PLACES API CONSTANTS ========================= */
-    public static final String YELP_PLACES_SEARCH_URL = "http://api.yelp.com";
+    public static final String YELP_PLACES_SEARCH_URL = "http://api.yelp.com/v2/search";
+    public static final int PLACES_LIMIT_SEARCH = 20;
+    public static final int PLACES_SORTING_ORDER = 2;
+    public static final int PLACES_RADIUS_SEARCH = 4000;
 
     /*========================= PLACES API CONSTANTS ========================= */
     public static final String PLACES_SEARCH_URL =  "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";

@@ -36,7 +36,7 @@ import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
 import relish.permoveo.com.relish.interfaces.OnResumeLoadingCallbacks;
 import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
-import relish.permoveo.com.relish.model.Place;
+import relish.permoveo.com.relish.model.Restaurant;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.util.ConnectionUtil;
 import relish.permoveo.com.relish.util.SpacesItemDecoration;
@@ -141,15 +141,15 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     }
 
 
-    private void renderHeader(Place place) {
+    private void renderHeader(Restaurant restaurant) {
         headerDetailsFrame.setVisibility(View.VISIBLE);
 
-        if (TextUtils.isEmpty(place.getLargeImage())) {
+        if (TextUtils.isEmpty(restaurant.image)) {
             headerImage.setBackgroundColor(getResources().getColor(R.color.photo_placeholder));
             placesHeaderProgress.setVisibility(View.GONE);
         } else {
             Picasso.with(getActivity())
-                    .load(place.getLargeImage())
+                    .load(restaurant.image)
                     .into(headerImage, new Callback() {
                         @Override
                         public void onSuccess() {
@@ -164,22 +164,22 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
                     });
         }
 
-        headerPlaceName.setText(place.name);
+        headerPlaceName.setText(restaurant.name);
         headerPlaceName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
         headerPlaceName.setIncludeFontPadding(false);
 
-        int quantity = (int) Math.floor(place.getCalculatedDistance());
-        headerPlaceDistance.setText(place.formatDistance() +
+        int quantity = (int) Math.floor(restaurant.getCalculatedDistance());
+        headerPlaceDistance.setText(restaurant.formatDistance() +
                 " " +
-                getResources().getQuantityString(R.plurals.miles, quantity, place.getCalculatedDistance()));
+                getResources().getQuantityString(R.plurals.miles, quantity, restaurant.getCalculatedDistance()));
         headerPlaceDistance.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         headerPlaceDistance.setIncludeFontPadding(false);
 
-        headerRating.setRating((int) Math.round(place.rating));
+        headerRating.setRating((int) Math.round(restaurant.rating));
 
-        headerPlaceCost.setText(place.getPriceLevel());
-        headerPlaceCost.setTypeface(TypefaceUtil.PROXIMA_NOVA);
-        headerPlaceCost.setIncludeFontPadding(false);
+//        headerPlaceCost.setText(place.getPriceLevel());
+//        headerPlaceCost.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+//        headerPlaceCost.setIncludeFontPadding(false);
     }
 
     @Override
@@ -245,21 +245,21 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
 
     @Override
     public void loadData() {
-        API.getNearestPlaces(new IRequestable() {
+        API.search(0, new IRequestable() {
             @Override
             public void completed(Object... params) {
                 placesProgress.setVisibility(View.GONE);
                 fab.show();
                 recyclerBackground.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
-                ArrayList<Place> places = new ArrayList<>((List<Place>) params[0]);
+                ArrayList<Restaurant> places = new ArrayList<>((List<Restaurant>) params[0]);
                 if (places.size() == 0) {
                     showErrorText(getString(R.string.no_places));
                 } else {
                     toolbarCallbacks.getToolbar().setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.main_color)));
                     renderHeader(places.get(0));
 
-                    ArrayList<Place> others = new ArrayList<>(places.subList(1, places.size()));
+                    ArrayList<Restaurant> others = new ArrayList<>(places.subList(1, places.size()));
                     if (others.size() == 0) {
                         showErrorText(getString(R.string.no_places), false);
                     }

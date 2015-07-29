@@ -1,14 +1,9 @@
 package relish.permoveo.com.relish.network;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpRequest;
@@ -19,8 +14,14 @@ import com.google.api.client.http.apache.ApacheHttpTransport;
 import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.ObjectParser;
-import com.parse.signpost.OAuthConsumer;
-import com.parse.signpost.basic.DefaultOAuthConsumer;
+import com.google.gson.Gson;
+
+import org.scribe.builder.ServiceBuilder;
+import org.scribe.model.OAuthRequest;
+import org.scribe.model.Response;
+import org.scribe.model.Token;
+import org.scribe.model.Verb;
+import org.scribe.oauth.OAuthService;
 
 import java.io.IOException;
 
@@ -35,38 +36,62 @@ import relish.permoveo.com.relish.util.ConstantUtil;
  */
 public class API {
 
-    private static RequestQueue queue;
+    private static OAuthService service;
+    private static Token accessToken;
+    private static Gson gson;
 
     public static void init(Context context) {
-        OAuthConsumer consumer = new DefaultOAuthConsumer(ConstantUtil.YELP_CONSUMER_KEY, ConstantUtil.YELP_CONSUMER_SECRET);
-        consumer.setTokenWithSecret(ConstantUtil.YELP_TOKEN, ConstantUtil.YELP_TOKEN_SECRET);
-        queue = Volley.newRequestQueue(context, new OAuthStack(consumer));
+        service = new ServiceBuilder().provider(TwoStepOAuth.class).apiKey(ConstantUtil.YELP_CONSUMER_KEY).apiSecret(ConstantUtil.YELP_CONSUMER_SECRET).build();
+        accessToken = new Token(ConstantUtil.YELP_TOKEN, ConstantUtil.YELP_TOKEN_SECRET);
+        gson = new Gson();
     }
 
-
-    private static String getSearchURL(String path) {
-        return new Uri.Builder()
-                .appendPath()
+    public static void search(int page, final IRequestable callback) {
+        new SearchTask(callback).execute(page);
     }
 
-    public static void search(final IRequestable callback) {
-        GsonRequest<YelpPlacesResponse> request = new GsonRequest<YelpPlacesResponse>(
-                getSearchURL("/"),
-                YelpPlacesResponse.class,
-                new Response.Listener<YelpPlacesResponse>() {
-                    @Override
-                    public void onResponse(YelpPlacesResponse response) {
-                        callback.completed(response.places);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        callback.failed(error.getLocalizedMessage());
-                    }
+    private static class SearchTask extends AsyncTask<Integer, Void, YelpPlacesResponse> {
+
+        private IRequestable callback;
+
+        public SearchTask() {
+        }
+
+        public SearchTask(IRequestable callback) {
+            this.callback = callback;
+        }
+
+        @Override
+        protected YelpPlacesResponse doInBackground(Integer... params) {
+            Integer page = params[0];
+            OAuthRequest request = new OAuthRequest(Verb.GET, ConstantUtil.YELP_PLACES_SEARCH_URL);
+            request.addQuerystringParameter("limit", String.valueOf(ConstantUtil.PLACES_LIMIT_SEARCH));
+            request.addQuerystringParameter("ll", String.valueOf(GPSTracker.get.getLocation().getLatitude()) + "," + String.valueOf(GPSTracker.get.getLocation().getLongitude()));
+            request.addQuerystringParameter("offset", String.valueOf(ConstantUtil.PLACES_LIMIT_SEARCH * page));
+//            request.addQuerystringParameter("sort", String.valueOf(ConstantUtil.PLACES_SORTING_ORDER));
+            request.addQuerystringParameter("radius_filter", String.valueOf(ConstantUtil.PLACES_RADIUS_SEARCH));
+            request.addQuerystringParameter("category_filter", "restaurants");
+
+            service.signRequest(accessToken, request);
+            Response response = request.send();
+            String json = response.getBody();
+            YelpPlacesResponse yelpPlacesResponse = gson.fromJson(json, YelpPlacesResponse.class);
+            return yelpPlacesResponse;
+        }
+
+        @Override
+        protected void onPostExecute(YelpPlacesResponse yelpPlacesResponse) {
+            super.onPostExecute(yelpPlacesResponse);
+            if (callback != null) {
+                if (yelpPlacesResponse == null) {
+                    callback.failed();
+                } else if (!yelpPlacesResponse.isSuccessful()) {
+                    callback.failed(yelpPlacesResponse.error.text);
+                } else {
+                    callback.completed(yelpPlacesResponse.restaurants);
                 }
-        );
-        queue.add(request);
+            }
+        }
     }
 
 
@@ -140,7 +165,7 @@ public class API {
                 request.getUrl().put("rankby", "distance");
                 Log.d("API location", "Latitude -> " + GPSTracker.get.getLocation().getLatitude() + "Longitude -> " + GPSTracker.get.getLocation().getLongitude());
                 Log.d("API URL -> ", request.getUrl().toString());
-                //request.getUrl().put("radius", ConstantUtil.NEAREST_PLACES_RADIUS);
+                request.getUrl().put("radius", ConstantUtil.NEAREST_PLACES_RADIUS);
                 request.getUrl().put("types", "food|restaurant");
 
                 PlacesResponse response = request.execute().parseAs(PlacesResponse.class);

@@ -20,7 +20,7 @@ import java.util.Random;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
-import relish.permoveo.com.relish.model.Place;
+import relish.permoveo.com.relish.model.Restaurant;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.widget.DynamicHeightImageView;
 import relish.permoveo.com.relish.widget.RatingView;
@@ -30,7 +30,7 @@ import relish.permoveo.com.relish.widget.RatingView;
  */
 public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<Place> dataset;
+    private ArrayList<Restaurant> dataset;
     private Context context;
     private Random random;
     private static final SparseArray<Double> positionHeightRatios = new SparseArray<>();
@@ -76,13 +76,13 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         dataset = new ArrayList<>();
     }
 
-    public void swap(ArrayList<Place> places) {
-        dataset = new ArrayList<>(places);
+    public void swap(ArrayList<Restaurant> restaurants) {
+        dataset = new ArrayList<>(restaurants);
         notifyDataSetChanged();
     }
 
-    public void addAll(ArrayList<Place> places) {
-        dataset.addAll(places);
+    public void addAll(ArrayList<Restaurant> restaurants) {
+        dataset.addAll(restaurants);
         notifyDataSetChanged();
     }
 
@@ -100,25 +100,25 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         if (viewHolder instanceof PlacesAdapter.ViewHolder) {
-            Place place = (Place) getItem(position);
+            Restaurant place = (Restaurant) getItem(position);
             PlacesAdapter.ViewHolder vh = (PlacesAdapter.ViewHolder) viewHolder;
 
             vh.placeRoot.setPreventCornerOverlap(false);
 
             double positionHeight = getPositionRatio(position);
             vh.placeImage.setHeightRatio(positionHeight);
-            if (TextUtils.isEmpty(place.getImage())) {
+            if (TextUtils.isEmpty(place.image)) {
                 vh.placeImage.setImageDrawable(null);
             } else {
                 Picasso.with(context)
-                        .load(place.getImage())
+                        .load(place.image)
                         .into(vh.placeImage);
-                Log.d("Place Photo URL", place.getImage());
+                Log.d("Place Photo URL", place.image);
             }
 
-            vh.placeCost.setText(place.getPriceLevel());
-            vh.placeCost.setTypeface(TypefaceUtil.PROXIMA_NOVA);
-            vh.placeCost.setIncludeFontPadding(false);
+//            vh.placeCost.setText(place.getPriceLevel());
+//            vh.placeCost.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+//            vh.placeCost.setIncludeFontPadding(false);
 
             int quantity = (int) Math.floor(place.getCalculatedDistance());
             vh.placeDistance.setText(place.formatDistance() +
