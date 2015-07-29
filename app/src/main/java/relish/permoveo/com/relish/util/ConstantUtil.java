@@ -8,6 +8,15 @@ public class ConstantUtil {
     public static final String PARSE_APPLICATION_ID = "mfYDXykMfWxUzvS87AmceWD7oRQthFGskiolqBPU";
     public static final String PARSE_CLIENT_KEY = "HEwTJWpRhiD6Qh8WA5UZ5lkYGsDYNFHMLfxvvg2N";
 
+    /*========================= YELP CONSTANTS ========================= */
+    public static final String YELP_CONSUMER_KEY = "qPVCf4vyeQwZoaj-ZJMdXg";
+    public static final String YELP_CONSUMER_SECRET = "NkpaNQabNmdsXceRjGiP3SeBKtM";
+    public static final String YELP_TOKEN = "jLL5toN_88ddKKi0pZSmYlGSLwgKv8gj";
+    public static final String YELP_TOKEN_SECRET = "dwwH_xBGH_YJGHZB2KVUrkAEMdM";
+
+    /*========================= YELP PLACES API CONSTANTS ========================= */
+    public static final String YELP_PLACES_SEARCH_URL = "http://api.yelp.com";
+
     /*========================= PLACES API CONSTANTS ========================= */
     public static final String PLACES_SEARCH_URL =  "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
     public static final String PLACE_DETAILS_URL = "https://maps.googleapis.com/maps/api/place/details/json?";

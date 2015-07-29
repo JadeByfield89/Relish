@@ -6,6 +6,7 @@ import com.facebook.FacebookSdk;
 import com.parse.Parse;
 
 import relish.permoveo.com.relish.gps.GPSTracker;
+import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
@@ -21,5 +22,6 @@ public class RelishApplication extends Application {
         FacebookSdk.sdkInitialize(getApplicationContext());
         TypefaceUtil.init(this);
         GPSTracker.get.init(this);
+        API.init(this);
     }
 }

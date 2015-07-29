@@ -1,8 +1,14 @@
 package relish.permoveo.com.relish.network;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpRequest;
@@ -13,12 +19,15 @@ import com.google.api.client.http.apache.ApacheHttpTransport;
 import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.ObjectParser;
+import com.parse.signpost.OAuthConsumer;
+import com.parse.signpost.basic.DefaultOAuthConsumer;
 
 import java.io.IOException;
 
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
 import relish.permoveo.com.relish.model.response.PlacesResponse;
+import relish.permoveo.com.relish.model.response.YelpPlacesResponse;
 import relish.permoveo.com.relish.util.ConstantUtil;
 
 /**
@@ -26,8 +35,43 @@ import relish.permoveo.com.relish.util.ConstantUtil;
  */
 public class API {
 
+    private static RequestQueue queue;
+
+    public static void init(Context context) {
+        OAuthConsumer consumer = new DefaultOAuthConsumer(ConstantUtil.YELP_CONSUMER_KEY, ConstantUtil.YELP_CONSUMER_SECRET);
+        consumer.setTokenWithSecret(ConstantUtil.YELP_TOKEN, ConstantUtil.YELP_TOKEN_SECRET);
+        queue = Volley.newRequestQueue(context, new OAuthStack(consumer));
+    }
+
+
+    private static String getSearchURL(String path) {
+        return new Uri.Builder()
+                .appendPath()
+    }
+
+    public static void search(final IRequestable callback) {
+        GsonRequest<YelpPlacesResponse> request = new GsonRequest<YelpPlacesResponse>(
+                getSearchURL("/"),
+                YelpPlacesResponse.class,
+                new Response.Listener<YelpPlacesResponse>() {
+                    @Override
+                    public void onResponse(YelpPlacesResponse response) {
+                        callback.completed(response.places);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        callback.failed(error.getLocalizedMessage());
+                    }
+                }
+        );
+        queue.add(request);
+    }
+
+
+    /*=========================== GOOGLE PLACES API ATTEMPT ===========================*/
     private static HttpTransport transport = new ApacheHttpTransport();
-    private static String json;
 
     public static void getNearestPlaces(IRequestable callback) {
         new LoadPlacesTask(callback).execute();
@@ -46,6 +90,7 @@ public class API {
         });
     }
 
+    @SuppressWarnings("Unused")
     private static class LoadPlaceDetailsTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -57,7 +102,7 @@ public class API {
                 request.getUrl().put("key", ConstantUtil.GOOGLE_API_KEY);
                 request.getUrl().put("reference", params[0]);
 
-                json = request.execute().parseAsString();
+                String json = request.execute().parseAsString();
                 System.out.println(json);
                 return json;
             } catch (IOException e) {
@@ -72,6 +117,7 @@ public class API {
         }
     }
 
+    @SuppressWarnings("Unused")
     private static class LoadPlacesTask extends AsyncTask<Void, Void, PlacesResponse> {
 
         private IRequestable callback;
@@ -93,7 +139,7 @@ public class API {
                 request.getUrl().put("location", GPSTracker.get.getLocation().getLatitude() + "," + GPSTracker.get.getLocation().getLongitude());
                 request.getUrl().put("rankby", "distance");
                 Log.d("API location", "Latitude -> " + GPSTracker.get.getLocation().getLatitude() + "Longitude -> " + GPSTracker.get.getLocation().getLongitude());
-                Log.d("API URL -> ",  request.getUrl().toString());
+                Log.d("API URL -> ", request.getUrl().toString());
                 //request.getUrl().put("radius", ConstantUtil.NEAREST_PLACES_RADIUS);
                 request.getUrl().put("types", "food|restaurant");
 
