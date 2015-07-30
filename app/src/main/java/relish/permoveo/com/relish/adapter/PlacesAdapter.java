@@ -110,8 +110,11 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (TextUtils.isEmpty(place.image)) {
                 vh.placeImage.setImageDrawable(null);
             } else {
+
+                String image_url = place.image.replace("/ms", "/ls");
+                Log.d("IMAGE URL -> ",  image_url);
                 Picasso.with(context)
-                        .load(place.image)
+                        .load(image_url)
                         .into(vh.placeImage);
                 Log.d("Place Photo URL", place.image);
             }

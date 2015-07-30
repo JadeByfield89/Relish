@@ -17,7 +17,7 @@ import relish.permoveo.com.relish.util.TypefaceUtil;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final int SPLASH_DELAY = 100;
+    private static final int SPLASH_DELAY = 6000;
     private MediaPlayer mediaPlayer;
     private boolean isActivityOnScreen;
 

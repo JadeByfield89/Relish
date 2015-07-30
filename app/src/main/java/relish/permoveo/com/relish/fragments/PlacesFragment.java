@@ -148,8 +148,9 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             headerImage.setBackgroundColor(getResources().getColor(R.color.photo_placeholder));
             placesHeaderProgress.setVisibility(View.GONE);
         } else {
+            String image_url = restaurant.image.replace("/ms", "/ls");
             Picasso.with(getActivity())
-                    .load(restaurant.image)
+                    .load(image_url)
                     .into(headerImage, new Callback() {
                         @Override
                         public void onSuccess() {
