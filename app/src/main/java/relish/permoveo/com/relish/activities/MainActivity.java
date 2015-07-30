@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -47,7 +49,6 @@ import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
 import relish.permoveo.com.relish.util.ConnectionUtil;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.DialogUtil;
-import relish.permoveo.com.relish.util.TypefaceUtil;
 
 
 public class MainActivity extends RelishActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, ToolbarCallbacks {
@@ -61,6 +62,14 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
     @Bind(R.id.content_frame)
     FrameLayout contentFrame;
 
+    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
+
+    private int mCurrentSelectedPosition = 0;
+    // nav drawer title
+    private CharSequence mDrawerTitle;
+    // used to store app title
+    private CharSequence mTitle;
+    private String[] navMenuTitles;
     ActionBarDrawerToggle drawerToggle;
     boolean drawerOpen = false;
     Fragment current = null;
@@ -75,7 +84,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
 
             hideLoader();
             if (current != null && current instanceof OnResumeLoadingCallbacks && current.isAdded()) {
-                ((OnResumeLoadingCallbacks) current).loadData();
+                ((OnResumeLoadingCallbacks) current).loadData(false);
             }
             LocalBroadcastManager.getInstance(MainActivity.this).unregisterReceiver(this);
         }
@@ -87,8 +96,12 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
+        if (savedInstanceState != null) {
+            mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
+        }
 
+        setSupportActionBar(toolbar);
+        navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
         navDrawer = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
         drawerLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -112,16 +125,18 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
             }
         });
 
-//        String appName = getString(R.string.app_name);
-//        SpannableStringBuilder SS = new SpannableStringBuilder(appName);
-//        SS.setSpan(new CustomTypefaceSpan("", TypefaceUtil.BRANNBOLL_BOLD), 0, appName.length(), 0);
-        getActionBarTextView().setTypeface(TypefaceUtil.BRANNBOLL_BOLD);
-        getActionBarTextView().setIncludeFontPadding(false);
+        String appName = getString(R.string.app_name);
+        getActionBarTextView().setTypeface(Typeface.DEFAULT_BOLD);
+        getSupportActionBar().setTitle(appName);
+        mTitle = mDrawerTitle = getTitle();
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+                SpannableStringBuilder SS = new SpannableStringBuilder(mTitle);
+                SS.setSpan(Typeface.BOLD, 0, mTitle.length(), 0);
+                getSupportActionBar().setTitle(SS);
                 drawerOpen = false;
                 invalidateOptionsMenu();
             }
@@ -129,6 +144,9 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                SpannableStringBuilder SS = new SpannableStringBuilder(mDrawerTitle);
+                SS.setSpan(Typeface.BOLD, 0, mDrawerTitle.length(), 0);
+                getSupportActionBar().setTitle(SS);
                 drawerOpen = true;
                 invalidateOptionsMenu();
             }
@@ -142,6 +160,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
             toolbar.requestLayout();
         }
 
+        navDrawer.selectItem(mCurrentSelectedPosition);
         updateStatusBar(getResources().getColor(R.color.status_bar_color));
     }
 
@@ -162,6 +181,12 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
             LocalBroadcastManager.getInstance(this).registerReceiver(locationReceiver, new IntentFilter(ConstantUtil.ACTION_GET_LOCATION));
             showLoader(getString(R.string.detecting_location));
         }
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getSupportActionBar().setTitle(mTitle);
     }
 
     @Override
@@ -202,6 +227,12 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         super.onConfigurationChanged(newConfig);
         // Forward the new configuration the drawer toggle component.
         drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
     }
 
     @Override
@@ -252,6 +283,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         }
 
         if (current != null) {
+            mCurrentSelectedPosition = position;
             updateContent(!(current instanceof PlacesFragment));
 
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -260,6 +292,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
 
             if (drawerLayout != null)
                 drawerLayout.closeDrawer(drawerView);
+            setTitle(navMenuTitles[position]);
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error in creating fragment");

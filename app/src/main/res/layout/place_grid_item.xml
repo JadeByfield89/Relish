@@ -67,7 +67,6 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:textColor="@color/main_color"
-                android:text="$$"
                 android:textSize="14sp" />
         </RelativeLayout>
 
