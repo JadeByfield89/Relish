@@ -157,7 +157,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
 
             String image_url = restaurant.image.replace("/ms", "/o");
             Picasso.with(getActivity())
-                    .load(restaurant.image)
+                    .load(image_url)
                     .into(headerImage, new Callback() {
                         @Override
                         public void onSuccess() {
