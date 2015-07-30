@@ -68,8 +68,8 @@ public class API {
             request.addQuerystringParameter("limit", String.valueOf(ConstantUtil.PLACES_LIMIT_SEARCH));
             request.addQuerystringParameter("ll", String.valueOf(GPSTracker.get.getLocation().getLatitude()) + "," + String.valueOf(GPSTracker.get.getLocation().getLongitude()));
             request.addQuerystringParameter("offset", String.valueOf(ConstantUtil.PLACES_LIMIT_SEARCH * page));
-//            request.addQuerystringParameter("sort", String.valueOf(ConstantUtil.PLACES_SORTING_ORDER));
-            request.addQuerystringParameter("radius_filter", String.valueOf(ConstantUtil.PLACES_RADIUS_SEARCH));
+            request.addQuerystringParameter("sort", String.valueOf(ConstantUtil.PLACES_SORTING_ORDER));
+//            request.addQuerystringParameter("radius_filter", String.valueOf(ConstantUtil.PLACES_RADIUS_SEARCH));
             request.addQuerystringParameter("category_filter", "restaurants");
 
             service.signRequest(accessToken, request);
@@ -88,7 +88,7 @@ public class API {
                 } else if (!yelpPlacesResponse.isSuccessful()) {
                     callback.failed(yelpPlacesResponse.error.text);
                 } else {
-                    callback.completed(yelpPlacesResponse.restaurants);
+                    callback.completed(yelpPlacesResponse.total, yelpPlacesResponse.restaurants);
                 }
             }
         }

@@ -20,7 +20,6 @@
         <FrameLayout
             android:id="@+id/header_place_details_frame"
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="wrap_content"
             android:background="@color/place_image_dim"
             android:padding="12dp"
@@ -69,6 +68,7 @@
             android:id="@+id/places_header_progress"
             android:layout_width="56dp"
             android:layout_height="56dp"
+            android:visibility="gone"
             app:matProg_barColor="@color/main_color"
             app:matProg_progressIndeterminate="true"
             android:layout_centerInParent="true" />
@@ -81,12 +81,19 @@
         android:layout_height="wrap_content"
         android:background="@color/places_background" />
 
-    <com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView
-        android:id="@+id/staggered_grid"
-        android:clipToPadding="true"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/places_swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none" />
+        android:layout_height="match_parent">
+
+        <com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView
+            android:id="@+id/staggered_grid"
+            android:clipToPadding="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <TextView
         android:id="@+id/places_inform_message"
@@ -94,6 +101,7 @@
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:gravity="center"
+        android:text="@string/no_places"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

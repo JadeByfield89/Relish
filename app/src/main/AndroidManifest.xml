@@ -33,11 +33,13 @@
         <activity
             android:name=".activities.LoginActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/title_activity_login" >
         </activity>
         <activity
             android:name=".activities.SignupActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
             android:label="@string/title_activity_signup" >
         </activity>
 

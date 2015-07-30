@@ -15,8 +15,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Random;
 
 import butterknife.Bind;
@@ -89,21 +87,40 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         dataset = new ArrayList<>();
     }
 
+    public void removeFooter() {
+        int removing = -1;
+        for (int i = 0; i < dataset.size(); i++) {
+            if (TextUtils.isEmpty(dataset.get(i).name)) {
+                removing = i;
+            }
+        }
+        if (removing != -1) {
+            dataset.remove(removing);
+            notifyItemRemoved(removing);
+        }
+    }
+
+    public void clear() {
+        int oldCount = getItemCount();
+        dataset.clear();
+        notifyItemRangeRemoved(0, oldCount);
+    }
+
     public void addAll(ArrayList<Restaurant> restaurants) {
         int oldCount = getItemCount();
         if (oldCount > 0) {
             dataset.remove(oldCount - 1);
         }
         dataset.addAll(restaurants);
-        Collections.sort(dataset, new Comparator<Restaurant>() {
-            @Override
-            public int compare(Restaurant lhs, Restaurant rhs) {
-                return (int) (lhs.distance - rhs.distance);
-            }
-        });
+//        Collections.sort(dataset, new Comparator<Restaurant>() {
+//            @Override
+//            public int compare(Restaurant lhs, Restaurant rhs) {
+//                return (int) (lhs.distance - rhs.distance);
+//            }
+//        });
         top = dataset.get(0);
         dataset.add(new Restaurant());
-        notifyItemRangeChanged(0, getItemCount());
+        notifyItemRangeInserted(oldCount, restaurants.size() + 1);
     }
 
     @Override
@@ -181,7 +198,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public int getItemViewType(int position) {
         if (position == 0)
             return 0;
-        else if (position == getItemCount() - 1)
+        else if (TextUtils.isEmpty(dataset.get(position).name))
             return 1;
         else
             return 2;
