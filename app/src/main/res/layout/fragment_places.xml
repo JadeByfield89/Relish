@@ -96,7 +96,7 @@
         android:gravity="center"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <com.pnikosis.materialishprogress.ProgressWheel
         android:id="@+id/places_progress"
@@ -105,18 +105,5 @@
         app:matProg_barColor="@color/main_color"
         app:matProg_progressIndeterminate="true"
         android:layout_centerInParent="true" />
-
-    <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/fab_places"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
-        android:elevation="10dp"
-        android:src="@drawable/ic_add_white_24dp"
-        app:fab_colorNormal="@color/main_color"
-        app:fab_colorPressed="@color/main_color_dark"
-        app:fab_shadow="true" />
 
 </RelativeLayout>

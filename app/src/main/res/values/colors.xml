@@ -6,7 +6,8 @@
     <color name="drawer_item_text_color">#5d5d5d</color>
     <color name="drawer_item_pressed_background">#ededed</color>
     <color name="drawer_item_section_background">#dddddd</color>
-    <color name="place_image_dim">#99000000</color>
+    <color name="image_overlay">#99000000</color>
+    <color name="place_image_dim">#BF222222</color>
     <color name="places_background">#ebeff2</color>
     <color name="place_grid_distance_color">#747474</color>
     <color name="photo_placeholder">#BDBDBD</color>

@@ -29,11 +29,6 @@ public class NavigationDrawerFragment extends Fragment {
     private static final String TAG = NavigationDrawerFragment.class.getSimpleName();
 
     /**
-     * Remember the position of the selected item.
-     */
-    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-
-    /**
      * A pointer to the getCurrent callbacks instance (the Activity).
      */
     private NavigationDrawerCallbacks mCallbacks;
@@ -58,7 +53,6 @@ public class NavigationDrawerFragment extends Fragment {
     @Bind(R.id.nav_header_background)
     KenBurnsView kenBurnsView;
 
-    private int mCurrentSelectedPosition = 0;
     NavDrawerAdapter adapter;
 
     public NavigationDrawerFragment() {
@@ -87,18 +81,6 @@ public class NavigationDrawerFragment extends Fragment {
 
     public NavDrawerAdapter getAdapter() {
         return adapter;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
-        }
-
-        // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition);
     }
 
     @Override
@@ -142,7 +124,6 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         mDrawerListView.setCacheColorHint(0);
         mDrawerListView.setScrollingCacheEnabled(false);
         mDrawerListView.setScrollContainer(false);
@@ -151,8 +132,7 @@ public class NavigationDrawerFragment extends Fragment {
         return view;
     }
 
-    private void selectItem(int position) {
-        mCurrentSelectedPosition = position;
+    public void selectItem(int position) {
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
             mDrawerListView.setSelection(position);
@@ -176,12 +156,6 @@ public class NavigationDrawerFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
     }
 
 

@@ -4,6 +4,7 @@ package relish.permoveo.com.relish.fragments;
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -19,7 +20,6 @@ import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
-import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.view.ViewHelper;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.squareup.picasso.Callback;
@@ -49,9 +49,18 @@ import relish.permoveo.com.relish.widget.RatingView;
  */
 public class PlacesFragment extends Fragment implements ObservableScrollViewCallbacks, OnResumeLoadingCallbacks {
 
+    private static final String PAGE = "news_page";
+    private static final String TOTAL_NEWS_COUNT = "news_total_count";
+
     private ToolbarCallbacks toolbarCallbacks;
     private int parallaxImageHeight;
     private PlacesAdapter adapter;
+    private int page = 0;
+    private int total = Integer.MAX_VALUE;
+    private int previousTotal = 0;
+    private boolean loading = true;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
+    int firstVisibleItem, visibleItemCount, totalItemCount;
 
     @Bind(R.id.staggered_grid)
     ObservableRecyclerView recyclerView;
@@ -59,21 +68,18 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     @Bind(R.id.recycler_background)
     View recyclerBackground;
 
-    @Bind(R.id.fab_places)
-    FloatingActionButton fab;
-
     @Bind(R.id.header_place_image)
     ImageView headerImage;
-//
+    //
     @Bind(R.id.header_place_name)
     TextView headerPlaceName;
-//
+    //
     @Bind(R.id.header_place_distance)
     TextView headerPlaceDistance;
-//
+    //
     @Bind(R.id.header_place_cost)
     TextView headerPlaceCost;
-//
+    //
     @Bind(R.id.header_rating_view)
     RatingView headerRating;
 
@@ -110,27 +116,27 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            page = savedInstanceState.getInt(PAGE);
+            total = savedInstanceState.getInt(TOTAL_NEWS_COUNT);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_places, container, false);
         ButterKnife.bind(this, v);
 
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.column_count), StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.column_count), StaggeredGridLayoutManager.VERTICAL);
         staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
 
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setHasFixedSize(false);
         int spacing = getResources().getDimensionPixelSize(R.dimen.places_grid_spacing);
         recyclerView.addItemDecoration(new SpacesItemDecoration(spacing));
-
-        fab.attachToRecyclerView(recyclerView);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
@@ -148,7 +154,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             headerImage.setBackgroundColor(getResources().getColor(R.color.photo_placeholder));
             placesHeaderProgress.setVisibility(View.GONE);
         } else {
-            String image_url = restaurant.image.replace("/ms", "/ls");
+            String image_url = restaurant.image.replace("/ms", "/o");
             Picasso.with(getActivity())
                     .load(image_url)
                     .into(headerImage, new Callback() {
@@ -192,6 +198,26 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
 
         // Translate list background
         ViewHelper.setTranslationY(recyclerBackground, Math.max(0, -scrollY + parallaxImageHeight));
+
+
+        // loading more
+        visibleItemCount = recyclerView.getChildCount();
+        totalItemCount = staggeredGridLayoutManager.getItemCount();
+        firstVisibleItem = staggeredGridLayoutManager.findFirstVisibleItemPositions(null)[0];
+
+        if (loading) {
+            if (totalItemCount > previousTotal) {
+                loading = false;
+                previousTotal = totalItemCount;
+            }
+        }
+
+        int visibleThreshold = 0;
+        if (!loading && (totalItemCount - visibleItemCount)
+                <= (firstVisibleItem + visibleThreshold)) {
+            page++;
+            loadData(true);
+        }
     }
 
     @Override
@@ -220,10 +246,9 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             recyclerView.setVisibility(View.GONE);
             recyclerBackground.setVisibility(View.GONE);
             placesHeaderProgress.setVisibility(View.VISIBLE);
-            fab.hide();
             placesProgress.setVisibility(View.VISIBLE);
             placesMessage.setVisibility(View.GONE);
-            loadData();
+            loadData(false);
         }
     }
 
@@ -234,7 +259,6 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     private void showErrorText(String message, boolean header) {
         recyclerView.setVisibility(View.GONE);
         recyclerBackground.setVisibility(View.GONE);
-        fab.hide();
         if (header) {
             toolbarCallbacks.getToolbar().setBackgroundColor(getResources().getColor(R.color.main_color));
             placesHeaderProgress.setVisibility(View.GONE);
@@ -245,37 +269,45 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     }
 
     @Override
-    public void loadData() {
-        API.search(0, new IRequestable() {
-            @Override
-            public void completed(Object... params) {
-                placesProgress.setVisibility(View.GONE);
-                fab.show();
-                recyclerBackground.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.VISIBLE);
-                ArrayList<Restaurant> places = new ArrayList<>((List<Restaurant>) params[0]);
-                if (places.size() == 0) {
-                    showErrorText(getString(R.string.no_places));
-                } else {
-                    toolbarCallbacks.getToolbar().setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.main_color)));
-                    renderHeader(places.get(0));
+    public void loadData(final boolean loadMore) {
+        if (total > adapter.getItemCount()) {
+            loading = true;
+//            if (loadMore)
+//                endlessLoader.setVisibility(View.VISIBLE);
+            API.search(page, new IRequestable() {
+                @Override
+                public void completed(Object... params) {
+                    placesProgress.setVisibility(View.GONE);
+                    recyclerBackground.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    ArrayList<Restaurant> places = new ArrayList<>((List<Restaurant>) params[0]);
+                    if (places.size() == 0) {
+                        showErrorText(getString(R.string.no_places));
+                    } else {
+                        if (!loadMore)
+                            toolbarCallbacks.getToolbar().setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.main_color)));
+                        adapter.addAll(places);
+                        renderHeader(adapter.getTop());
 
-                    ArrayList<Restaurant> others = new ArrayList<>(places.subList(1, places.size()));
-                    if (others.size() == 0) {
-                        showErrorText(getString(R.string.no_places), false);
+                        if (adapter.getItemCount() == 0) {
+                            showErrorText(getString(R.string.no_places), false);
+                        }
                     }
+                    loading = false;
+//                    endlessLoader.setVisibility(View.GONE);
                 }
-                adapter.swap(places);
-            }
 
-            @Override
-            public void failed(Object... params) {
-                if (params == null || params.length == 0) {
-                    showErrorText(getString(R.string.problems_with_loading));
-                } else {
-                    showErrorText((String) params[0]);
+                @Override
+                public void failed(Object... params) {
+                    if (params == null || params.length == 0) {
+                        showErrorText(getString(R.string.problems_with_loading));
+                    } else {
+                        showErrorText((String) params[0]);
+                    }
+                    loading = false;
+//                    endlessLoader.setVisibility(View.GONE);
                 }
-            }
-        });
+            });
+        }
     }
 }

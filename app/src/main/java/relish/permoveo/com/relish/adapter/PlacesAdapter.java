@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 
 import butterknife.Bind;
@@ -31,14 +33,25 @@ import relish.permoveo.com.relish.widget.RatingView;
 public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<Restaurant> dataset;
+    private Restaurant top;
     private Context context;
     private Random random;
     private static final SparseArray<Double> positionHeightRatios = new SparseArray<>();
 
+    public Restaurant getTop() {
+        return top;
+    }
 
     static class HeaderViewHolder extends RecyclerView.ViewHolder {
 
         public HeaderViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    static class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        public FooterViewHolder(View itemView) {
             super(itemView);
         }
     }
@@ -76,24 +89,34 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         dataset = new ArrayList<>();
     }
 
-    public void swap(ArrayList<Restaurant> restaurants) {
-        dataset = new ArrayList<>(restaurants);
-        notifyDataSetChanged();
-    }
-
     public void addAll(ArrayList<Restaurant> restaurants) {
+        int oldCount = getItemCount();
+        if (oldCount > 0) {
+            dataset.remove(oldCount - 1);
+        }
         dataset.addAll(restaurants);
-        notifyDataSetChanged();
+        Collections.sort(dataset, new Comparator<Restaurant>() {
+            @Override
+            public int compare(Restaurant lhs, Restaurant rhs) {
+                return (int) (lhs.distance - rhs.distance);
+            }
+        });
+        top = dataset.get(0);
+        dataset.add(new Restaurant());
+        notifyItemRangeChanged(0, getItemCount());
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         if (viewType == 1) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.place_grid_item, viewGroup, false);
-            return new ViewHolder(view);
-        } else {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.place_grid_footer, viewGroup, false);
+            return new FooterViewHolder(view);
+        } else if (viewType == 0) {
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.place_grid_header, viewGroup, false);
             return new HeaderViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.place_grid_item, viewGroup, false);
+            return new ViewHolder(view);
         }
     }
 
@@ -110,9 +133,8 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (TextUtils.isEmpty(place.image)) {
                 vh.placeImage.setImageDrawable(null);
             } else {
-
                 String image_url = place.image.replace("/ms", "/ls");
-                Log.d("IMAGE URL -> ",  image_url);
+                Log.d("IMAGE URL -> ", image_url);
                 Picasso.with(context)
                         .load(image_url)
                         .into(vh.placeImage);
@@ -143,13 +165,26 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }
             params.setFullSpan(true);
             viewHolder.itemView.setLayoutParams(params);
+        } else if (viewHolder instanceof FooterViewHolder) {
+            StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
+            if (params == null) {
+                params = new StaggeredGridLayoutManager.LayoutParams(StaggeredGridLayoutManager.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT);
+            }
+            params.setFullSpan(true);
+            viewHolder.itemView.setLayoutParams(params);
         }
     }
 
 
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? 0 : 1;
+        if (position == 0)
+            return 0;
+        else if (position == getItemCount() - 1)
+            return 1;
+        else
+            return 2;
     }
 
     public Object getItem(final int position) {

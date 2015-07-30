@@ -24,9 +24,9 @@ public class Restaurant {
         double distanceInMiles = distance * LocationUtil.milesConversion;
 
         DecimalFormat twoDForm = new DecimalFormat("#.#");
-        if (distance == (long) distance)
-            return String.format("%d", (long) distance);
+        if (distanceInMiles == (long) distanceInMiles)
+            return String.format("%d", (long) distanceInMiles);
         else
-            return twoDForm.format(distance);
+            return twoDForm.format(distanceInMiles);
     }
 }
