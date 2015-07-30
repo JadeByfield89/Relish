@@ -232,7 +232,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             }
         }
 
-        int visibleThreshold = 2;
+        int visibleThreshold = 0;
         if (!loading && (totalItemCount - visibleItemCount)
                 <= (firstVisibleItem + visibleThreshold)) {
             page++;
