@@ -6,6 +6,8 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 
 import com.parse.ParseUser;
 
@@ -17,7 +19,7 @@ import relish.permoveo.com.relish.util.TypefaceUtil;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final int SPLASH_DELAY = 100;
+    private static final int SPLASH_DELAY = 6000;
     private MediaPlayer mediaPlayer;
     private boolean isActivityOnScreen;
 
@@ -30,6 +32,9 @@ public class SplashActivity extends AppCompatActivity {
         TitanicTextView splashText = ButterKnife.findById(this, R.id.tv_splash);
 
         splashText.setTypeface(TypefaceUtil.BRANNBOLL_BOLD);
+
+        final Animation in = new AlphaAnimation(0.0f, 1.0f);
+        in.setDuration(2000);
 
         mediaPlayer = MediaPlayer.create(this, R.raw.wine_pour);
         Titanic titanic = new Titanic();
@@ -58,6 +63,7 @@ public class SplashActivity extends AppCompatActivity {
 
             }
         });
+        splashText.startAnimation(in);
         titanic.start(splashText);
         new Handler().postDelayed(new Runnable() {
             @Override
