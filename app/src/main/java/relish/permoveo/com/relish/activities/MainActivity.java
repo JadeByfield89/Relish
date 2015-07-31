@@ -17,6 +17,8 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -49,6 +51,7 @@ import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
 import relish.permoveo.com.relish.util.ConnectionUtil;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.DialogUtil;
+import relish.permoveo.com.relish.util.TypefaceSpan;
 
 
 public class MainActivity extends RelishActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, ToolbarCallbacks {
@@ -125,18 +128,13 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
             }
         });
 
-        String appName = getString(R.string.app_name);
-        getActionBarTextView().setTypeface(Typeface.DEFAULT_BOLD);
-        getSupportActionBar().setTitle(appName);
+
         mTitle = mDrawerTitle = getTitle();
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                SpannableStringBuilder SS = new SpannableStringBuilder(mTitle);
-                SS.setSpan(Typeface.BOLD, 0, mTitle.length(), 0);
-                getSupportActionBar().setTitle(SS);
                 drawerOpen = false;
                 invalidateOptionsMenu();
             }
@@ -144,9 +142,6 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                SpannableStringBuilder SS = new SpannableStringBuilder(mDrawerTitle);
-                SS.setSpan(Typeface.BOLD, 0, mDrawerTitle.length(), 0);
-                getSupportActionBar().setTitle(SS);
                 drawerOpen = true;
                 invalidateOptionsMenu();
             }
@@ -186,7 +181,10 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-        getSupportActionBar().setTitle(mTitle);
+        SpannableString s = new SpannableString(title);
+        s.setSpan(new TypefaceSpan(this, "ProximaNovaBold.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        getSupportActionBar().setTitle(s);
     }
 
     @Override
