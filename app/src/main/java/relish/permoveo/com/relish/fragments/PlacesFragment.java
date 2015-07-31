@@ -41,6 +41,7 @@ import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
 import relish.permoveo.com.relish.model.Restaurant;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.util.ConnectionUtil;
+import relish.permoveo.com.relish.util.RecyclerItemClickListener;
 import relish.permoveo.com.relish.util.SpacesItemDecoration;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.widget.RatingView;
@@ -144,6 +145,23 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
         recyclerView.addItemDecoration(new SpacesItemDecoration(spacing));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Restaurant restaurant = (Restaurant) adapter.getItem(position);
+                API.getPlaceDetails(restaurant.id, new IRequestable() {
+                    @Override
+                    public void completed(Object... params) {
+
+                    }
+
+                    @Override
+                    public void failed(Object... params) {
+
+                    }
+                });
+            }
+        }));
 
         parallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.featured_image_size);
 

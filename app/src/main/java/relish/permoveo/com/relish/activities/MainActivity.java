@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,7 +18,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -40,7 +38,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.fragments.FriendsFragment;
-import relish.permoveo.com.relish.fragments.HelpFragment;
 import relish.permoveo.com.relish.fragments.InvitesFragment;
 import relish.permoveo.com.relish.fragments.NavigationDrawerFragment;
 import relish.permoveo.com.relish.fragments.PlacesFragment;
@@ -167,7 +164,6 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    finish();
                 }
             });
         } else if (!GPSTracker.get.isGpsEnabled()) {
@@ -270,13 +266,9 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
                 if (!(current instanceof FriendsFragment))
                     current = new FriendsFragment();
                 break;
-            case 3:
+            case 4:
                 if (!(current instanceof SettingsFragment))
                     current = new SettingsFragment();
-                break;
-            case 4:
-                if (!(current instanceof HelpFragment))
-                    current = new HelpFragment();
                 break;
         }
 

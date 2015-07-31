@@ -17,6 +17,7 @@ import com.google.api.client.util.ObjectParser;
 import com.google.gson.Gson;
 
 import org.scribe.builder.ServiceBuilder;
+import org.scribe.exceptions.OAuthConnectionException;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Token;
@@ -50,6 +51,44 @@ public class API {
         new SearchTask(callback).execute(page);
     }
 
+    public static void getPlaceDetails(String id, final IRequestable callback) {
+        new GetPlaceTask(callback).execute(id);
+    }
+
+    private static class GetPlaceTask extends AsyncTask<String, Void, Void> {
+
+        private IRequestable callback;
+
+        public GetPlaceTask() {
+        }
+
+        public GetPlaceTask(IRequestable callback) {
+            this.callback = callback;
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            String id = params[0];
+            OAuthRequest request = new OAuthRequest(Verb.GET, ConstantUtil.YELP_PLACE_DETAILS + "/" + id);
+
+            service.signRequest(accessToken, request);
+            YelpPlacesResponse yelpPlacesResponse = null;
+            try {
+                Response response = request.send();
+                String json = response.getBody();
+//                yelpPlacesResponse = gson.fromJson(json, YelpPlacesResponse.class);
+            } catch (OAuthConnectionException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
     private static class SearchTask extends AsyncTask<Integer, Void, YelpPlacesResponse> {
 
         private IRequestable callback;
@@ -73,9 +112,14 @@ public class API {
             request.addQuerystringParameter("category_filter", "restaurants");
 
             service.signRequest(accessToken, request);
-            Response response = request.send();
-            String json = response.getBody();
-            YelpPlacesResponse yelpPlacesResponse = gson.fromJson(json, YelpPlacesResponse.class);
+            YelpPlacesResponse yelpPlacesResponse = null;
+            try {
+                Response response = request.send();
+                String json = response.getBody();
+                yelpPlacesResponse = gson.fromJson(json, YelpPlacesResponse.class);
+            } catch (OAuthConnectionException e) {
+                e.printStackTrace();
+            }
             return yelpPlacesResponse;
         }
 

@@ -38,18 +38,6 @@
             android:textColor="@android:color/black"
             android:text="Loading..." />
 
-
-        <!--<Button-->
-            <!--android:id="@+id/loader_cancel"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_below="@+id/loader_progress"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:background="@color/main_color"-->
-            <!--style="@style/Base.TextAppearance.AppCompat.Button"-->
-            <!--android:text="Отмена" />-->
-
     </RelativeLayout>
 
 

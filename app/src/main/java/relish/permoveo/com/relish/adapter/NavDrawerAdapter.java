@@ -15,6 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.model.NavDrawerItem;
+import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
  * Created by Roman on 21.07.15.
@@ -93,6 +94,8 @@ public class NavDrawerAdapter extends BaseAdapter {
             assert viewHolder != null;
 
             NavDrawerItem item = (NavDrawerItem) getItem(position);
+            viewHolder.title.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+            viewHolder.title.setIncludeFontPadding(false);
             viewHolder.title.setText(item.title);
             viewHolder.icon.setImageResource(item.icon);
 

@@ -10,6 +10,7 @@ import relish.permoveo.com.relish.util.LocationUtil;
  * Created by rom4ek on 29.07.2015.
  */
 public class Restaurant {
+    public String id;
     public String name;
     public double distance;
     public float rating;
