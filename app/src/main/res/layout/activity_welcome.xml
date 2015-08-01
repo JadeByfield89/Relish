@@ -34,7 +34,7 @@
         app:strokeColor="@color/page_indicator_fill_color"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="13dp"
         android:layout_width="match_parent"></com.viewpagerindicator.CirclePageIndicator>
 
 
@@ -49,5 +49,42 @@
         android:textSize="22sp"
         android:textColor="#fff"
         android:text="@string/welcome_skip"/>
+
+    <ImageButton
+        android:id="@+id/button_back"
+        android:layout_width="40dp"
+        android:background="@drawable/left_arrow"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        android:visibility="gone"
+        android:layout_marginBottom="10dp"
+
+        android:layout_height="40dp" />
+
+
+    <ImageButton
+        android:id="@+id/button_next"
+        android:layout_width="40dp"
+        android:background="@drawable/back_arrow"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="10dp"
+
+        android:layout_height="40dp" />
+
+    <TextView
+        android:id="@+id/textview_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
+        android:visibility="gone"
+        android:textSize="22sp"
+        android:textColor="#fff"
+        android:text="@string/welcome_ok"/>
 
 </RelativeLayout>

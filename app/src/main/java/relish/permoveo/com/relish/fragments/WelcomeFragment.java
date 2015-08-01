@@ -69,6 +69,7 @@ public class WelcomeFragment extends Fragment {
         imageView.setBackgroundResource(imageId);
 
         headerText.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+        subText.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
         switch(pagePosition){
 
