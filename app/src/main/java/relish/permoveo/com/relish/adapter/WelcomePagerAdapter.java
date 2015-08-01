@@ -22,13 +22,13 @@ public class WelcomePagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return WelcomeFragment.newInstance("0", R.drawable.welcome_1);
+                return WelcomeFragment.newInstance(0, R.drawable.welcome_1);
             case 1:
-                return WelcomeFragment.newInstance("1", R.drawable.welcome_2);
+                return WelcomeFragment.newInstance(1, R.drawable.welcome_2);
             case 2:
-                return WelcomeFragment.newInstance("2", R.color.main_color);
+                return WelcomeFragment.newInstance(2, R.drawable.welcome_3);
             case 3:
-                return WelcomeFragment.newInstance("3", R.color.main_color);
+                return WelcomeFragment.newInstance(3, R.drawable.welcome_4);
 
             default:
                 return null;

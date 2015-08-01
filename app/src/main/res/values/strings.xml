@@ -40,4 +40,28 @@
     <string name="no_places">There are no places around you</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!--Welcome Screens -->
+    <string name="welcome_skip">SKIP</string>
+    <string name="welcome_ok">OK</string>
+
+
+    <!-- Welcome Screen 1 -->
+    <string name="welcome_1_header">Find your favorite places to eat</string>
+    <string name="welcome_1_sub">\t\t\tPick from nearby places, or search &amp;\n discover new places to get your grub on</string>
+
+
+    <!-- Welcome Screen 2 -->
+    <string name="welcome_2_header">Invite Friends</string>
+    <string name="welcome_2_sub">\t\t\tGood food is always better with company.\n Organize your friends, and invite them to eat!</string>
+
+    <!-- Welcome Screen 3 -->
+    <string name="welcome_3_header">Don\'t skimp on the details</string>
+    <string name="welcome_3_sub">Add details and set a reminder, so your\n \t\t\t\t\t\t\t\tfriends don\'t hate you</string>
+
+
+    <!-- Welcome Screen 4 -->
+    <string name="welcome_4_header">Push Notifications</string>
+    <string name="welcome_4_sub">Everyone invited gets a notification, and\n \t\t\t\tcan accept or decline your invite\n\n\t\t\t\t\t\t hopefully they accept! :) </string>
 </resources>
