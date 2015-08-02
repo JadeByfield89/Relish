@@ -1,4 +1,4 @@
-package relish.permoveo.com.relish.model;
+package relish.permoveo.com.relish.network.error;
 
 public class YelpError {
     public String text;

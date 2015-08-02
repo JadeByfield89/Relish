@@ -1,4 +1,4 @@
-package relish.permoveo.com.relish.model.response;
+package relish.permoveo.com.relish.network.response.google;
 
 import com.google.api.client.util.Key;
 

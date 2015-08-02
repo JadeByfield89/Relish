@@ -15,6 +15,7 @@ import com.google.api.client.json.JsonObjectParser;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.ObjectParser;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.exceptions.OAuthConnectionException;
@@ -24,13 +25,18 @@ import org.scribe.model.Token;
 import org.scribe.model.Verb;
 import org.scribe.oauth.OAuthService;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
-import relish.permoveo.com.relish.model.response.PlacesResponse;
-import relish.permoveo.com.relish.model.response.YelpPlacesResponse;
+import relish.permoveo.com.relish.model.Restaurant;
+import relish.permoveo.com.relish.model.RestaurantLocation;
+import relish.permoveo.com.relish.network.response.yelp.PlacesResponse;
 import relish.permoveo.com.relish.util.ConstantUtil;
+import relish.permoveo.com.relish.util.deserializer.RestaurantLocationDeserializer;
 
 /**
  * Created by Roman on 23.07.15.
@@ -44,7 +50,9 @@ public class API {
     public static void init(Context context) {
         service = new ServiceBuilder().provider(TwoStepOAuth.class).apiKey(ConstantUtil.YELP_CONSUMER_KEY).apiSecret(ConstantUtil.YELP_CONSUMER_SECRET).build();
         accessToken = new Token(ConstantUtil.YELP_TOKEN, ConstantUtil.YELP_TOKEN_SECRET);
-        gson = new Gson();
+        gson = new GsonBuilder()
+                .registerTypeAdapter(RestaurantLocation.class, new RestaurantLocationDeserializer())
+                .create();
     }
 
     public static void search(int page, final IRequestable callback) {
@@ -55,7 +63,7 @@ public class API {
         new GetPlaceTask(callback).execute(id);
     }
 
-    private static class GetPlaceTask extends AsyncTask<String, Void, Void> {
+    private static class GetPlaceTask extends AsyncTask<String, Void, Restaurant> {
 
         private IRequestable callback;
 
@@ -67,29 +75,41 @@ public class API {
         }
 
         @Override
-        protected Void doInBackground(String... params) {
+        protected Restaurant doInBackground(String... params) {
             String id = params[0];
             OAuthRequest request = new OAuthRequest(Verb.GET, ConstantUtil.YELP_PLACE_DETAILS + "/" + id);
 
             service.signRequest(accessToken, request);
-            YelpPlacesResponse yelpPlacesResponse = null;
+            Restaurant restaurant = null;
             try {
                 Response response = request.send();
-                String json = response.getBody();
-//                yelpPlacesResponse = gson.fromJson(json, YelpPlacesResponse.class);
+                InputStream stream = response.getStream();
+                BufferedReader r = new BufferedReader(new InputStreamReader(stream));
+                StringBuilder json = new StringBuilder();
+                String line;
+                try {
+                    while ((line = r.readLine()) != null) {
+                        json.append(line);
+                    }
+                    restaurant = gson.fromJson(json.toString(), Restaurant.class);
+                    assert restaurant != null;
+                    return restaurant;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } catch (OAuthConnectionException e) {
                 e.printStackTrace();
             }
-            return null;
+            return restaurant;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(Restaurant restaurant) {
+            super.onPostExecute(restaurant);
         }
     }
 
-    private static class SearchTask extends AsyncTask<Integer, Void, YelpPlacesResponse> {
+    private static class SearchTask extends AsyncTask<Integer, Void, PlacesResponse> {
 
         private IRequestable callback;
 
@@ -101,7 +121,7 @@ public class API {
         }
 
         @Override
-        protected YelpPlacesResponse doInBackground(Integer... params) {
+        protected PlacesResponse doInBackground(Integer... params) {
             Integer page = params[0];
             OAuthRequest request = new OAuthRequest(Verb.GET, ConstantUtil.YELP_PLACES_SEARCH_URL);
             request.addQuerystringParameter("limit", String.valueOf(ConstantUtil.PLACES_LIMIT_SEARCH));
@@ -112,27 +132,27 @@ public class API {
             request.addQuerystringParameter("category_filter", "restaurants");
 
             service.signRequest(accessToken, request);
-            YelpPlacesResponse yelpPlacesResponse = null;
+            PlacesResponse placesResponse = null;
             try {
                 Response response = request.send();
                 String json = response.getBody();
-                yelpPlacesResponse = gson.fromJson(json, YelpPlacesResponse.class);
+                placesResponse = gson.fromJson(json, PlacesResponse.class);
             } catch (OAuthConnectionException e) {
                 e.printStackTrace();
             }
-            return yelpPlacesResponse;
+            return placesResponse;
         }
 
         @Override
-        protected void onPostExecute(YelpPlacesResponse yelpPlacesResponse) {
-            super.onPostExecute(yelpPlacesResponse);
+        protected void onPostExecute(PlacesResponse placesResponse) {
+            super.onPostExecute(placesResponse);
             if (callback != null) {
-                if (yelpPlacesResponse == null) {
+                if (placesResponse == null) {
                     callback.failed();
-                } else if (!yelpPlacesResponse.isSuccessful()) {
-                    callback.failed(yelpPlacesResponse.error.text);
+                } else if (!placesResponse.isSuccessful()) {
+                    callback.failed(placesResponse.error.text);
                 } else {
-                    callback.completed(yelpPlacesResponse.total, yelpPlacesResponse.restaurants);
+                    callback.completed(placesResponse.total, placesResponse.restaurants);
                 }
             }
         }
@@ -187,7 +207,7 @@ public class API {
     }
 
     @SuppressWarnings("Unused")
-    private static class LoadPlacesTask extends AsyncTask<Void, Void, PlacesResponse> {
+    private static class LoadPlacesTask extends AsyncTask<Void, Void, relish.permoveo.com.relish.network.response.google.PlacesResponse> {
 
         private IRequestable callback;
 
@@ -199,7 +219,7 @@ public class API {
         }
 
         @Override
-        protected PlacesResponse doInBackground(Void... params) {
+        protected relish.permoveo.com.relish.network.response.google.PlacesResponse doInBackground(Void... params) {
             HttpRequestFactory httpRequestFactory = createRequestFactory(transport);
             HttpRequest request = null;
             try {
@@ -212,7 +232,7 @@ public class API {
                 request.getUrl().put("radius", ConstantUtil.NEAREST_PLACES_RADIUS);
                 request.getUrl().put("types", "food|restaurant");
 
-                PlacesResponse response = request.execute().parseAs(PlacesResponse.class);
+                relish.permoveo.com.relish.network.response.google.PlacesResponse response = request.execute().parseAs(relish.permoveo.com.relish.network.response.google.PlacesResponse.class);
                 Log.d("API Response", response.results.toString());
                 return response;
             } catch (IOException e) {
@@ -222,7 +242,7 @@ public class API {
         }
 
         @Override
-        protected void onPostExecute(PlacesResponse response) {
+        protected void onPostExecute(relish.permoveo.com.relish.network.response.google.PlacesResponse response) {
             super.onPostExecute(response);
             if (callback != null) {
                 if (response == null) {
