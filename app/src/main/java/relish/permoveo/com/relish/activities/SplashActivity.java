@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
@@ -75,7 +74,7 @@ public class SplashActivity extends RelishActivity {
                     if (ParseUser.getCurrentUser() == null) {
                         startActivity(new Intent(SplashActivity.this, SignupActivity.class));
                     } else {
-                        startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     }
                     finish();
                 }
