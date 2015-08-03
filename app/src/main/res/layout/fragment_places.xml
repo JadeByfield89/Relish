@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/places_background"
+    android:fitsSystemWindows="true"
+
     tools:context="relish.permoveo.com.relish.fragments.PlacesFragment">
 
     <RelativeLayout
@@ -21,7 +23,7 @@
             android:id="@+id/header_place_details_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/place_image_dim"
+            android:background="#00000000"
             android:padding="12dp"
             android:layout_alignParentBottom="true">
 

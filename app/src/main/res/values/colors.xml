@@ -16,4 +16,5 @@
     <color name="facebook_color">#33499F</color>
     <color name="page_indicator_fill_color">#66dddddd</color>
     <color name="page_indicator_page_color">#ffffff</color>
+    <color name="transparent">#00000000</color>
 </resources>
