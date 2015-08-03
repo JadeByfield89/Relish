@@ -2,6 +2,7 @@ package relish.permoveo.com.relish.fragments;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,6 +34,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.activities.PlaceDetailsActivity;
 import relish.permoveo.com.relish.adapter.PlacesAdapter;
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
@@ -149,17 +151,9 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             @Override
             public void onItemClick(View view, int position) {
                 Restaurant restaurant = (Restaurant) adapter.getItem(position);
-                API.getPlaceDetails(restaurant.id, new IRequestable() {
-                    @Override
-                    public void completed(Object... params) {
-
-                    }
-
-                    @Override
-                    public void failed(Object... params) {
-
-                    }
-                });
+                startActivity(new Intent(getActivity(), PlaceDetailsActivity.class)
+                        .putExtra(PlaceDetailsActivity.PLACE_ID, restaurant.id)
+                        .putExtra(PlaceDetailsActivity.PLACE_DISTANCE, restaurant.formatDistance()));
             }
         }));
 
@@ -318,7 +312,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
         if (total > adapter.getItemCount()) {
             loading = true;
             renderHeader(null);
-            API.search(page, new IRequestable() {
+            API.yelpSearch(page, new IRequestable() {
                 @Override
                 public void completed(Object... params) {
                     placesProgress.setVisibility(View.GONE);

@@ -9,16 +9,16 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-import relish.permoveo.com.relish.model.RestaurantLocation;
+import relish.permoveo.com.relish.model.Restaurant;
 
 /**
  * Created by rom4ek on 03.08.2015.
  */
-public class RestaurantLocationDeserializer implements JsonDeserializer<RestaurantLocation> {
+public class RestaurantLocationDeserializer implements JsonDeserializer<Restaurant.RestaurantLocation> {
     @Override
-    public RestaurantLocation deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public Restaurant.RestaurantLocation deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject locationObj = json.getAsJsonObject();
-        RestaurantLocation location = new RestaurantLocation();
+        Restaurant.RestaurantLocation location = new Restaurant.RestaurantLocation();
 
         JsonObject coordinateObj = locationObj.get("coordinate").getAsJsonObject();
         location.lat = coordinateObj.get("latitude").getAsDouble();

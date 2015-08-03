@@ -1,10 +1,10 @@
 package relish.permoveo.com.relish.model;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import relish.permoveo.com.relish.util.LocationUtil;
 
@@ -24,6 +24,7 @@ public class Restaurant implements Serializable {
     @SerializedName("mobile_url")
     public String url;
     public RestaurantLocation location;
+    public ArrayList<Review> reviews;
 
     public double getCalculatedDistance() {
         return distance * LocationUtil.milesConversion;
@@ -45,5 +46,15 @@ public class Restaurant implements Serializable {
 
     public String getLargeImage() {
         return image.replace("/ms", "/ls");
+    }
+
+    /**
+     * Created by rom4ek on 03.08.2015.
+     */
+    public static class RestaurantLocation implements Serializable {
+
+        public String address;
+        public double lat;
+        public double lng;
     }
 }

@@ -3,5 +3,5 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="featured_image_size">256dp</dimen>
-    <dimen name="places_grid_spacing">2dp</dimen>
+    <dimen name="places_grid_spacing">3dp</dimen>
 </resources>

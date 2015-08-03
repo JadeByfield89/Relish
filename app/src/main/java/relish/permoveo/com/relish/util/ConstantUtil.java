@@ -27,6 +27,7 @@ public class ConstantUtil {
     public static final String GOOGLE_API_KEY = "AIzaSyC9iqxOdLUvyfOlMKSJaFRaTnmtqiWbkeI";
     public static final String RELISH_USER_AGENT = "relish.permoveo.com.relish.API";
     public static final int NEAREST_PLACES_RADIUS = 4500;
+    public static final int MATCHING_PLACE_RADIUS = 500;
 
     /*========================= PLACES PHOTOS API CONSTANTS ========================= */
     public static final int PLACE_PHOTO_WIDTH = 320;

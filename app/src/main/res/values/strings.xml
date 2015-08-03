@@ -64,4 +64,5 @@
     <!-- Welcome Screen 4 -->
     <string name="welcome_4_header">Push Notifications</string>
     <string name="welcome_4_sub">Everyone invited gets a notification, and\n \t\t\t\tcan accept or decline your invite\n\n\t\t\t\t\t\t\t\t hopefully they accept! :) </string>
+    <string name="title_activity_place_details">PlaceDetailsActivity</string>
 </resources>

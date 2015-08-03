@@ -1,6 +1,7 @@
 package relish.permoveo.com.relish.model;
 
 import com.google.api.client.util.Key;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -14,28 +15,14 @@ import relish.permoveo.com.relish.util.LocationUtil;
  * Created by Roman on 20.07.15.
  */
 public class Place implements Serializable {
-    @Key
     public String name;
-
-    @Key
     public String reference;
-
-    @Key
     public String id;
-
-    @Key(value = "place_id")
+    @SerializedName("place_id")
     public String placeId;
-
-    @Key
     public double rating;
-
-    @Key(value = "price_level")
     private int priceLevel;
-
-    @Key
     public PlaceGeometry geometry;
-
-    @Key
     public List<PlacePhoto> photos;
 
     public Place() {
@@ -116,26 +103,18 @@ public class Place implements Serializable {
     }
 
     public static class PlacePhoto {
-        @Key
         public int width;
-
-        @Key
         public int height;
-
-        @Key(value = "photo_reference")
+        @SerializedName("photo_reference")
         public String reference;
     }
 
     public static class PlaceGeometry {
-        @Key
         public Location location;
     }
 
     public static class Location {
-        @Key
         public double lat;
-
-        @Key
         public double lng;
     }
 
