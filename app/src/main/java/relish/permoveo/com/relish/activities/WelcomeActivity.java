@@ -64,7 +64,7 @@ public class WelcomeActivity extends RelishActivity implements ViewPager.OnPageC
 
         updateStatusBar(getResources().getColor(R.color.main_color_dark));
 
-        
+
     }
 
     @Override
@@ -118,12 +118,14 @@ public class WelcomeActivity extends RelishActivity implements ViewPager.OnPageC
     public void skipPages() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @OnClick(R.id.textview_ok)
     public void finishWalkthrough() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
 }

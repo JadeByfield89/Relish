@@ -1,5 +1,6 @@
 package relish.permoveo.com.relish.activities;
 
+import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -58,10 +59,17 @@ public class RelishActivity extends AppCompatActivity {
 //            ViewGroup content = (ViewGroup) this.findViewById(android.R.id.content);
 //            content.setPadding(content.getPaddingLeft(), getStatusBarHeight(), content.getPaddingRight(), content.getPaddingRight());
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            getWindow().getDecorView().setSystemUiVisibility(
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
             Window window = getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            //window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(color);
+
+
         }
     }
 
