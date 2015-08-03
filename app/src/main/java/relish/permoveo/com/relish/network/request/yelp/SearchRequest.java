@@ -9,7 +9,7 @@ import org.scribe.model.Verb;
 
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
-import relish.permoveo.com.relish.model.Restaurant;
+import relish.permoveo.com.relish.model.Yelp.YelpPlace;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.network.request.RelishRequest;
 import relish.permoveo.com.relish.network.response.yelp.PlacesResponse;
@@ -24,7 +24,7 @@ public class SearchRequest extends RelishRequest<Integer, Void, PlacesResponse> 
     public SearchRequest(IRequestable callback) {
         super(callback);
         gson = new GsonBuilder()
-                .registerTypeAdapter(Restaurant.RestaurantLocation.class, new RestaurantLocationDeserializer())
+                .registerTypeAdapter(YelpPlace.RestaurantLocation.class, new RestaurantLocationDeserializer())
                 .create();
     }
 

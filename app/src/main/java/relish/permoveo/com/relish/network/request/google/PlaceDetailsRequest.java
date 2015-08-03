@@ -7,37 +7,37 @@ import com.google.api.client.http.HttpRequestFactory;
 import java.io.IOException;
 
 import relish.permoveo.com.relish.interfaces.IRequestable;
-import relish.permoveo.com.relish.model.Yelp.YelpPlace;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.network.request.RelishRequest;
-import relish.permoveo.com.relish.network.response.google.PlacesResponse;
+import relish.permoveo.com.relish.network.response.google.PlaceDetailsResponse;
 import relish.permoveo.com.relish.util.ConstantUtil;
 
 /**
- * Created by Roman on 03.08.15.
+ * Created by rom4ek on 03.08.2015.
  */
-public class SearchRequest extends RelishRequest<YelpPlace, Void, PlacesResponse> {
+public class PlaceDetailsRequest extends RelishRequest<String, Void, PlaceDetailsResponse> {
 
-    public SearchRequest(IRequestable callback) {
+    public PlaceDetailsRequest(IRequestable callback) {
         super(callback);
     }
 
     @Override
-    protected PlacesResponse doInBackground(YelpPlace... params) {
-        YelpPlace restaurant = params[0];
+    protected PlaceDetailsResponse doInBackground(String... params) {
         HttpRequestFactory httpRequestFactory = API.createRequestFactory();
         HttpRequest request = null;
+        PlaceDetailsResponse response = null;
         try {
-            request = httpRequestFactory.buildGetRequest(new GenericUrl(ConstantUtil.PLACES_SEARCH_URL));
+            request = httpRequestFactory.buildGetRequest(new GenericUrl(ConstantUtil.PLACE_DETAILS_URL));
             request.getUrl().put("key", ConstantUtil.GOOGLE_API_KEY);
-            request.getUrl().put("location", restaurant.location.lat + "," + restaurant.location.lng);
-            request.getUrl().put("name", restaurant.name);
-            request.getUrl().put("radius", ConstantUtil.NEAREST_PLACES_RADIUS);
-            request.getUrl().put("types", "food|restaurant");
+            request.getUrl().put("reference", params[0]);
 
             String json = request.execute().parseAsString();
-            PlacesResponse response = gson.fromJson(json, PlacesResponse.class);
-//            Log.d("API Response", response.results.toString());
+//            JsonParser parser = new JsonParser();
+//            if (!parser.parse(json).getAsJsonObject().has("error_message")) {
+//                JsonObject place = parser.parse(json).getAsJsonObject().get("result").getAsJsonObject();
+//                json = gson.toJson(place);
+//            }
+            response = gson.fromJson(json, PlaceDetailsResponse.class);
             return response;
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class SearchRequest extends RelishRequest<YelpPlace, Void, PlacesResponse
     }
 
     @Override
-    protected void onPostExecute(relish.permoveo.com.relish.network.response.google.PlacesResponse response) {
+    protected void onPostExecute(PlaceDetailsResponse response) {
         super.onPostExecute(response);
         if (callback != null) {
             if (response == null) {
@@ -54,7 +54,7 @@ public class SearchRequest extends RelishRequest<YelpPlace, Void, PlacesResponse
             } else if (!response.isSuccessful()) {
                 callback.failed(response.error);
             } else {
-                callback.completed(response.results);
+                callback.completed(response.place.reviews);
             }
         }
     }

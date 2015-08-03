@@ -4,7 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.text.DecimalFormat;
 
-import relish.permoveo.com.relish.model.Place;
+import relish.permoveo.com.relish.model.google.GooglePlace;
 
 /**
  * Created by imacrasko on 18.11.14.
@@ -35,7 +35,7 @@ public class LocationUtil {
         return new LatLng(Math.toDegrees(lat), Math.toDegrees(lon));
     }
 
-    public static String distance(Place.Location geoPos, Place.Location geoPos2) {
+    public static String distance(GooglePlace.Location geoPos, GooglePlace.Location geoPos2) {
         double earthRadius = 3958.75;
         double latDiff = Math.toRadians(geoPos.lat - geoPos2.lat);
         double lngDiff = Math.toRadians(geoPos.lng - geoPos2.lng);
@@ -58,7 +58,7 @@ public class LocationUtil {
         return dist;
     }
 
-    public static boolean isNull(Place.Location location) {
+    public static boolean isNull(GooglePlace.Location location) {
         return location == null || (location.lat == 0 && location.lng == 0);
     }
 

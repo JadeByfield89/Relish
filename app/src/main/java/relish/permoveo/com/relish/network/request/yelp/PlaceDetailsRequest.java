@@ -1,6 +1,7 @@
 package relish.permoveo.com.relish.network.request.yelp;
 
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
 
 import org.scribe.exceptions.OAuthConnectionException;
 import org.scribe.model.OAuthRequest;
@@ -13,10 +14,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import relish.permoveo.com.relish.interfaces.IRequestable;
-import relish.permoveo.com.relish.model.Restaurant;
+import relish.permoveo.com.relish.model.Yelp.YelpPlace;
 import relish.permoveo.com.relish.model.Review;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.network.request.RelishRequest;
+import relish.permoveo.com.relish.network.response.yelp.PlaceDetailsResponse;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.deserializer.RestaurantLocationDeserializer;
 import relish.permoveo.com.relish.util.deserializer.YelpReviewDeserializer;
@@ -24,23 +26,23 @@ import relish.permoveo.com.relish.util.deserializer.YelpReviewDeserializer;
 /**
  * Created by Roman on 03.08.15.
  */
-public class PlaceDetailsRequest extends RelishRequest<String, Void, Restaurant> {
+public class PlaceDetailsRequest extends RelishRequest<String, Void, PlaceDetailsResponse> {
 
     public PlaceDetailsRequest(IRequestable callback) {
         super(callback);
         gson = new GsonBuilder()
-                .registerTypeAdapter(Restaurant.RestaurantLocation.class, new RestaurantLocationDeserializer())
+                .registerTypeAdapter(YelpPlace.RestaurantLocation.class, new RestaurantLocationDeserializer())
                 .registerTypeAdapter(Review.class, new YelpReviewDeserializer())
                 .create();
     }
 
     @Override
-    protected Restaurant doInBackground(String... params) {
+    protected PlaceDetailsResponse doInBackground(String... params) {
         String id = params[0];
-        OAuthRequest request = new OAuthRequest(Verb.GET, ConstantUtil.YELP_PLACE_DETAILS + "/" + id.substring(1));
+        OAuthRequest request = new OAuthRequest(Verb.GET, ConstantUtil.YELP_PLACE_DETAILS + "/" + id);
 
         API.service.signRequest(API.accessToken, request);
-        Restaurant restaurant = null;
+        PlaceDetailsResponse placeDetailsResponse = null;
         try {
             Response response = request.send();
             InputStream stream = response.getStream();
@@ -51,8 +53,13 @@ public class PlaceDetailsRequest extends RelishRequest<String, Void, Restaurant>
                 while ((line = r.readLine()) != null) {
                     json.append(line);
                 }
-                restaurant = gson.fromJson(json.toString(), Restaurant.class);
-                return restaurant;
+                String jsonString = json.toString();
+                JsonParser parser = new JsonParser();
+                if (!parser.parse(jsonString).getAsJsonObject().has("error")) {
+                    jsonString = "{place:" + jsonString + "}";
+                }
+                placeDetailsResponse = gson.fromJson(jsonString, PlaceDetailsResponse.class);
+                return placeDetailsResponse;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -63,8 +70,16 @@ public class PlaceDetailsRequest extends RelishRequest<String, Void, Restaurant>
     }
 
     @Override
-    protected void onPostExecute(Restaurant restaurant) {
-        super.onPostExecute(restaurant);
-
+    protected void onPostExecute(PlaceDetailsResponse response) {
+        super.onPostExecute(response);
+        if (callback != null) {
+            if (response == null) {
+                callback.failed();
+            } else if (!response.isSuccessful()) {
+                callback.failed(response.error.text);
+            } else {
+                callback.completed(response.place);
+            }
+        }
     }
 }

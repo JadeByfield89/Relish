@@ -1,9 +1,7 @@
 package relish.permoveo.com.relish.network;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
-import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpRequestFactory;
@@ -15,9 +13,9 @@ import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.Token;
 import org.scribe.oauth.OAuthService;
 
-import java.io.IOException;
-
 import relish.permoveo.com.relish.interfaces.IRequestable;
+import relish.permoveo.com.relish.model.Yelp.YelpPlace;
+import relish.permoveo.com.relish.network.request.google.GoogleAuthorRequest;
 import relish.permoveo.com.relish.network.request.yelp.PlaceDetailsRequest;
 import relish.permoveo.com.relish.network.request.yelp.SearchRequest;
 import relish.permoveo.com.relish.util.ConstantUtil;
@@ -59,32 +57,17 @@ public class API {
         });
     }
 
-    @SuppressWarnings("Unused")
-    private static class LoadPlaceDetailsTask extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            HttpRequestFactory httpRequestFactory = createRequestFactory();
-            HttpRequest request = null;
-            try {
-                request = httpRequestFactory.buildGetRequest(new GenericUrl(ConstantUtil.PLACE_DETAILS_URL));
-                request.getUrl().put("key", ConstantUtil.GOOGLE_API_KEY);
-                request.getUrl().put("reference", params[0]);
-
-                String json = request.execute().parseAsString();
-                System.out.println(json);
-                return json;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-        }
+    public static void googleSearch(YelpPlace restaurant, IRequestable callback) {
+        new relish.permoveo.com.relish.network.request.google.SearchRequest(callback).execute(restaurant);
     }
 
+    public static void getGooglePlaceDetails(String id, final IRequestable callback) {
+        new relish.permoveo.com.relish.network.request.google.PlaceDetailsRequest(callback).execute(id);
+    }
+
+
+    public static void getGoogleAuthorImage(String id, IRequestable callback) {
+        new GoogleAuthorRequest(callback).execute(id);
+    }
 
 }

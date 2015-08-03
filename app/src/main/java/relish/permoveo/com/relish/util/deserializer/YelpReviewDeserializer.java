@@ -9,7 +9,7 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-import relish.permoveo.com.relish.model.YelpReview;
+import relish.permoveo.com.relish.model.Yelp.YelpReview;
 
 /**
  * Created by Roman on 03.08.15.

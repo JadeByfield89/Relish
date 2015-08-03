@@ -1,4 +1,4 @@
-package relish.permoveo.com.relish.model;
+package relish.permoveo.com.relish.model.Yelp;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -6,12 +6,13 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import relish.permoveo.com.relish.model.Review;
 import relish.permoveo.com.relish.util.LocationUtil;
 
 /**
  * Created by rom4ek on 29.07.2015.
  */
-public class Restaurant implements Serializable {
+public class YelpPlace implements Serializable {
     public String id;
     public String name;
     public double distance;

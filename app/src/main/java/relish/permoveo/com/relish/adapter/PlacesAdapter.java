@@ -20,7 +20,7 @@ import java.util.Random;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
-import relish.permoveo.com.relish.model.Restaurant;
+import relish.permoveo.com.relish.model.Yelp.YelpPlace;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.widget.DynamicHeightImageView;
 import relish.permoveo.com.relish.widget.RatingView;
@@ -30,13 +30,13 @@ import relish.permoveo.com.relish.widget.RatingView;
  */
 public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<Restaurant> dataset;
-    private Restaurant top;
+    private ArrayList<YelpPlace> dataset;
+    private YelpPlace top;
     private Context context;
     private Random random;
     private static final SparseArray<Double> positionHeightRatios = new SparseArray<>();
 
-    public Restaurant getTop() {
+    public YelpPlace getTop() {
         return top;
     }
 
@@ -106,7 +106,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyItemRangeRemoved(0, oldCount);
     }
 
-    public void addAll(ArrayList<Restaurant> restaurants) {
+    public void addAll(ArrayList<YelpPlace> restaurants) {
         int oldCount = getItemCount();
         if (oldCount > 0) {
             dataset.remove(oldCount - 1);
@@ -119,7 +119,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 //            }
 //        });
         top = dataset.get(0);
-        dataset.add(new Restaurant());
+        dataset.add(new YelpPlace());
         notifyItemRangeInserted(oldCount, restaurants.size() + 1);
     }
 
@@ -140,7 +140,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         if (viewHolder instanceof PlacesAdapter.ViewHolder) {
-            Restaurant place = (Restaurant) getItem(position);
+            YelpPlace place = (YelpPlace) getItem(position);
             PlacesAdapter.ViewHolder vh = (PlacesAdapter.ViewHolder) viewHolder;
 
             vh.placeRoot.setPreventCornerOverlap(false);

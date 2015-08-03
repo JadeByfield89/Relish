@@ -1,10 +1,10 @@
-package relish.permoveo.com.relish.model;
+package relish.permoveo.com.relish.model.google;
 
-import com.google.api.client.util.Key;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import relish.permoveo.com.relish.gps.GPSTracker;
@@ -14,7 +14,7 @@ import relish.permoveo.com.relish.util.LocationUtil;
 /**
  * Created by Roman on 20.07.15.
  */
-public class Place implements Serializable {
+public class GooglePlace implements Serializable {
     public String name;
     public String reference;
     public String id;
@@ -23,13 +23,14 @@ public class Place implements Serializable {
     public double rating;
     private int priceLevel;
     public PlaceGeometry geometry;
+    public ArrayList<GoogleReview> reviews;
     public List<PlacePhoto> photos;
 
-    public Place() {
+    public GooglePlace() {
         priceLevel = -1;
     }
 
-    public Place(String image, String name, double distance, double rating, int priceRanking) {
+    public GooglePlace(String image, String name, double distance, double rating, int priceRanking) {
         this.name = name;
 //        this.distance = distance;
         this.rating = rating;
