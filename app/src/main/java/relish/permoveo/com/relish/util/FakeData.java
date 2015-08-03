@@ -2,7 +2,7 @@ package relish.permoveo.com.relish.util;
 
 import java.util.ArrayList;
 
-import relish.permoveo.com.relish.model.Place;
+import relish.permoveo.com.relish.model.google.GooglePlace;
 
 /**
  * Created by Roman on 22.07.15.
@@ -27,11 +27,11 @@ public class FakeData {
             "http://mahagon-events.ru/wp-content/uploads/2014/02/2-Restoran-Lyuche-.jpg"
     };
 
-    public static ArrayList<Place> getFakePlaces() {
-        ArrayList<Place> fakePlaces = new ArrayList();
+    public static ArrayList<GooglePlace> getFakePlaces() {
+        ArrayList<GooglePlace> fakePlaces = new ArrayList();
 
         for (int i = 0; i < PLACES_IMAGES.length; i++) {
-            fakePlaces.add(new Place(PLACES_IMAGES[i], "Rest " + i, i, 3.5, 3));
+            fakePlaces.add(new GooglePlace(PLACES_IMAGES[i], "Rest " + i, i, 3.5, 3));
         }
 
         return fakePlaces;

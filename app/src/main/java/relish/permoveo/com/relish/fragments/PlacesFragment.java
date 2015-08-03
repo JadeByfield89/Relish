@@ -2,6 +2,7 @@ package relish.permoveo.com.relish.fragments;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -33,12 +34,13 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.activities.PlaceDetailsActivity;
 import relish.permoveo.com.relish.adapter.PlacesAdapter;
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
 import relish.permoveo.com.relish.interfaces.OnResumeLoadingCallbacks;
 import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
-import relish.permoveo.com.relish.model.Restaurant;
+import relish.permoveo.com.relish.model.Yelp.YelpPlace;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.util.ConnectionUtil;
 import relish.permoveo.com.relish.util.RecyclerItemClickListener;
@@ -148,18 +150,9 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Restaurant restaurant = (Restaurant) adapter.getItem(position);
-                API.getPlaceDetails(restaurant.id, new IRequestable() {
-                    @Override
-                    public void completed(Object... params) {
-
-                    }
-
-                    @Override
-                    public void failed(Object... params) {
-
-                    }
-                });
+                YelpPlace restaurant = (YelpPlace) adapter.getItem(position);
+                startActivity(new Intent(getActivity(), PlaceDetailsActivity.class)
+                        .putExtra(PlaceDetailsActivity.PASSED_PLACE, restaurant));
             }
         }));
 
@@ -181,7 +174,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     }
 
 
-    private void renderHeader(Restaurant restaurant) {
+    private void renderHeader(YelpPlace restaurant) {
         if (restaurant == null) {
             headerDetailsFrame.setVisibility(View.GONE);
         } else {
@@ -318,14 +311,14 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
         if (total > adapter.getItemCount()) {
             loading = true;
             renderHeader(null);
-            API.search(page, new IRequestable() {
+            API.yelpSearch(page, new IRequestable() {
                 @Override
                 public void completed(Object... params) {
                     placesProgress.setVisibility(View.GONE);
                     placesMessage.setVisibility(View.GONE);
 //                    recyclerBackground.setVisibility(View.VISIBLE);
 //                    recyclerView.setVisibility(View.VISIBLE);
-                    ArrayList<Restaurant> places = new ArrayList<>((List<Restaurant>) params[1]);
+                    ArrayList<YelpPlace> places = new ArrayList<>((List<YelpPlace>) params[1]);
                     if (places.size() == 0) {
                         if (!loadMore)
                             showErrorText(getString(R.string.no_places));

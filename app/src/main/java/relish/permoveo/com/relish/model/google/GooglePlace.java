@@ -1,9 +1,10 @@
-package relish.permoveo.com.relish.model;
+package relish.permoveo.com.relish.model.google;
 
-import com.google.api.client.util.Key;
+import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import relish.permoveo.com.relish.gps.GPSTracker;
@@ -13,36 +14,23 @@ import relish.permoveo.com.relish.util.LocationUtil;
 /**
  * Created by Roman on 20.07.15.
  */
-public class Place implements Serializable {
-    @Key
+public class GooglePlace implements Serializable {
     public String name;
-
-    @Key
     public String reference;
-
-    @Key
     public String id;
-
-    @Key(value = "place_id")
+    @SerializedName("place_id")
     public String placeId;
-
-    @Key
     public double rating;
-
-    @Key(value = "price_level")
     private int priceLevel;
-
-    @Key
     public PlaceGeometry geometry;
-
-    @Key
+    public ArrayList<GoogleReview> reviews;
     public List<PlacePhoto> photos;
 
-    public Place() {
+    public GooglePlace() {
         priceLevel = -1;
     }
 
-    public Place(String image, String name, double distance, double rating, int priceRanking) {
+    public GooglePlace(String image, String name, double distance, double rating, int priceRanking) {
         this.name = name;
 //        this.distance = distance;
         this.rating = rating;
@@ -116,26 +104,18 @@ public class Place implements Serializable {
     }
 
     public static class PlacePhoto {
-        @Key
         public int width;
-
-        @Key
         public int height;
-
-        @Key(value = "photo_reference")
+        @SerializedName("photo_reference")
         public String reference;
     }
 
     public static class PlaceGeometry {
-        @Key
         public Location location;
     }
 
     public static class Location {
-        @Key
         public double lat;
-
-        @Key
         public double lng;
     }
 

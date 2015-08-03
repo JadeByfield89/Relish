@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="relish.permoveo.com.relish.activities.PlaceDetailsActivity">
+
+    <com.melnykov.fab.ObservableScrollView
+        android:id="@+id/place_details_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/header_place_details_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/featured_image_size"
+                android:scaleType="centerCrop"/>
+
+            <View
+                android:id="@+id/anchor"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/featured_image_size"
+                android:minHeight="@dimen/featured_image_size" />
+
+            <com.melnykov.fab.FloatingActionButton
+                android:id="@+id/fab_place_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="-28dp"
+                android:layout_marginRight="16dp"
+                android:layout_alignBottom="@+id/header_place_details_image"
+                android:layout_alignParentRight="true"
+                android:elevation="10dp"
+                android:src="@drawable/ic_send"
+                app:fab_colorNormal="@color/main_color"
+                app:fab_colorPressed="@color/main_color_dark"
+                app:fab_shadow="true"/>
+
+            <TextView
+                android:id="@+id/body"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/anchor"
+                android:background="@android:color/white"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:text="@string/lipsum" />
+        </RelativeLayout>
+    </com.melnykov.fab.ObservableScrollView>
+
+    <TextView
+        android:id="@+id/place_details_inform_message"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/no_place_details"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.pnikosis.materialishprogress.ProgressWheel
+        android:id="@+id/place_details_progress"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        app:matProg_barColor="@color/main_color"
+        app:matProg_progressIndeterminate="true"
+        android:layout_centerInParent="true" />
+
+    <include layout="@layout/toolbar"/>
+
+</RelativeLayout>

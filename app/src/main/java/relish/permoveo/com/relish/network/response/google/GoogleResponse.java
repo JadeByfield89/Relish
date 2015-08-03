@@ -2,16 +2,14 @@ package relish.permoveo.com.relish.network.response.google;
 
 import android.text.TextUtils;
 
-import com.google.api.client.util.Key;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by rom4ek on 25.07.2015.
  */
 public class GoogleResponse {
-    @Key(value = "error_message")
+    @SerializedName("error_message")
     public String error;
-
-    @Key
     public String status;
 
     public boolean isSuccessful() {
