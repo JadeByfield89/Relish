@@ -211,7 +211,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             headerPlaceDistance.setTypeface(TypefaceUtil.PROXIMA_NOVA);
             headerPlaceDistance.setIncludeFontPadding(false);
 
-            headerRating.setRating((int) Math.round(restaurant.rating));
+            headerRating.setRating(restaurant.rating);
 
 //        headerPlaceCost.setText(place.getPriceLevel());
 //        headerPlaceCost.setTypeface(TypefaceUtil.PROXIMA_NOVA);

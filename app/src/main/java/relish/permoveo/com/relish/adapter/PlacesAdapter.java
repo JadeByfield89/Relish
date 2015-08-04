@@ -172,7 +172,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             vh.placeName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
             vh.placeName.setIncludeFontPadding(false);
 
-            vh.placeRating.setRating((int) place.rating);
+            vh.placeRating.setRating(place.rating);
         } else if (viewHolder instanceof HeaderViewHolder) {
             StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
             if (params == null) {
