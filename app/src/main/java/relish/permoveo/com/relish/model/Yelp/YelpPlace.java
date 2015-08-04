@@ -1,4 +1,4 @@
-package relish.permoveo.com.relish.model.yelp;
+package relish.permoveo.com.relish.model.Yelp;
 
 import com.google.gson.annotations.SerializedName;
 

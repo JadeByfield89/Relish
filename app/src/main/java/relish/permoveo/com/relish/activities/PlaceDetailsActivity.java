@@ -53,7 +53,7 @@ import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.util.TypefaceUtil;
-import relish.permoveo.com.relish.widget.RatingView;
+import relish.permoveo.com.relish.view.RatingView;
 
 public class PlaceDetailsActivity extends RelishActivity implements ObservableScrollViewCallbacks {
 
