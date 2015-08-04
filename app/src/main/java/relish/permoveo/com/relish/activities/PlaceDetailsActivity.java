@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
@@ -81,7 +82,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
     TextView placeDetailsMessage;
 
     @Bind(R.id.header_place_details_image)
-    ImageView placeDetailsImage;
+    KenBurnsView placeDetailsImage;
 
     @Bind(R.id.place_details_scroll_view)
     ObservableScrollView placeDetalsScrollView;

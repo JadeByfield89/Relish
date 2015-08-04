@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.util.BlurBuilder;
 
 /**
  * Created by byfieldj on 8/4/15.
@@ -33,7 +34,11 @@ public class RelishDrawerToggle extends ActionBarDrawerToggle {
     public void onDrawerSlide(View drawerView, float slideOffset)
     {
         super.onDrawerSlide(drawerView, slideOffset);
-        mainView.setScaleX(1 - (slideOffset * 0.025f));
-        mainView.setScaleY(1 - (slideOffset * 0.025f));
+        mainView.setScaleX(1 - (slideOffset * 0.035f));
+        mainView.setScaleY(1 - (slideOffset * 0.035f));
+        //BlurBuilder.blur(mainView, slideOffset);
+
     }
+
+
 }

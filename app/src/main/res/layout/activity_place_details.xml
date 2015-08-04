@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white">
 
-            <ImageView
+            <com.flaviofaria.kenburnsview.KenBurnsView
                 android:id="@+id/header_place_details_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/featured_image_size"
@@ -33,6 +33,7 @@
                 android:id="@+id/place_details_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="32dp"
                 android:paddingLeft="24dp"
                 android:paddingRight="24dp"
                 android:layout_below="@+id/anchor"
@@ -42,7 +43,6 @@
                 <relish.permoveo.com.relish.view.RatingView
                     android:id="@+id/place_details_rating_view"
                     android:layout_width="wrap_content"
-                    android:layout_marginTop="32dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp" />
 
@@ -120,7 +120,6 @@
                 android:layout_height="3dp"
                 android:background="@drawable/shadow" />
 
-
             <!--<TextView-->
             <!--android:id="@+id/body"-->
             <!--android:layout_width="match_parent"-->
@@ -173,7 +172,7 @@
         android:layout_width="@dimen/fab_size"
         android:layout_height="@dimen/fab_size"
         android:layout_marginRight="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="36dp"
         android:visibility="invisible"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
