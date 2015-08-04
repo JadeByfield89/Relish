@@ -188,6 +188,11 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         });
         reviewImageMap = new HashMap<>();
 
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+            toolbar.setPadding(toolbar.getPaddingLeft(), getStatusBarHeight(), toolbar.getPaddingRight(), toolbar.getPaddingBottom());
+            toolbar.requestLayout();
+        }
+
         updateStatusBar(getResources().getColor(R.color.main_color_dark));
     }
 
@@ -438,7 +443,8 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
             if (scrollY > lastScrollY) {
                 //to bottom
                 if (!wasAnimatedToBottom) {
-                    int y = fakeFabLocation[1] - fabHeight / 2 - (int) (placeDetailsFab.getElevation() / 2);
+                    int y = fakeFabLocation[1] - fabHeight / 2
+                            - (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? (int) (placeDetailsFab.getElevation() / 2) : 0);
                     ViewPropertyAnimator.animate(placeDetailsFab).setInterpolator(new AccelerateDecelerateInterpolator())
                             .setDuration(300)
                             .setListener(new Animator.AnimatorListener() {
@@ -468,7 +474,8 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
             } else {
                 //to top
                 if (!wasAnimatedToTop && alpha < 0.1f) {
-                    int y = fabLocation[1] - fabHeight / 2 + (int) (placeDetailsFab.getElevation() / 2);
+                    int y = fabLocation[1] - fabHeight / 2 +
+                            (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? (int) (placeDetailsFab.getElevation() / 2) : 0);
                     ViewPropertyAnimator.animate(placeDetailsFab).setInterpolator(new AccelerateDecelerateInterpolator())
                             .setDuration(300)
                             .setListener(new Animator.AnimatorListener() {
