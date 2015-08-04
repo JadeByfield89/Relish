@@ -39,7 +39,7 @@
                 android:background="@android:color/white"
                 android:orientation="vertical">
 
-                <relish.permoveo.com.relish.widget.RatingView
+                <relish.permoveo.com.relish.view.RatingView
                     android:id="@+id/place_details_rating_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
                     android:layout_height="1dp"
                     android:background="#dee0e2" />
 
-                <relish.permoveo.com.relish.widget.NonScrollListView
+                <relish.permoveo.com.relish.view.NonScrollListView
                     android:id="@+id/place_details_reviews_list"
                     android:layout_width="match_parent"
                     android:divider="#dee0e2"

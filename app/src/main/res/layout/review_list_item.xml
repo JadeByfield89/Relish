@@ -39,7 +39,7 @@
             android:textColor="@color/place_grid_distance_color"
             android:textSize="14sp" />
 
-        <relish.permoveo.com.relish.widget.RatingView
+        <relish.permoveo.com.relish.view.RatingView
             android:id="@+id/review_rating"
             android:layout_marginBottom="8dp"
             android:layout_width="match_parent"

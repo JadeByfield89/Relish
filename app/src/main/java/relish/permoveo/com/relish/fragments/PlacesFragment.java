@@ -46,7 +46,7 @@ import relish.permoveo.com.relish.util.ConnectionUtil;
 import relish.permoveo.com.relish.util.RecyclerItemClickListener;
 import relish.permoveo.com.relish.util.SpacesItemDecoration;
 import relish.permoveo.com.relish.util.TypefaceUtil;
-import relish.permoveo.com.relish.widget.RatingView;
+import relish.permoveo.com.relish.view.RatingView;
 
 
 /**

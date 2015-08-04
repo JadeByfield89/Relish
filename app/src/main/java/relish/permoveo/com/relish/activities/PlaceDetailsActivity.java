@@ -39,8 +39,8 @@ import relish.permoveo.com.relish.model.google.GooglePlace;
 import relish.permoveo.com.relish.model.google.GoogleReview;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.util.TypefaceUtil;
-import relish.permoveo.com.relish.widget.NonScrollListView;
-import relish.permoveo.com.relish.widget.RatingView;
+import relish.permoveo.com.relish.view.NonScrollListView;
+import relish.permoveo.com.relish.view.RatingView;
 
 public class PlaceDetailsActivity extends RelishActivity implements ObservableScrollViewCallbacks {
 

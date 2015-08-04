@@ -23,7 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.model.Review;
 import relish.permoveo.com.relish.util.TypefaceUtil;
-import relish.permoveo.com.relish.widget.RatingView;
+import relish.permoveo.com.relish.view.RatingView;
 
 /**
  * Created by Roman on 04.08.15.

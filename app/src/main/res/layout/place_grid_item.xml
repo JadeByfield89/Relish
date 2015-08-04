@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <relish.permoveo.com.relish.widget.DynamicHeightImageView
+        <relish.permoveo.com.relish.view.DynamicHeightImageView
             android:id="@+id/grid_item_place_image"
             android:scaleType="centerCrop"
             android:background="@color/photo_placeholder"
@@ -38,7 +38,7 @@
                 android:orientation="vertical"
                 android:gravity="bottom">
 
-                <relish.permoveo.com.relish.widget.RatingView
+                <relish.permoveo.com.relish.view.RatingView
                     android:id="@+id/grid_item_rating_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
