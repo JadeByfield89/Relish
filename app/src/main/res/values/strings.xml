@@ -39,6 +39,7 @@
     <string name="problems_with_loading">There are some problems with connection to server</string>
     <string name="no_places">There are no places around you</string>
     <string name="no_place_details">We don\'t have information about this place</string>
+    <string name="reviews_title">Recent reviews</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

@@ -5,6 +5,8 @@ import android.app.Application;
 import com.facebook.FacebookSdk;
 import com.parse.Parse;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.util.ConstantUtil;
@@ -23,5 +25,6 @@ public class RelishApplication extends Application {
         TypefaceUtil.init(this);
         GPSTracker.get.init(this);
         API.init(this);
+        JodaTimeAndroid.init(this);
     }
 }

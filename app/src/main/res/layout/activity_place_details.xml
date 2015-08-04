@@ -3,22 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context="relish.permoveo.com.relish.activities.PlaceDetailsActivity">
 
-    <com.melnykov.fab.ObservableScrollView
+    <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
         android:id="@+id/place_details_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
 
             <ImageView
                 android:id="@+id/header_place_details_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/featured_image_size"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
 
             <View
                 android:id="@+id/anchor"
@@ -26,33 +28,109 @@
                 android:layout_height="@dimen/featured_image_size"
                 android:minHeight="@dimen/featured_image_size" />
 
-            <com.melnykov.fab.FloatingActionButton
-                android:id="@+id/fab_place_details"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="-28dp"
-                android:layout_marginRight="16dp"
-                android:layout_alignBottom="@+id/header_place_details_image"
-                android:layout_alignParentRight="true"
-                android:elevation="10dp"
-                android:src="@drawable/ic_send"
-                app:fab_colorNormal="@color/main_color"
-                app:fab_colorPressed="@color/main_color_dark"
-                app:fab_shadow="true"/>
-
-            <TextView
-                android:id="@+id/body"
+            <LinearLayout
+                android:id="@+id/place_details_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/anchor"
+                android:layout_marginTop="32dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:layout_below="@+id/anchor"
                 android:background="@android:color/white"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:text="@string/lipsum" />
+                android:orientation="vertical">
+
+                <relish.permoveo.com.relish.widget.RatingView
+                    android:id="@+id/place_details_rating_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:id="@+id/place_details_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/place_details_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="@color/place_grid_distance_color"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/place_details_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:textColor="@color/place_grid_distance_color"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/place_details_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/place_grid_distance_color"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/place_details_reviews_container"
+                android:layout_below="@+id/place_details_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:layout_marginTop="28dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/place_details_reviews_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/reviews_title"
+                    android:textSize="20sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#dee0e2" />
+
+                <relish.permoveo.com.relish.widget.NonScrollListView
+                    android:id="@+id/place_details_reviews_list"
+                    android:layout_width="match_parent"
+                    android:divider="#dee0e2"
+                    android:dividerHeight="1dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_below="@+id/anchor"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@drawable/shadow" />
+
+            <!--<TextView-->
+            <!--android:id="@+id/body"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/anchor"-->
+            <!--android:background="@android:color/white"-->
+            <!--android:paddingBottom="@dimen/activity_vertical_margin"-->
+            <!--android:paddingLeft="@dimen/activity_horizontal_margin"-->
+            <!--android:paddingRight="@dimen/activity_horizontal_margin"-->
+            <!--android:paddingTop="@dimen/activity_vertical_margin"-->
+            <!--android:text="@string/lipsum" />-->
         </RelativeLayout>
-    </com.melnykov.fab.ObservableScrollView>
+    </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
 
     <TextView
         android:id="@+id/place_details_inform_message"
@@ -64,7 +142,7 @@
         android:text="@string/no_place_details"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <com.pnikosis.materialishprogress.ProgressWheel
         android:id="@+id/place_details_progress"
@@ -74,6 +152,34 @@
         app:matProg_progressIndeterminate="true"
         android:layout_centerInParent="true" />
 
-    <include layout="@layout/toolbar"/>
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab_place_details"
+        android:layout_width="@dimen/fab_size"
+        android:layout_height="@dimen/fab_size"
+        android:layout_marginTop="@dimen/fab_top_margin"
+        android:layout_marginRight="24dp"
+        android:layout_alignParentRight="true"
+        android:elevation="10dp"
+        android:src="@drawable/ic_send"
+        app:fab_colorNormal="@color/main_color"
+        app:fab_colorPressed="@color/main_color_dark"
+        app:fab_shadow="true" />
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fake_fab_place_details"
+        android:layout_width="@dimen/fab_size"
+        android:layout_height="@dimen/fab_size"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="44dp"
+        android:visibility="invisible"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:elevation="10dp"
+        android:src="@drawable/ic_send"
+        app:fab_colorNormal="@color/main_color"
+        app:fab_colorPressed="@color/main_color_dark"
+        app:fab_shadow="true" />
+
+    <include layout="@layout/toolbar" />
 
 </RelativeLayout>

@@ -1,5 +1,7 @@
 package relish.permoveo.com.relish.model;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 
 /**
@@ -14,5 +16,13 @@ public class Review implements Serializable {
 
     public String getLargeAuthorImage() {
         return "";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Review))
+            return false;
+        Review other = (Review) o;
+        return (!TextUtils.isEmpty(other.authorName) && !TextUtils.isEmpty(authorName) && other.authorName.equals(authorName));
     }
 }
