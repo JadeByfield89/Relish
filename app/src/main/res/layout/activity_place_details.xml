@@ -20,10 +20,10 @@
             <View
                 android:layout_below="@+id/anchor"
                 android:layout_width="match_parent"
-                android:layout_height="8dp"
+                android:layout_height="3dp"
                 android:background="@drawable/shadow" />
 
-            <ImageView
+            <com.flaviofaria.kenburnsview.KenBurnsView
                 android:id="@+id/header_place_details_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/featured_image_size"
