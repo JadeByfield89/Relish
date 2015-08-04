@@ -20,6 +20,8 @@
     <string name="error_password">Password must contain more than 3 characters!</string>
     <string name="signing_up_loader_text">Signing up…</string>
     <string name="logging_in_loader_text">Logging in…</string>
+    <string name="menu_open">open</string>
+    <string name="menu_close">close</string>
 
     <string name="places_nav_drawer_item">Places</string>
     <string name="invites_nav_drawer_item">Invites</string>

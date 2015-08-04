@@ -49,6 +49,7 @@ import relish.permoveo.com.relish.util.ConnectionUtil;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.DialogUtil;
 import relish.permoveo.com.relish.util.TypefaceSpan;
+import relish.permoveo.com.relish.view.RelishDrawerToggle;
 
 
 public class MainActivity extends RelishActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, ToolbarCallbacks {
@@ -70,7 +71,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
     // used to store app title
     private CharSequence mTitle;
     private String[] navMenuTitles;
-    ActionBarDrawerToggle drawerToggle;
+    RelishDrawerToggle drawerToggle;
     boolean drawerOpen = false;
     Fragment current = null;
     Dialog d;
@@ -128,12 +129,14 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
 
         mTitle = mDrawerTitle = getTitle();
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer) {
+
+        drawerToggle = new RelishDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 drawerOpen = false;
                 invalidateOptionsMenu();
+
             }
 
             @Override
@@ -143,7 +146,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
                 invalidateOptionsMenu();
             }
         };
-
+        drawerToggle.setMainView(contentFrame);
         drawerLayout.setDrawerListener(drawerToggle);
         drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.main_color_dark));
 

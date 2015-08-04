@@ -22,8 +22,8 @@ import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.util.TypefaceUtil;
-import relish.permoveo.com.relish.widget.DynamicHeightImageView;
-import relish.permoveo.com.relish.widget.RatingView;
+import relish.permoveo.com.relish.view.DynamicHeightImageView;
+import relish.permoveo.com.relish.view.RatingView;
 
 /**
  * Created by Roman on 20.07.15.
