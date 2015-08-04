@@ -20,7 +20,7 @@ import java.util.Random;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
-import relish.permoveo.com.relish.model.Yelp.YelpPlace;
+import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.widget.DynamicHeightImageView;
 import relish.permoveo.com.relish.widget.RatingView;

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import relish.permoveo.com.relish.model.Yelp.YelpPlace;
+import relish.permoveo.com.relish.model.yelp.YelpPlace;
 
 /**
  * Created by Roman on 29.07.15.

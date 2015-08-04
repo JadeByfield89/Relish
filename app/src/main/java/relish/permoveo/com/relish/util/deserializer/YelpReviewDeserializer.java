@@ -9,7 +9,7 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-import relish.permoveo.com.relish.model.Yelp.YelpReview;
+import relish.permoveo.com.relish.model.yelp.YelpReview;
 
 /**
  * Created by Roman on 03.08.15.
@@ -22,9 +22,9 @@ public class YelpReviewDeserializer implements JsonDeserializer<YelpReview> {
         JsonObject userObj = json.getAsJsonObject()
                 .get("user").getAsJsonObject();
 
-        review.authorName = userObj.get("name").getAsString();
+        review.setAuthorName(userObj.get("name").getAsString());
         if (userObj.has("image_url"))
-            review.authorImage = userObj.get("image_url").getAsString();
+            review.setAuthorImage(userObj.get("image_url").getAsString());
         return review;
     }
 }

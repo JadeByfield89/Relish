@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import relish.permoveo.com.relish.interfaces.IRequestable;
-import relish.permoveo.com.relish.model.Yelp.YelpPlace;
+import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.model.Review;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.network.request.RelishRequest;

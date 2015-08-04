@@ -9,7 +9,7 @@ import org.scribe.model.Verb;
 
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
-import relish.permoveo.com.relish.model.Yelp.YelpPlace;
+import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.network.request.RelishRequest;
 import relish.permoveo.com.relish.network.response.yelp.PlacesResponse;

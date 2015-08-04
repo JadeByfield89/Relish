@@ -14,7 +14,7 @@ import org.scribe.model.Token;
 import org.scribe.oauth.OAuthService;
 
 import relish.permoveo.com.relish.interfaces.IRequestable;
-import relish.permoveo.com.relish.model.Yelp.YelpPlace;
+import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.network.request.google.GoogleAuthorRequest;
 import relish.permoveo.com.relish.network.request.yelp.PlaceDetailsRequest;
 import relish.permoveo.com.relish.network.request.yelp.SearchRequest;

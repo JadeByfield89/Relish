@@ -40,7 +40,7 @@ import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
 import relish.permoveo.com.relish.interfaces.OnResumeLoadingCallbacks;
 import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
-import relish.permoveo.com.relish.model.Yelp.YelpPlace;
+import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.util.ConnectionUtil;
 import relish.permoveo.com.relish.util.RecyclerItemClickListener;
@@ -352,6 +352,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             });
         } else {
             adapter.removeFooter();
+            placesProgress.setVisibility(View.GONE);
         }
     }
 }

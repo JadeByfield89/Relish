@@ -9,12 +9,19 @@
     <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
         android:id="@+id/place_details_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white">
+
+            <View
+                android:layout_below="@+id/anchor"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="@drawable/shadow" />
 
             <ImageView
                 android:id="@+id/header_place_details_image"
@@ -73,6 +80,7 @@
                     android:id="@+id/place_details_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="28dp"
                     android:textColor="@color/place_grid_distance_color"
                     android:textSize="16sp" />
 
@@ -84,9 +92,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
+                android:visibility="gone"
                 android:paddingLeft="24dp"
                 android:paddingRight="24dp"
-                android:layout_marginTop="28dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -103,20 +111,16 @@
                     android:layout_height="1dp"
                     android:background="#dee0e2" />
 
-                <relish.permoveo.com.relish.widget.NonScrollListView
-                    android:id="@+id/place_details_reviews_list"
+                <LinearLayout
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    android:id="@+id/place_details_reviews"
                     android:layout_width="match_parent"
-                    android:divider="#dee0e2"
-                    android:dividerHeight="1dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
-            <View
-                android:layout_below="@+id/anchor"
-                android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:background="@drawable/shadow" />
+
 
             <!--<TextView-->
             <!--android:id="@+id/body"-->
@@ -170,7 +174,7 @@
         android:layout_width="@dimen/fab_size"
         android:layout_height="@dimen/fab_size"
         android:layout_marginRight="24dp"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="36dp"
         android:visibility="invisible"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"

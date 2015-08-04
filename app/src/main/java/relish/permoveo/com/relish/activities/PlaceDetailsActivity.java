@@ -3,8 +3,13 @@ package relish.permoveo.com.relish.activities;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.telephony.PhoneNumberUtils;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -19,27 +24,35 @@ import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.joda.time.DateTime;
+import org.joda.time.Period;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import relish.permoveo.com.relish.R;
-import relish.permoveo.com.relish.adapter.ReviewsAdapter;
 import relish.permoveo.com.relish.interfaces.IRequestable;
 import relish.permoveo.com.relish.interfaces.IRequestableDefaultImpl;
 import relish.permoveo.com.relish.model.Review;
-import relish.permoveo.com.relish.model.Yelp.YelpPlace;
 import relish.permoveo.com.relish.model.google.GooglePlace;
 import relish.permoveo.com.relish.model.google.GoogleReview;
+import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.network.API;
+import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.util.TypefaceUtil;
-import relish.permoveo.com.relish.widget.NonScrollListView;
 import relish.permoveo.com.relish.widget.RatingView;
 
 public class PlaceDetailsActivity extends RelishActivity implements ObservableScrollViewCallbacks {
@@ -50,14 +63,13 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
     private YelpPlace passedPlace;
     private YelpPlace fetchedPlace;
     private int parallaxImageHeight;
-    private int lastDumpedScroll;
     private int lastScrollY;
     private int mScrollThreshold;
     private int fabHeight;
     private boolean wasAnimatedToBottom = false;
     private boolean wasAnimatedToTop = false;
     private int[] fabLocation, fakeFabLocation;
-    private ReviewsAdapter adapter;
+    private Map<String, ImageView> reviewImageMap;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -101,8 +113,18 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
     @Bind(R.id.place_details_reviews_container)
     LinearLayout placeDetailsReviewsContainer;
 
-    @Bind(R.id.place_details_reviews_list)
-    NonScrollListView placeDetailsReviews;
+    @Bind(R.id.place_details_reviews)
+    LinearLayout placeDetailsReviews;
+
+    private class PlaceDetailsCallback extends IRequestableDefaultImpl {
+
+        @Override
+        public void failed(Object... params) {
+            placeDetailsProgress.setVisibility(View.GONE);
+            placeDetailsMessage.setVisibility(View.GONE);
+            renderPlaceDetails();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,10 +141,11 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(passedPlace.name);
+        SpannableString s = new SpannableString(passedPlace.name);
+        s.setSpan(new TypefaceSpan(this, "ProximaNovaBold.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        getSupportActionBar().setTitle(s);
 
-        placeDetalsScrollView.setScrollViewCallbacks(this);
-        toolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.main_color)));
         parallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.featured_image_size);
         mScrollThreshold = getResources().getDimensionPixelOffset(R.dimen.fab_threshold);
         fabHeight = getResources().getDimensionPixelOffset(R.dimen.fab_size);
@@ -157,8 +180,13 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
             }
         });
 
-        adapter = new ReviewsAdapter(this);
-        placeDetailsReviews.setAdapter(adapter);
+        placeDetalsScrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+        reviewImageMap = new HashMap<>();
 
         updateStatusBar(getResources().getColor(R.color.main_color_dark));
     }
@@ -203,7 +231,9 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 
         if (!TextUtils.isEmpty(fetchedPlace.phone)) {
             placeDetailsPhone.setVisibility(View.VISIBLE);
-            placeDetailsPhone.setText(fetchedPlace.phone);
+            SpannableStringBuilder stringBuilder = new SpannableStringBuilder(fetchedPlace.phone);
+            PhoneNumberUtils.formatNumber(stringBuilder, PhoneNumberUtils.getFormatTypeForLocale(Locale.US));
+            placeDetailsPhone.setText(stringBuilder.toString());
             placeDetailsPhone.setTypeface(TypefaceUtil.PROXIMA_NOVA);
             placeDetailsPhone.setIncludeFontPadding(false);
         } else {
@@ -214,8 +244,16 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 
         renderReviews();
 
-        if (fetchedPlace.reviews != null && fetchedPlace.reviews.size() > 0)
-            adapter.swap(fetchedPlace.reviews);
+        placeDetailsReviews.removeAllViews();
+        if (fetchedPlace.reviews != null && fetchedPlace.reviews.size() > 0) {
+            for (Review review : fetchedPlace.reviews) {
+                addReview(review);
+            }
+        }
+
+        placeDetalsScrollView.setOnTouchListener(null);
+        placeDetalsScrollView.setScrollViewCallbacks(this);
+        toolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.main_color)));
     }
 
     private void renderReviews() {
@@ -229,6 +267,72 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         }
     }
 
+    private void renderReviewImage(Review review) {
+        ImageView reviewImage = reviewImageMap.get(review.getAuthorName());
+        if (reviewImage != null) {
+            if (TextUtils.isEmpty(review.getAuthorImage())) {
+                reviewImage.setImageResource(R.drawable.avatar_placeholder);
+            } else {
+                Picasso.with(this)
+                        .load(review.getLargeAuthorImage())
+                        .into(reviewImage);
+            }
+        }
+    }
+
+    private void addReview(Review review) {
+        View reviewView = getLayoutInflater().inflate(R.layout.review_list_item, null);
+        TextView reviewName = (TextView) reviewView.findViewById(R.id.review_name);
+        TextView reviewText = (TextView) reviewView.findViewById(R.id.review_text);
+        TextView reviewDate = (TextView) reviewView.findViewById(R.id.review_date);
+        ImageView reviewImage = (ImageView) reviewView.findViewById(R.id.review_image);
+        RatingView reviewRating = (RatingView) reviewView.findViewById(R.id.review_rating);
+
+        reviewImageMap.put(review.getAuthorName(), reviewImage);
+        renderReviewImage(review);
+
+        if (TextUtils.isEmpty(review.getText())) {
+            reviewText.setVisibility(View.GONE);
+        } else {
+            reviewText.setVisibility(View.VISIBLE);
+            reviewText.setText(review.getText());
+            reviewText.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+            reviewText.setIncludeFontPadding(false);
+        }
+
+        DateTime reviewDateTime = new DateTime().withMillis(review.getTime() * 1000);
+        DateTime now = new DateTime();
+        Period period = new Period(reviewDateTime, now);
+
+        int quantity = period.getDays();
+        PeriodFormatter formatter = new PeriodFormatterBuilder()
+                .appendDays().appendSuffix(" " + getResources().getQuantityString(R.plurals.days, quantity))
+                .printZeroNever()
+                .toFormatter();
+
+        String formattedTime = formatter.print(period);
+
+        if (TextUtils.isEmpty(formattedTime))
+            formattedTime = "Today";
+
+        reviewDate.setText(formattedTime);
+        reviewDate.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        reviewDate.setIncludeFontPadding(false);
+
+        reviewName.setText(review.getAuthorName());
+        reviewName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+        reviewName.setIncludeFontPadding(false);
+
+        if (review.getRating() == 0.0f) {
+            reviewRating.setVisibility(View.GONE);
+        } else {
+            reviewRating.setVisibility(View.VISIBLE);
+            reviewRating.setRating(review.getRating());
+        }
+
+        placeDetailsReviews.addView(reviewView);
+    }
+
 
     @Override
     protected void onResume() {
@@ -236,38 +340,45 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         API.getYelpPlaceDetails(passedPlace.id, new IRequestable() {
             @Override
             public void completed(Object... params) {
-                placeDetailsProgress.setVisibility(View.GONE);
-                placeDetailsMessage.setVisibility(View.GONE);
                 fetchedPlace = (YelpPlace) params[0];
                 fetchedPlace.distance = passedPlace.distance;
-                renderPlaceDetails();
-                API.googleSearch(passedPlace, new IRequestableDefaultImpl() {
+                API.googleSearch(passedPlace, new PlaceDetailsCallback() {
                     @Override
                     public void completed(Object... params) {
                         ArrayList<GooglePlace> places = (ArrayList<GooglePlace>) params[0];
                         if (places != null && places.size() > 0) {
                             GooglePlace matching = places.get(0);
-                            API.getGooglePlaceDetails(matching.reference, new IRequestableDefaultImpl() {
+                            API.getGooglePlaceDetails(matching.reference, new PlaceDetailsCallback() {
                                 @Override
                                 public void completed(Object... params) {
                                     final ArrayList<Review> googleReviews = (ArrayList<Review>) params[0];
                                     if (googleReviews != null && googleReviews.size() > 0) {
                                         for (int i = 0; i < googleReviews.size(); i++) {
                                             final GoogleReview googleReview = (GoogleReview) googleReviews.get(i);
-                                            final int reviewId = i;
-                                            API.getGoogleAuthorImage(googleReview.authorUrl.substring(googleReview.authorUrl.lastIndexOf('/') + 1), new IRequestableDefaultImpl() {
+                                            fetchedPlace.reviews.add(googleReview);
+                                            final int reviewId = fetchedPlace.reviews.size() - 1;
+                                            API.getGoogleAuthorImage(googleReview.getAuthorUrl().substring(googleReview.getAuthorUrl().lastIndexOf('/') + 1), new IRequestableDefaultImpl() {
                                                 @Override
                                                 public void completed(Object... params) {
-                                                    googleReviews.get(reviewId).authorImage = (String) params[0];
-                                                    fetchedPlace.reviews.add(googleReviews.get(reviewId));
-                                                    adapter.add(googleReviews.get(reviewId));
-                                                    renderReviews();
+                                                    fetchedPlace.reviews.get(reviewId).setAuthorImage((String) params[0]);
+                                                    renderReviewImage(fetchedPlace.reviews.get(reviewId));
                                                 }
                                             });
                                         }
+                                        placeDetailsProgress.setVisibility(View.GONE);
+                                        placeDetailsMessage.setVisibility(View.GONE);
+                                        renderPlaceDetails();
+                                    } else {
+                                        placeDetailsProgress.setVisibility(View.GONE);
+                                        placeDetailsMessage.setVisibility(View.GONE);
+                                        renderPlaceDetails();
                                     }
                                 }
                             });
+                        } else {
+                            placeDetailsProgress.setVisibility(View.GONE);
+                            placeDetailsMessage.setVisibility(View.GONE);
+                            renderPlaceDetails();
                         }
                     }
                 });
@@ -312,13 +423,14 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         int baseColor = getResources().getColor(R.color.main_color);
         float alpha = Math.min(1, (float) scrollY / parallaxImageHeight);
         toolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
+        ViewHelper.setTranslationY(placeDetailsImage, scrollY / 2);
 
-        float damping = 0.5f;
-        int dampedScroll = (int) (scrollY * damping);
-        int offset = lastDumpedScroll - dampedScroll;
-        placeDetailsImage.offsetTopAndBottom(-offset);
-
-        lastDumpedScroll = dampedScroll;
+//        float damping = 0.5f;
+//        int dampedScroll = (int) (scrollY * damping);
+//        int offset = lastDumpedScroll - dampedScroll;
+//        placeDetailsImage.offsetTopAndBottom(-offset);
+//
+//        lastDumpedScroll = dampedScroll;
 
         //fab animation
         boolean isSignificantDelta = Math.abs(scrollY - lastScrollY) > mScrollThreshold;
@@ -326,7 +438,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
             if (scrollY > lastScrollY) {
                 //to bottom
                 if (!wasAnimatedToBottom) {
-                    int y = fakeFabLocation[1] - fabHeight / 2;
+                    int y = fakeFabLocation[1] - fabHeight / 2 - (int) (placeDetailsFab.getElevation() / 2);
                     ViewPropertyAnimator.animate(placeDetailsFab).setInterpolator(new AccelerateDecelerateInterpolator())
                             .setDuration(300)
                             .setListener(new Animator.AnimatorListener() {
@@ -356,7 +468,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
             } else {
                 //to top
                 if (!wasAnimatedToTop && alpha < 0.1f) {
-                    int y = fabLocation[1] - fabHeight / 2;
+                    int y = fabLocation[1] - fabHeight / 2 + (int) (placeDetailsFab.getElevation() / 2);
                     ViewPropertyAnimator.animate(placeDetailsFab).setInterpolator(new AccelerateDecelerateInterpolator())
                             .setDuration(300)
                             .setListener(new Animator.AnimatorListener() {
