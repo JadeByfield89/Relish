@@ -30,6 +30,7 @@ android {
 
     lintOptions {
         disable 'InvalidPackage'
+        abortOnError false
     }
 }
 
@@ -59,5 +60,7 @@ dependencies {
     compile (name:'materialimageloading-1.0.1', ext:'aar'){
         transitive=true
     }
-
 }
+
+
+

@@ -66,9 +66,6 @@ public class WelcomeActivity extends RelishActivity implements ViewPager.OnPageC
         updateStatusBar(getResources().getColor(R.color.main_color_dark));
 
 
-        SharedPrefsUtil sharedPrefsUtil = new SharedPrefsUtil(getApplicationContext());
-        sharedPrefsUtil.setAppLaunched();
-
 
     }
 
