@@ -23,6 +23,17 @@
                 android:layout_height="@dimen/featured_image_size"
                 android:scaleType="centerCrop" />
 
+            <ImageView
+                android:id="@+id/place_like"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:clickable="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:layout_marginRight="32dp"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/ic_favorite"/>
+
             <View
                 android:id="@+id/anchor"
                 android:layout_width="match_parent"
@@ -70,13 +81,31 @@
                     android:textColor="@color/place_grid_distance_color"
                     android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/place_details_phone"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="28dp"
-                    android:textColor="@color/place_grid_distance_color"
-                    android:textSize="16sp" />
+                    android:layout_marginBottom="28dp">
+
+                    <TextView
+                        android:id="@+id/place_details_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:textColor="@color/place_grid_distance_color"
+                        android:textSize="16sp"/>
+
+
+                    <ImageView
+                        android:id="@+id/yelp_logo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/yelp_logo"
+                        android:clickable="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
 
             </LinearLayout>
 

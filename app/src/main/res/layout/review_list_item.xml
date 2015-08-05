@@ -19,6 +19,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginRight="16dp"
         android:layout_marginLeft="56dp"
+        android:gravity="left"
         android:orientation="vertical">
 
         <TextView
@@ -28,6 +29,12 @@
             android:textColor="@android:color/black"
             android:textSize="14sp" />
 
+        <ImageView
+            android:id="@+id/review_rating_yelp"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        
         <relish.permoveo.com.relish.view.RatingView
             android:id="@+id/review_rating"
             android:layout_marginTop="4dp"
@@ -41,6 +48,20 @@
             android:layout_marginTop="4dp"
             android:textColor="@color/place_grid_distance_color"
             android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/review_more"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentBottom="true"
+            android:text="@string/read_more"
+            android:clickable="true"
+            android:textColor="@color/link_color"
+            android:textSize="12sp" />
 
     </LinearLayout>
 

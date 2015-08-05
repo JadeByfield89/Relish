@@ -4,18 +4,20 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import relish.permoveo.com.relish.model.Review;
+import relish.permoveo.com.relish.model.BaseReview;
 
 /**
  * Created by Roman on 03.08.15.
  */
-public class YelpReview implements Review, Serializable {
+public class YelpReview extends BaseReview implements Serializable {
     @SerializedName("excerpt")
     private String text;
     @SerializedName("time_created")
     private long time;
     private String authorImage;
     private String authorName;
+    @SerializedName("rating_image_large_url")
+    private String ratingImage;
     private float rating;
 
     @Override
@@ -59,7 +61,7 @@ public class YelpReview implements Review, Serializable {
     }
 
     @Override
-    public String getAuthorUrl() {
-        return null;
+    public String getRatingImage() {
+        return ratingImage;
     }
 }
