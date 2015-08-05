@@ -2,12 +2,14 @@ package relish.permoveo.com.relish.model.yelp;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import relish.permoveo.com.relish.model.Review;
 
 /**
  * Created by Roman on 03.08.15.
  */
-public class YelpReview implements Review {
+public class YelpReview implements Review, Serializable {
     @SerializedName("excerpt")
     private String text;
     @SerializedName("time_created")

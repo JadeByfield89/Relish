@@ -163,10 +163,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                page = 0;
-                total = Integer.MAX_VALUE;
-                adapter.clear();
-                loadData(false);
+                reloadData();
             }
         });
         swipeRefreshLayout.setColorSchemeResources(R.color.main_color);
@@ -267,6 +264,15 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
         initialRender();
     }
 
+    private void reloadData() {
+        renderHeader(null);
+        recyclerView.scrollToPosition(0);
+        page = 0;
+        total = Integer.MAX_VALUE;
+        adapter.clear();
+        loadData(false);
+    }
+
     private void initialRender() {
         if (GPSTracker.get.getLocation() == null) {
             showErrorText(getString(R.string.unable_get_places_gps));
@@ -284,7 +290,10 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
 //                    swipeRefreshLayout.setRefreshing(true);
 //                }
 //            });
-            loadData(false);
+            if (adapter.getItemCount() == 0)
+                reloadData();
+            else
+                placesProgress.setVisibility(View.GONE);
         }
     }
 

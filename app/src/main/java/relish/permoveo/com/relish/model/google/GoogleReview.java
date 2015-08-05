@@ -2,12 +2,14 @@ package relish.permoveo.com.relish.model.google;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import relish.permoveo.com.relish.model.Review;
 
 /**
  * Created by Roman on 03.08.15.
  */
-public class GoogleReview implements Review {
+public class GoogleReview implements Review, Serializable {
     @SerializedName("author_name")
     private String authorName;
     @SerializedName("author_url")
