@@ -14,7 +14,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -48,7 +47,6 @@ import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
 import relish.permoveo.com.relish.util.ConnectionUtil;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.DialogUtil;
-import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.view.RelishDrawerToggle;
 
@@ -157,12 +155,8 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         }
 
         navDrawer.selectItem(mCurrentSelectedPosition);
-        updateStatusBar(getResources().getColor(R.color.main_color_dark));
-
-
+        updateStatusBar(getResources().getColor(R.color.place_image_dim));
     }
-
-
 
 
     @Override

@@ -76,6 +76,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
     private int lastScrollY;
     private int mScrollThreshold;
     private int fabHeight;
+    private int fabShadowSize;
     private boolean wasAnimatedToBottom = false;
     private boolean wasAnimatedToTop = false;
     private int[] fabLocation, fakeFabLocation;
@@ -165,6 +166,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         parallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.featured_image_size);
         mScrollThreshold = getResources().getDimensionPixelOffset(R.dimen.fab_threshold);
         fabHeight = getResources().getDimensionPixelOffset(R.dimen.fab_size);
+        fabShadowSize = getResources().getDimensionPixelSize(R.dimen.fab_shadow_size);
 
         placeDetailsFab.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -211,7 +213,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 
         renderFavorite();
 
-        updateStatusBar(getResources().getColor(R.color.main_color_dark));
+        updateStatusBar(getResources().getColor(R.color.place_image_dim));
     }
 
     @OnClick({R.id.fake_fab_place_details, R.id.fab_place_details})
@@ -566,7 +568,8 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
                 //to bottom
                 if (!wasAnimatedToBottom) {
                     int y = fakeFabLocation[1] - fabHeight / 2
-                            - (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? (int) (placeDetailsFab.getElevation() / 2) : 0);
+                            - (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? (int) (placeDetailsFab.getElevation() / 2) : 0)
+                            + (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT ? getStatusBarHeight() : 0);
                     ViewPropertyAnimator.animate(placeDetailsFab).setInterpolator(new AccelerateDecelerateInterpolator())
                             .setDuration(300)
                             .setListener(new Animator.AnimatorListener() {
@@ -597,7 +600,9 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
                 //to top
                 if (!wasAnimatedToTop && alpha < 0.1f) {
                     int y = fabLocation[1] - fabHeight / 2 +
-                            (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? (int) (placeDetailsFab.getElevation() / 2) : 0);
+                            (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? (int) (placeDetailsFab.getElevation() / 2) : 0)
+                            + (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT ? getStatusBarHeight() : 0)
+                            + (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ? (int) (fabShadowSize / 2) : 0);
                     ViewPropertyAnimator.animate(placeDetailsFab).setInterpolator(new AccelerateDecelerateInterpolator())
                             .setDuration(300)
                             .setListener(new Animator.AnimatorListener() {
