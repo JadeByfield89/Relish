@@ -48,6 +48,7 @@ import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
 import relish.permoveo.com.relish.util.ConnectionUtil;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.DialogUtil;
+import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.view.RelishDrawerToggle;
 
@@ -157,6 +158,8 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
 
         navDrawer.selectItem(mCurrentSelectedPosition);
         updateStatusBar(getResources().getColor(R.color.main_color_dark));
+
+
     }
 
 

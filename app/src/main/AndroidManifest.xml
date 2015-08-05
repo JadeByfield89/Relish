@@ -57,6 +57,7 @@
 
         <activity
             android:name=".activities.PlaceDetailsActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_place_details" >
         </activity>
     </application>

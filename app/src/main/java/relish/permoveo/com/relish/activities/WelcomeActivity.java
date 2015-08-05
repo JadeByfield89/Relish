@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.WelcomePagerAdapter;
+import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
@@ -63,6 +64,10 @@ public class WelcomeActivity extends RelishActivity implements ViewPager.OnPageC
 
 
         updateStatusBar(getResources().getColor(R.color.main_color_dark));
+
+
+        SharedPrefsUtil sharedPrefsUtil = new SharedPrefsUtil(getApplicationContext());
+        sharedPrefsUtil.setAppLaunched();
 
 
     }
@@ -116,16 +121,17 @@ public class WelcomeActivity extends RelishActivity implements ViewPager.OnPageC
 
     @OnClick(R.id.textview_skip)
     public void skipPages() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);
         finish();
     }
 
     @OnClick(R.id.textview_ok)
     public void finishWalkthrough() {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);
         finish();
     }
+
 
 }

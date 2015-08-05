@@ -36,7 +36,6 @@ public class RelishDrawerToggle extends ActionBarDrawerToggle {
         super.onDrawerSlide(drawerView, slideOffset);
         mainView.setScaleX(1 - (slideOffset * 0.035f));
         mainView.setScaleY(1 - (slideOffset * 0.035f));
-        //BlurBuilder.blur(mainView, slideOffset);
 
     }
 

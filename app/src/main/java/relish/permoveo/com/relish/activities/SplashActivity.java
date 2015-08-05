@@ -14,6 +14,7 @@ import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.titanic.Titanic;
 import relish.permoveo.com.relish.titanic.TitanicTextView;
+import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 public class SplashActivity extends RelishActivity {
@@ -72,9 +73,21 @@ public class SplashActivity extends RelishActivity {
             public void run() {
                 if (isActivityOnScreen) {
                     if (ParseUser.getCurrentUser() == null) {
-                        startActivity(new Intent(SplashActivity.this, SignupActivity.class));
+
+                        SharedPrefsUtil util = new SharedPrefsUtil(SplashActivity.this);
+
+                        if (!util.hasLaunchedPrior()) {
+                            startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
+                        } else {
+                            startActivity(new Intent(SplashActivity.this, SignupActivity.class));
+                        }
+
                     } else {
-                        startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
+
+
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+
+
                     }
                     finish();
                 }
