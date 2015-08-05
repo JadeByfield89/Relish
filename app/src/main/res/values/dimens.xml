@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="featured_image_size">356dp</dimen>
-    <dimen name="fab_top_margin">324dp</dimen>
+    <dimen name="fab_top_margin">328dp</dimen>
     <dimen name="fab_size">64dp</dimen>
     <dimen name="fab_threshold">2dp</dimen>
     <dimen name="places_grid_spacing">2dp</dimen>
