@@ -85,7 +85,7 @@ public class SplashActivity extends RelishActivity {
                     } else {
 
 
-                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
 
 
                     }
