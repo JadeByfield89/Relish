@@ -1,5 +1,7 @@
 package relish.permoveo.com.relish.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
@@ -27,6 +31,10 @@ import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -51,6 +59,7 @@ import relish.permoveo.com.relish.model.Review;
 import relish.permoveo.com.relish.model.google.GooglePlace;
 import relish.permoveo.com.relish.model.google.GoogleReview;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
+import relish.permoveo.com.relish.model.yelp.YelpReview;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.util.TypefaceUtil;
@@ -116,6 +125,12 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 
     @Bind(R.id.place_details_reviews)
     LinearLayout placeDetailsReviews;
+
+    @Bind(R.id.place_like)
+    ImageView placeLike;
+
+    @Bind(R.id.yelp_logo)
+    ImageView yelpLogo;
 
     private class PlaceDetailsCallback extends IRequestableDefaultImpl {
 
@@ -194,12 +209,86 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
             toolbar.requestLayout();
         }
 
+        renderFavorite();
+
         updateStatusBar(getResources().getColor(R.color.main_color_dark));
     }
 
     @OnClick({R.id.fake_fab_place_details, R.id.fab_place_details})
     public void fabClicked() {
 
+    }
+
+    @OnClick(R.id.yelp_logo)
+    public void yelpLogoClicked() {
+        openWebView();
+    }
+
+    private void renderFavorite() {
+        ParseUser.getCurrentUser().fetchInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                final ParseUser user = (ParseUser) parseObject;
+                ArrayList<String> favorites = (ArrayList<String>) user.get("favoritePlaces");
+                if (favorites == null)
+                    favorites = new ArrayList<>();
+                boolean isFavorite = false;
+                for (String id : favorites) {
+                    if (passedPlace.id.equals(id)) {
+                        isFavorite = true;
+                    }
+                }
+
+                if (isFavorite) {
+                    placeLike.setImageResource(R.drawable.ic_favorite_selected);
+                } else {
+                    placeLike.setImageResource(R.drawable.ic_favorite);
+                }
+                placeLike.setTag(isFavorite);
+
+                placeLike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        YoYo.with(Techniques.BounceIn)
+                                .duration(500)
+                                .withListener(new Animator.AnimatorListener() {
+                                    @Override
+                                    public void onAnimationStart(Animator animation) {
+                                        ArrayList<String> favorites = (ArrayList<String>) user.get("favoritePlaces");
+                                        if (favorites == null)
+                                            favorites = new ArrayList<>();
+                                        if ((Boolean) placeLike.getTag()) {
+                                            favorites.remove(passedPlace.id);
+                                            placeLike.setImageResource(R.drawable.ic_favorite);
+                                        } else {
+                                            favorites.add(passedPlace.id);
+                                            placeLike.setImageResource(R.drawable.ic_favorite_selected);
+                                        }
+                                        placeLike.setTag(!(Boolean) placeLike.getTag());
+                                        user.put("favoritePlaces", favorites);
+                                        user.saveEventually();
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationCancel(Animator animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animator animation) {
+
+                                    }
+                                })
+                                .playOn(placeLike);
+                    }
+                });
+            }
+        });
     }
 
     private void renderPlaceDetails() {
@@ -286,12 +375,14 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         }
     }
 
-    private void addReview(Review review) {
+    private void addReview(final Review review) {
         View reviewView = getLayoutInflater().inflate(R.layout.review_list_item, null);
         TextView reviewName = (TextView) reviewView.findViewById(R.id.review_name);
         TextView reviewText = (TextView) reviewView.findViewById(R.id.review_text);
         TextView reviewDate = (TextView) reviewView.findViewById(R.id.review_date);
         ImageView reviewImage = (ImageView) reviewView.findViewById(R.id.review_image);
+        ImageView yelpReviewRating = (ImageView) reviewView.findViewById(R.id.review_rating_yelp);
+        TextView readMore = (TextView) reviewView.findViewById(R.id.review_more);
         RatingView reviewRating = (RatingView) reviewView.findViewById(R.id.review_rating);
 
         reviewImageMap.put(review.getAuthorName(), reviewImage);
@@ -329,14 +420,44 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         reviewName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
         reviewName.setIncludeFontPadding(false);
 
-        if (review.getRating() == 0.0f) {
+        if (review instanceof YelpReview) {
+            readMore.setVisibility(View.VISIBLE);
             reviewRating.setVisibility(View.GONE);
+
+            if (review.getRating() == 0.0f) {
+                yelpReviewRating.setVisibility(View.GONE);
+            } else {
+                yelpReviewRating.setVisibility(View.VISIBLE);
+                Picasso.with(this)
+                        .load(review.getRatingImage())
+                        .into(yelpReviewRating);
+            }
+
+            readMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openWebView();
+                }
+            });
         } else {
-            reviewRating.setVisibility(View.VISIBLE);
-            reviewRating.setRating(review.getRating());
+            readMore.setVisibility(View.GONE);
+            yelpReviewRating.setVisibility(View.GONE);
+
+            if (review.getRating() == 0.0f) {
+                reviewRating.setVisibility(View.GONE);
+            } else {
+                reviewRating.setVisibility(View.VISIBLE);
+                reviewRating.setRating(review.getRating());
+            }
         }
 
         placeDetailsReviews.addView(reviewView);
+    }
+
+    private void openWebView() {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(passedPlace.url));
+        startActivity(i);
     }
 
 

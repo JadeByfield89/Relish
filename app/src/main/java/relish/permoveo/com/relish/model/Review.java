@@ -21,4 +21,6 @@ public interface Review {
     void setAuthorName(String name);
 
     String getAuthorUrl();
+
+    String getRatingImage();
 }
