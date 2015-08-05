@@ -1,5 +1,7 @@
 package relish.permoveo.com.relish.network.request.yelp;
 
+import android.util.Log;
+
 import com.google.gson.GsonBuilder;
 
 import org.scribe.exceptions.OAuthConnectionException;
@@ -44,6 +46,8 @@ public class SearchRequest extends RelishRequest<Integer, Void, PlacesResponse> 
         try {
             Response response = request.send();
             String json = response.getBody();
+            Log.d("Response: ",  json);
+
             placesResponse = gson.fromJson(json, PlacesResponse.class);
         } catch (OAuthConnectionException e) {
             e.printStackTrace();

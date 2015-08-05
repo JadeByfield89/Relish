@@ -30,7 +30,7 @@
                 android:clickable="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="?attr/actionBarSize"
-                android:layout_marginRight="32dp"
+                android:layout_marginRight="24dp"
                 android:layout_alignParentTop="true"
                 android:src="@drawable/ic_favorite"/>
 
@@ -127,7 +127,7 @@
                     android:textColor="@android:color/black"
                     android:layout_marginBottom="8dp"
                     android:text="@string/reviews_title"
-                    android:textSize="20sp" />
+                    android:textSize="17sp" />
 
                 <View
                     android:layout_width="match_parent"
