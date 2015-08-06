@@ -213,7 +213,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 
         renderFavorite();
 
-        updateStatusBar(getResources().getColor(R.color.place_image_dim));
+        updateStatusBar(getResources().getColor(R.color.main_color_dark));
     }
 
     @OnClick({R.id.fake_fab_place_details, R.id.fab_place_details})

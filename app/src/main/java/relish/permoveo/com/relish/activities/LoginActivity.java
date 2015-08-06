@@ -3,6 +3,7 @@ package relish.permoveo.com.relish.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -109,6 +110,8 @@ public class LoginActivity extends RelishActivity {
 
             final String username = usernameEt.getText().toString();
             final String password = passwordEt.getText().toString();
+            Log.d("Username: " , username);
+            Log.d("Password: ", password);
 
             ParseUser.logInInBackground(username, password, new LogInCallback() {
                 @Override
@@ -119,7 +122,8 @@ public class LoginActivity extends RelishActivity {
                         setResult(RESULT_OK);
                         finish();
                     } else {
-                        Toast.makeText(LoginActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        Log.d("Parse Error Code: ", ""+e.getCode());
+                        Toast.makeText(LoginActivity.this, e.getLocalizedMessage() + e.getCode(), Toast.LENGTH_LONG).show();
                     }
                 }
             });
