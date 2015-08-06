@@ -36,8 +36,8 @@ public class RelishDrawerToggle extends BlurActionBarDrawerToggle {
     public void onDrawerSlide(View drawerView, float slideOffset)
     {
         super.onDrawerSlide(drawerView, slideOffset);
-        mainView.setScaleX(1 - (slideOffset * 0.035f));
-        mainView.setScaleY(1 - (slideOffset * 0.035f));
+        mainView.setScaleX(1 - (slideOffset * 0.045f));
+        mainView.setScaleY(1 - (slideOffset * 0.045f));
 
     }
 

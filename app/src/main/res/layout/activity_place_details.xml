@@ -127,7 +127,7 @@
                     android:textColor="@android:color/black"
                     android:layout_marginBottom="8dp"
                     android:text="@string/reviews_title"
-                    android:textSize="17sp" />
+                    android:textSize="20sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -183,6 +183,8 @@
         app:matProg_progressIndeterminate="true"
         android:layout_centerInParent="true" />
 
+
+
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab_place_details"
         android:layout_width="@dimen/fab_size"
@@ -195,6 +197,7 @@
         app:fab_colorNormal="@color/main_color"
         app:fab_colorPressed="@color/main_color_dark"
         app:fab_shadow="true" />
+
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fake_fab_place_details"
