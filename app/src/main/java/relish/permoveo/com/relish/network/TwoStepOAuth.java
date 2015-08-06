@@ -20,4 +20,18 @@ public class TwoStepOAuth extends DefaultApi10a {
         return null;
     }
 
+//    @Override
+//    public TimestampService getTimestampService() {
+//        return new TimestampService() {
+//            @Override
+//            public String getTimestampInSeconds() {
+//                return String.valueOf(new DateTime().getMillis() / 1000);
+//            }
+//
+//            @Override
+//            public String getNonce() {
+//                return UUID.randomUUID().toString();
+//            }
+//        };
+//    }
 }

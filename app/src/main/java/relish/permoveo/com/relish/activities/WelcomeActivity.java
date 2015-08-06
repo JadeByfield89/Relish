@@ -15,7 +15,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.WelcomePagerAdapter;
-import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
@@ -57,8 +56,8 @@ public class WelcomeActivity extends RelishActivity implements ViewPager.OnPageC
 
         pagerAdapter = new WelcomePagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
-        pagerIndicator.setViewPager(viewPager, 0);
         pagerIndicator.setOnPageChangeListener(this);
+        pagerIndicator.setViewPager(viewPager, 0);
 
         skipText.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:gravity="center"
     android:background="@color/main_color"
     android:layout_height="match_parent">
 
@@ -9,18 +10,19 @@
     <ImageView
         android:id="@+id/image_welcome"
         android:background="@drawable/welcome_1"
-        android:layout_marginTop="35dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/featured_image_size" />
+        android:layout_height="wrap_content" />
 
 
     <TextView
         android:id="@+id/text_header"
         android:textColor="#fff"
-        android:textSize="24sp"
-        android:layout_gravity="center_horizontal"
+        android:textSize="22sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
+        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -28,11 +30,12 @@
         android:id="@+id/text_sub"
         android:textColor="#fff"
         android:textSize="16sp"
-        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
 
 
 </LinearLayout>

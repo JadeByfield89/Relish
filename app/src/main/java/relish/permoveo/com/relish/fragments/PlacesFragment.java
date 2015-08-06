@@ -175,44 +175,46 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
         if (restaurant == null) {
             headerDetailsFrame.setVisibility(View.GONE);
         } else {
-            headerDetailsFrame.setVisibility(View.VISIBLE);
+            if (isAdded()) {
+                headerDetailsFrame.setVisibility(View.VISIBLE);
 
-            if (TextUtils.isEmpty(restaurant.image)) {
-                headerImage.setBackgroundColor(getResources().getColor(R.color.photo_placeholder));
+                if (TextUtils.isEmpty(restaurant.image)) {
+                    headerImage.setBackgroundColor(getResources().getColor(R.color.photo_placeholder));
 //            placesHeaderProgress.setVisibility(View.GONE);
-            } else {
-                Picasso.with(getActivity())
-                        .load(restaurant.getOriginalImage())
-                        .into(headerImage, new Callback() {
-                            @Override
-                            public void onSuccess() {
+                } else {
+                    Picasso.with(getActivity())
+                            .load(restaurant.getOriginalImage())
+                            .into(headerImage, new Callback() {
+                                @Override
+                                public void onSuccess() {
 //                            placesHeaderProgress.setVisibility(View.GONE);
-                            }
+                                }
 
-                            @Override
-                            public void onError() {
+                                @Override
+                                public void onError() {
 //                            placesHeaderProgress.setVisibility(View.GONE);
-                                headerImage.setBackgroundColor(getResources().getColor(R.color.photo_placeholder));
-                            }
-                        });
-            }
+                                    headerImage.setBackgroundColor(getResources().getColor(R.color.photo_placeholder));
+                                }
+                            });
+                }
 
-            headerPlaceName.setText(restaurant.name);
-            headerPlaceName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
-            headerPlaceName.setIncludeFontPadding(false);
+                headerPlaceName.setText(restaurant.name);
+                headerPlaceName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+                headerPlaceName.setIncludeFontPadding(false);
 
-            int quantity = (int) Math.floor(restaurant.getCalculatedDistance());
-            headerPlaceDistance.setText(restaurant.formatDistance() +
-                    " " +
-                    getResources().getQuantityString(R.plurals.miles, quantity, restaurant.getCalculatedDistance()));
-            headerPlaceDistance.setTypeface(TypefaceUtil.PROXIMA_NOVA);
-            headerPlaceDistance.setIncludeFontPadding(false);
+                int quantity = (int) Math.floor(restaurant.getCalculatedDistance());
+                headerPlaceDistance.setText(restaurant.formatDistance() +
+                        " " +
+                        getResources().getQuantityString(R.plurals.miles, quantity, restaurant.getCalculatedDistance()));
+                headerPlaceDistance.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+                headerPlaceDistance.setIncludeFontPadding(false);
 
-            headerRating.setRating(restaurant.rating);
+                headerRating.setRating(restaurant.rating);
 
 //        headerPlaceCost.setText(place.getPriceLevel());
 //        headerPlaceCost.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 //        headerPlaceCost.setIncludeFontPadding(false);
+            }
         }
     }
 
