@@ -33,8 +33,8 @@
     <string name="close_drawer">Close the menu</string>
 
     <string name="detecting_location">Detecting your location…</string>
-    <string name="gps_disabled_message">We need your GPS location to be able working with service. Would you go to the settings?</string>
-    <string name="internet_disabled_message">We need your Internet connection turned on to be able working with service.</string>
+    <string name="gps_disabled_message">Relish needs your location in order to show you nearby places to eat, please go to Settings and turn your location on.</string>
+    <string name="internet_disabled_message">A connection to the internet is required to use Relish. Please try again later after establishing an internet connection</string>
 
     <string name="unable_get_places_gps">Could not load places, GPS must be turned on</string>
     <string name="unable_get_places_internet">Could not load places, no internet connection</string>
@@ -43,6 +43,8 @@
     <string name="no_place_details">We don\'t have information about this place</string>
     <string name="reviews_title">Recent Reviews</string>
     <string name="read_more">READ MORE</string>
+    <string name="no_gps">No GPS Signal Detected</string>
+    <string name="no_internet">No Internet Connection Detected</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

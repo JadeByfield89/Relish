@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#80000000">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/loader_background"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/main_color"/>
+
+        <TextView
+            android:id="@+id/dialog_message"
+            android:padding="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#747474"
+            android:textSize="16sp"/>
+
+
+        <TextView
+            android:id="@+id/neutral_button"
+            android:layout_width="match_parent"
+            android:textColor="#939a9c"
+            android:clickable="true"
+            android:paddingTop="16dp"
+            android:text="OK"
+            android:gravity="center"
+            android:paddingBottom="16dp"
+            android:background="@drawable/dialog_button_neutral"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

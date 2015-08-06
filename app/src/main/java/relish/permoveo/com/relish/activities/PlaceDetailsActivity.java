@@ -40,6 +40,8 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
+import org.joda.time.Interval;
+import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -401,13 +403,20 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         }
 
         DateTime reviewDateTime = new DateTime().withMillis(review.getTime() * 1000);
-
+        DateTime now = new DateTime();
+        Interval interval =
+                new Interval(reviewDateTime, now);
+        Period period = interval.toPeriod();
         String formattedTime = null;
-        if (reviewDateTime.isEqualNow())
+
+        if (period.getYears() != 0) {
+            formattedTime = period.getYears() + " " + getResources().getQuantityString(R.plurals.years, period.getYears());
+        } else if (period.getMonths() != 0) {
+            formattedTime = period.getMonths() + " " + getResources().getQuantityString(R.plurals.months, period.getMonths());
+        } else if (period.getDays() != 0) {
+            formattedTime = period.getDays() + " " + getResources().getQuantityString(R.plurals.days, period.getDays());
+        } else {
             formattedTime = "Today";
-        else {
-            DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
-            formattedTime = formatter.print(reviewDateTime);
         }
 
         reviewDate.setText(formattedTime);

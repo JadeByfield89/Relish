@@ -11,6 +11,7 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
+import android.widget.TextView;
 
 import relish.permoveo.com.relish.R;
 
@@ -80,60 +81,63 @@ public class DialogUtil {
         showConfirmDialog(activity, title, message, "Yes", "No", onYesClickListener, onNoClickListener);
     }
 
-    public static Dialog showErrorDialog(final Activity activity, String message) {
-        return showErrorDialog(activity, message, null);
-    }
-
-    public static Dialog showErrorDialog(final Activity activity, String message, DialogInterface.OnClickListener onClickListener) {
-        return showErrorDialog(activity, "Warning!", message, onClickListener);
-    }
-
-    public static Dialog showErrorDialog(final Activity activity, String title, String message, String button, DialogInterface.OnClickListener onClickListener) {
-        ContextThemeWrapper themedContext;
-        themedContext = new ContextThemeWrapper(activity, R.style.RelishDialog);
-        AlertDialog.Builder d = new AlertDialog.Builder(themedContext);
+    public static Dialog showErrorDialog(final Activity activity, String title, String message, View.OnClickListener onClickListener) {
+        AlertDialog.Builder d = new AlertDialog.Builder(activity);
         d.setCancelable(false);
-        d.setTitle(title);
-        d.setMessage(message);
-        if (onClickListener == null) {
-            d.setNeutralButton(button, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-        } else {
-            d.setNeutralButton(button, onClickListener);
-        }
-        return d.show();
+        final Dialog dialog = d.create();
+        dialog.show();
+        dialog.setContentView(R.layout.dialog_error);
+
+        TextView titleText = (TextView) dialog.findViewById(R.id.dialog_title);
+        TextView messageText = (TextView) dialog.findViewById(R.id.dialog_message);
+        TextView neutralBtn = (TextView) dialog.findViewById(R.id.neutral_button);
+        titleText.setText(title);
+        titleText.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+        titleText.setIncludeFontPadding(false);
+
+        messageText.setText(message);
+        messageText.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        messageText.setIncludeFontPadding(false);
+
+        neutralBtn.setOnClickListener(onClickListener);
+        return dialog;
     }
 
-    public static Dialog showErrorDialog(final Activity activity, String title, String message, DialogInterface.OnClickListener onClickListener) {
-        return showErrorDialog(activity, title, message, "Ok", onClickListener);
-    }
 
-    public static Dialog showSettingsDialog(final Activity activity, String message) {
-        ContextThemeWrapper themedContext;
-        themedContext = new ContextThemeWrapper(activity, R.style.RelishDialog);
-        AlertDialog.Builder d = new AlertDialog.Builder(themedContext);
+    public static Dialog showSettingsDialog(final Activity activity, String title, String message) {
+        AlertDialog.Builder d = new AlertDialog.Builder(activity);
+        d.setCancelable(false);
+        final Dialog dialog = d.create();
+        dialog.show();
+        dialog.setContentView(R.layout.dialog_confirm);
 
-        d.setTitle("Warning!")
-                .setCancelable(true)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent viewIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        activity.startActivity(viewIntent);
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        return d.show();
+        TextView titleText = (TextView) dialog.findViewById(R.id.dialog_title);
+        TextView messageText = (TextView) dialog.findViewById(R.id.dialog_message);
+        TextView cancelBtn = (TextView) dialog.findViewById(R.id.right_button);
+        TextView confirmBtn = (TextView) dialog.findViewById(R.id.left_button);
+        titleText.setText(title);
+        titleText.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+        titleText.setIncludeFontPadding(false);
+
+        messageText.setText(message);
+        messageText.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        messageText.setIncludeFontPadding(false);
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent viewIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                activity.startActivity(viewIntent);
+            }
+        });
+        return dialog;
     }
 
     public static void showInputDialog(final Activity activity, String title, String message, View label, DialogInterface.OnClickListener listener) {

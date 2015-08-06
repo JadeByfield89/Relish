@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <plurals name="miles">
-        <item quantity="one">mile away</item>
-        <item quantity="other">miles away</item>
-    </plurals>
-</resources>

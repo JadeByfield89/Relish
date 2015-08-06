@@ -3,7 +3,6 @@ package relish.permoveo.com.relish.activities;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -165,14 +164,14 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
     protected void onResume() {
         super.onResume();
         if (!ConnectionUtil.isInternetAvailable(this)) {
-            d = DialogUtil.showErrorDialog(this, getString(R.string.internet_disabled_message), new DialogInterface.OnClickListener() {
+            d = DialogUtil.showErrorDialog(this, getString(R.string.no_internet), getString(R.string.internet_disabled_message), new View.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+                public void onClick(View v) {
+                    d.dismiss();
                 }
             });
         } else if (!GPSTracker.get.isGpsEnabled()) {
-            d = DialogUtil.showSettingsDialog(this, getString(R.string.gps_disabled_message));
+            d = DialogUtil.showSettingsDialog(this, getString(R.string.no_gps), getString(R.string.gps_disabled_message));
         } else if (GPSTracker.get.getLocation() == null || GPSTracker.get.getLocation().getLatitude() == 0 || GPSTracker.get.getLocation().getLongitude() == 0) {
             LocalBroadcastManager.getInstance(this).registerReceiver(locationReceiver, new IntentFilter(ConstantUtil.ACTION_GET_LOCATION));
             showLoader(getString(R.string.detecting_location));
