@@ -40,9 +40,8 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
-import org.joda.time.Period;
-import org.joda.time.format.PeriodFormatter;
-import org.joda.time.format.PeriodFormatterBuilder;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -209,11 +208,13 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             toolbar.setPadding(toolbar.getPaddingLeft(), getStatusBarHeight(), toolbar.getPaddingRight(), toolbar.getPaddingBottom());
             toolbar.requestLayout();
+            updateStatusBar(getResources().getColor(R.color.place_image_dim));
+        } else {
+            updateStatusBar(getResources().getColor(R.color.main_color_dark));
         }
 
         renderFavorite();
 
-        updateStatusBar(getResources().getColor(R.color.place_image_dim));
     }
 
     @OnClick({R.id.fake_fab_place_details, R.id.fab_place_details})
@@ -400,19 +401,14 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         }
 
         DateTime reviewDateTime = new DateTime().withMillis(review.getTime() * 1000);
-        DateTime now = new DateTime();
-        Period period = new Period(reviewDateTime, now);
 
-        int quantity = period.getDays();
-        PeriodFormatter formatter = new PeriodFormatterBuilder()
-                .appendDays().appendSuffix(" " + getResources().getQuantityString(R.plurals.days, quantity))
-                .printZeroNever()
-                .toFormatter();
-
-        String formattedTime = formatter.print(period);
-
-        if (TextUtils.isEmpty(formattedTime))
+        String formattedTime = null;
+        if (reviewDateTime.isEqualNow())
             formattedTime = "Today";
+        else {
+            DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
+            formattedTime = formatter.print(reviewDateTime);
+        }
 
         reviewDate.setText(formattedTime);
         reviewDate.setTypeface(TypefaceUtil.PROXIMA_NOVA);

@@ -3,12 +3,10 @@ package relish.permoveo.com.relish.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -26,7 +24,6 @@ public class WelcomeFragment extends Fragment {
 
     @Bind(R.id.text_header)
     TextView headerText;
-
 
     @Bind(R.id.text_sub)
     TextView subText;
@@ -71,8 +68,7 @@ public class WelcomeFragment extends Fragment {
         headerText.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
         subText.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
-        switch(pagePosition){
-
+        switch (pagePosition) {
             case 0:
                 headerText.setText(R.string.welcome_1_header);
                 subText.setText(R.string.welcome_1_sub);
@@ -90,18 +86,12 @@ public class WelcomeFragment extends Fragment {
                 subText.setText(R.string.welcome_4_sub);
                 // If this is the last page of the welcome viewpager
                 // We need to move the notification imageview down a bit
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-                params.topMargin = 500;
-                imageView.setLayoutParams(params);
+//                params.topMargin = 500;
+//                imageView.setLayoutParams(params);
                 break;
-
-
         }
-
-
-
-
         return v;
     }
 

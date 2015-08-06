@@ -54,21 +54,21 @@
 
     <!-- Welcome Screen 1 -->
     <string name="welcome_1_header">Find your favorite places to eat</string>
-    <string name="welcome_1_sub">\t\t\tPick from nearby places, or search &amp;\n discover new places to get your grub on</string>
+    <string name="welcome_1_sub">Pick from nearby places, or search &amp;\n discover new places to get your grub on</string>
 
 
     <!-- Welcome Screen 2 -->
     <string name="welcome_2_header">Invite Friends</string>
-    <string name="welcome_2_sub">\t\t\tGood food is always better with company.\n Organize your friends, and invite them to eat!</string>
+    <string name="welcome_2_sub">Good food is always better with company.\n Organize your friends, and invite them to eat!</string>
 
     <!-- Welcome Screen 3 -->
     <string name="welcome_3_header">Don\'t skimp on the details</string>
-    <string name="welcome_3_sub">Add details and set a reminder, so your\n \t\t\t\t\t\t\t\tfriends don\'t hate you</string>
+    <string name="welcome_3_sub">Add details and set a reminder, so your\n friends don\'t hate you</string>
 
 
     <!-- Welcome Screen 4 -->
     <string name="welcome_4_header">Push Notifications</string>
-    <string name="welcome_4_sub">Everyone invited gets a notification, and\n \t\t\t\tcan accept or decline your invite\n\n\t\t\t\t\t\t\t\t hopefully they accept! :) </string>
+    <string name="welcome_4_sub">Everyone invited gets a notification, and\n can accept or decline your invite hopefully they accept! :) </string>
     <string name="title_activity_place_details">PlaceDetailsActivity</string>
 
      <string name="lipsum">Lorem ipsum dolor sit amet, ut duis lorem provident sed felis blandit, condimentum donec lectus ipsum et mauris, morbi porttitor interdum feugiat nulla donec sodales, vestibulum nisl primis a molestie vestibulum quam, sapien mauris metus risus suspendisse magnis. Augue viverra nulla faucibus egestas eu, a etiam id congue rutrum ante, arcu tincidunt donec quam felis at ornare, iaculis ligula sodales venenatis commodo volutpat neque, suspendisse elit praesent tellus felis mi amet. Inceptos amet tempor lectus lorem est non, ac donec ac libero neque mauris, tellus ante metus eget leo consequat. Scelerisque dolor curabitur pretium blandit ut feugiat, amet lacus pulvinar justo convallis ut, sed natoque ipsum urna posuere nibh eu. Sed at sed vulputate sit orci, facilisis a aliquam tellus quam aliquam, eu aliquam donec at molestie ante, pellentesque mauris lorem ultrices libero faucibus porta, imperdiet adipiscing sit hac diam ut nulla. Lacus enim elit pulvinar donec vehicula dapibus, accumsan purus officia cursus dolor sapien, eu amet dis mauris mi nulla ut. Non accusamus etiam pede non urna tempus, vestibulum aliquam tortor eget pharetra sodales, in vestibulum ut justo orci nulla, lobortis purus sem semper consectetuer magni purus. Dolor a leo vestibulum amet ut sit, arcu ut eaque urna fusce aliquet turpis, sed fermentum sed vestibulum nisl pede, tristique enim lorem posuere in laborum ut. Vestibulum id id justo leo nulla, magna lobortis ullamcorper et dignissim pellentesque, duis suspendisse quis id lorem ante. Vivamus a nullam ante adipiscing amet, mi vel consectetuer nunc aenean pede quisque, eget rhoncus dis porttitor habitant nunc vivamus, duis cubilia blandit non donec justo dictumst, praesent vitae nulla nam pulvinar urna. Adipiscing adipiscing justo urna pulvinar imperdiet nullam, vitae fusce rhoncus proin nonummy suscipit, ullamcorper amet et non potenti platea ultrices, mauris nullam sapien nunc justo vel, eu semper pellentesque arcu fusce augue. Malesuada mauris nibh sit a a scelerisque, velit sem lectus tellus convallis consectetuer, ultricies auctor a ante eros amet sed.\n\n

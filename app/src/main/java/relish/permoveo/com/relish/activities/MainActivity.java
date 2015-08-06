@@ -135,7 +135,6 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
                 super.onDrawerClosed(drawerView);
                 drawerOpen = false;
                 invalidateOptionsMenu();
-
             }
 
             @Override
@@ -152,6 +151,9 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             toolbar.setPadding(toolbar.getPaddingLeft(), getStatusBarHeight(), toolbar.getPaddingRight(), toolbar.getPaddingBottom());
             toolbar.requestLayout();
+            updateStatusBar(getResources().getColor(R.color.place_image_dim));
+        } else {
+            updateStatusBar(getResources().getColor(R.color.main_color_dark));
         }
 
         navDrawer.selectItem(mCurrentSelectedPosition);
