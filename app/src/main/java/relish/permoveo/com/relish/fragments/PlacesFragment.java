@@ -163,7 +163,15 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                reloadData();
+                if (GPSTracker.get.getLocation() == null) {
+                    showErrorText(getString(R.string.unable_get_places_gps));
+                    swipeRefreshLayout.setRefreshing(false);
+                } else if (!ConnectionUtil.isInternetAvailable(getActivity())) {
+                    showErrorText(getString(R.string.unable_get_places_internet));
+                    swipeRefreshLayout.setRefreshing(false);
+                } else {
+                    reloadData();
+                }
             }
         });
         swipeRefreshLayout.setColorSchemeResources(R.color.main_color);
