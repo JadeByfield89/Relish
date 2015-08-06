@@ -144,6 +144,9 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
                 invalidateOptionsMenu();
             }
         };
+
+        drawerToggle.setRadius(15);
+        drawerToggle.setDownScaleFactor(6.0f);
         drawerToggle.setMainView(contentFrame);
         drawerLayout.setDrawerListener(drawerToggle);
         drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.main_color_dark));
