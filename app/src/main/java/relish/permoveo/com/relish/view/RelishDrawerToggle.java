@@ -7,13 +7,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.charbgr.BlurNavigationDrawer.v7.BlurActionBarDrawerToggle;
+
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.util.BlurBuilder;
 
 /**
  * Created by byfieldj on 8/4/15.
  */
-public class RelishDrawerToggle extends ActionBarDrawerToggle {
+public class RelishDrawerToggle extends BlurActionBarDrawerToggle {
 
     private View mainView;
 

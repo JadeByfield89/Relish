@@ -28,10 +28,5 @@ public class RelishApplication extends Application {
         API.init(this);
         JodaTimeAndroid.init(this);
 
-        SharedPrefsUtil sharedPrefsUtil = new SharedPrefsUtil(getApplicationContext());
-        if(!sharedPrefsUtil.hasLaunchedPrior()) {
-            sharedPrefsUtil.setAppLaunched();
-        }
-
     }
 }

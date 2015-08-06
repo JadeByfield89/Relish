@@ -19,7 +19,7 @@ import relish.permoveo.com.relish.util.TypefaceUtil;
 
 public class SplashActivity extends RelishActivity {
 
-    private static final int SPLASH_DELAY = 100;
+    private static final int SPLASH_DELAY = 6000;
     private MediaPlayer mediaPlayer;
     private boolean isActivityOnScreen;
 
@@ -78,6 +78,7 @@ public class SplashActivity extends RelishActivity {
 
                         if (!util.hasLaunchedPrior()) {
                             startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
+                            util.setAppLaunched();
                         } else {
                             startActivity(new Intent(SplashActivity.this, SignupActivity.class));
                         }
