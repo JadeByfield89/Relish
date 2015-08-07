@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="#80000000">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/loader_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/loader_background"
         android:orientation="vertical">
 
         <TextView
@@ -19,12 +18,12 @@
             android:paddingBottom="16dp"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@color/main_color"/>
+            android:background="@color/main_color" />
 
         <TextView
             android:id="@+id/dialog_message"
@@ -32,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textColor="#747474"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
 
         <TextView
@@ -42,11 +41,12 @@
             android:clickable="true"
             android:paddingTop="16dp"
             android:text="OK"
+            android:textStyle="bold"
             android:gravity="center"
             android:paddingBottom="16dp"
             android:background="@drawable/dialog_button_neutral"
             android:textSize="16sp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
 
     </LinearLayout>

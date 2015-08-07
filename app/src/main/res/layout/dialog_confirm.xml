@@ -3,12 +3,11 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#80000000">
+    android:background="@drawable/loader_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/loader_background"
         android:orientation="vertical">
 
         <TextView
@@ -43,12 +42,13 @@
                 android:id="@+id/left_button"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:textColor="@android:color/white"
+                android:textColor="#939a9c"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
                 android:textSize="16sp"
                 android:clickable="true"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:text="Go to Settings"
                 android:background="@drawable/dialog_button_left"
                 android:layout_height="wrap_content" />
@@ -61,6 +61,7 @@
                 android:clickable="true"
                 android:paddingTop="16dp"
                 android:text="Cancel"
+                android:textStyle="bold"
                 android:gravity="center"
                 android:paddingBottom="16dp"
                 android:background="@drawable/dialog_button_right"

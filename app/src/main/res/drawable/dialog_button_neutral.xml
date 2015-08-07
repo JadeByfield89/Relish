@@ -2,15 +2,15 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <corners android:bottomLeftRadius="7dp" android:bottomRightRadius="7dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />
-            <solid android:color="@color/neutral_button_pressed" />
+            <corners android:bottomLeftRadius="12dp" android:bottomRightRadius="12dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />
+            <solid android:color="@color/main_color" />
         </shape>
     </item>
 
-    <item>
+    <item android:state_pressed="false">
         <shape android:shape="rectangle">
-            <corners android:bottomLeftRadius="7dp" android:bottomRightRadius="7dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />
-            <solid android:color="@color/neutral_button" />
+            <corners android:bottomLeftRadius="12dp" android:bottomRightRadius="12dp" android:topLeftRadius="0dp" android:topRightRadius="0dp" />
+            <solid android:color="@color/neutral_button_pressed" />
         </shape>
     </item>
 
