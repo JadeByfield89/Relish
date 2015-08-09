@@ -127,7 +127,7 @@
                     android:textColor="@android:color/black"
                     android:layout_marginBottom="8dp"
                     android:text="@string/reviews_title"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <View
                     android:layout_width="match_parent"

@@ -159,7 +159,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         }
 
         navDrawer.selectItem(mCurrentSelectedPosition);
-        updateStatusBar(getResources().getColor(R.color.place_image_dim));
+        updateStatusBar(getResources().getColor(R.color.main_color_dark));
     }
 
 
