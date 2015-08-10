@@ -12,6 +12,9 @@ import android.os.Message;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
+
 import relish.permoveo.com.relish.util.ConstantUtil;
 
 public enum GPSTracker implements LocationListener {
@@ -117,9 +120,9 @@ public enum GPSTracker implements LocationListener {
             @Override
             public void run() {
                 if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER))
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15000, 15, GPSTracker.this);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 25000, 25, GPSTracker.this);
                 if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER))
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 15000, 15, GPSTracker.this);
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 25000, 25, GPSTracker.this);
                 try {
                     switch (getProvider()) {
                         case NONE:
@@ -201,6 +204,8 @@ public enum GPSTracker implements LocationListener {
     public void onLocationChanged(Location location) {
         if (isBetterLocation(location, this.location)) {
             this.location = location;
+            ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
+            ParseUser.getCurrentUser().saveInBackground();
             LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(ConstantUtil.ACTION_GET_LOCATION));
         }
     }

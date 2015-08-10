@@ -20,4 +20,5 @@
     <color name="transparent">#00000000</color>
     <color name="neutral_button">#e1e5e7</color>
     <color name="neutral_button_pressed">#B7C3C9</color>
+    <color name="empty_color">#939a9c</color>
 </resources>
