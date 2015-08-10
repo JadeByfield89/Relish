@@ -2,6 +2,7 @@ package relish.permoveo.com.relish.activities;
 
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -39,6 +40,16 @@ public class RelishActivity extends AppCompatActivity {
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    protected void updateToolbar(Toolbar toolbar) {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+            toolbar.setPadding(toolbar.getPaddingLeft(), getStatusBarHeight(), toolbar.getPaddingRight(), toolbar.getPaddingBottom());
+            toolbar.requestLayout();
+            updateStatusBar(getResources().getColor(R.color.place_image_dim));
+        } else {
+            updateStatusBar(getResources().getColor(R.color.main_color_dark));
+        }
     }
 
     protected void updateStatusBar(int color) {

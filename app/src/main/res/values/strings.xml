@@ -46,7 +46,7 @@
     <string name="no_gps">No GPS Signal Detected</string>
     <string name="no_internet">No Internet Connection Detected</string>
     <string name="add_friends_title">Add friends</string>
-    <string name="friends_list_empty">You haven\'t add any %s yet. Tap the icon in the upper right corner to search for your friends and add them</string>
+    <string name="friends_list_empty">You haven\'t add anyone to %s group yet. Tap the icon in the upper right corner to search for your friends and add them</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

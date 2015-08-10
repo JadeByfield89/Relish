@@ -7,11 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseUser;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import java.util.ArrayList;
@@ -19,6 +16,9 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.manager.FriendsManager;
+import relish.permoveo.com.relish.model.Friend;
+import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +32,9 @@ public class FriendsListFragment extends Fragment {
 
     @Bind(R.id.empty_list_container)
     LinearLayout emptyView;
+
+    @Bind(R.id.empty_message)
+    TextView emptyMessage;
 
     @Bind(R.id.friends_list_progress)
     ProgressWheel progress;
@@ -60,7 +63,10 @@ public class FriendsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_friends_list, container, false);
-        ButterKnife.bind(v);
+        ButterKnife.bind(this, v);
+        emptyMessage.setText(String.format(getString(R.string.friends_list_empty), group));
+        emptyMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        emptyMessage.setIncludeFontPadding(false);
         return v;
     }
 
@@ -72,15 +78,14 @@ public class FriendsListFragment extends Fragment {
     }
 
     private void render() {
-        ParseUser.getCurrentUser().fetchInBackground(new GetCallback<ParseObject>() {
+        FriendsManager.retrieveFriendsList(group.toLowerCase(), new FriendsManager.FriendsManagerCallback<ArrayList<Friend>, java.text.ParseException>() {
             @Override
-            public void done(ParseObject parseObject, ParseException e) {
-                final ParseUser user = (ParseUser) parseObject;
-                ArrayList<String> friendsIds = (ArrayList<String>) user.get(group.toLowerCase() + "Group");
-                if (friendsIds == null || friendsIds.size() == 0) {
+            public void done(ArrayList<Friend> friends, java.text.ParseException e) {
+                if (friends.size() > 0) {
+
+                } else {
                     emptyView.setVisibility(View.VISIBLE);
                     progress.setVisibility(View.GONE);
-                } else {
                 }
             }
         });

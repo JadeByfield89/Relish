@@ -42,8 +42,6 @@ import com.squareup.picasso.Picasso;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.Period;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -207,18 +205,8 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         });
         reviewImageMap = new HashMap<>();
 
-        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-            toolbar.setPadding(toolbar.getPaddingLeft(), getStatusBarHeight(), toolbar.getPaddingRight(), toolbar.getPaddingBottom());
-            toolbar.requestLayout();
-            updateStatusBar(getResources().getColor(R.color.place_image_dim));
-        } else {
-            updateStatusBar(getResources().getColor(R.color.main_color_dark));
-        }
-
+        updateToolbar(toolbar);
         renderFavorite();
-
-        updateStatusBar(getResources().getColor(R.color.main_color_dark));
-
     }
 
     @OnClick({R.id.fake_fab_place_details, R.id.fab_place_details})
