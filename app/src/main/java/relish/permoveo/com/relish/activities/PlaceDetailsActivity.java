@@ -157,6 +157,9 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setElevation(7.0f);
+
+
         SpannableString s = new SpannableString(passedPlace.name);
         s.setSpan(new TypefaceSpan(this, "ProximaNovaBold.ttf"), 0, s.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
