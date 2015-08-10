@@ -70,7 +70,6 @@ public class FriendsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_friends, container, false);
         ButterKnife.bind(this, v);
-        //viewPager = (ViewPager) v.findViewById(R.id.friends_pager);
         viewPager.setAdapter(adapter);
         tabs.setViewPager(viewPager);
 
