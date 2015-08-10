@@ -31,7 +31,7 @@ public class AddFriendsActivity extends RelishActivity {
         setContentView(R.layout.activity_add_friends);
         ButterKnife.bind(this);
 
-        adapter = new AddFriendsPagerAdapter(getSupportFragmentManager());
+        adapter = new AddFriendsPagerAdapter(getSupportFragmentManager(), this);
         pager.setAdapter(adapter);
         tabs.setViewPager(pager);
 

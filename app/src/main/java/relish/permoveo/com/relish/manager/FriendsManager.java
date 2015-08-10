@@ -1,11 +1,14 @@
 package relish.permoveo.com.relish.manager;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import relish.permoveo.com.relish.model.Friend;
 
@@ -28,6 +31,19 @@ public class FriendsManager {
                     callback.done(friends, null);
                 } else {
 
+                }
+            }
+        });
+    }
+
+    public static void queryUsers(final String query, final FriendsManagerCallback callback) {
+        ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
+        userQuery.whereStartsWith("username", query);
+        userQuery.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+
+                } else {
                 }
             }
         });
