@@ -60,7 +60,7 @@ public class FriendsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_friends_list, container, false);
-        ButterKnife.bind(v);
+        ButterKnife.bind(this, v);
         return v;
     }
 

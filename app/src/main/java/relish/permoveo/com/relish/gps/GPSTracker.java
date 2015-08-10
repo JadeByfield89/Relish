@@ -204,8 +204,10 @@ public enum GPSTracker implements LocationListener {
     public void onLocationChanged(Location location) {
         if (isBetterLocation(location, this.location)) {
             this.location = location;
-            ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
-            ParseUser.getCurrentUser().saveInBackground();
+            if(ParseUser.getCurrentUser() != null) {
+                ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
+                ParseUser.getCurrentUser().saveInBackground();
+            }
             LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(ConstantUtil.ACTION_GET_LOCATION));
         }
     }

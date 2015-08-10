@@ -207,6 +207,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem item = menu.add(0, R.id.action_logout, 0, "Logout").setIcon(R.drawable.ic_logout);
         MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        item.setVisible(false);
         return true;
     }
 
