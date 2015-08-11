@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -63,6 +64,9 @@ public class AddFriendsPagerAdapter extends FragmentPagerAdapter implements Page
         RelativeLayout tabLayout = (RelativeLayout) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.add_friends_pager_header, viewGroup, false);
 //        TextView tabTitle = (TextView) tabLayout.findViewById(R.id.tab_header_title);
         ImageView tabIcon = (ImageView) tabLayout.findViewById(R.id.tab_header_image);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(70, 70);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        tabIcon.setLayoutParams(params);
 
         ViewPagerHeader header = headers.get(i);
 //        tabTitle.setText(header.title.toUpperCase());
