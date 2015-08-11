@@ -10,12 +10,18 @@
         android:id="@+id/friends_tabs"
         android:layout_width="match_parent"
         android:layout_height="48dip"
-        android:textColor="@android:color/white"
+        android:textColor="@color/main_color"
         app:pstsIndicatorColor="@android:color/white"
-        app:pstsTabTextColor="@android:color/white"
+        app:pstsTabTextColor="@color/main_color"
         app:pstsTabTextAllCaps="true"
-        android:background="@color/main_color"
+        android:background="#fff"
         app:pstsShouldExpand="true" />
+
+    <View
+        android:layout_below="@+id/friends_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@drawable/shadow_color_light" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/friends_pager"
