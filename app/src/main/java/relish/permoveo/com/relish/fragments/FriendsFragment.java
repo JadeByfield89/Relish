@@ -20,7 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.activities.AddFriendsActivity;
-import relish.permoveo.com.relish.adapter.FriendsPagerAdapter;
+import relish.permoveo.com.relish.adapter.pager.FriendsPagerAdapter;
 
 /**
  * A simple {@link Fragment} subclass.

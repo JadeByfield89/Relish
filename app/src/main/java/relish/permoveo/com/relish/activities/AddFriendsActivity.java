@@ -10,7 +10,7 @@ import com.astuetz.PagerSlidingTabStrip;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
-import relish.permoveo.com.relish.adapter.AddFriendsPagerAdapter;
+import relish.permoveo.com.relish.adapter.pager.AddFriendsPagerAdapter;
 
 public class AddFriendsActivity extends RelishActivity {
 

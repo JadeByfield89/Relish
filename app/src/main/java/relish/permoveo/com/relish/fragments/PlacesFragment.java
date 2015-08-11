@@ -35,7 +35,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.activities.PlaceDetailsActivity;
-import relish.permoveo.com.relish.adapter.PlacesAdapter;
+import relish.permoveo.com.relish.adapter.list.PlacesAdapter;
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
 import relish.permoveo.com.relish.interfaces.OnResumeLoadingCallbacks;

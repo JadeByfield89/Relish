@@ -14,7 +14,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import relish.permoveo.com.relish.R;
-import relish.permoveo.com.relish.adapter.WelcomePagerAdapter;
+import relish.permoveo.com.relish.adapter.pager.WelcomePagerAdapter;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**

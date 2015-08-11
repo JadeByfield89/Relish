@@ -1,4 +1,4 @@
-package relish.permoveo.com.relish.adapter;
+package relish.permoveo.com.relish.adapter.list;
 
 import android.content.Context;
 import android.text.TextUtils;

@@ -10,14 +10,15 @@
         android:id="@+id/friends_tabs"
         android:layout_width="match_parent"
         android:layout_height="48dip"
-        android:textColor="@color/main_color"
+        android:textColor="@color/viewpager_header_title_color"
         app:pstsIndicatorColor="@android:color/white"
-        app:pstsTabTextColor="@color/main_color"
+        app:pstsTabTextColor="@color/viewpager_header_title_color"
         app:pstsTabTextAllCaps="true"
-        android:background="#fff"
+        android:background="@android:color/white"
         app:pstsShouldExpand="true" />
 
     <View
+        android:id="@+id/friends_shadow"
         android:layout_below="@+id/friends_tabs"
         android:layout_width="match_parent"
         android:layout_height="3dp"
@@ -27,5 +28,5 @@
         android:id="@+id/friends_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/friends_tabs" />
+        android:layout_below="@+id/friends_shadow" />
 </RelativeLayout>

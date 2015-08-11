@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pnikosis.materialishprogress.ProgressWheel;
 
@@ -81,11 +82,16 @@ public class FriendsListFragment extends Fragment {
         FriendsManager.retrieveFriendsList(group.toLowerCase(), new FriendsManager.FriendsManagerCallback<ArrayList<Friend>, java.text.ParseException>() {
             @Override
             public void done(ArrayList<Friend> friends, java.text.ParseException e) {
-                if (friends.size() > 0) {
+                if (e == null) {
+                    if (friends.size() > 0) {
 
+                    } else {
+                        emptyView.setVisibility(View.VISIBLE);
+                        progress.setVisibility(View.GONE);
+                    }
                 } else {
-                    emptyView.setVisibility(View.VISIBLE);
-                    progress.setVisibility(View.GONE);
+                    if (isAdded())
+                        Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });

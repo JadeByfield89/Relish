@@ -12,17 +12,24 @@
         android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="48dip"
-        android:textColor="@android:color/white"
+        android:textColor="@color/viewpager_header_title_color"
         app:pstsIndicatorColor="@android:color/white"
-        app:pstsTabTextColor="@android:color/white"
+        app:pstsTabTextColor="@color/viewpager_header_title_color"
         app:pstsTabTextAllCaps="true"
-        android:background="@color/main_color"
+        android:background="@android:color/white"
         app:pstsShouldExpand="true" />
+
+    <View
+        android:id="@+id/add_friends_shadow"
+        android:layout_below="@+id/add_friends_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@drawable/shadow_color_light" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/add_friends_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/add_friends_tabs" />
+        android:layout_below="@+id/add_friends_shadow" />
 
 </RelativeLayout>

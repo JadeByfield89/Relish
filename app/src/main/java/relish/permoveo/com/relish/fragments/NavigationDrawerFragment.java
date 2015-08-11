@@ -21,7 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import relish.permoveo.com.relish.R;
-import relish.permoveo.com.relish.adapter.NavDrawerAdapter;
+import relish.permoveo.com.relish.adapter.list.NavDrawerAdapter;
 import relish.permoveo.com.relish.model.NavDrawerItem;
 
 public class NavigationDrawerFragment extends Fragment {

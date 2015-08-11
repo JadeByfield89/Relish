@@ -24,13 +24,18 @@ public class FriendsManager {
         ParseUser.getCurrentUser().fetchInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject parseObject, ParseException e) {
-                final ParseUser user = (ParseUser) parseObject;
-                ArrayList<Friend> friends = new ArrayList<>();
-                ArrayList<String> friendsIds = (ArrayList<String>) user.get(group.toLowerCase() + "Group");
-                if (friendsIds == null || friendsIds.size() == 0) {
-                    callback.done(friends, null);
+                if (e == null) {
+                    final ParseUser user = (ParseUser) parseObject;
+                    ArrayList<Friend> friends = new ArrayList<>();
+                    if (user != null) {
+                        ArrayList<String> friendsIds = (ArrayList<String>) user.get(group.toLowerCase() + "Group");
+                        if (friendsIds == null || friendsIds.size() == 0) {
+                            callback.done(friends, null);
+                        } else {
+                        }
+                    }
                 } else {
-
+                    callback.done(null, e);
                 }
             }
         });

@@ -1,4 +1,4 @@
-package relish.permoveo.com.relish.adapter;
+package relish.permoveo.com.relish.adapter.pager;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -8,8 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import com.astuetz.PagerSlidingTabStrip;
 
@@ -61,30 +60,30 @@ public class AddFriendsPagerAdapter extends FragmentPagerAdapter implements Page
 
     @Override
     public View getCustomTabView(ViewGroup viewGroup, int i) {
-        LinearLayout tabLayout = (LinearLayout) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.add_friends_pager_header, viewGroup, false);
-        TextView tabTitle = (TextView) tabLayout.findViewById(R.id.tab_header_title);
+        RelativeLayout tabLayout = (RelativeLayout) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.add_friends_pager_header, viewGroup, false);
+//        TextView tabTitle = (TextView) tabLayout.findViewById(R.id.tab_header_title);
         ImageView tabIcon = (ImageView) tabLayout.findViewById(R.id.tab_header_image);
 
         ViewPagerHeader header = headers.get(i);
-        tabTitle.setText(header.title.toUpperCase());
-        tabTitle.setIncludeFontPadding(false);
+//        tabTitle.setText(header.title.toUpperCase());
+//        tabTitle.setIncludeFontPadding(false);
         tabIcon.setImageResource(header.image);
         return tabLayout;
     }
 
     @Override
     public void tabSelected(View view) {
-        TextView tabTitle = (TextView) view.findViewById(R.id.tab_header_title);
+//        TextView tabTitle = (TextView) view.findViewById(R.id.tab_header_title);
         ImageView tabIcon = (ImageView) view.findViewById(R.id.tab_header_image);
         tabIcon.setSelected(true);
-        tabTitle.setSelected(true);
+//        tabTitle.setSelected(true);
     }
 
     @Override
     public void tabUnselected(View view) {
-        TextView tabTitle = (TextView) view.findViewById(R.id.tab_header_title);
+//        TextView tabTitle = (TextView) view.findViewById(R.id.tab_header_title);
         ImageView tabIcon = (ImageView) view.findViewById(R.id.tab_header_image);
         tabIcon.setSelected(false);
-        tabTitle.setSelected(false);
+//        tabTitle.setSelected(false);
     }
 }

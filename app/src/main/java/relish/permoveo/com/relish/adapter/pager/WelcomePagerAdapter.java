@@ -1,4 +1,4 @@
-package relish.permoveo.com.relish.adapter;
+package relish.permoveo.com.relish.adapter.pager;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
