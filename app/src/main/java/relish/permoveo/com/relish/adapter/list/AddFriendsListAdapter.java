@@ -99,8 +99,12 @@ public class AddFriendsListAdapter extends RecyclerView.Adapter<AddFriendsListAd
         holder.friendBtn.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         holder.friendBtn.setIncludeFontPadding(false);
         holder.friendBtn.setIndeterminateProgressMode(true);
-        holder.friendBtn.setProgress(0);
         holder.friendBtn.setTransformationMethod(null);
+
+        if (friend.isMyFriend)
+            holder.friendBtn.setProgress(100);
+        else
+            holder.friendBtn.setProgress(0);
     }
 
     public Object getItem(final int position) {

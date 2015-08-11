@@ -50,6 +50,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="relish_users_search_hint">Username/Email</string>
     <string name="progress_button_idle">Add</string>
     <string name="progress_button_completed">Friends</string>
     <string name="no_results_for_query">No results for your query</string>

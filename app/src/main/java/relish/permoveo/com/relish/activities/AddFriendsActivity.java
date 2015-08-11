@@ -3,6 +3,8 @@ package relish.permoveo.com.relish.activities;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -11,6 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.pager.AddFriendsPagerAdapter;
+import relish.permoveo.com.relish.util.TypefaceSpan;
 
 public class AddFriendsActivity extends RelishActivity {
 
@@ -39,7 +42,10 @@ public class AddFriendsActivity extends RelishActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getString(R.string.add_friends_title));
+        SpannableString s = new SpannableString(getString(R.string.add_friends_title));
+        s.setSpan(new TypefaceSpan(this, "ProximaNovaBold.ttf"), 0, s.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        getSupportActionBar().setTitle(s);
 
         updateToolbar(toolbar);
     }
