@@ -52,7 +52,7 @@ public class AddFriendsListAdapter extends RecyclerView.Adapter<AddFriendsListAd
             friendBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    viewHolderClickListener.onClick(v);
+                    viewHolderClickListener.onClick((View) v.getParent());
                 }
             });
         }

@@ -37,7 +37,7 @@
         <TextView
             android:id="@+id/neutral_button"
             android:layout_width="match_parent"
-            android:textColor="#939a9c"
+            android:textColor="@color/dialog_button_selector"
             android:clickable="true"
             android:paddingTop="16dp"
             android:text="OK"

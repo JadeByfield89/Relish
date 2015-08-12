@@ -25,4 +25,5 @@
     <color name="main_color_green">#7abd00</color>
     <color name="main_color_green_dark">#649B00</color>
     <color name="friends_list_divider">#dbdbdb</color>
+    <color name="dialog_button_idle">#939a9c</color>
 </resources>

@@ -1,8 +1,9 @@
 package relish.permoveo.com.relish.fragments.search;
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -25,6 +26,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.list.AddFriendsListAdapter;
+import relish.permoveo.com.relish.dialogs.FriendGroupsDialog;
 import relish.permoveo.com.relish.model.Friend;
 
 /**
@@ -40,9 +43,12 @@ import relish.permoveo.com.relish.model.Friend;
  */
 public class RelishUsersFragment extends Fragment {
 
+    public static final int FRIENDS_GROUP_REQUEST_CODE = 111;
+
     private MenuItem searchItem;
     private AddFriendsListAdapter adapter;
     private String oldQuery;
+    private CircularProgressButton current;
 
     @Bind(R.id.empty_query_container)
     LinearLayout emptyView;
@@ -61,14 +67,14 @@ public class RelishUsersFragment extends Fragment {
         adapter = new AddFriendsListAdapter(getActivity(), new AddFriendsListAdapter.ViewHolder.AddFriendButtonClickListener() {
             @Override
             public void onClick(final View view) {
-                final CircularProgressButton cpb = (CircularProgressButton) view.findViewById(R.id.friend_btn);
-                cpb.setProgress(50);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        cpb.setProgress(100);
-                    }
-                }, 1000);
+                current = (CircularProgressButton) view.findViewById(R.id.friend_btn);
+                int position = recyclerView.getChildPosition(view);
+                final Friend friend = (Friend) adapter.getItem(position);
+                if (current.getProgress() != 100) {
+                    FriendGroupsDialog dialog = FriendGroupsDialog.newInstance(friend);
+                    dialog.setTargetFragment(RelishUsersFragment.this, FRIENDS_GROUP_REQUEST_CODE);
+                    dialog.show(getChildFragmentManager(), "friends_group_dialog");
+                }
             }
         });
         if (savedInstanceState != null) {
@@ -138,6 +144,9 @@ public class RelishUsersFragment extends Fragment {
                     if (e == null) {
                         ArrayList<Friend> friends = new ArrayList<>();
                         for (ParseUser user : objects) {
+                            if (user.getObjectId().equals(ParseUser.getCurrentUser().getObjectId()))
+                                continue;
+
                             Friend friend = new Friend();
                             friend.id = user.getObjectId();
                             friend.name = user.getUsername();
@@ -218,4 +227,27 @@ public class RelishUsersFragment extends Fragment {
         searchView.findViewById(R.id.search_button).performClick();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == FRIENDS_GROUP_REQUEST_CODE) {
+            if (current != null && current.getProgress() != 100) {
+                current.setProgress(50);
+                String groupName = data.getStringExtra(FriendGroupsDialog.CHOOSED_GROUP);
+                String friendId = data.getStringExtra(FriendGroupsDialog.CHOOSED_FRIEND);
+                ArrayList<String> friends = (ArrayList<String>) ParseUser.getCurrentUser().get(groupName + "Group");
+                if (friends == null)
+                    friends = new ArrayList<>();
+                friends.add(friendId);
+                ParseUser.getCurrentUser().put(groupName + "Group", friends);
+                ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        current.setProgress(100);
+                        current = null;
+                    }
+                });
+            }
+        }
+    }
 }
