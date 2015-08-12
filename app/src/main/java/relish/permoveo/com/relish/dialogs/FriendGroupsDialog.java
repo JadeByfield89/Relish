@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -20,6 +22,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.model.Friend;
+import relish.permoveo.com.relish.util.BlurBuilder;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
@@ -27,11 +30,14 @@ import relish.permoveo.com.relish.util.TypefaceUtil;
  */
 public class FriendGroupsDialog extends DialogFragment {
     public static final String FRIEND_BUNDLE = "friend_bundle";
-    public static final String CHOOSED_GROUP = "choosed_group";
-    public static final String CHOOSED_FRIEND = "choosed_friend";
+    public static final String CHOSEN_GROUP = "choosen_group";
+    public static final String CHOSEN_FRIEND = "choosen_friend";
 
     private Friend friend;
     private String group;
+
+    @Bind(R.id.dialog_container)
+    View container;
 
     @Bind(R.id.add_friend_image)
     CircleImageView friendImage;
@@ -88,11 +94,12 @@ public class FriendGroupsDialog extends DialogFragment {
                     .into(friendImage);
         }
 
-        friendMessage.setText("You are now friends with " + friend.name + ", add them to");
+        friendMessage.setText("Which group would you like to add " + friend.name + " to?" );
         friendMessage.setIncludeFontPadding(false);
         friendMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
         addFriendBtn.setEnabled(false);
+        addFriendBtn.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
 
         work.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         work.setIncludeFontPadding(false);
@@ -156,12 +163,19 @@ public class FriendGroupsDialog extends DialogFragment {
             public void onClick(View v) {
                 dismiss();
                 getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, new Intent()
-                        .putExtra(CHOOSED_GROUP, group)
-                        .putExtra(CHOOSED_FRIEND, friend.id));
+                        .putExtra(CHOSEN_GROUP, group)
+                        .putExtra(CHOSEN_FRIEND, friend.id));
             }
         });
+
         return v;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getDialog().getWindow()
+                .getAttributes().windowAnimations = R.style.DialogAnimation;
 
+    }
 }

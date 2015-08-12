@@ -162,7 +162,7 @@ public class RelishUsersFragment extends Fragment {
                             if (workGroup != null && workGroup.size() > 0) {
                                 for (String id : workGroup) {
                                     if (id.equals(friend.id))
-                                        friend.group = "Work";
+                                        friend.group = "Coworkers";
                                 }
                             }
                             if (colleaguesGroup != null && colleaguesGroup.size() > 0) {
@@ -233,8 +233,8 @@ public class RelishUsersFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK && requestCode == FRIENDS_GROUP_REQUEST_CODE) {
             if (current != null && current.getProgress() != 100) {
                 current.setProgress(50);
-                final String groupName = data.getStringExtra(FriendGroupsDialog.CHOOSED_GROUP);
-                String friendId = data.getStringExtra(FriendGroupsDialog.CHOOSED_FRIEND);
+                final String groupName = data.getStringExtra(FriendGroupsDialog.CHOSEN_GROUP);
+                String friendId = data.getStringExtra(FriendGroupsDialog.CHOSEN_FRIEND);
                 ArrayList<String> friends = (ArrayList<String>) ParseUser.getCurrentUser().get(groupName + "Group");
                 if (friends == null)
                     friends = new ArrayList<>();

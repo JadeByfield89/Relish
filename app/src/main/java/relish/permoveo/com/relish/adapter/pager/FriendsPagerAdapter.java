@@ -11,7 +11,7 @@ import relish.permoveo.com.relish.fragments.FriendsListFragment;
  */
 public class FriendsPagerAdapter extends FragmentPagerAdapter {
 
-    String[] TITLES = {"Friends", "Colleagues", "Work"};
+    String[] TITLES = {"Friends", "Colleagues", "Coworkers"};
 
     public FriendsPagerAdapter(FragmentManager manager) {
         super(manager);

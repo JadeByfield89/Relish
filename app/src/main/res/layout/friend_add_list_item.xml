@@ -32,7 +32,7 @@
         app:cpb_colorProgress="@android:color/transparent"
         app:cpb_selectorComplete="@drawable/progress_button_completed"
         app:cpb_cornerRadius="15dp"
-        android:layout_width="72dp"
+        android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_centerVertical="true"
         android:textColor="@android:color/white"

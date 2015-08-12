@@ -97,7 +97,7 @@ public class AddFriendsListAdapter extends RecyclerView.Adapter<AddFriendsListAd
         holder.friendName.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
         holder.friendBtn.setTypeface(TypefaceUtil.PROXIMA_NOVA);
-        holder.friendBtn.setIncludeFontPadding(false);
+        holder.friendBtn.setIncludeFontPadding(true);
         holder.friendBtn.setIndeterminateProgressMode(true);
         holder.friendBtn.setTransformationMethod(null);
 
