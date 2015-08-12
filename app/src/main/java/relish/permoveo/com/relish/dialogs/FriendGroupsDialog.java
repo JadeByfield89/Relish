@@ -154,6 +154,7 @@ public class FriendGroupsDialog extends DialogFragment {
         addFriendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dismiss();
                 getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, new Intent()
                         .putExtra(CHOOSED_GROUP, group)
                         .putExtra(CHOOSED_FRIEND, friend.id));

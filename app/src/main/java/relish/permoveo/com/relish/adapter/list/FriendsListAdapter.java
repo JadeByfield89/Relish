@@ -6,9 +6,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.dd.CircularProgressButton;
+import com.parse.ParseGeoPoint;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -17,22 +18,21 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.model.Friend;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
- * Created by rom4ek on 11.08.2015.
+ * Created by rom4ek on 12.08.2015.
  */
-public class AddFriendsListAdapter extends RecyclerView.Adapter<AddFriendsListAdapter.ViewHolder> {
+public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.ViewHolder> {
 
     private ArrayList<Friend> dataset;
     private Context context;
-    private ViewHolder.AddFriendButtonClickListener mListener;
 
-    public AddFriendsListAdapter(Context context, ViewHolder.AddFriendButtonClickListener listener) {
+    public FriendsListAdapter(Context context) {
         super();
         this.context = context;
-        mListener = listener;
         dataset = new ArrayList<>();
     }
 
@@ -43,22 +43,15 @@ public class AddFriendsListAdapter extends RecyclerView.Adapter<AddFriendsListAd
         @Bind(R.id.friend_image)
         CircleImageView friendImage;
 
-        @Bind(R.id.friend_btn)
-        CircularProgressButton friendBtn;
+        @Bind(R.id.friend_location)
+        TextView friendLocation;
 
-        public ViewHolder(View itemView, final AddFriendButtonClickListener viewHolderClickListener) {
+        @Bind(R.id.friend_location_container)
+        LinearLayout friendLocationContainer;
+
+        public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            friendBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    viewHolderClickListener.onClick((View) v.getParent());
-                }
-            });
-        }
-
-        public static interface AddFriendButtonClickListener {
-            void onClick(View view);
         }
     }
 
@@ -73,13 +66,13 @@ public class AddFriendsListAdapter extends RecyclerView.Adapter<AddFriendsListAd
     }
 
     @Override
-    public AddFriendsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_add_list_item, parent, false);
-        return new ViewHolder(view, mListener);
+    public FriendsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_list_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(AddFriendsListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(FriendsListAdapter.ViewHolder holder, int position) {
         Friend friend = (Friend) getItem(position);
 
         if (TextUtils.isEmpty(friend.image)) {
@@ -96,18 +89,19 @@ public class AddFriendsListAdapter extends RecyclerView.Adapter<AddFriendsListAd
         holder.friendName.setIncludeFontPadding(false);
         holder.friendName.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
-        holder.friendBtn.setTypeface(TypefaceUtil.PROXIMA_NOVA);
-        holder.friendBtn.setIncludeFontPadding(false);
-        holder.friendBtn.setIndeterminateProgressMode(true);
-        holder.friendBtn.setTransformationMethod(null);
+        if (friend.location != null && GPSTracker.get.getLocation() != null) {
+            holder.friendLocationContainer.setVisibility(View.VISIBLE);
 
-        holder.friendBtn.setCompleteText(friend.group);
-        if (!TextUtils.isEmpty(friend.group)) {
-            holder.friendBtn.setProgress(100);
-            holder.friendBtn.setText(friend.group);
+            double distanceTo = friend.location.distanceInMilesTo(new ParseGeoPoint(GPSTracker.get.getLocation().getLatitude(), GPSTracker.get.getLocation().getLongitude()));
+            int quantity = (int) Math.floor(distanceTo);
+            holder.friendLocation.setText(friend.formatDistance(distanceTo) +
+                    " " +
+                    context.getResources().getQuantityString(R.plurals.miles, quantity, distanceTo));
+            holder.friendLocation.setIncludeFontPadding(false);
+            holder.friendLocation.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        } else {
+            holder.friendLocationContainer.setVisibility(View.GONE);
         }
-        else
-            holder.friendBtn.setProgress(0);
     }
 
     public Object getItem(final int position) {

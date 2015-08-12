@@ -53,6 +53,7 @@
     <string name="relish_users_search_hint">Username/Email</string>
     <string name="progress_button_idle">Add</string>
     <string name="progress_button_completed">Friends</string>
+    <string name="no_contacts">You don\'t have contacts on your phone</string>
     <string name="no_results_for_query">No results for your query</string>
     <string name="add_friends_users_title">USERS</string>
     <string name="add_friends_contacts_title">CONTACTS</string>

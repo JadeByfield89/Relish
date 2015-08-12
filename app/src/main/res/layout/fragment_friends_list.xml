@@ -5,6 +5,16 @@
                 android:layout_height="match_parent"
                 tools:context="relish.permoveo.com.relish.fragments.FriendsListFragment">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/friends_list_recycler"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:visibility="gone"
+        android:paddingTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:clipToPadding="false"
+        android:layout_width="match_parent"/>
 
     <LinearLayout
         android:id="@+id/empty_list_container"

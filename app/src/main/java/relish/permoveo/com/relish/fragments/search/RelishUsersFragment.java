@@ -155,26 +155,26 @@ public class RelishUsersFragment extends Fragment {
                                 friend.image = parseFile.getUrl();
                             }
 
-                            ArrayList<String> workGroup = (ArrayList<String>) user.get("workGroup");
-                            ArrayList<String> colleaguesGroup = (ArrayList<String>) user.get("colleaguesGroup");
-                            ArrayList<String> friendsGroup = (ArrayList<String>) user.get("friendsGroup");
+                            ArrayList<String> workGroup = (ArrayList<String>) ParseUser.getCurrentUser().get("workGroup");
+                            ArrayList<String> colleaguesGroup = (ArrayList<String>) ParseUser.getCurrentUser().get("colleaguesGroup");
+                            ArrayList<String> friendsGroup = (ArrayList<String>) ParseUser.getCurrentUser().get("friendsGroup");
 
                             if (workGroup != null && workGroup.size() > 0) {
                                 for (String id : workGroup) {
                                     if (id.equals(friend.id))
-                                        friend.isMyFriend = true;
+                                        friend.group = "Work";
                                 }
                             }
                             if (colleaguesGroup != null && colleaguesGroup.size() > 0) {
                                 for (String id : colleaguesGroup) {
                                     if (id.equals(friend.id))
-                                        friend.isMyFriend = true;
+                                        friend.group = "Colleagues";
                                 }
                             }
                             if (friendsGroup != null && friendsGroup.size() > 0) {
                                 for (String id : friendsGroup) {
                                     if (id.equals(friend.id))
-                                        friend.isMyFriend = true;
+                                        friend.group = "Friends";
                                 }
                             }
                             friends.add(friend);
@@ -233,7 +233,7 @@ public class RelishUsersFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK && requestCode == FRIENDS_GROUP_REQUEST_CODE) {
             if (current != null && current.getProgress() != 100) {
                 current.setProgress(50);
-                String groupName = data.getStringExtra(FriendGroupsDialog.CHOOSED_GROUP);
+                final String groupName = data.getStringExtra(FriendGroupsDialog.CHOOSED_GROUP);
                 String friendId = data.getStringExtra(FriendGroupsDialog.CHOOSED_FRIEND);
                 ArrayList<String> friends = (ArrayList<String>) ParseUser.getCurrentUser().get(groupName + "Group");
                 if (friends == null)
@@ -243,7 +243,15 @@ public class RelishUsersFragment extends Fragment {
                 ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        current.setProgress(100);
+                        if (e == null) {
+                            current.setCompleteText(groupName.substring(0, 1).toUpperCase() + groupName.substring(1));
+                            current.setProgress(100);
+//                            current.setText(groupName.substring(0, 1).toUpperCase() + groupName.substring(1));
+                        } else {
+                            current.setProgress(0);
+                            if (isAdded())
+                                Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        }
                         current = null;
                     }
                 });
