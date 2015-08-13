@@ -7,6 +7,7 @@
         android:id="@+id/friend_image"
         android:layout_width="56dp"
         android:layout_height="56dp"
+        android:layout_marginLeft="7dp"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true" />
 
@@ -52,6 +53,8 @@
 
     <View
         android:layout_width="match_parent"
+        android:layout_marginRight="7dp"
+        android:layout_marginLeft="7dp"
         android:layout_height="1dp"
         android:background="@color/friends_list_divider"
         android:layout_alignParentBottom="true" />
