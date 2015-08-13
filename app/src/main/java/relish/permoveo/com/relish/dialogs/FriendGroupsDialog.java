@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -99,7 +100,7 @@ public class FriendGroupsDialog extends DialogFragment {
         friendMessage.setIncludeFontPadding(false);
         friendMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
-        addFriendBtn.setEnabled(false);
+        addFriendBtn.setEnabled(true);
         addFriendBtn.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
 
         work.setTypeface(TypefaceUtil.PROXIMA_NOVA);
@@ -113,10 +114,7 @@ public class FriendGroupsDialog extends DialogFragment {
                     friends.setSelected(false);
                     colleagues.setSelected(false);
 
-                    addFriendBtn.setEnabled(true);
                     group = work.getText().toString().toLowerCase();
-                } else {
-                    addFriendBtn.setEnabled(false);
                 }
             }
         });
@@ -132,10 +130,7 @@ public class FriendGroupsDialog extends DialogFragment {
                     colleagues.setSelected(false);
                     work.setSelected(false);
 
-                    addFriendBtn.setEnabled(true);
                     group = friends.getText().toString().toLowerCase();
-                } else {
-                    addFriendBtn.setEnabled(false);
                 }
             }
         });
@@ -151,10 +146,7 @@ public class FriendGroupsDialog extends DialogFragment {
                     friends.setSelected(false);
                     work.setSelected(false);
 
-                    addFriendBtn.setEnabled(true);
                     group = colleagues.getText().toString().toLowerCase();
-                } else {
-                    addFriendBtn.setEnabled(false);
                 }
             }
         });
@@ -162,10 +154,16 @@ public class FriendGroupsDialog extends DialogFragment {
         addFriendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
-                getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, new Intent()
-                        .putExtra(CHOSEN_GROUP, group)
-                        .putExtra(CHOSEN_FRIEND, friend.id));
+                if(!friends.isSelected() && !colleagues.isSelected() && !work.isSelected()){
+
+                    Toast.makeText(getActivity(), "Please select a group to add " + friend.name + " to", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    dismiss();
+                    getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, new Intent()
+                            .putExtra(CHOSEN_GROUP, group)
+                            .putExtra(CHOSEN_FRIEND, friend.id));
+                }
             }
         });
 
