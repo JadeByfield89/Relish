@@ -13,6 +13,7 @@ public class Friend implements Serializable {
     public String image;
     public String name;
     public String group;
+    public String address;
     public ParseGeoPoint location;
 
     public String formatDistance(double distance) {

@@ -161,10 +161,9 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 //            vh.placeCost.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 //            vh.placeCost.setIncludeFontPadding(false);
 
-            int quantity = (int) Math.floor(place.getCalculatedDistance());
             vh.placeDistance.setText(place.formatDistance() +
                     " " +
-                    context.getResources().getQuantityString(R.plurals.miles, quantity, place.getCalculatedDistance()));
+                    context.getResources().getQuantityString(R.plurals.miles, place.getCalculatedDistance() == 1.0d ? 1 : 2, place.getCalculatedDistance()));
             vh.placeDistance.setTypeface(TypefaceUtil.PROXIMA_NOVA);
             vh.placeDistance.setIncludeFontPadding(false);
 

@@ -31,7 +31,7 @@ public class RestaurantLocationDeserializer implements JsonDeserializer<YelpPlac
             builder.append(part)
                     .append(", ");
         }
-        location.address = builder.toString().substring(0, builder.toString().length() - 3);
+        location.address = builder.toString().substring(0, builder.toString().length() - 2);
         return location;
     }
 }

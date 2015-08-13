@@ -1,5 +1,6 @@
 package relish.permoveo.com.relish.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -7,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 
 import com.astuetz.PagerSlidingTabStrip;
 
@@ -38,6 +40,25 @@ public class AddFriendsActivity extends RelishActivity {
         adapter = new AddFriendsPagerAdapter(getSupportFragmentManager(), this);
         pager.setAdapter(adapter);
         tabs.setViewPager(pager);
+        tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position != 0) {
+                    InputMethodManager inputManager = (InputMethodManager) AddFriendsActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputManager.hideSoftInputFromWindow(tabs.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         pager.setOffscreenPageLimit(3);
 

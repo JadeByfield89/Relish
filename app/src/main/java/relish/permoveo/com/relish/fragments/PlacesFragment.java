@@ -210,10 +210,9 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
                 headerPlaceName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
                 headerPlaceName.setIncludeFontPadding(false);
 
-                int quantity = (int) Math.floor(restaurant.getCalculatedDistance());
                 headerPlaceDistance.setText(restaurant.formatDistance() +
                         " " +
-                        getResources().getQuantityString(R.plurals.miles, quantity, restaurant.getCalculatedDistance()));
+                        getResources().getQuantityString(R.plurals.miles, restaurant.getCalculatedDistance() == 1.0d ? 1 : 2, restaurant.getCalculatedDistance()));
                 headerPlaceDistance.setTypeface(TypefaceUtil.PROXIMA_NOVA);
                 headerPlaceDistance.setIncludeFontPadding(false);
 

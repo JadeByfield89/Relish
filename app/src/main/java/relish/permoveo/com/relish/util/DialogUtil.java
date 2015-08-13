@@ -37,7 +37,7 @@ public class DialogUtil {
         ContextThemeWrapper themedContext;
         themedContext = new ContextThemeWrapper(activity, R.style.RelishDialog);
         AlertDialog.Builder d = new AlertDialog.Builder(themedContext);
-        d.setCancelable(false);
+        d.setCancelable(true);
         d.setTitle(title);
         d.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -58,7 +58,7 @@ public class DialogUtil {
         ContextThemeWrapper themedContext;
         themedContext = new ContextThemeWrapper(activity, R.style.RelishDialog);
         AlertDialog.Builder d = new AlertDialog.Builder(themedContext);
-        d.setCancelable(false);
+        d.setCancelable(true);
         d.setTitle(title);
         d.setMessage(message);
         d.setPositiveButton(confirm, onYesClickListener);
@@ -106,7 +106,7 @@ public class DialogUtil {
 
     public static Dialog showSettingsDialog(final Activity activity, String title, String message) {
         AlertDialog.Builder d = new AlertDialog.Builder(activity);
-        d.setCancelable(false);
+        d.setCancelable(true);
         final Dialog dialog = d.create();
         dialog.show();
         dialog.setContentView(R.layout.dialog_confirm);

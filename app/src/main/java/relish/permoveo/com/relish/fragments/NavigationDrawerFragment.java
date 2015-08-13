@@ -108,9 +108,9 @@ public class NavigationDrawerFragment extends Fragment {
                         .getResourceId(i, -1)));
             }
 
-            if (i == 2) {
-                navDrawerItems.get(i).counter = 2;
-            }
+//            if (i == 2) {
+//                navDrawerItems.get(i).counter = 2;
+//            }
         }
         navMenuIcons.recycle();
 

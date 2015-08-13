@@ -26,7 +26,6 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +35,7 @@ import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.list.AddFriendsListAdapter;
 import relish.permoveo.com.relish.dialogs.FriendGroupsDialog;
+import relish.permoveo.com.relish.manager.FriendsManager;
 import relish.permoveo.com.relish.model.Friend;
 
 /**
@@ -235,18 +235,12 @@ public class RelishUsersFragment extends Fragment {
                 current.setProgress(50);
                 final String groupName = data.getStringExtra(FriendGroupsDialog.CHOSEN_GROUP);
                 String friendId = data.getStringExtra(FriendGroupsDialog.CHOSEN_FRIEND);
-                ArrayList<String> friends = (ArrayList<String>) ParseUser.getCurrentUser().get(groupName + "Group");
-                if (friends == null)
-                    friends = new ArrayList<>();
-                friends.add(friendId);
-                ParseUser.getCurrentUser().put(groupName + "Group", friends);
-                ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+                FriendsManager.addFriend(groupName, friendId, new FriendsManager.FriendsManagerCallback<Object, ParseException>() {
                     @Override
-                    public void done(ParseException e) {
+                    public void done(Object o, ParseException e) {
                         if (e == null) {
                             current.setCompleteText(groupName.substring(0, 1).toUpperCase() + groupName.substring(1));
                             current.setProgress(100);
-//                            current.setText(groupName.substring(0, 1).toUpperCase() + groupName.substring(1));
                         } else {
                             current.setProgress(0);
                             if (isAdded())

@@ -208,6 +208,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         });
         reviewImageMap = new HashMap<>();
 
+        toolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.main_color)));
         updateToolbar(toolbar);
         renderFavorite();
     }
@@ -315,10 +316,9 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         placeDetailsAddress.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         placeDetailsAddress.setIncludeFontPadding(false);
 
-        int quantity = (int) Math.floor(fetchedPlace.getCalculatedDistance());
         placeDetailsDistance.setText(fetchedPlace.formatDistance() +
                 " " +
-                getResources().getQuantityString(R.plurals.miles, quantity, fetchedPlace.getCalculatedDistance()));
+                getResources().getQuantityString(R.plurals.miles, fetchedPlace.getCalculatedDistance() == 1 ? 1 : 2, fetchedPlace.getCalculatedDistance()));
         placeDetailsDistance.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         placeDetailsDistance.setIncludeFontPadding(false);
 
@@ -346,7 +346,6 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 
         placeDetalsScrollView.setOnTouchListener(null);
         placeDetalsScrollView.setScrollViewCallbacks(this);
-        toolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.main_color)));
     }
 
     private void renderReviews() {

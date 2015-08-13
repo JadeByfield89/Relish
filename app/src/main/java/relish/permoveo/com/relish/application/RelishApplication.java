@@ -8,9 +8,9 @@ import com.parse.Parse;
 import net.danlew.android.joda.JodaTimeAndroid;
 
 import relish.permoveo.com.relish.gps.GPSTracker;
+import relish.permoveo.com.relish.manager.FriendsManager;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.util.ConstantUtil;
-import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
@@ -27,6 +27,6 @@ public class RelishApplication extends Application {
         GPSTracker.get.init(this);
         API.init(this);
         JodaTimeAndroid.init(this);
-
+        FriendsManager.initialize(this);
     }
 }

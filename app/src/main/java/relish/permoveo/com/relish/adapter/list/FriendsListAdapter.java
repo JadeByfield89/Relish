@@ -93,10 +93,10 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
             holder.friendLocationContainer.setVisibility(View.VISIBLE);
 
             double distanceTo = friend.location.distanceInMilesTo(new ParseGeoPoint(GPSTracker.get.getLocation().getLatitude(), GPSTracker.get.getLocation().getLongitude()));
-            int quantity = (int) Math.floor(distanceTo);
             holder.friendLocation.setText(friend.formatDistance(distanceTo) +
                     " " +
-                    context.getResources().getQuantityString(R.plurals.miles, quantity, distanceTo));
+                    context.getResources().getQuantityString(R.plurals.miles, distanceTo == 1.0d ? 1 : 2, distanceTo)
+                    + (TextUtils.isEmpty(friend.address) ? "" : " in " + friend.address));
             holder.friendLocation.setIncludeFontPadding(false);
             holder.friendLocation.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         } else {

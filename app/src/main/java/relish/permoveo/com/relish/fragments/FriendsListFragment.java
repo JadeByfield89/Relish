@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.pnikosis.materialishprogress.ProgressWheel;
 
 import java.util.ArrayList;
@@ -92,9 +93,9 @@ public class FriendsListFragment extends Fragment {
     }
 
     private void render() {
-        FriendsManager.retrieveFriendsList(group.toLowerCase(), new FriendsManager.FriendsManagerCallback<ArrayList<Friend>, java.text.ParseException>() {
+        FriendsManager.retrieveFriendsList(group.toLowerCase(), new FriendsManager.FriendsManagerCallback<ArrayList<Friend>, ParseException>() {
             @Override
-            public void done(ArrayList<Friend> friends, java.text.ParseException e) {
+            public void done(ArrayList<Friend> friends, ParseException e) {
                 if (e == null) {
                     if (friends.size() > 0) {
                         emptyView.setVisibility(View.GONE);

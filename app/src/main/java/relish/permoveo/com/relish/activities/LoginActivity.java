@@ -1,6 +1,7 @@
 package relish.permoveo.com.relish.activities;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,11 +17,13 @@ import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 public class LoginActivity extends RelishActivity {
@@ -110,7 +113,7 @@ public class LoginActivity extends RelishActivity {
 
             final String username = usernameEt.getText().toString();
             final String password = passwordEt.getText().toString();
-            Log.d("Username: " , username);
+            Log.d("Username: ", username);
             Log.d("Password: ", password);
 
             ParseUser.logInInBackground(username, password, new LogInCallback() {
@@ -118,11 +121,16 @@ public class LoginActivity extends RelishActivity {
                 public void done(ParseUser parseUser, ParseException e) {
                     hideLoader();
                     if (e == null) {
+                        Location location = GPSTracker.get.getLocation();
+                        if (location != null && location.getLatitude() != 0.0d && location.getLongitude() != 0.0d) {
+                            ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
+                            ParseUser.getCurrentUser().saveInBackground();
+                        }
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         setResult(RESULT_OK);
                         finish();
                     } else {
-                        Log.d("Parse Error Code: ", ""+e.getCode());
+                        Log.d("Parse Error Code: ", "" + e.getCode());
                         Toast.makeText(LoginActivity.this, e.getLocalizedMessage() + e.getCode(), Toast.LENGTH_LONG).show();
                     }
                 }
