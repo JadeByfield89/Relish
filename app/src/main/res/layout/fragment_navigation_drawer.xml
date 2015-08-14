@@ -15,7 +15,7 @@
             android:id="@+id/nav_header_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/avatar_placeholder" />
+            android:src="@drawable/header_2" />
 
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -25,7 +25,7 @@
             android:layout_marginTop="50dp"
             android:layout_marginLeft="12dp"
             android:layout_alignParentLeft="true"
-            android:src="@drawable/ic_me" />
+            android:src="@drawable/avatar_placeholder" />
 
         <TextView
             android:id="@+id/nav_header_username"

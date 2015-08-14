@@ -17,7 +17,7 @@
         android:layout_toRightOf="@id/friend_image"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:layout_marginLeft="16dp">
+        android:layout_marginLeft="8dp">
 
         <TextView
             android:id="@+id/friend_name"
@@ -45,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/dialog_button_idle"
                 android:textSize="15sp"
+                android:maxLines="2"
                 android:layout_marginLeft="4dp"/>
 
         </LinearLayout>
