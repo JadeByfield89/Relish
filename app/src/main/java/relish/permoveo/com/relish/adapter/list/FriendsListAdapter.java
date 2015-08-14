@@ -92,6 +92,11 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
         if (friend.location != null && GPSTracker.get.getLocation() != null) {
             holder.friendLocationContainer.setVisibility(View.VISIBLE);
 
+            //Only remove the zip code if this string contains a number
+            if(friend.address.matches(".*\\d+.*")) {
+                friend.address = friend.address.substring(0, friend.address.length() - 5);
+            }
+
             double distanceTo = friend.location.distanceInMilesTo(new ParseGeoPoint(GPSTracker.get.getLocation().getLatitude(), GPSTracker.get.getLocation().getLongitude()));
             holder.friendLocation.setText(friend.formatDistance(distanceTo) +
                     " " +
