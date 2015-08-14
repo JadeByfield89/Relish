@@ -10,19 +10,39 @@ import com.parse.ParseUser;
 public class UserUtils {
 
     public static String getUsername(){
-        return ParseUser.getCurrentUser().getUsername();
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if(currentUser != null){
+            return currentUser.getUsername();
+        }
+        else
+            return "";
+
     }
 
 
     public static String getUserEmail(){
 
-        return ParseUser.getCurrentUser().getEmail();
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if(currentUser != null){
+            return currentUser.getEmail();
+        }
+        else
+            return "";
     }
 
     public static String getUserAvatar(){
 
-       ParseFile avatarFile = ParseUser.getCurrentUser().getParseFile("avatar");
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if(currentUser != null){
 
-        return avatarFile.getUrl();
+           if(currentUser.getParseFile("avatar") != null){
+               return currentUser.getParseFile("avatar").getUrl();
+           }
+            else
+            return "";
+        }
+        else
+            return "";
     }
 }

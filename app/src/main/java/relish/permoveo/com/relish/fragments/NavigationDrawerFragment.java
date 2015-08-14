@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -143,7 +144,9 @@ public class NavigationDrawerFragment extends Fragment {
     private void renderNavHeader(){
 
         // Set user avatar
-        Picasso.with(getActivity()).load(UserUtils.getUserAvatar()).into(headerAvatar);
+        if(!TextUtils.isEmpty(UserUtils.getUserAvatar())) {
+            Picasso.with(getActivity()).load(UserUtils.getUserAvatar()).into(headerAvatar);
+        }
 
         // Set user name
         headerUsername.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
