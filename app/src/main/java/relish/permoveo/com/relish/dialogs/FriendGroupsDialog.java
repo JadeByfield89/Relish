@@ -11,12 +11,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
@@ -24,7 +21,6 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.model.Friend;
-import relish.permoveo.com.relish.util.BlurBuilder;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
@@ -96,7 +92,7 @@ public class FriendGroupsDialog extends DialogFragment {
                     .into(friendImage);
         }
 
-        friendMessage.setText("Which group would you like to add " + friend.name + " to?" );
+        friendMessage.setText("Which group would you like to add " + friend.name + " to?");
         friendMessage.setIncludeFontPadding(false);
         friendMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
@@ -114,7 +110,7 @@ public class FriendGroupsDialog extends DialogFragment {
                     friends.setSelected(false);
                     colleagues.setSelected(false);
 
-                    group = work.getText().toString().toLowerCase();
+                    group = work.getText().toString();
                 }
             }
         });
@@ -130,7 +126,7 @@ public class FriendGroupsDialog extends DialogFragment {
                     colleagues.setSelected(false);
                     work.setSelected(false);
 
-                    group = friends.getText().toString().toLowerCase();
+                    group = friends.getText().toString();
                 }
             }
         });
@@ -146,7 +142,7 @@ public class FriendGroupsDialog extends DialogFragment {
                     friends.setSelected(false);
                     work.setSelected(false);
 
-                    group = colleagues.getText().toString().toLowerCase();
+                    group = colleagues.getText().toString();
                 }
             }
         });
@@ -154,11 +150,9 @@ public class FriendGroupsDialog extends DialogFragment {
         addFriendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!friends.isSelected() && !colleagues.isSelected() && !work.isSelected()){
-
+                if (!friends.isSelected() && !colleagues.isSelected() && !work.isSelected()) {
                     Toast.makeText(getActivity(), "Please select a group to add " + friend.name + " to", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     dismiss();
                     getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, new Intent()
                             .putExtra(CHOSEN_GROUP, group)

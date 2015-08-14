@@ -93,7 +93,7 @@ public class FriendsListFragment extends Fragment {
     }
 
     private void render() {
-        FriendsManager.retrieveFriendsList(group.toLowerCase(), new FriendsManager.FriendsManagerCallback<ArrayList<Friend>, ParseException>() {
+        FriendsManager.retrieveFriendsList(group, new FriendsManager.FriendsManagerCallback<ArrayList<Friend>, ParseException>() {
             @Override
             public void done(ArrayList<Friend> friends, ParseException e) {
                 if (e == null) {

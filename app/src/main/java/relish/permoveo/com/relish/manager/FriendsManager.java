@@ -5,16 +5,18 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 
-import com.parse.GetCallback;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import relish.permoveo.com.relish.model.Friend;
@@ -33,20 +35,46 @@ public class FriendsManager {
         void done(T1 t1, T2 t2);
     }
 
-    public static void retrieveFriendsList(final String group, final FriendsManagerCallback callback) {
-        ParseUser.getCurrentUser().fetchInBackground(new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject parseObject, ParseException e) {
+    public static void searchFriend(String query, final FriendsManagerCallback callback) {
+        ParseQuery<ParseUser> usernameQuery = ParseUser.getQuery();
+        usernameQuery.whereEqualTo("username", query);
+
+        ParseQuery<ParseUser> emailQuery = ParseUser.getQuery();
+        emailQuery.whereEqualTo("email", query);
+
+        ParseQuery searchQuery = ParseQuery.or(Arrays.asList(usernameQuery, emailQuery));
+        searchQuery.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
-                    final ParseUser user = (ParseUser) parseObject;
+                    new FriendsFromParseTask(callback).execute(objects);
+                } else {
+                    callback.done(null, e);
+                }
+            }
+        });
+    }
+
+    public static void retrieveFriendsList(final String group, final FriendsManagerCallback callback) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Friendship");
+        query.whereEqualTo("group", group);
+        query.whereEqualTo("userIds", ParseUser.getCurrentUser().getObjectId());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                if (e == null) {
                     ArrayList<Friend> friends = new ArrayList<>();
-                    if (user != null) {
-                        ArrayList<String> friendsIds = (ArrayList<String>) user.get(group.toLowerCase() + "Group");
-                        if (friendsIds == null || friendsIds.size() == 0) {
-                            callback.done(friends, null);
-                        } else {
-                            new LoadParseUsersTask(callback).execute(friendsIds);
+                    if (parseObjects == null || parseObjects.size() == 0) {
+                        callback.done(friends, null);
+                    } else {
+                        ArrayList<String> friendsIds = new ArrayList<>();
+                        for (ParseObject parseObject : parseObjects) {
+                            ArrayList<String> friendshipIds = (ArrayList<String>) parseObject.get("userIds");
+                            for (String id : friendshipIds) {
+                                if (!id.equals(ParseUser.getCurrentUser().getObjectId()))
+                                    friendsIds.add(id);
+                            }
                         }
+                        new LoadParseUsersTask(callback).execute(friendsIds);
                     }
                 } else {
                     callback.done(null, e);
@@ -56,40 +84,66 @@ public class FriendsManager {
     }
 
     public static void addFriend(final String groupName, final String friendId, final FriendsManagerCallback callback) {
-        ArrayList<String> friends = (ArrayList<String>) ParseUser.getCurrentUser().get(groupName + "Group");
-        if (friends == null)
-            friends = new ArrayList<>();
-        friends.add(friendId);
-        ParseUser.getCurrentUser().put(groupName + "Group", friends);
-        ParseUser.getCurrentUser().saveInBackground(new SaveCallback() {
+        ParseObject friendship = new ParseObject("Friendship");
+        friendship.put("group", groupName);
+        friendship.addAllUnique("userIds", Arrays.asList(friendId, ParseUser.getCurrentUser().getObjectId()));
+        friendship.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    ParseUser.getQuery().getInBackground(friendId, new GetCallback<ParseUser>() {
-                        @Override
-                        public void done(ParseUser parseUser, ParseException e) {
-                            ArrayList<String> friendFriends = (ArrayList<String>) parseUser.get(groupName + "Group");
-                            if (friendFriends == null)
-                                friendFriends = new ArrayList<>();
-                            friendFriends.add(ParseUser.getCurrentUser().getObjectId());
-                            parseUser.put(groupName + "Group", friendFriends);
-                            parseUser.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    if (e == null) {
-                                        callback.done(null, null);
-                                    } else {
-                                        callback.done(null, e);
-                                    }
-                                }
-                            });
-                        }
-                    });
+                    callback.done(null, null);
                 } else {
                     callback.done(null, e);
                 }
             }
         });
+    }
+
+    private static class FriendsFromParseTask extends AsyncTask<List<ParseUser>, Void, ArrayList<Friend>> {
+
+        private FriendsManagerCallback callback;
+
+        public FriendsFromParseTask(FriendsManagerCallback callback) {
+            this.callback = callback;
+        }
+
+        @Override
+        protected ArrayList<Friend> doInBackground(List<ParseUser>... params) {
+            final ArrayList<Friend> friends = new ArrayList<>();
+            List<ParseUser> objects = params[0];
+            for (ParseUser user : objects) {
+                if (user.getObjectId().equals(ParseUser.getCurrentUser().getObjectId()))
+                    continue;
+
+                final Friend friend = new Friend();
+                friend.id = user.getObjectId();
+                friend.name = user.getUsername();
+                if (user.containsKey("avatar")) {
+                    ParseFile parseFile = (ParseFile) user.get("avatar");
+                    friend.image = parseFile.getUrl();
+                }
+
+                ParseQuery<ParseObject> existingFriendsQuery = ParseQuery.getQuery("Friendship");
+                existingFriendsQuery.whereContainsAll("userIds", Arrays.asList(ParseUser.getCurrentUser().getObjectId(), user.getObjectId()));
+                try {
+                    List<ParseObject> friendships = existingFriendsQuery.find();
+                    if (friendships != null && friendships.size() > 0) {
+                        ParseObject friendship = friendships.get(0);
+                        friend.group = (String) friendship.get("group");
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                friends.add(friend);
+            }
+            return friends;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Friend> friends) {
+            super.onPostExecute(friends);
+            callback.done(friends, null);
+        }
     }
 
     private static class LoadParseUsersTask extends AsyncTask<ArrayList<String>, Void, ArrayList<Friend>> {

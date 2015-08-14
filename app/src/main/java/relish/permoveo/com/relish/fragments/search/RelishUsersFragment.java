@@ -21,14 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dd.CircularProgressButton;
-import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -128,57 +123,10 @@ public class RelishUsersFragment extends Fragment {
 
     private void onQueryTextSubmitted(String query) {
         if (!TextUtils.isEmpty(query)) {
-            ParseQuery<ParseUser> usernameQuery = ParseUser.getQuery();
-            usernameQuery.whereEqualTo("username", query);
-
-            ParseQuery<ParseUser> emailQuery = ParseUser.getQuery();
-            emailQuery.whereEqualTo("email", query);
-
-            ArrayList queries = new ArrayList<>();
-            queries.add(usernameQuery);
-            queries.add(emailQuery);
-
-            ParseQuery searchQuery = ParseQuery.or(queries);
-            searchQuery.findInBackground(new FindCallback<ParseUser>() {
-                public void done(List<ParseUser> objects, ParseException e) {
+            FriendsManager.searchFriend(query, new FriendsManager.FriendsManagerCallback<ArrayList<Friend>, ParseException>() {
+                @Override
+                public void done(ArrayList<Friend> friends, ParseException e) {
                     if (e == null) {
-                        ArrayList<Friend> friends = new ArrayList<>();
-                        for (ParseUser user : objects) {
-                            if (user.getObjectId().equals(ParseUser.getCurrentUser().getObjectId()))
-                                continue;
-
-                            Friend friend = new Friend();
-                            friend.id = user.getObjectId();
-                            friend.name = user.getUsername();
-                            if (user.containsKey("avatar")) {
-                                ParseFile parseFile = (ParseFile) user.get("avatar");
-                                friend.image = parseFile.getUrl();
-                            }
-
-                            ArrayList<String> workGroup = (ArrayList<String>) ParseUser.getCurrentUser().get("workGroup");
-                            ArrayList<String> colleaguesGroup = (ArrayList<String>) ParseUser.getCurrentUser().get("colleaguesGroup");
-                            ArrayList<String> friendsGroup = (ArrayList<String>) ParseUser.getCurrentUser().get("friendsGroup");
-
-                            if (workGroup != null && workGroup.size() > 0) {
-                                for (String id : workGroup) {
-                                    if (id.equals(friend.id))
-                                        friend.group = "Coworkers";
-                                }
-                            }
-                            if (colleaguesGroup != null && colleaguesGroup.size() > 0) {
-                                for (String id : colleaguesGroup) {
-                                    if (id.equals(friend.id))
-                                        friend.group = "Colleagues";
-                                }
-                            }
-                            if (friendsGroup != null && friendsGroup.size() > 0) {
-                                for (String id : friendsGroup) {
-                                    if (id.equals(friend.id))
-                                        friend.group = "Friends";
-                                }
-                            }
-                            friends.add(friend);
-                        }
                         if (friends.size() > 0 && !TextUtils.isEmpty(((SearchView) searchItem.getActionView()).getQuery())) {
                             adapter.swap(friends);
                             recyclerView.setVisibility(View.VISIBLE);
@@ -239,7 +187,7 @@ public class RelishUsersFragment extends Fragment {
                     @Override
                     public void done(Object o, ParseException e) {
                         if (e == null) {
-                            current.setCompleteText(groupName.substring(0, 1).toUpperCase() + groupName.substring(1));
+                            current.setCompleteText(groupName);
                             current.setProgress(100);
                         } else {
                             current.setProgress(0);
