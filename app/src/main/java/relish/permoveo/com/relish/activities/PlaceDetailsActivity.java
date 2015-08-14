@@ -33,7 +33,6 @@ import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.squareup.picasso.Callback;
@@ -224,68 +223,71 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
     }
 
     private void renderFavorite() {
-        ParseUser.getCurrentUser().fetchInBackground(new GetCallback<ParseObject>() {
+        ParseUser.getCurrentUser().fetchInBackground(new GetCallback<ParseUser>() {
             @Override
-            public void done(ParseObject parseObject, ParseException e) {
-                final ParseUser user = (ParseUser) parseObject;
-                ArrayList<String> favorites = (ArrayList<String>) user.get("favoritePlaces");
-                if (favorites == null)
-                    favorites = new ArrayList<>();
-                boolean isFavorite = false;
-                for (String id : favorites) {
-                    if (passedPlace.id.equals(id)) {
-                        isFavorite = true;
+            public void done(final ParseUser user, ParseException e) {
+                if (e == null && user != null) {
+                    ArrayList<String> favorites = (ArrayList<String>) user.get("favoritePlaces");
+                    if (favorites == null)
+                        favorites = new ArrayList<>();
+                    boolean isFavorite = false;
+                    for (String id : favorites) {
+                        if (passedPlace.id.equals(id)) {
+                            isFavorite = true;
+                        }
                     }
-                }
 
-                if (isFavorite) {
-                    placeLike.setImageResource(R.drawable.ic_favorite_selected);
-                } else {
-                    placeLike.setImageResource(R.drawable.ic_favorite);
-                }
-                placeLike.setTag(isFavorite);
+                    if (isFavorite) {
+                        placeLike.setImageResource(R.drawable.ic_favorite_selected);
+                    } else {
+                        placeLike.setImageResource(R.drawable.ic_favorite);
+                    }
+                    placeLike.setTag(isFavorite);
 
-                placeLike.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        YoYo.with(Techniques.BounceIn)
-                                .duration(500)
-                                .withListener(new Animator.AnimatorListener() {
-                                    @Override
-                                    public void onAnimationStart(Animator animation) {
-                                        ArrayList<String> favorites = (ArrayList<String>) user.get("favoritePlaces");
-                                        if (favorites == null)
-                                            favorites = new ArrayList<>();
-                                        if ((Boolean) placeLike.getTag()) {
-                                            favorites.remove(passedPlace.id);
-                                            placeLike.setImageResource(R.drawable.ic_favorite);
-                                        } else {
-                                            favorites.add(passedPlace.id);
-                                            placeLike.setImageResource(R.drawable.ic_favorite_selected);
+                    placeLike.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            YoYo.with(Techniques.BounceIn)
+                                    .duration(500)
+                                    .withListener(new Animator.AnimatorListener() {
+                                        @Override
+                                        public void onAnimationStart(Animator animation) {
+                                            ArrayList<String> favorites = (ArrayList<String>) user.get("favoritePlaces");
+                                            if (favorites == null)
+                                                favorites = new ArrayList<>();
+                                            if ((Boolean) placeLike.getTag()) {
+                                                favorites.remove(passedPlace.id);
+                                                placeLike.setImageResource(R.drawable.ic_favorite);
+                                            } else {
+                                                favorites.add(passedPlace.id);
+                                                placeLike.setImageResource(R.drawable.ic_favorite_selected);
+                                            }
+                                            placeLike.setTag(!(Boolean) placeLike.getTag());
+                                            user.put("favoritePlaces", favorites);
+                                            user.saveEventually();
                                         }
-                                        placeLike.setTag(!(Boolean) placeLike.getTag());
-                                        user.put("favoritePlaces", favorites);
-                                        user.saveEventually();
-                                    }
 
-                                    @Override
-                                    public void onAnimationEnd(Animator animation) {
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
 
-                                    }
+                                        }
 
-                                    @Override
-                                    public void onAnimationCancel(Animator animation) {
+                                        @Override
+                                        public void onAnimationCancel(Animator animation) {
 
-                                    }
+                                        }
 
-                                    @Override
-                                    public void onAnimationRepeat(Animator animation) {
+                                        @Override
+                                        public void onAnimationRepeat(Animator animation) {
 
-                                    }
-                                })
-                                .playOn(placeLike);
-                    }
-                });
+                                        }
+                                    })
+                                    .playOn(placeLike);
+                        }
+                    });
+                } else {
+//                    Toast.makeText(PlaceDetailsActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
