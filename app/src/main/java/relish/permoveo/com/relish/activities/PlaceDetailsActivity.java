@@ -1,5 +1,9 @@
 package relish.permoveo.com.relish.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -13,12 +17,16 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewPropertyAnimator;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import relish.permoveo.com.relish.animation.AnimatorPath;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -28,9 +36,8 @@ import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCal
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.melnykov.fab.FloatingActionButton;
-import com.nineoldandroids.animation.Animator;
+
 import com.nineoldandroids.view.ViewHelper;
-import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -62,8 +69,12 @@ import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.RatingView;
+import relish.permoveo.com.relish.animation.*;
 
-public class PlaceDetailsActivity extends RelishActivity implements ObservableScrollViewCallbacks {
+
+
+
+public class PlaceDetailsActivity extends RelishActivity {
 
     public static final String PASSED_PLACE = "passed_place_extra";
     private static final String FETCHED_PLACE = "fetched_place_extra";
@@ -79,6 +90,20 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
     private boolean wasAnimatedToTop = false;
     private int[] fabLocation, fakeFabLocation;
     private Map<String, ImageView> reviewImageMap;
+
+    public final static float SCALE_FACTOR = 13f;
+    public final static int ANIMATION_DURATION = 300;
+    public final static int MINIMUN_X_DISTANCE = 200;
+
+    private boolean mRevealFlag;
+    private float mFabSize;
+
+    @Bind(R.id.place_details_container)
+    RelativeLayout activity_container;
+
+
+    @Bind(R.id.reveal_container)
+    LinearLayout reveal_container;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -247,7 +272,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
                     placeLike.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            YoYo.with(Techniques.BounceIn)
+                            /*YoYo.with(Techniques.BounceIn)
                                     .duration(500)
                                     .withListener(new Animator.AnimatorListener() {
                                         @Override
@@ -282,7 +307,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 
                                         }
                                     })
-                                    .playOn(placeLike);
+                                    .playOn(placeLike);*/
                         }
                     });
                 } else {
@@ -347,7 +372,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         }
 
         placeDetalsScrollView.setOnTouchListener(null);
-        placeDetalsScrollView.setScrollViewCallbacks(this);
+        //placeDetalsScrollView.setScrollViewCallbacks(this);
     }
 
     private void renderReviews() {
@@ -545,7 +570,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    /*@Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
         // toolbar animation
         int baseColor = getResources().getColor(R.color.main_color);
@@ -640,5 +665,97 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
 
+    }*/
+
+    @OnClick(R.id.fab_place_details)
+    public void onFabPressed() {
+
+        final float startX = placeDetailsFab.getX();
+
+        AnimatorPath path = new AnimatorPath();
+        path.moveTo(0, 0);
+        path.curveTo(-200, 200, -400, 100, -600, 50);
+
+        final ObjectAnimator anim = ObjectAnimator.ofObject(this, "fabLoc",
+                new PathEvaluator(), path.getPoints().toArray());
+
+        anim.setInterpolator(new AccelerateInterpolator());
+        anim.setDuration(ANIMATION_DURATION);
+        anim.start();
+
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+
+                placeDetailsFab.setImageDrawable(null);
+                if (Math.abs(startX - placeDetailsFab.getX()) > MINIMUN_X_DISTANCE) {
+
+                    if (!mRevealFlag) {
+                        activity_container.setY(activity_container.getY() + mFabSize / 2);
+
+                        placeDetailsFab.animate()
+                                .scaleXBy(SCALE_FACTOR)
+                                .scaleYBy(SCALE_FACTOR)
+                                .setListener(mEndRevealListener)
+                                .setDuration(ANIMATION_DURATION);
+
+                        mRevealFlag = true;
+                    }
+                }
+            }
+        });
     }
+
+
+    private AnimatorListenerAdapter mEndRevealListener = new AnimatorListenerAdapter() {
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+
+            super.onAnimationEnd(animation);
+
+            placeDetailsFab.setVisibility(View.INVISIBLE);
+            activity_container.setBackgroundColor(getResources()
+                    .getColor(R.color.main_color));
+            reveal_container.setVisibility(View.VISIBLE);
+
+            for (int i = 0; i < activity_container.getChildCount(); i++) {
+
+                View v = activity_container.getChildAt(i);
+                ViewPropertyAnimator animator = v.animate()
+                        .scaleX(1).scaleY(1)
+                        .setDuration(ANIMATION_DURATION);
+
+                animator.setStartDelay(i * 50);
+                animator.start();
+            }
+        }
+    };
+
+
+
+    /**
+     * We need this setter to translate between the information the animator
+     * produces (a new "PathPoint" describing the current animated location)
+     * and the information that the button requires (an xy location). The
+     * setter will be called by the ObjectAnimator given the 'fabLoc'
+     * property string.
+     */
+    public void setFabLoc(PathPoint newLoc) {
+
+        placeDetailsFab.setTranslationX(newLoc.mX);
+
+
+        if (mRevealFlag)
+           placeDetailsFab.setTranslationY(newLoc.mY - (mFabSize / 2));
+        else
+            placeDetailsFab.setTranslationY(newLoc.mY);
+    }
+
+
+
+
+
 }
+
