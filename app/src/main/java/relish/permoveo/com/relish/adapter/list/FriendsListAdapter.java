@@ -85,7 +85,9 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
                     .into(holder.friendImage);
         }
 
-        holder.friendName.setText(friend.name);
+        String friendName = friend.name.substring(0, 1).toUpperCase() + friend.name.substring(1);
+
+        holder.friendName.setText(friendName);
         holder.friendName.setIncludeFontPadding(false);
         holder.friendName.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 

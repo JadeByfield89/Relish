@@ -149,8 +149,10 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         // Set user name
+        String username = UserUtils.getUsername().substring(0, 1).toUpperCase() + UserUtils.getUsername().substring(1);
+
         headerUsername.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
-        headerUsername.setText(UserUtils.getUsername());
+        headerUsername.setText(username);
 
 
         //Set user email
