@@ -1,5 +1,6 @@
 package relish.permoveo.com.relish.activities;
 
+//import android.animation.Animator;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -17,7 +18,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewPropertyAnimator;
+
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
@@ -30,6 +31,8 @@ import relish.permoveo.com.relish.animation.AnimatorPath;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+
+//import relish.permoveo.com.relish.animation.ViewPropertyAnimator;
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
@@ -74,7 +77,7 @@ import relish.permoveo.com.relish.animation.*;
 
 
 
-public class PlaceDetailsActivity extends RelishActivity {
+public class PlaceDetailsActivity extends RelishActivity implements  ObservableScrollViewCallbacks {
 
     public static final String PASSED_PLACE = "passed_place_extra";
     private static final String FETCHED_PLACE = "fetched_place_extra";
@@ -372,7 +375,7 @@ public class PlaceDetailsActivity extends RelishActivity {
         }
 
         placeDetalsScrollView.setOnTouchListener(null);
-        //placeDetalsScrollView.setScrollViewCallbacks(this);
+        placeDetalsScrollView.setScrollViewCallbacks(this);
     }
 
     private void renderReviews() {
@@ -570,7 +573,7 @@ public class PlaceDetailsActivity extends RelishActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /*@Override
+    @Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
         // toolbar animation
         int baseColor = getResources().getColor(R.color.main_color);
@@ -590,67 +593,20 @@ public class PlaceDetailsActivity extends RelishActivity {
         if (isSignificantDelta) {
             if (scrollY > lastScrollY) {
                 //to bottom
-                if (!wasAnimatedToBottom) {
+                if (!AnimationUtils.wasAnimatedToBottom) {
                     int y = fakeFabLocation[1] - fabHeight / 2
                             - (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? (int) (placeDetailsFab.getElevation() / 2) : 0)
                             + (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT ? getStatusBarHeight() : 0);
-                    ViewPropertyAnimator.animate(placeDetailsFab).setInterpolator(new AccelerateDecelerateInterpolator())
-                            .setDuration(300)
-                            .setListener(new Animator.AnimatorListener() {
-                                @Override
-                                public void onAnimationStart(Animator animation) {
-
-                                }
-
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    wasAnimatedToBottom = true;
-                                    wasAnimatedToTop = false;
-                                }
-
-                                @Override
-                                public void onAnimationCancel(Animator animation) {
-
-                                }
-
-                                @Override
-                                public void onAnimationRepeat(Animator animation) {
-
-                                }
-                            })
-                            .y(y);
+                  AnimationUtils.animateFAB(placeDetailsFab,false, true, y);
                 }
             } else {
                 //to top
-                if (!wasAnimatedToTop && alpha < 0.1f) {
+                if (!AnimationUtils.wasAnimatedToTop && alpha < 0.1f) {
                     int y = fabLocation[1] - fabHeight / 2 +
                             (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? (int) (placeDetailsFab.getElevation() / 2) : 0)
                             + (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT ? getStatusBarHeight() : 0)
                             + (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP ? (int) (fabShadowSize / 2) : 0);
-                    ViewPropertyAnimator.animate(placeDetailsFab).setInterpolator(new AccelerateDecelerateInterpolator())
-                            .setDuration(300)
-                            .setListener(new Animator.AnimatorListener() {
-                                @Override
-                                public void onAnimationStart(Animator animation) {
-                                }
-
-                                @Override
-                                public void onAnimationEnd(Animator animation) {
-                                    wasAnimatedToTop = true;
-                                    wasAnimatedToBottom = false;
-                                }
-
-                                @Override
-                                public void onAnimationCancel(Animator animation) {
-
-                                }
-
-                                @Override
-                                public void onAnimationRepeat(Animator animation) {
-
-                                }
-                            })
-                            .y(y);
+                    AnimationUtils.animateFAB(placeDetailsFab, true, false, y);
                 }
             }
         }
@@ -665,7 +621,7 @@ public class PlaceDetailsActivity extends RelishActivity {
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
 
-    }*/
+    }
 
     @OnClick(R.id.fab_place_details)
     public void onFabPressed() {
@@ -723,7 +679,7 @@ public class PlaceDetailsActivity extends RelishActivity {
             for (int i = 0; i < activity_container.getChildCount(); i++) {
 
                 View v = activity_container.getChildAt(i);
-                ViewPropertyAnimator animator = v.animate()
+                android.view.ViewPropertyAnimator animator = v.animate()
                         .scaleX(1).scaleY(1)
                         .setDuration(ANIMATION_DURATION);
 
