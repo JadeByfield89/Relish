@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.flaviofaria.kenburnsview.KenBurnsView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.list.NavDrawerAdapter;
 import relish.permoveo.com.relish.model.NavDrawerItem;
+import relish.permoveo.com.relish.util.TypefaceUtil;
+import relish.permoveo.com.relish.util.UserUtils;
 
 public class NavigationDrawerFragment extends Fragment {
 
@@ -49,6 +52,9 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Bind(R.id.nav_header_username)
     TextView headerUsername;
+
+    @Bind(R.id.nav_header_email)
+    TextView headerEmail;
 
     @Bind(R.id.nav_header_background)
     KenBurnsView kenBurnsView;
@@ -129,7 +135,24 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setScrollContainer(false);
         mDrawerListView.setFastScrollEnabled(true);
         mDrawerListView.setSmoothScrollbarEnabled(true);
+
+        renderNavHeader();
         return view;
+    }
+
+    private void renderNavHeader(){
+
+        // Set user avatar
+        Picasso.with(getActivity()).load(UserUtils.getUserAvatar()).into(headerAvatar);
+
+        // Set user name
+        headerUsername.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+        headerUsername.setText(UserUtils.getUsername());
+
+
+        //Set user email
+        headerEmail.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        headerEmail.setText(UserUtils.getUserEmail());
     }
 
     public void selectItem(int position) {
