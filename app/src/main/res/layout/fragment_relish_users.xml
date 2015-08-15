@@ -5,6 +5,20 @@
     android:background="@color/fragment_background"
     tools:context="relish.permoveo.com.relish.fragments.search.RelishUsersFragment">
 
+    <relish.permoveo.com.relish.view.BounceProgressBar
+
+        xmlns:bpb="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/bounce_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible"
+        bpb:shape="circle"
+        bpb:singleSrcSize="14dp"
+        bpb:speed="250"
+        bpb:src="@color/main_color" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/add_friends_recycler"
         android:layout_height="match_parent"

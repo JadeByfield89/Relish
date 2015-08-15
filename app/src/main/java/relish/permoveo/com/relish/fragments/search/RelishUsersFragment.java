@@ -32,6 +32,7 @@ import relish.permoveo.com.relish.adapter.list.AddFriendsListAdapter;
 import relish.permoveo.com.relish.dialogs.FriendGroupsDialog;
 import relish.permoveo.com.relish.manager.FriendsManager;
 import relish.permoveo.com.relish.model.Friend;
+import relish.permoveo.com.relish.view.BounceProgressBar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,6 +45,9 @@ public class RelishUsersFragment extends Fragment {
     private AddFriendsListAdapter adapter;
     private String oldQuery;
     private CircularProgressButton current;
+
+    @Bind(R.id.bounce_progress)
+    BounceProgressBar bounceProgressBar;
 
     @Bind(R.id.empty_query_container)
     LinearLayout emptyView;
@@ -122,6 +126,8 @@ public class RelishUsersFragment extends Fragment {
     }
 
     private void onQueryTextSubmitted(String query) {
+        bounceProgressBar.setVisibility(View.VISIBLE);
+        emptyView.setVisibility(View.GONE);
         if (!TextUtils.isEmpty(query)) {
             FriendsManager.searchFriend(query, new FriendsManager.FriendsManagerCallback<ArrayList<Friend>, ParseException>() {
                 @Override
@@ -129,6 +135,7 @@ public class RelishUsersFragment extends Fragment {
                     if (e == null) {
                         if (friends.size() > 0 && !TextUtils.isEmpty(((SearchView) searchItem.getActionView()).getQuery())) {
                             adapter.swap(friends);
+                            bounceProgressBar.setVisibility(View.GONE);
                             recyclerView.setVisibility(View.VISIBLE);
                             emptyView.setVisibility(View.GONE);
                         } else {

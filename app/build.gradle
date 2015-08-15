@@ -69,6 +69,7 @@ dependencies {
     compile 'com.github.charbgr:BlurNavigationDrawer:18aa52fe63'
     compile 'com.jpardogo.materialtabstrip:library:1.1.0'
     compile 'com.github.dmytrodanylyk.circular-progress-button:library:1.1.3'
+    compile 'com.alexvasilkov:foldable-layout:1.0.1'
 }
 
 

@@ -125,6 +125,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:visibility="visible"
         bpb:shape="circle"
         bpb:singleSrcSize="14dp"
         bpb:speed="250"

@@ -150,6 +150,10 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         drawerLayout.setDrawerListener(drawerToggle);
         drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.main_color_dark));
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setElevation(7.0f);
+
+
         updateToolbar(toolbar);
         navDrawer.selectItem(mCurrentSelectedPosition);
     }
