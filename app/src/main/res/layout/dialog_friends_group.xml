@@ -11,6 +11,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_height="wrap_content"
+            android:text="Choose Group"
+            android:textSize="18sp"
+            android:background="@color/main_color"
+            android:textColor="@android:color/white" />
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/add_friend_image"
             android:layout_width="64dp"
@@ -100,7 +112,7 @@
             android:textStyle="bold"
             android:gravity="center"
             android:paddingBottom="16dp"
-            android:background="@drawable/add_friend_button_background"
+            android:background="@drawable/dialog_button_neutral"
             android:textSize="16sp"
             android:layout_height="wrap_content" />
 

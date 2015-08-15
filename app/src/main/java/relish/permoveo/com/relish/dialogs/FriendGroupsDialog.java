@@ -37,6 +37,9 @@ public class FriendGroupsDialog extends DialogFragment {
     @Bind(R.id.dialog_container)
     View container;
 
+    @Bind(R.id.dialog_title)
+    TextView dialogTitle;
+
     @Bind(R.id.add_friend_image)
     CircleImageView friendImage;
 
@@ -163,7 +166,7 @@ public class FriendGroupsDialog extends DialogFragment {
 
 
         //getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-
+        dialogTitle.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
         return v;
     }
 
