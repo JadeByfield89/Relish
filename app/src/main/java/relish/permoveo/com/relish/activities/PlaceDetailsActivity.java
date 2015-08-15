@@ -271,46 +271,12 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
                         placeLike.setImageResource(R.drawable.ic_favorite);
                     }
                     placeLike.setTag(isFavorite);
+                    final boolean isFav = isFavorite;
 
                     placeLike.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            /*YoYo.with(Techniques.BounceIn)
-                                    .duration(500)
-                                    .withListener(new Animator.AnimatorListener() {
-                                        @Override
-                                        public void onAnimationStart(Animator animation) {
-                                            ArrayList<String> favorites = (ArrayList<String>) user.get("favoritePlaces");
-                                            if (favorites == null)
-                                                favorites = new ArrayList<>();
-                                            if ((Boolean) placeLike.getTag()) {
-                                                favorites.remove(passedPlace.id);
-                                                placeLike.setImageResource(R.drawable.ic_favorite);
-                                            } else {
-                                                favorites.add(passedPlace.id);
-                                                placeLike.setImageResource(R.drawable.ic_favorite_selected);
-                                            }
-                                            placeLike.setTag(!(Boolean) placeLike.getTag());
-                                            user.put("favoritePlaces", favorites);
-                                            user.saveEventually();
-                                        }
-
-                                        @Override
-                                        public void onAnimationEnd(Animator animation) {
-
-                                        }
-
-                                        @Override
-                                        public void onAnimationCancel(Animator animation) {
-
-                                        }
-
-                                        @Override
-                                        public void onAnimationRepeat(Animator animation) {
-
-                                        }
-                                    })
-                                    .playOn(placeLike);*/
+                            AnimationUtils.animateFavoriteButton(user, placeLike, passedPlace.id, isFav);
                         }
                     });
                 } else {
