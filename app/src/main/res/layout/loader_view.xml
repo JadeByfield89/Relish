@@ -16,25 +16,28 @@
         android:background="@drawable/loader_background"
         android:layout_centerInParent="true">
 
-        <com.pnikosis.materialishprogress.ProgressWheel
-            android:id="@+id/loader_progress"
-            android:layout_alignParentLeft="true"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            app:matProg_barWidth="3dp"
-            app:matProg_barColor="@android:color/black"
-            app:matProg_progressIndeterminate="true"
-            android:layout_centerVertical="true" />
+        <relish.permoveo.com.relish.view.BounceProgressBar
+
+            xmlns:bpb="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/bounce_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            bpb:shape="circle"
+            bpb:singleSrcSize="14dp"
+            bpb:speed="250"
+            bpb:src="@color/main_color" />
 
         <TextView
             android:id="@+id/loader_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/loader_progress"
+            android:layout_toRightOf="@+id/bounce_progress"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:layout_below="@+id/loader_progress"
+            android:layout_below="@+id/bounce_progress"
             android:textColor="@android:color/black"
             android:text="Loading..." />
 

@@ -25,6 +25,7 @@ import relish.permoveo.com.relish.adapter.list.FriendsListAdapter;
 import relish.permoveo.com.relish.manager.FriendsManager;
 import relish.permoveo.com.relish.model.Friend;
 import relish.permoveo.com.relish.util.TypefaceUtil;
+import relish.permoveo.com.relish.view.BounceProgressBar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,8 +42,8 @@ public class FriendsListFragment extends Fragment {
     @Bind(R.id.empty_message)
     TextView emptyMessage;
 
-    @Bind(R.id.friends_list_progress)
-    ProgressWheel progress;
+    @Bind(R.id.bounce_progress)
+    BounceProgressBar bounceProgressBar;
 
     @Bind(R.id.friends_list_recycler)
     RecyclerView recyclerView;
@@ -99,13 +100,13 @@ public class FriendsListFragment extends Fragment {
                 if (e == null) {
                     if (friends.size() > 0) {
                         emptyView.setVisibility(View.GONE);
-                        progress.setVisibility(View.GONE);
+                        bounceProgressBar.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
                         adapter.swap(friends);
                     } else {
                         adapter.clear();
                         emptyView.setVisibility(View.VISIBLE);
-                        progress.setVisibility(View.GONE);
+                        bounceProgressBar.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.GONE);
                     }
                 } else {
@@ -113,7 +114,7 @@ public class FriendsListFragment extends Fragment {
                         Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                         adapter.clear();
                         emptyView.setVisibility(View.VISIBLE);
-                        progress.setVisibility(View.GONE);
+                        bounceProgressBar.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.GONE);
                     }
                 }

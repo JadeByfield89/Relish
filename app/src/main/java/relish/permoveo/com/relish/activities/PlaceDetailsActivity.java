@@ -44,7 +44,6 @@ import com.nineoldandroids.view.ViewHelper;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
-import com.pnikosis.materialishprogress.ProgressWheel;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -71,6 +70,7 @@ import relish.permoveo.com.relish.model.yelp.YelpReview;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.util.TypefaceUtil;
+import relish.permoveo.com.relish.view.BounceProgressBar;
 import relish.permoveo.com.relish.view.RatingView;
 import relish.permoveo.com.relish.animation.*;
 
@@ -111,8 +111,9 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.place_details_progress)
-    ProgressWheel placeDetailsProgress;
+    @Bind(R.id.bounce_progress)
+    BounceProgressBar bounceProgress;
+
 
     @Bind(R.id.place_details_inform_message)
     TextView placeDetailsMessage;
@@ -163,7 +164,7 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
 
         @Override
         public void failed(Object... params) {
-            placeDetailsProgress.setVisibility(View.GONE);
+            bounceProgress.setVisibility(View.GONE);
             placeDetailsMessage.setVisibility(View.GONE);
             renderPlaceDetails();
         }
@@ -487,18 +488,18 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
                                                 }
                                             });
                                         }
-                                        placeDetailsProgress.setVisibility(View.GONE);
+                                        bounceProgress.setVisibility(View.GONE);
                                         placeDetailsMessage.setVisibility(View.GONE);
                                         renderPlaceDetails();
                                     } else {
-                                        placeDetailsProgress.setVisibility(View.GONE);
+                                        bounceProgress.setVisibility(View.GONE);
                                         placeDetailsMessage.setVisibility(View.GONE);
                                         renderPlaceDetails();
                                     }
                                 }
                             });
                         } else {
-                            placeDetailsProgress.setVisibility(View.GONE);
+                            bounceProgress.setVisibility(View.GONE);
                             placeDetailsMessage.setVisibility(View.GONE);
                             renderPlaceDetails();
                         }
@@ -508,7 +509,7 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
 
             @Override
             public void failed(Object... params) {
-                placeDetailsProgress.setVisibility(View.GONE);
+                bounceProgress.setVisibility(View.GONE);
                 placeDetailsMessage.setVisibility(View.VISIBLE);
                 if (params == null || params.length == 0) {
                     Toast.makeText(PlaceDetailsActivity.this, getString(R.string.problems_with_loading), Toast.LENGTH_LONG).show();

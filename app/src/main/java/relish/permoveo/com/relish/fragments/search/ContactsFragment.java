@@ -39,6 +39,7 @@ import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.list.ContactsAdapter;
 import relish.permoveo.com.relish.model.Contact;
+import relish.permoveo.com.relish.view.BounceProgressBar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,8 +59,8 @@ public class ContactsFragment extends Fragment {
     @Bind(R.id.empty_contacts_container)
     LinearLayout emptyView;
 
-    @Bind(R.id.contacts_progress)
-    ProgressWheel contactsProgress;
+    @Bind(R.id.bounce_progress)
+    BounceProgressBar contactsProgress;
 
     @Bind(R.id.contacts_recycler)
     RecyclerView recyclerView;

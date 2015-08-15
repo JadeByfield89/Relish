@@ -24,7 +24,6 @@ import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCal
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.nineoldandroids.view.ViewHelper;
-import com.pnikosis.materialishprogress.ProgressWheel;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -46,6 +45,7 @@ import relish.permoveo.com.relish.util.ConnectionUtil;
 import relish.permoveo.com.relish.util.RecyclerItemClickListener;
 import relish.permoveo.com.relish.util.SpacesItemDecoration;
 import relish.permoveo.com.relish.util.TypefaceUtil;
+import relish.permoveo.com.relish.view.BounceProgressBar;
 import relish.permoveo.com.relish.view.RatingView;
 
 
@@ -94,11 +94,8 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     @Bind(R.id.places_inform_message)
     TextView placesMessage;
 
-    @Bind(R.id.places_progress)
-    ProgressWheel placesProgress;
-//
-//    @Bind(R.id.places_header_progress)
-//    ProgressWheel placesHeaderProgress;
+    @Bind(R.id.bounce_progress)
+    BounceProgressBar bounceProgressBar;
 
     @Bind(R.id.places_swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -291,7 +288,6 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
 //            recyclerView.setVisibility(View.GONE);
 //            recyclerBackground.setVisibility(View.GONE);
 //            placesHeaderProgress.setVisibility(View.VISIBLE);
-            placesProgress.setVisibility(View.VISIBLE);
             placesMessage.setVisibility(View.GONE);
 //            swipeRefreshLayout.post(new Runnable() {
 //                @Override
@@ -302,7 +298,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             if (adapter.getItemCount() == 0)
                 reloadData();
             else
-                placesProgress.setVisibility(View.GONE);
+                bounceProgressBar.setVisibility(View.GONE);
         }
     }
 
@@ -317,7 +313,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             toolbarCallbacks.getToolbar().setBackgroundColor(getResources().getColor(R.color.main_color));
 //            placesHeaderProgress.setVisibility(View.GONE);
         }
-        placesProgress.setVisibility(View.GONE);
+        bounceProgressBar.setVisibility(View.GONE);
         if (adapter.getItemCount() == 0)
             placesMessage.setVisibility(View.VISIBLE);
         if (isAdded())
@@ -332,7 +328,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             API.yelpSearch(page, new IRequestable() {
                 @Override
                 public void completed(Object... params) {
-                    placesProgress.setVisibility(View.GONE);
+                    bounceProgressBar.setVisibility(View.GONE);
                     placesMessage.setVisibility(View.GONE);
 //                    recyclerBackground.setVisibility(View.VISIBLE);
 //                    recyclerView.setVisibility(View.VISIBLE);
@@ -357,7 +353,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
 
                 @Override
                 public void failed(Object... params) {
-                    placesProgress.setVisibility(View.GONE);
+                    bounceProgressBar.setVisibility(View.GONE);
                     placesMessage.setVisibility(View.GONE);
                     if (params == null || params.length == 0) {
                         showErrorText(getString(R.string.problems_with_loading));
@@ -370,7 +366,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             });
         } else {
             adapter.removeFooter();
-            placesProgress.setVisibility(View.GONE);
+            bounceProgressBar.setVisibility(View.GONE);
         }
     }
 }

@@ -9,11 +9,16 @@
     android:paddingBottom="24dp"
     android:layout_alignParentBottom="true">
 
-    <com.pnikosis.materialishprogress.ProgressWheel
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        app:matProg_barColor="@color/main_color"
-        app:matProg_barWidth="3dp"
-        app:matProg_progressIndeterminate="true"
-        android:layout_centerInParent="true" />
+    <relish.permoveo.com.relish.view.BounceProgressBar
+
+        xmlns:bpb="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/bounce_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        bpb:shape="circle"
+        bpb:singleSrcSize="14dp"
+        bpb:speed="250"
+        bpb:src="@color/main_color" />
 </RelativeLayout>
