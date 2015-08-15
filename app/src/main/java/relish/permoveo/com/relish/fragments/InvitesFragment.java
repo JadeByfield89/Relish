@@ -1,6 +1,8 @@
 package relish.permoveo.com.relish.fragments;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.alexvasilkov.foldablelayout.UnfoldableView;
+import com.alexvasilkov.foldablelayout.shading.GlanceFoldShading;
 
 import java.util.ArrayList;
 
@@ -82,6 +85,9 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
 
         detailsView.setVisibility(View.INVISIBLE);
         detailsView.setOnClickListener(this);
+
+        Bitmap glance = BitmapFactory.decodeResource(getResources(), R.drawable.unfold_glance);
+        unfoldableView.setFoldShading(new GlanceFoldShading(getActivity(), glance));
 
         unfoldableView.setOnFoldingListener(new UnfoldableView.SimpleFoldingListener() {
             @Override

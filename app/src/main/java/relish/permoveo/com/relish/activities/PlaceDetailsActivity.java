@@ -480,13 +480,15 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
                                             final GoogleReview googleReview = (GoogleReview) googleReviews.get(i);
                                             fetchedPlace.reviews.add(googleReview);
                                             final int reviewId = fetchedPlace.reviews.size() - 1;
-                                            API.getGoogleAuthorImage(googleReview.getAuthorUrl().substring(googleReview.getAuthorUrl().lastIndexOf('/') + 1), new IRequestableDefaultImpl() {
-                                                @Override
-                                                public void completed(Object... params) {
-                                                    fetchedPlace.reviews.get(reviewId).setAuthorImage((String) params[0]);
-                                                    renderReviewImage(fetchedPlace.reviews.get(reviewId));
-                                                }
-                                            });
+                                            if(googleReview.getAuthorUrl() != null) {
+                                                API.getGoogleAuthorImage(googleReview.getAuthorUrl().substring(googleReview.getAuthorUrl().lastIndexOf('/') + 1), new IRequestableDefaultImpl() {
+                                                    @Override
+                                                    public void completed(Object... params) {
+                                                        fetchedPlace.reviews.get(reviewId).setAuthorImage((String) params[0]);
+                                                        renderReviewImage(fetchedPlace.reviews.get(reviewId));
+                                                    }
+                                                });
+                                            }
                                         }
                                         bounceProgress.setVisibility(View.GONE);
                                         placeDetailsMessage.setVisibility(View.GONE);
