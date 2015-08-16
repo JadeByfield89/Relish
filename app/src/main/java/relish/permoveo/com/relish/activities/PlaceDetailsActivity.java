@@ -9,12 +9,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +24,9 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -68,6 +73,7 @@ import relish.permoveo.com.relish.model.google.GoogleReview;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.model.yelp.YelpReview;
 import relish.permoveo.com.relish.network.API;
+import relish.permoveo.com.relish.util.BlurBuilder;
 import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.BounceProgressBar;
@@ -106,7 +112,7 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
 
 
     @Bind(R.id.reveal_container)
-    LinearLayout reveal_container;
+    RelativeLayout reveal_container;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -159,6 +165,11 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
 
     @Bind(R.id.yelp_logo)
     ImageView yelpLogo;
+
+    @Bind(R.id.invite_card)
+    View inviteCard;
+
+    private boolean alphaAnimationStarted;
 
     private class PlaceDetailsCallback extends IRequestableDefaultImpl {
 
@@ -228,6 +239,7 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
             }
         });
 
+        placeDetalsScrollView.setDrawingCacheEnabled(true);
         placeDetalsScrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -595,6 +607,7 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
     @OnClick(R.id.fab_place_details)
     public void onFabPressed() {
 
+        //BlurBuilder.Blur.fastblur(this, placeDetalsScrollView.getDrawingCache(), 5, true);
         final float startX = placeDetailsFab.getX();
 
         AnimatorPath path = new AnimatorPath();
@@ -639,11 +652,18 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
         public void onAnimationEnd(Animator animation) {
 
             super.onAnimationEnd(animation);
+            Log.d("onAnimationEnd", "onAnimationEnd");
 
             placeDetailsFab.setVisibility(View.INVISIBLE);
-            activity_container.setBackgroundColor(getResources()
-                    .getColor(R.color.main_color));
+           activity_container.setBackgroundColor(getResources()
+                   .getColor(R.color.main_color));
             reveal_container.setVisibility(View.VISIBLE);
+
+
+
+
+
+
 
             for (int i = 0; i < activity_container.getChildCount(); i++) {
 
@@ -654,6 +674,13 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
 
                 animator.setStartDelay(i * 50);
                 animator.start();
+            }
+
+            if(!alphaAnimationStarted) {
+                Animation in = new AlphaAnimation(0.0f, 1.0f);
+                in.setDuration(500);
+                inviteCard.setAnimation(in);
+                alphaAnimationStarted = true;
             }
         }
     };

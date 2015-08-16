@@ -1,8 +1,10 @@
 package relish.permoveo.com.relish.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.os.Build;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -45,4 +47,6 @@ public class BlurBuilder {
         v.draw(c);
         return b;
     }
+
+
 }
