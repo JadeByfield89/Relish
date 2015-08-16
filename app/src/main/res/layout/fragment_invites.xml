@@ -1,11 +1,10 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             xmlns:dslv="http://schemas.android.com/apk/res-auto"
-
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="relish.permoveo.com.relish.fragments.InvitesFragment">
-
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:dslv="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="relish.permoveo.com.relish.fragments.InvitesFragment">
 
 
     <com.mobeta.android.dslv.DragSortListView
@@ -31,81 +30,92 @@
         dslv:use_default_controller="true"
         android:scrollbarStyle="outsideOverlay" />
 
-        <View
-            android:id="@+id/touch_interceptor_view"
+    <View
+        android:id="@+id/touch_interceptor_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <RelativeLayout
+        android:id="@+id/details_layout"
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/invite_map_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="320dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:background="@drawable/google_maps" />
 
 
+        <TextView
+            android:id="@+id/invite_title"
+            android:text="Lunch with Friends"
+            android:textColor="@android:color/black"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_below="@id/invite_map_image"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
 
-        <RelativeLayout
-            android:id="@+id/details_layout"
-            android:background="#fff"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/invite_date_time"
+            android:text="June 9 / 4:00pm"
+            android:textSize="12sp"
+            android:layout_marginTop="12dp"
+
+            android:layout_marginRight="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/invite_map_image"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
 
-            <ImageView
-                android:id="@+id/invite_map_image"
-                android:layout_width="match_parent"
-                android:layout_height="320dp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:background="@drawable/google_maps" />
+        <TextView
+            android:id="@+id/invite_place_name"
+            android:layout_below="@id/invite_title"
+            android:layout_marginTop="8dp"
+            android:layout_alignLeft="@id/invite_title"
+            android:text="D'elish Sandwich Shop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/invite_place_address"
+            android:layout_below="@id/invite_place_name"
+            android:layout_alignLeft="@id/invite_place_name"
+            android:text="525 S Main St, Atlanta GA, 31001"
+            android:layout_marginTop="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
 
-            <TextView
-                android:id="@+id/invite_title"
-                android:text="Lunch with Friends"
-                android:textColor="@android:color/black"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="12dp"
-                android:layout_below="@id/invite_map_image"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+    </RelativeLayout>
 
+    <com.alexvasilkov.foldablelayout.UnfoldableView
+        android:id="@+id/unfoldable_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-            <TextView
-                android:id="@+id/invite_date_time"
-                android:text="June 9 / 4:00pm"
-                android:textSize="12sp"
-                android:layout_marginTop="12dp"
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab_place_details"
+        android:layout_width="@dimen/fab_size"
+        android:layout_height="@dimen/fab_size"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="10dp"
+        android:elevation="10dp"
+        android:src="@drawable/ic_send"
+        app:fab_colorNormal="@color/main_color"
+        app:fab_colorPressed="@color/main_color_dark"
+        app:fab_shadow="true" />
 
-                android:layout_marginRight="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/invite_map_image"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
-
-            <TextView
-                android:id="@+id/invite_place_name"
-                android:layout_below="@id/invite_title"
-                android:layout_marginTop="8dp"
-                android:layout_alignLeft="@id/invite_title"
-                android:text="D'elish Sandwich Shop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/invite_place_address"
-                android:layout_below="@id/invite_place_name"
-                android:layout_alignLeft="@id/invite_place_name"
-                android:text="525 S Main St, Atlanta GA, 31001"
-                android:layout_marginTop="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-
-
-        </RelativeLayout>
-
-        <com.alexvasilkov.foldablelayout.UnfoldableView
-            android:id="@+id/unfoldable_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-</FrameLayout>
+</RelativeLayout>
