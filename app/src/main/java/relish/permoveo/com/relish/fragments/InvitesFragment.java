@@ -3,6 +3,7 @@ package relish.permoveo.com.relish.fragments;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,8 @@ import android.widget.ListView;
 
 import com.alexvasilkov.foldablelayout.UnfoldableView;
 import com.alexvasilkov.foldablelayout.shading.GlanceFoldShading;
+import com.mobeta.android.dslv.DragSortListView;
+import com.mobeta.android.dslv.SimpleFloatViewManager;
 
 import java.util.ArrayList;
 
@@ -28,10 +31,11 @@ import relish.permoveo.com.relish.adapter.list.InvitesListAdapter;
 import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.util.RecyclerItemClickListener;
 
+
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InvitesFragment extends Fragment implements AdapterView.OnItemClickListener, View.OnClickListener {
+public class InvitesFragment extends Fragment implements AdapterView.OnItemClickListener, View.OnClickListener, AdapterView.OnItemLongClickListener {
 
     @Bind(R.id.touch_interceptor_view)
     View touchInterceptorView;
@@ -48,7 +52,7 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
     UnfoldableView unfoldableView;
 
     @Bind(R.id.invites_list_view)
-    ListView invitesListView;
+    DragSortListView invitesListView;
 
     private InvitesListAdapter listAdapter;
     
@@ -82,6 +86,13 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
         listAdapter = new InvitesListAdapter(invites, getActivity());
         invitesListView.setAdapter(listAdapter);
         invitesListView.setOnItemClickListener(this);
+
+
+        SimpleFloatViewManager simpleFloatViewManager = new SimpleFloatViewManager(invitesListView);
+        simpleFloatViewManager.setBackgroundColor(Color.TRANSPARENT);
+        invitesListView.setFloatViewManager(simpleFloatViewManager);
+        //invitesListView.setDragListener(this);
+        //invitesListView.setOnItemLongClickListener(this);
 
         detailsView.setVisibility(View.INVISIBLE);
         detailsView.setOnClickListener(this);
@@ -134,5 +145,12 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
         if(isUnfolded){
             unfoldableView.foldBack();
         }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+        invitesListView.setDragEnabled(true);
+        //invitesListView.startDrag(view, 0, view.getX(), view.getY());
+        return false;
     }
 }

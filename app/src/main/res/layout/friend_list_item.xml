@@ -24,7 +24,7 @@
             android:id="@+id/friend_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/main_color"
+            android:textColor="@android:color/black"
             android:textSize="18sp"/>
 
         <LinearLayout

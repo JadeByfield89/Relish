@@ -4,7 +4,8 @@
     android:id="@+id/item_invite_container"
     android:layout_width="match_parent"
     android:background="@drawable/card_background"
-
+    android:focusable="false"
+    android:focusableInTouchMode="false"
     android:layout_height="wrap_content">
 
 
