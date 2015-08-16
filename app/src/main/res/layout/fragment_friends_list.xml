@@ -36,12 +36,23 @@
 
         <TextView
             android:id="@+id/empty_message"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/empty_color"
+            android:text="@string/friends_list_empty"
             android:textSize="18sp"
             android:gravity="center"/>
+
+        <Button
+            android:id="@+id/add_button"
+            android:layout_width="135dp"
+            android:background="@drawable/circular_button_main"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="8dp"
+            android:textSize="13sp"
+            android:text="Add Friends"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <relish.permoveo.com.relish.view.BounceProgressBar

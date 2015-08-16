@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +49,9 @@ public class FriendsListFragment extends Fragment {
     @Bind(R.id.friends_list_recycler)
     RecyclerView recyclerView;
 
+    @Bind(R.id.add_button)
+    Button addButton;
+
     public static FriendsListFragment newInstance(String group) {
         FriendsListFragment friendsListFragment = new FriendsListFragment();
         Bundle bundle = new Bundle();
@@ -74,7 +78,11 @@ public class FriendsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_friends_list, container, false);
         ButterKnife.bind(this, v);
-        emptyMessage.setText(String.format(getString(R.string.friends_list_empty), group));
+        //emptyMessage.setText(String.format(getString(R.string.friends_list_empty), group, group));
+        emptyMessage.setText(String.format(getString(R.string.friends_list_empty), group, group));
+        addButton.setText("Add " + group);
+        addButton.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+
         emptyMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         emptyMessage.setIncludeFontPadding(false);
 
