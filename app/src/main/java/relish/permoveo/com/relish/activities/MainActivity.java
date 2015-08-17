@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.fragments.FriendsFragment;
 import relish.permoveo.com.relish.fragments.InvitesFragment;
 import relish.permoveo.com.relish.fragments.NavigationDrawerFragment;
+import relish.permoveo.com.relish.fragments.PlacesFilterFragment;
 import relish.permoveo.com.relish.fragments.PlacesFragment;
 import relish.permoveo.com.relish.fragments.SettingsFragment;
 import relish.permoveo.com.relish.gps.GPSTracker;
@@ -74,6 +76,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
     Fragment current = null;
     Dialog d;
     NavigationDrawerFragment navDrawer;
+    PlacesFilterFragment filterFragment;
 
     BroadcastReceiver locationReceiver = new BroadcastReceiver() {
         @Override
@@ -102,6 +105,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         setSupportActionBar(toolbar);
         navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
         navDrawer = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        filterFragment = (PlacesFilterFragment) getSupportFragmentManager().findFragmentById(R.id.filter_drawer);
 
         drawerLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -121,6 +125,9 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
 
                 navDrawer.getView().getLayoutParams().width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, smallestWidth, metrics) - (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56.0f, getResources().getDisplayMetrics());
                 navDrawer.getView().requestLayout();
+
+                filterFragment.getView().getLayoutParams().width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, smallestWidth, metrics) - (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 56.0f, getResources().getDisplayMetrics());
+                filterFragment.getView().requestLayout();
             }
         });
 
@@ -201,8 +208,8 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem item = menu.add(0, R.id.action_logout, 0, "Logout").setIcon(R.drawable.ic_logout);
-        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        //MenuItem item = menu.add(0, R.id.action_logout, 0, "Logout").setIcon(R.drawable.ic_logout);
+        //MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
         return true;
     }
 

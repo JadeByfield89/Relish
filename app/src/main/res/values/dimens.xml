@@ -8,4 +8,5 @@
     <dimen name="fab_shadow_size">12dp</dimen>
     <dimen name="fab_threshold">2dp</dimen>
     <dimen name="places_grid_spacing">2dp</dimen>
+    <dimen name="places_categories_text_size">15sp</dimen>
 </resources>
