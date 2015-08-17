@@ -208,8 +208,8 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //MenuItem item = menu.add(0, R.id.action_logout, 0, "Logout").setIcon(R.drawable.ic_logout);
-        //MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        MenuItem item = menu.add(0, R.id.action_filter, 0, "Filter").setIcon(R.drawable.ic_filter);
+        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
         return true;
     }
 
@@ -251,10 +251,8 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         }
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
-            ParseUser.logOut();
-            startActivity(new Intent(this, SignupActivity.class));
-            finish();
+        if (id == R.id.action_filter) {
+            drawerLayout.openDrawer(filterFragment.getView());
             return true;
         }
 

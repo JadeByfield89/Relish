@@ -39,7 +39,8 @@ public class SearchRequest extends RelishRequest<Integer, Void, PlacesResponse> 
         request.addQuerystringParameter("offset", String.valueOf(ConstantUtil.PLACES_LIMIT_SEARCH * page));
         request.addQuerystringParameter("sort", String.valueOf(ConstantUtil.PLACES_SORTING_ORDER));
 //            request.addQuerystringParameter("radius_filter", String.valueOf(ConstantUtil.PLACES_RADIUS_SEARCH));
-        request.addQuerystringParameter("category_filter", "restaurants");
+        request.addQuerystringParameter("term", "restaurants");
+        request.addQuerystringParameter("category_filter", "thai");
 
         API.service.signRequest(API.accessToken, request);
         PlacesResponse placesResponse = null;
