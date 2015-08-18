@@ -9,6 +9,8 @@ import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Verb;
 
+import java.util.ArrayList;
+
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
@@ -23,12 +25,26 @@ import relish.permoveo.com.relish.util.deserializer.RestaurantLocationDeserializ
  */
 public class SearchRequest extends RelishRequest<Integer, Void, PlacesResponse> {
 
+    private ArrayList<String> categories = new ArrayList<String>();
+
     public SearchRequest(IRequestable callback) {
         super(callback);
         gson = new GsonBuilder()
                 .registerTypeAdapter(YelpPlace.RestaurantLocation.class, new RestaurantLocationDeserializer())
                 .create();
     }
+
+    public SearchRequest(IRequestable callback, ArrayList<String> categories) {
+        super(callback);
+        gson = new GsonBuilder()
+                .registerTypeAdapter(YelpPlace.RestaurantLocation.class, new RestaurantLocationDeserializer())
+                .create();
+
+        this.categories = categories;
+    }
+
+
+
 
     @Override
     protected PlacesResponse doInBackground(Integer... params) {
@@ -40,7 +56,38 @@ public class SearchRequest extends RelishRequest<Integer, Void, PlacesResponse> 
         request.addQuerystringParameter("sort", String.valueOf(ConstantUtil.PLACES_SORTING_ORDER));
 //            request.addQuerystringParameter("radius_filter", String.valueOf(ConstantUtil.PLACES_RADIUS_SEARCH));
         request.addQuerystringParameter("term", "restaurants");
-        request.addQuerystringParameter("category_filter", "thai");
+        StringBuilder builder = new StringBuilder();
+
+        Log.d("SearchRequest", "Categories size " + categories);
+
+        if(categories.size() == 1){
+            Log.d("SearchRequest", "Category size is 1");
+            Log.d("SearchRequest", "Category filter is " + categories.get(0));
+            request.addQuerystringParameter("category_filter", categories.get(0));
+
+        }
+
+        else if(categories.size() > 1) {
+            Log.d("SearchRequest", "Category size is greater than 1");
+
+            for (String category : categories) {
+
+                if(categories.indexOf(category) == 0){
+                    builder.append(category);
+                }else {
+                    builder.append("," + category);
+                }
+
+                Log.d("SearchRequest", "Category filters are " + builder.toString());
+
+
+            }
+
+            request.addQuerystringParameter("category_filter", builder.toString());
+
+        }
+
+
 
         API.service.signRequest(API.accessToken, request);
         PlacesResponse placesResponse = null;
