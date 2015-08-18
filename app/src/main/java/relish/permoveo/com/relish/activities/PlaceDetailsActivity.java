@@ -32,6 +32,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import relish.permoveo.com.relish.adapter.pager.InvitePagerAdapter;
 import relish.permoveo.com.relish.animation.AnimatorPath;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -51,6 +53,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
@@ -166,8 +169,17 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
     @Bind(R.id.yelp_logo)
     ImageView yelpLogo;
 
-    @Bind(R.id.invite_card)
-    View inviteCard;
+    @Bind(R.id.layout_invite)
+    View layoutInvite;
+
+    @Bind(R.id.pager_invite)
+    ViewPager invitePager;
+
+    @Bind(R.id.pager_indicator)
+    CirclePageIndicator pagerIndicator;
+
+
+    private InvitePagerAdapter invitePagerAdapter;
 
     private boolean alphaAnimationStarted;
 
@@ -251,6 +263,10 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
         toolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.main_color)));
         updateToolbar(toolbar);
         renderFavorite();
+
+        invitePagerAdapter = new InvitePagerAdapter(getSupportFragmentManager());
+        invitePager.setAdapter(invitePagerAdapter);
+        pagerIndicator.setViewPager(invitePager);
     }
 
     @OnClick({R.id.fake_fab_place_details, R.id.fab_place_details})
@@ -655,9 +671,10 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
             Log.d("onAnimationEnd", "onAnimationEnd");
 
             placeDetailsFab.setVisibility(View.INVISIBLE);
-           activity_container.setBackgroundColor(getResources()
-                   .getColor(R.color.main_color));
+           //activity_container.setBackgroundColor(getResources()
+                  // .getColor(R.color.main_color));
             reveal_container.setVisibility(View.VISIBLE);
+
 
 
 
@@ -679,7 +696,23 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
             if(!alphaAnimationStarted) {
                 Animation in = new AlphaAnimation(0.0f, 1.0f);
                 in.setDuration(500);
-                inviteCard.setAnimation(in);
+                invitePager.setAnimation(in);
+                invitePager.setLayoutAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
                 alphaAnimationStarted = true;
             }
         }

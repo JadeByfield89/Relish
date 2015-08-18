@@ -104,9 +104,6 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     @Bind(R.id.header_layout)
     RelativeLayout headerLayout;
 
-    @Bind(R.id.root_layout)
-    RelativeLayout rootLayout;
-
     private ArrayList<String> categories;
     private boolean byCategory = false;
 
@@ -120,7 +117,6 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
 
         toolbarCallbacks = (ToolbarCallbacks) activity;
         adapter = new PlacesAdapter(activity);
-        GPSTracker.get.startOnMainLooper();
     }
 
     @Override
@@ -282,15 +278,15 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     }
 
     public void reloadData() {
-        headerLayout.setVisibility(View.INVISIBLE);
-        swipeRefreshLayout.setVisibility(View.INVISIBLE);
-        bounceProgressBar.setVisibility(View.VISIBLE);
+        //headerLayout.setVisibility(View.INVISIBLE);
+        //swipeRefreshLayout.setVisibility(View.INVISIBLE);
+        //bounceProgressBar.setVisibility(View.VISIBLE);
         renderHeader(null);
+        recyclerView.scrollToPosition(0);
         page = 0;
         total = Integer.MAX_VALUE;
         adapter.clear();
-        recyclerView.scrollVerticallyTo(0);
-        loadData(false, byCategory);
+        loadData(true, byCategory);
     }
 
     private void initialRender() {
