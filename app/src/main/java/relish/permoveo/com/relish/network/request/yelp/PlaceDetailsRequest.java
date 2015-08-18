@@ -14,8 +14,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import relish.permoveo.com.relish.interfaces.IRequestable;
-import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.model.Review;
+import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.network.request.RelishRequest;
 import relish.permoveo.com.relish.network.response.yelp.PlaceDetailsResponse;
@@ -39,6 +39,8 @@ public class PlaceDetailsRequest extends RelishRequest<String, Void, PlaceDetail
     @Override
     protected PlaceDetailsResponse doInBackground(String... params) {
         String id = params[0];
+        if (id.endsWith("var-miami-beach-2"))
+            id = "bolivar-miami-beach-2";
         OAuthRequest request = new OAuthRequest(Verb.GET, ConstantUtil.YELP_PLACE_DETAILS + "/" + id);
 
         API.service.signRequest(API.accessToken, request);
