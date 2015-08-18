@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="sms_invitation">Hello, get the Relish app from Google Play store!</string>
+    <string name="sms_invitation">Hey! Wanna grab a bite to eat with me? Download this awesome app called Relish, so that I can invite you to some of my favorite places! :)
+ https://play.google.com/store/apps/details?id=relish.com.permoveo.relish</string>
 </resources>

@@ -102,7 +102,7 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="type_greek">Greek</string>
     <string name="type_gluten_free">Gluten Free</string>
     <string name="type_halal">Halal</string>
-    <string name="type_italian"></string>
+    <string name="type_italian">Italian</string>
     <string name="type_japanese">Japanese</string>
     <string name="type_kosher">Kosher</string>
     <string name="type_latin_american">Latin American</string>
@@ -115,9 +115,19 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="type_vegetarian">Vegetarian</string>
 
     <string name="header_sort_by">I\'M IN THE MOOD FOR</string>
-    <string name="header_distance">DISTANCE(miles)</string>
+    <string name="header_distance">DISTANCE (miles)</string>
     <string name="header_rating">RATING</string>
     <string name="header_clear">CLEAR</string>
     <string name="header_done">DONE</string>
+
+    <!-- Distance Strings -->
+    <string name="distance_half_mile">.5</string>
+    <string name="distance_mile">1</string>
+    <string name="distance_5_miles">5</string>
+    <string name="distance_10_miles">10</string>
+    <string name="distance_25_miles">25</string>
+
+
+
 
 </resources>

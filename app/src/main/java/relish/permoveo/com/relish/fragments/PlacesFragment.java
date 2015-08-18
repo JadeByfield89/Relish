@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,6 +101,15 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     @Bind(R.id.places_swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
 
+    @Bind(R.id.header_layout)
+    RelativeLayout headerLayout;
+
+    @Bind(R.id.root_layout)
+    RelativeLayout rootLayout;
+
+    private ArrayList<String> categories;
+    private boolean byCategory = false;
+
     public PlacesFragment() {
         // Required empty public constructor
     }
@@ -110,6 +120,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
 
         toolbarCallbacks = (ToolbarCallbacks) activity;
         adapter = new PlacesAdapter(activity);
+        GPSTracker.get.startOnMainLooper();
     }
 
     @Override
@@ -249,7 +260,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
         if (!loading && (totalItemCount - visibleItemCount)
                 <= (firstVisibleItem + visibleThreshold)) {
             page++;
-            loadData(true);
+            loadData(true, byCategory);
         }
     }
 
@@ -270,13 +281,16 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
         initialRender();
     }
 
-    private void reloadData() {
+    public void reloadData() {
+        headerLayout.setVisibility(View.INVISIBLE);
+        swipeRefreshLayout.setVisibility(View.INVISIBLE);
+        bounceProgressBar.setVisibility(View.VISIBLE);
         renderHeader(null);
-        recyclerView.scrollToPosition(0);
         page = 0;
         total = Integer.MAX_VALUE;
         adapter.clear();
-        loadData(false);
+        recyclerView.scrollVerticallyTo(0);
+        loadData(false, byCategory);
     }
 
     private void initialRender() {
@@ -321,13 +335,15 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     }
 
     @Override
-    public void loadData(final boolean loadMore) {
+    public void loadData(final boolean loadMore, boolean byCategory) {
         if (total > adapter.getItemCount()) {
             loading = true;
             renderHeader(null);
             API.yelpSearch(page, new IRequestable() {
                 @Override
                 public void completed(Object... params) {
+                    headerLayout.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setVisibility(View.VISIBLE);
                     bounceProgressBar.setVisibility(View.GONE);
                     placesMessage.setVisibility(View.GONE);
 //                    recyclerBackground.setVisibility(View.VISIBLE);
@@ -363,10 +379,16 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
                     loading = false;
                     swipeRefreshLayout.setRefreshing(false);
                 }
-            });
+            }, byCategory, categories);
         } else {
             adapter.removeFooter();
             bounceProgressBar.setVisibility(View.GONE);
         }
+    }
+
+
+    public void setCategories(ArrayList<String> categories){
+        this.categories = categories;
+        byCategory = true;
     }
 }

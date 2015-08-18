@@ -13,6 +13,8 @@ import org.scribe.builder.ServiceBuilder;
 import org.scribe.model.Token;
 import org.scribe.oauth.OAuthService;
 
+import java.util.ArrayList;
+
 import relish.permoveo.com.relish.interfaces.IRequestable;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.network.request.google.GoogleAuthorRequest;
@@ -35,8 +37,13 @@ public class API {
         accessToken = new Token(ConstantUtil.YELP_TOKEN, ConstantUtil.YELP_TOKEN_SECRET);
     }
 
-    public static void yelpSearch(int page, final IRequestable callback) {
-        new SearchRequest(callback).execute(page);
+    public static void yelpSearch(int page, final IRequestable callback, boolean byCategory, ArrayList<String> categories) {
+        if(byCategory) {
+            new SearchRequest(callback, categories).execute(page);
+        } else{
+            new SearchRequest(callback).execute(page);
+
+        }
     }
 
     public static void getYelpPlaceDetails(String id, final IRequestable callback) {

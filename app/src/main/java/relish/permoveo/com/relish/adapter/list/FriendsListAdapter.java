@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.parse.ParseGeoPoint;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.model.Friend;
+import relish.permoveo.com.relish.util.LocationUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
@@ -101,7 +101,7 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
                 }
             }
 
-            double distanceTo = friend.location.distanceInMilesTo(new ParseGeoPoint(GPSTracker.get.getLocation().getLatitude(), GPSTracker.get.getLocation().getLongitude()));
+            double distanceTo = LocationUtil.distance(friend.location.getLatitude(), friend.location.getLongitude(), GPSTracker.get.getLocation().getLatitude(), GPSTracker.get.getLocation().getLongitude());
             holder.friendLocation.setText(friend.formatDistance(distanceTo) +
                     " " +
                     context.getResources().getQuantityString(R.plurals.miles, distanceTo == 1.0d ? 1 : 2, distanceTo)

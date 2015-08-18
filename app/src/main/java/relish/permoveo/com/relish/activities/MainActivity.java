@@ -19,19 +19,18 @@ import android.text.SpannableString;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.parse.ParseUser;
-
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -52,7 +51,7 @@ import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.view.RelishDrawerToggle;
 
 
-public class MainActivity extends RelishActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, ToolbarCallbacks {
+public class MainActivity extends RelishActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, ToolbarCallbacks, PlacesFilterFragment.OnFilterSelectionCompleteListener {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -86,7 +85,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
 
             hideLoader();
             if (current != null && current instanceof OnResumeLoadingCallbacks && current.isAdded()) {
-                ((OnResumeLoadingCallbacks) current).loadData(false);
+                ((OnResumeLoadingCallbacks) current).loadData(false, false );
             }
             LocalBroadcastManager.getInstance(MainActivity.this).unregisterReceiver(this);
         }
@@ -326,4 +325,12 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         return titleTextView;
     }
 
+    @Override
+    public void onFilterSelectionComplete(ArrayList<String> categories) {
+        if(current instanceof  PlacesFragment){
+            ((PlacesFragment) current).setCategories(categories);
+            drawerLayout.closeDrawer(Gravity.RIGHT);
+            ((PlacesFragment) current).reloadData();
+        }
+    }
 }

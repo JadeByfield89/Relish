@@ -208,6 +208,7 @@ public enum GPSTracker implements LocationListener {
                 ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
                 ParseUser.getCurrentUser().saveInBackground();
             }
+            stopOnMainLooper();
             LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(ConstantUtil.ACTION_GET_LOCATION));
         }
     }

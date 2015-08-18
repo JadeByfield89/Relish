@@ -1,14 +1,10 @@
 package relish.permoveo.com.relish.fragments.search;
 
 
-import android.app.Activity;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -18,7 +14,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.telephony.SmsManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.dd.CircularProgressButton;
-import com.pnikosis.materialishprogress.ProgressWheel;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -46,6 +41,7 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
  */
 public class ContactsFragment extends Fragment {
 
+    private static final int SMS_SENT = 12345;
     private MenuItem searchItem;
     private static final String[] PROJECTION = new String[]{
             ContactsContract.CommonDataKinds.Phone._ID,
@@ -55,6 +51,8 @@ public class ContactsFragment extends Fragment {
     };
 
     private ContactsAdapter adapter;
+    private Contact currentContact;
+    private CircularProgressButton currentBtn;
 
     @Bind(R.id.empty_contacts_container)
     LinearLayout emptyView;
@@ -77,28 +75,34 @@ public class ContactsFragment extends Fragment {
         adapter = new ContactsAdapter(getActivity(), new ContactsAdapter.ViewHolder.ContactsButtonClickListener() {
             @Override
             public void onClick(View view) {
-                final CircularProgressButton currentBtn = (CircularProgressButton) view.findViewById(R.id.friend_btn);
+                currentBtn = (CircularProgressButton) view.findViewById(R.id.friend_btn);
                 int position = recyclerView.getChildPosition(view);
-                final Contact currentContact = (Contact) adapter.getItem(position);
+                currentContact = (Contact) adapter.getItem(position);
                 if (currentBtn.getProgress() != 100) {
-                    currentBtn.setProgress(50);
+//                    currentBtn.setProgress(50);
 
-                    PendingIntent sentPI = PendingIntent.getBroadcast(getActivity(), 0,
-                            new Intent("SMS_SENT"), 0);
+                    String message = getString(R.string.sms_invitation);
+                    Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
+                    sendIntent.setData(Uri.parse("sms:" + currentContact.number));
+                    sendIntent.putExtra("sms_body", message);
+                    startActivityForResult(sendIntent, SMS_SENT);
 
-                    getActivity().registerReceiver(new BroadcastReceiver() {
-                        @Override
-                        public void onReceive(Context context, Intent intent) {
-                            if (getResultCode() == Activity.RESULT_OK) {
-                                currentBtn.setProgress(100);
-                                currentContact.isInvited = true;
-                                adapter.update(currentContact);
-                            }
-                        }
-                    }, new IntentFilter("SMS_SENT"));
-
-                    SmsManager sms = SmsManager.getDefault();
-                    sms.sendTextMessage(currentContact.number, null, getString(R.string.sms_invitation), sentPI, null);
+//                    PendingIntent sentPI = PendingIntent.getBroadcast(getActivity(), 0,
+//                            new Intent("SMS_SENT"), 0);
+//
+//                    getActivity().registerReceiver(new BroadcastReceiver() {
+//                        @Override
+//                        public void onReceive(Context context, Intent intent) {
+//                            if (getResultCode() == Activity.RESULT_OK) {
+//                                currentBtn.setProgress(100);
+//                                currentContact.isInvited = true;
+//                                adapter.update(currentContact);
+//                            }
+//                        }
+//                    }, new IntentFilter("SMS_SENT"));
+//
+//                    SmsManager sms = SmsManager.getDefault();
+//                    sms.sendTextMessage(currentContact.number, null, getString(R.string.sms_invitation), sentPI, null);
                 }
             }
         });
@@ -175,7 +179,7 @@ public class ContactsFragment extends Fragment {
                             contact.name = cursor.getString(displayNameIndex);
                             contact.number = cursor.getString(phoneIndex);
                             contact.image = cursor.getString(photoUriIndex);
-                            if (!contacts.containsKey(contact.name))
+                            if (!contacts.containsKey(contact.name) && !TextUtils.isEmpty(contact.number))
                                 contacts.put(contact.name, contact);
                         }
                     } finally {
@@ -202,7 +206,7 @@ public class ContactsFragment extends Fragment {
             }
         }
     }
-
+//
 //    @Override
 //    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
