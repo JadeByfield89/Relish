@@ -119,6 +119,9 @@ public class PlacesFilterFragment extends Fragment implements View.OnClickListen
     @Bind(R.id.categories_container)
     RelativeLayout categoriesContainer;
 
+    @Bind(R.id.header_sort_by_rating)
+    TextView headerSortByRating;
+
     private OnFilterSelectionCompleteListener mListener;
     private ArrayList<String> categoriesSelected = new ArrayList<String>();
     private int distanceSelected;
@@ -139,6 +142,8 @@ public class PlacesFilterFragment extends Fragment implements View.OnClickListen
         headerSortBy.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
 
         headerDistance.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+
+        headerSortByRating.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
 
         setListenersToCategories();
         setListenersToDistances();

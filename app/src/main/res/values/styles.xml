@@ -11,6 +11,26 @@
         <item name="android:textColorHint">@android:color/white</item>
     </style>
 
+    <style name="Theme.MyTheme" parent="Theme.AppCompat.Light">
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="colorPrimary">@color/main_color</item>
+
+        <!-- colorPrimaryDark is used to color the status bar -->
+        <item name="colorPrimaryDark">@color/main_color_dark</item>
+
+        <!--
+             colorAccent is used as the default value for colorControlActivated
+             which is used to color widgets
+        -->
+        <item name="colorAccent">@color/main_color</item>
+
+        <!-- You can also set colorControlNormal, colorControlActivated
+             colorControlHighlight & colorSwitchThumbNormal. -->
+    </style>
+
     <style name="RelishDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>

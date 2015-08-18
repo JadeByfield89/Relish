@@ -278,15 +278,15 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     }
 
     public void reloadData() {
-        headerLayout.setVisibility(View.INVISIBLE);
-        swipeRefreshLayout.setVisibility(View.INVISIBLE);
-        bounceProgressBar.setVisibility(View.VISIBLE);
+        //headerLayout.setVisibility(View.INVISIBLE);
+        //swipeRefreshLayout.setVisibility(View.INVISIBLE);
+        //bounceProgressBar.setVisibility(View.VISIBLE);
         renderHeader(null);
         recyclerView.scrollToPosition(0);
         page = 0;
         total = Integer.MAX_VALUE;
         adapter.clear();
-        loadData(false, byCategory);
+        loadData(true, byCategory);
     }
 
     private void initialRender() {

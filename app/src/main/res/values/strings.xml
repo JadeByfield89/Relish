@@ -119,6 +119,8 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="header_rating">RATING</string>
     <string name="header_clear">CLEAR</string>
     <string name="header_done">DONE</string>
+    <string name="header_sort_distance">SORT BY RATING</string>
+
 
     <!-- Distance Strings -->
     <string name="distance_half_mile">.5</string>

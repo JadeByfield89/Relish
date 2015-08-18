@@ -603,4 +603,29 @@
 
     </LinearLayout>
 
+
+    <TextView
+        android:id="@+id/header_sort_by_rating"
+        android:text="@string/header_sort_distance"
+        android:layout_below="@id/distance_container"
+        android:layout_marginTop="30dp"
+        android:textStyle="bold"
+        android:textSize="13sp"
+        android:layout_alignLeft="@id/distance_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/switch_rating"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/header_sort_by_rating"
+        android:layout_marginTop="-10dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content">
+
+
+    </android.support.v7.widget.SwitchCompat>
+
 </RelativeLayout>
