@@ -6,14 +6,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.alexvasilkov.foldablelayout.UnfoldableView;
 import com.alexvasilkov.foldablelayout.shading.GlanceFoldShading;
@@ -26,10 +25,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import relish.permoveo.com.relish.R;
-import relish.permoveo.com.relish.adapter.list.InvitesAdapter;
 import relish.permoveo.com.relish.adapter.list.InvitesListAdapter;
 import relish.permoveo.com.relish.model.Invite;
-import relish.permoveo.com.relish.util.RecyclerItemClickListener;
+import relish.permoveo.com.relish.util.TypefaceUtil;
+import relish.permoveo.com.relish.view.BounceProgressBar;
 
 
 /**
@@ -40,10 +39,17 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
     @Bind(R.id.touch_interceptor_view)
     View touchInterceptorView;
 
-
+    @Bind(R.id.empty_list_container)
+    LinearLayout emptyView;
 
     //@Bind(R.id.cover_view)
     //View coverView;
+
+    @Bind(R.id.bounce_progress)
+    BounceProgressBar progressBar;
+
+    @Bind(R.id.empty_message)
+    TextView emptyMessage;
 
     @Bind(R.id.details_layout)
     View detailsView;
@@ -55,8 +61,8 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
     DragSortListView invitesListView;
 
     private InvitesListAdapter listAdapter;
-    
-    private InvitesAdapter invitesAdapter;
+
+//    private InvitesAdapter invitesAdapter;
 
     private boolean isUnfolded;
 
@@ -74,17 +80,17 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
         View v = inflater.inflate(R.layout.fragment_invites, container, false);
         ButterKnife.bind(this, v);
 
-        invitesAdapter = new InvitesAdapter(getActivity());
+//        invitesAdapter = new InvitesAdapter(getActivity());
         touchInterceptorView.setClickable(false);
 
         //Test Invite
         ArrayList<Invite> invites = new ArrayList<Invite>();
         Invite invite = new Invite();
-        invitesAdapter.add(invite);
-        invites.add(invite);
+//        invitesAdapter.add(invite);
+//        invites.add(invite);
 
         listAdapter = new InvitesListAdapter(invites, getActivity());
-        invitesListView.setAdapter(listAdapter);
+//        invitesListView.setAdapter(listAdapter);
         invitesListView.setOnItemClickListener(this);
 
 
@@ -126,6 +132,9 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
             }
         });
 
+        emptyMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        emptyMessage.setIncludeFontPadding(false);
+
         return v;
     }
 
@@ -152,5 +161,16 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
         invitesListView.setDragEnabled(true);
         //invitesListView.startDrag(view, 0, view.getX(), view.getY());
         return false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        render();
+    }
+
+    private void render() {
+        emptyView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 }
