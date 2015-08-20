@@ -1,11 +1,13 @@
 package relish.permoveo.com.relish.activities;
 
 //import android.animation.Animator;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,33 +22,23 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-
 import android.view.ViewTreeObserver;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import relish.permoveo.com.relish.adapter.pager.InvitePagerAdapter;
-import relish.permoveo.com.relish.animation.AnimatorPath;
-
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
-
-//import relish.permoveo.com.relish.animation.ViewPropertyAnimator;
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
+import com.google.android.gms.location.places.Place;
 import com.melnykov.fab.FloatingActionButton;
-
 import com.nineoldandroids.view.ViewHelper;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -68,6 +60,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.adapter.pager.InvitePagerAdapter;
+import relish.permoveo.com.relish.animation.AnimationUtils;
+import relish.permoveo.com.relish.animation.AnimatorPath;
+import relish.permoveo.com.relish.animation.PathEvaluator;
+import relish.permoveo.com.relish.animation.PathPoint;
 import relish.permoveo.com.relish.interfaces.IRequestable;
 import relish.permoveo.com.relish.interfaces.IRequestableDefaultImpl;
 import relish.permoveo.com.relish.model.Review;
@@ -76,12 +73,12 @@ import relish.permoveo.com.relish.model.google.GoogleReview;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.model.yelp.YelpReview;
 import relish.permoveo.com.relish.network.API;
-import relish.permoveo.com.relish.util.BlurBuilder;
 import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.BounceProgressBar;
 import relish.permoveo.com.relish.view.RatingView;
-import relish.permoveo.com.relish.animation.*;
+
+//import relish.permoveo.com.relish.animation.ViewPropertyAnimator;
 
 
 
@@ -349,11 +346,20 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
 
         if (!TextUtils.isEmpty(fetchedPlace.phone)) {
             placeDetailsPhone.setVisibility(View.VISIBLE);
+            placeDetailsPhone.setPaintFlags(placeDetailsPhone.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             SpannableStringBuilder stringBuilder = new SpannableStringBuilder(fetchedPlace.phone);
             PhoneNumberUtils.formatNumber(stringBuilder, PhoneNumberUtils.getFormatTypeForLocale(Locale.US));
             placeDetailsPhone.setText(stringBuilder.toString());
             placeDetailsPhone.setTypeface(TypefaceUtil.PROXIMA_NOVA);
             placeDetailsPhone.setIncludeFontPadding(false);
+            placeDetailsPhone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:" + fetchedPlace.phone));
+                    PlaceDetailsActivity.this.startActivity(intent);
+                }
+            });
         } else {
             placeDetailsPhone.setVisibility(View.GONE);
         }

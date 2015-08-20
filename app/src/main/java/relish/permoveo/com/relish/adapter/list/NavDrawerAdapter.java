@@ -46,6 +46,21 @@ public class NavDrawerAdapter extends BaseAdapter {
         }
     }
 
+
+    public void set(String name, int count) {
+        int index = -1;
+        for (int i = 0; i < navDrawerItems.size(); i++) {
+            NavDrawerItem navDrawerItem = navDrawerItems.get(i);
+            if (!TextUtils.isEmpty(navDrawerItem.title) && navDrawerItem.title.equals(name))
+                index = i;
+        }
+
+        if (index != -1) {
+            navDrawerItems.get(index).counter = count;
+            notifyDataSetChanged();
+        }
+    }
+
     @Override
     public boolean areAllItemsEnabled() {
         return true;

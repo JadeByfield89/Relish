@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
@@ -29,6 +28,8 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.parse.ParseException;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -42,16 +43,19 @@ import relish.permoveo.com.relish.fragments.PlacesFilterFragment;
 import relish.permoveo.com.relish.fragments.PlacesFragment;
 import relish.permoveo.com.relish.fragments.SettingsFragment;
 import relish.permoveo.com.relish.gps.GPSTracker;
+import relish.permoveo.com.relish.interfaces.NavigationDrawerManagementCallbacks;
 import relish.permoveo.com.relish.interfaces.OnResumeLoadingCallbacks;
 import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
+import relish.permoveo.com.relish.manager.FriendsManager;
 import relish.permoveo.com.relish.util.ConnectionUtil;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.DialogUtil;
+import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.view.RelishDrawerToggle;
 
 
-public class MainActivity extends RelishActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, ToolbarCallbacks, PlacesFilterFragment.OnFilterSelectionCompleteListener {
+public class MainActivity extends RelishActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, ToolbarCallbacks, NavigationDrawerManagementCallbacks, PlacesFilterFragment.OnFilterSelectionCompleteListener {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -147,6 +151,28 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
                 super.onDrawerOpened(drawerView);
                 drawerOpen = true;
                 invalidateOptionsMenu();
+                FriendsManager.retrieveFriendsCount(new FriendsManager.FriendsManagerCallback<Integer, ParseException>() {
+                    @Override
+                    public void done(Integer count, ParseException e) {
+                        if (e == null && drawerOpen) {
+                            if (SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("friends") == -1
+                                    && SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("colleagues") == -1
+                                    && SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("coworkers") == -1)
+                                return;
+
+                            if (SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("friends") != -1)
+                                count -= SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("friends");
+
+                            if (SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("colleagues") != -1)
+                                count -= SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("colleagues");
+
+                            if (SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("coworkers") != -1)
+                                count -= SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("coworkers");
+
+                            navDrawer.reloadWithData("Friends", count);
+                        }
+                    }
+                });
             }
         };
 
@@ -206,13 +232,6 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem item = menu.add(0, R.id.action_filter, 0, "Filter").setIcon(R.drawable.ic_filter);
-        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-        return true;
-    }
-
-    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         hideMenuItems(menu, !drawerOpen);
         return super.onPrepareOptionsMenu(menu);
@@ -248,13 +267,6 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         if (drawerToggle != null && drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_filter) {
-            drawerLayout.openDrawer(filterFragment.getView());
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -329,8 +341,18 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
     public void onFilterSelectionComplete(ArrayList<String> categories) {
         if(current instanceof  PlacesFragment){
             ((PlacesFragment) current).setCategories(categories);
-            drawerLayout.closeDrawer(Gravity.RIGHT);
+            closeDrawer();
             ((PlacesFragment) current).reloadData();
         }
+    }
+
+    @Override
+    public void openDrawer() {
+        drawerLayout.openDrawer(filterFragment.getView());
+    }
+
+    @Override
+    public void closeDrawer() {
+        drawerLayout.closeDrawer(Gravity.RIGHT);
     }
 }

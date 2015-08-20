@@ -74,11 +74,10 @@ public class SplashActivity extends RelishActivity {
                 if (isActivityOnScreen) {
                     if (ParseUser.getCurrentUser() == null) {
 
-                        SharedPrefsUtil util = new SharedPrefsUtil(SplashActivity.this);
 
-                        if (!util.hasLaunchedPrior()) {
+                        if (!SharedPrefsUtil.get.hasLaunchedPrior()) {
                             startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
-                            util.setAppLaunched();
+                            SharedPrefsUtil.get.setAppLaunched();
                         } else {
                             startActivity(new Intent(SplashActivity.this, SignupActivity.class));
                         }

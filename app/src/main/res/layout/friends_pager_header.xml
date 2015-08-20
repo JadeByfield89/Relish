@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/tab_title"
+              android:textColor="@color/viewpager_header_title_color"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerInParent="true"
+              android:gravity="center"
+              android:singleLine="true"/>
+    
+    <TextView
+        android:id="@+id/tab_badge"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="-4dp"
+        android:layout_marginRight="-4dp"
+        android:gravity="center"
+        android:layout_alignTop="@+id/tab_title"
+        android:layout_alignRight="@+id/tab_title"
+        android:background="@drawable/badge_background"
+        android:textSize="10sp"
+        android:textColor="@android:color/white"/>
+
+</RelativeLayout>
