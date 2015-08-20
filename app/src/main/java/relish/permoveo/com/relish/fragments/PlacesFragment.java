@@ -126,6 +126,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
         if (activity instanceof ToolbarCallbacks)
             toolbarCallbacks = (ToolbarCallbacks) activity;
         adapter = new PlacesAdapter(activity);
+        GPSTracker.get.startOnMainLooper();
     }
 
     @Override
