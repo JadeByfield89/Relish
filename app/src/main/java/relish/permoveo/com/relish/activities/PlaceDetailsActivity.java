@@ -681,15 +681,7 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
                   // .getColor(R.color.main_color));
             reveal_container.setVisibility(View.VISIBLE);
 
-
-
-
-
-
-
-
             for (int i = 0; i < activity_container.getChildCount(); i++) {
-
                 View v = activity_container.getChildAt(i);
                 android.view.ViewPropertyAnimator animator = v.animate()
                         .scaleX(1).scaleY(1)
@@ -718,9 +710,7 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
      * property string.
      */
     public void setFabLoc(PathPoint newLoc) {
-
         placeDetailsFab.setTranslationX(newLoc.mX);
-
 
         if (mRevealFlag)
            placeDetailsFab.setTranslationY(newLoc.mY - (mFabSize / 2));
