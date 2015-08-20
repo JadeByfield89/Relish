@@ -1,6 +1,7 @@
 package relish.permoveo.com.relish.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,13 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseException;
-import com.pnikosis.materialishprogress.ProgressWheel;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.activities.AddFriendsActivity;
 import relish.permoveo.com.relish.adapter.list.FriendsListAdapter;
 import relish.permoveo.com.relish.manager.FriendsManager;
 import relish.permoveo.com.relish.model.Friend;
@@ -82,6 +83,12 @@ public class FriendsListFragment extends Fragment {
         emptyMessage.setText(String.format(getString(R.string.friends_list_empty), group, group));
         addButton.setText("Add " + group);
         addButton.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), AddFriendsActivity.class));
+            }
+        });
 
         emptyMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         emptyMessage.setIncludeFontPadding(false);
@@ -93,7 +100,6 @@ public class FriendsListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         return v;
     }
-
 
     @Override
     public void onResume() {

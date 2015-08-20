@@ -65,6 +65,14 @@ public class NavigationDrawerFragment extends Fragment {
     public NavigationDrawerFragment() {
     }
 
+    public void reloadWithData(final String menuItem, final int count) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.set(menuItem, count);
+            }
+        });
+    }
 
     public void reload() {
         getActivity().runOnUiThread(new Runnable() {

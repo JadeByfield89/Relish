@@ -7,11 +7,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -38,6 +42,7 @@ import relish.permoveo.com.relish.activities.PlaceDetailsActivity;
 import relish.permoveo.com.relish.adapter.list.PlacesAdapter;
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
+import relish.permoveo.com.relish.interfaces.NavigationDrawerManagementCallbacks;
 import relish.permoveo.com.relish.interfaces.OnResumeLoadingCallbacks;
 import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
@@ -64,6 +69,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     private int page = 0;
     private int total = Integer.MAX_VALUE;
     private int previousTotal = 0;
+    private NavigationDrawerManagementCallbacks navigationDrawerManagementCallbacks;
     private boolean loading = true;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     int firstVisibleItem, visibleItemCount, totalItemCount;
@@ -115,7 +121,10 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        toolbarCallbacks = (ToolbarCallbacks) activity;
+        if (activity instanceof NavigationDrawerManagementCallbacks)
+            navigationDrawerManagementCallbacks = (NavigationDrawerManagementCallbacks) activity;
+        if (activity instanceof ToolbarCallbacks)
+            toolbarCallbacks = (ToolbarCallbacks) activity;
         adapter = new PlacesAdapter(activity);
     }
 
@@ -134,6 +143,26 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             page = savedInstanceState.getInt(PAGE);
             total = savedInstanceState.getInt(TOTAL_NEWS_COUNT);
         }
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem item = menu.add(0, R.id.action_filter, 0, "Filter").setIcon(R.drawable.ic_filter);
+        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_filter) {
+            navigationDrawerManagementCallbacks.openDrawer();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import relish.permoveo.com.relish.model.Friend;
+import relish.permoveo.com.relish.util.SharedPrefsUtil;
 
 /**
  * Created by rom4ek on 09.08.2015.
@@ -47,6 +48,25 @@ public class FriendsManager {
             public void done(List<ParseUser> objects, ParseException e) {
                 if (e == null) {
                     new FriendsFromParseTask(callback).execute(objects);
+                } else {
+                    callback.done(null, e);
+                }
+            }
+        });
+    }
+
+    public static void retrieveFriendsGroupsCount(final FriendsManagerCallback callback) {
+        new FriendsGroupsCountTask(callback).execute();
+    }
+
+    public static void retrieveFriendsCount(final FriendsManagerCallback callback) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Friendship");
+        query.whereEqualTo("userIds", ParseUser.getCurrentUser().getObjectId());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    callback.done(list == null ? 0 : list.size(), null);
                 } else {
                     callback.done(null, e);
                 }
@@ -91,12 +111,58 @@ public class FriendsManager {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
+                    if (SharedPrefsUtil.get.lastVisibleFriendsCountForGroup(groupName.toLowerCase()) == -1) {
+                        SharedPrefsUtil.get.setLastVisibleFriendsCountForGroup(groupName, 1);
+                    } else {
+                        SharedPrefsUtil.get.setLastVisibleFriendsCountForGroup(groupName.toLowerCase(), SharedPrefsUtil.get.lastVisibleFriendsCountForGroup(groupName.toLowerCase()) + 1);
+                    }
                     callback.done(null, null);
                 } else {
                     callback.done(null, e);
                 }
             }
         });
+    }
+
+    private static class FriendsGroupsCountTask extends AsyncTask<Void, Void, Integer[]> {
+
+        private FriendsManagerCallback callback;
+
+        public FriendsGroupsCountTask(FriendsManagerCallback callback) {
+            this.callback = callback;
+        }
+
+        @Override
+        protected Integer[] doInBackground(Void... params) {
+            ParseQuery<ParseObject> friendsQuery = ParseQuery.getQuery("Friendship");
+            friendsQuery.whereEqualTo("group", "Friends");
+            friendsQuery.whereEqualTo("userIds", ParseUser.getCurrentUser().getObjectId());
+
+            ParseQuery<ParseObject> colleaguesQuery = ParseQuery.getQuery("Friendship");
+            colleaguesQuery.whereEqualTo("group", "Colleagues");
+            colleaguesQuery.whereEqualTo("userIds", ParseUser.getCurrentUser().getObjectId());
+
+            ParseQuery<ParseObject> coworkersQuery = ParseQuery.getQuery("Friendship");
+            coworkersQuery.whereEqualTo("group", "Coworkers");
+            coworkersQuery.whereEqualTo("userIds", ParseUser.getCurrentUser().getObjectId());
+
+            Integer[] counters = new Integer[3];
+            try {
+                counters[0] = friendsQuery.find().size();
+                counters[1] = colleaguesQuery.find().size();
+                counters[2] = coworkersQuery.find().size();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            return counters;
+        }
+
+        @Override
+        protected void onPostExecute(Integer[] integers) {
+            super.onPostExecute(integers);
+            callback.done(integers, null);
+        }
     }
 
     private static class FriendsFromParseTask extends AsyncTask<List<ParseUser>, Void, ArrayList<Friend>> {
