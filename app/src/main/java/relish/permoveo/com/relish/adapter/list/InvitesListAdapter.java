@@ -29,7 +29,7 @@ public class InvitesListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return 0;
     }
 
     static class ViewHolder{

@@ -104,7 +104,7 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
     private Map<String, ImageView> reviewImageMap;
 
     public final static float SCALE_FACTOR = 13f;
-    public final static int ANIMATION_DURATION = 300;
+    public final static int ANIMATION_DURATION = 250;
     public final static int MINIMUN_X_DISTANCE = 200;
 
     private boolean mRevealFlag;
@@ -697,22 +697,6 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
                 Animation in = new AlphaAnimation(0.0f, 1.0f);
                 in.setDuration(500);
                 invitePager.setAnimation(in);
-                invitePager.setLayoutAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
                 alphaAnimationStarted = true;
             }
         }

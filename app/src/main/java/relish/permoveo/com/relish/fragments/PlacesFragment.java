@@ -179,6 +179,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             }
         });
         swipeRefreshLayout.setColorSchemeResources(R.color.main_color);
+
         return v;
     }
 
@@ -280,7 +281,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     public void reloadData() {
         //headerLayout.setVisibility(View.INVISIBLE);
         //swipeRefreshLayout.setVisibility(View.INVISIBLE);
-        //bounceProgressBar.setVisibility(View.VISIBLE);
+        bounceProgressBar.setVisibility(View.VISIBLE);
         renderHeader(null);
         recyclerView.scrollToPosition(0);
         page = 0;
