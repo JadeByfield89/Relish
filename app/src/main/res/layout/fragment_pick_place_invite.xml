@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:id="@+id/invite_card"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/invite_card_background"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/search_container"
+            android:layout_width="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp"
+            android:focusableInTouchMode="true"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/search_icon"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_search"/>
+
+            <EditText
+                android:id="@+id/invite_place"
+                android:layout_width="match_parent"
+                android:layout_centerVertical="true"
+                android:textColor="@color/invite_title_color"
+                android:textSize="18sp"
+                android:hint="Search"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:singleLine="true"
+                android:background="@null"
+                android:layout_toLeftOf="@+id/close_icon"
+                android:layout_toRightOf="@+id/search_icon"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:id="@+id/close_icon"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:clickable="true"
+                android:src="@drawable/ic_close"/>
+
+            <ImageView
+                android:id="@+id/my_location_icon"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="18dp"
+                android:visibility="gone"
+                android:layout_height="18dp"
+                android:clickable="true"
+                android:src="@drawable/ic_my_location"/>
+
+        </RelativeLayout>
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/invite_place_info_container"
+            android:layout_below="@+id/search_container"/>
+
+        <View
+            android:background="@drawable/shadow_color_light"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_below="@+id/search_container"/>
+
+        <View
+            android:background="@drawable/shadow_reverse"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_above="@+id/invite_place_info_container"/>
+
+        <LinearLayout
+            android:id="@+id/invite_place_info_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button_next"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical">
+
+            <relish.permoveo.com.relish.view.RatingView
+                android:id="@+id/invite_place_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/invite_place_hours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/place_grid_distance_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/invite_place_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/invite_place_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/place_grid_distance_color"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:padding="16dp"
+            android:text="@string/invite_continue"
+            android:background="@drawable/invite_button"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

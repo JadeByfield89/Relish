@@ -5,33 +5,24 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import relish.permoveo.com.relish.fragments.inviteflow.EmptyCardFragment;
-import relish.permoveo.com.relish.fragments.inviteflow.PickPlaceInviteFragment;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 
 /**
- * Created by byfieldj on 8/18/15.
+ * Created by rom4ek on 25.08.2015.
  */
-public class InvitePagerAdapter extends FragmentPagerAdapter {
+public class FakeInvitePagerAdapter extends FragmentPagerAdapter {
 
     private static final int NUM_PAGES = 4;
-    private YelpPlace currentPlace;
 
-
-    public InvitePagerAdapter(FragmentManager manager){
+    public FakeInvitePagerAdapter(FragmentManager manager){
         super(manager);
     }
-
-    public InvitePagerAdapter(FragmentManager manager, YelpPlace currentPlace){
-        super(manager);
-        this.currentPlace = currentPlace;
-    }
-
 
     @Override
     public Fragment getItem(int position) {
         switch(position){
             case 0:
-                return PickPlaceInviteFragment.newInstance(currentPlace);
+                return new EmptyCardFragment();
             case 1:
                 return new EmptyCardFragment();
             case 2:

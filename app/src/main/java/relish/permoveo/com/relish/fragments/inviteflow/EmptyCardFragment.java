@@ -1,4 +1,4 @@
-package relish.permoveo.com.relish.fragments;
+package relish.permoveo.com.relish.fragments.inviteflow;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,14 +12,7 @@ import relish.permoveo.com.relish.R;
 /**
  * Created by byfieldj on 8/18/15.
  */
-public class InviteCardFragment extends Fragment {
-
-    public static InviteCardFragment newInstance(){
-        InviteCardFragment fragment = new InviteCardFragment();
-
-
-        return fragment;
-    }
+public class EmptyCardFragment extends Fragment {
 
     @Nullable
     @Override

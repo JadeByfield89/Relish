@@ -22,6 +22,8 @@ public class GooglePlace implements Serializable {
     public String placeId;
     public double rating;
     private int priceLevel;
+    @SerializedName("opening_hours")
+    public OpeningHours openingHours;
     public PlaceGeometry geometry;
     public ArrayList<GoogleReview> reviews;
     public List<PlacePhoto> photos;
@@ -108,6 +110,11 @@ public class GooglePlace implements Serializable {
         public int height;
         @SerializedName("photo_reference")
         public String reference;
+    }
+
+    public static class OpeningHours {
+        @SerializedName("weekday_text")
+        public ArrayList<String> weekdayText;
     }
 
     public static class PlaceGeometry {
