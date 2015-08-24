@@ -234,7 +234,7 @@
 
         <include
             android:id="@+id/layout_invite"
-            layout="@layout/layout_invite_flow"
+            layout="@layout/activity_invite_flow"
             android:layout_height="match_parent"
             android:layout_width="match_parent" />
 

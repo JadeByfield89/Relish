@@ -26,7 +26,7 @@
     <color name="main_color_green_dark">#649B00</color>
     <color name="friends_list_divider">#66dbdbdb</color>
     <color name="dialog_button_idle">#939a9c</color>
-
+    <color name="invite_title_color">#7d7d7d</color>
 
     <!-- card colors -->
     <color name="card_background">#ffffff</color>

@@ -2,6 +2,8 @@ package relish.permoveo.com.relish.model.yelp;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class YelpPlace implements Serializable {
     public String url;
     public RestaurantLocation location;
     public ArrayList<Review> reviews;
+    public ArrayList<String> weekdayText;
 
     public double getCalculatedDistance() {
         return distance * LocationUtil.milesConversion;
@@ -39,6 +42,18 @@ public class YelpPlace implements Serializable {
             return String.format("%d", (long) distanceInMiles);
         else
             return twoDForm.format(distanceInMiles);
+    }
+
+    public String getHours() {
+        DateTime dateTime = new DateTime();
+        String hours = "";
+        if (weekdayText != null) {
+            for (int i = 0; i < weekdayText.size(); i++) {
+                if (i == dateTime.getDayOfWeek())
+                    hours = weekdayText.get(i).substring(weekdayText.get(i).indexOf(':') + 2, weekdayText.get(i).length());
+            }
+        }
+        return hours;
     }
 
     public String getOriginalImage() {

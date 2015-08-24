@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="invite_first_step">Pick a place</string>
+    <string name="invite_second_step">Details</string>
+    <string name="invite_third_step">Invite</string>
+    <string name="invite_fourth_step">Lunch with friends</string>
+</resources>
