@@ -1,23 +1,49 @@
 package relish.permoveo.com.relish.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.TypedArray;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flaviofaria.kenburnsview.KenBurnsView;
 import com.squareup.picasso.Picasso;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -61,6 +87,16 @@ public class NavigationDrawerFragment extends Fragment {
     KenBurnsView kenBurnsView;
 
     NavDrawerAdapter adapter;
+
+    private Uri outputFileUri;
+    private static final int SELECT_PICTURE_REQUEST_CODE = 7;
+    private AlertDialog uploadDialog;
+
+    private String selectedImagePath = "";
+    final private int PICK_IMAGE = 1;
+    final private int CAPTURE_IMAGE = 2;
+
+    private String imgPath;
 
     public NavigationDrawerFragment() {
     }
@@ -146,13 +182,198 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerListView.setSmoothScrollbarEnabled(true);
 
         renderNavHeader();
+
+        //Set listener for avatar icon
+        headerAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                showUploadAvatarDialog();
+            }
+        });
         return view;
     }
 
-    private void renderNavHeader(){
+    private void showUploadAvatarDialog() {
+
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_upload_avatar, (ViewGroup) getView().getRootView(), false);
+        TextView dialogTitle = (TextView) view.findViewById(R.id.dialog_title);
+        dialogTitle.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+
+        CircleImageView avatar = (CircleImageView) view.findViewById(R.id.nav_header_avatar);
+
+        String avatarUrl = UserUtils.getUserAvatar();
+        if (avatarUrl != null && !avatarUrl.isEmpty()) {
+            Picasso.with(getActivity()).load(avatarUrl).into(avatar);
+        }
+        TextView dialogMessage = (TextView) view.findViewById(R.id.upload_avatar_message);
+        dialogMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+
+        TextView fromCamera = (TextView) view.findViewById(R.id.from_camera);
+        TextView fromGallery = (TextView) view.findViewById(R.id.from_gallery);
+
+        fromCamera.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        fromGallery.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+
+        fromCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImageFromCamera();
+            }
+        });
+
+        fromGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImageFromGallery();
+            }
+        });
+
+        dialogBuilder.setView(view);
+
+
+        uploadDialog = dialogBuilder.create();
+        uploadDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        uploadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        uploadDialog.show();
+
+
+    }
+
+    private void selectImageFromCamera() {
+        final Intent intent = new Intent(
+                MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                setImageUri());
+        startActivityForResult(intent, CAPTURE_IMAGE);
+    }
+
+    private void selectImageFromGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_PICK);
+        startActivityForResult(
+                Intent.createChooser(intent, ""),
+                PICK_IMAGE);
+    }
+
+
+    public Uri setImageUri() {
+        // Store image in dcim
+        File file = new File(Environment.getExternalStorageDirectory()
+                + "/DCIM/", "image" + new Date().getTime() + ".png");
+        Uri imgUri = Uri.fromFile(file);
+        this.imgPath = file.getAbsolutePath();
+        return imgUri;
+    }
+
+    public String getImagePath() {
+        return imgPath;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode != Activity.RESULT_CANCELED) {
+            if (requestCode == PICK_IMAGE) {
+                selectedImagePath = getAbsolutePath(data.getData());
+                //File imageFile = new File(data.getData().getPath());
+                headerAvatar.setImageBitmap(decodeFile(selectedImagePath));
+                Log.d("NavDrawerFragment", "SelectedImagePath -> " + selectedImagePath);
+            } else if (requestCode == CAPTURE_IMAGE) {
+                selectedImagePath = getImagePath();
+                headerAvatar.setImageBitmap(decodeFile(selectedImagePath));
+            } else {
+                super.onActivityResult(requestCode, resultCode,
+                        data);
+            }
+        }
+    }
+
+    public Bitmap decodeFile(String path) {
+        try {
+            // Decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, o);
+            // The new size we want to scale to
+            final int REQUIRED_SIZE = 70;
+
+            // Find the correct scale value. It should be the power of
+            // 2.
+            int scale = 1;
+            while (o.outWidth / scale / 2 >= REQUIRED_SIZE
+                    && o.outHeight / scale / 2 >= REQUIRED_SIZE)
+                scale *= 2;
+
+            // Decode with inSampleSize
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            return BitmapFactory.decodeFile(path, o2);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
+    public String getAbsolutePath(Uri uri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = {MediaStore.Images.Media.DATA};
+            cursor = getActivity().getContentResolver().query(uri, proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+    }
+
+
+    private void uploadAvatarToParse(byte[] bytes) {
+        String avatarUrl = UserUtils.uploadUserAvatar(bytes);
+
+        if (avatarUrl != null && !avatarUrl.isEmpty()) {
+            Picasso.with(getActivity()).load(avatarUrl).into(headerAvatar);
+        }
+
+
+    }
+
+    private byte[] getByteArrayFromFile(final File file) {
+        int size = (int) file.length();
+        byte[] bytes = new byte[size];
+
+        try {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+            buf.read(bytes, 0, bytes.length);
+            buf.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        Log.d("NavDrawerFrag", "Bytes -> " + bytes.length);
+        return bytes;
+    }
+
+    private String getUniqueImageFilename() {
+
+        return "img_" + System.currentTimeMillis() + ".jpg";
+    }
+
+    private void renderNavHeader() {
 
         // Set user avatar
-        if(!TextUtils.isEmpty(UserUtils.getUserAvatar())) {
+        if (!TextUtils.isEmpty(UserUtils.getUserAvatar())) {
             Picasso.with(getActivity()).load(UserUtils.getUserAvatar()).into(headerAvatar);
         }
 

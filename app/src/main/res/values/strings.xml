@@ -131,6 +131,14 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="distance_25_miles">25</string>
 
 
+    <!-- Upload Avatar Dialog -->
+    <string name="upload_avatar">Upload Avatar</string>
+    <string name="edit_info">Edit Info</string>
+    <string name="avatar_choose_message">How do you want to upload your avatar?</string>
+    <string name="avatar_from_camera">From Camera</string>
+    <string name="avatar_from_gallery">From Gallery</string>
+
+
 
 
 </resources>
