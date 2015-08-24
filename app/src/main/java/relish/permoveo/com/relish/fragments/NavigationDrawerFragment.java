@@ -289,6 +289,12 @@ public class NavigationDrawerFragment extends Fragment {
                 super.onActivityResult(requestCode, resultCode,
                         data);
             }
+
+            if (selectedImagePath != null && !selectedImagePath.isEmpty()) {
+                byte[] fileBytes = getByteArrayFromFile(new File(selectedImagePath));
+
+                uploadAvatarToParse(fileBytes);
+            }
         }
     }
 
@@ -338,11 +344,9 @@ public class NavigationDrawerFragment extends Fragment {
     private void uploadAvatarToParse(byte[] bytes) {
         String avatarUrl = UserUtils.uploadUserAvatar(bytes);
 
-        if (avatarUrl != null && !avatarUrl.isEmpty()) {
-            Picasso.with(getActivity()).load(avatarUrl).into(headerAvatar);
-        }
+        uploadDialog.dismiss();
 
-
+        Toast.makeText(getActivity(), "Avatar Uploaded!", Toast.LENGTH_SHORT).show();
     }
 
     private byte[] getByteArrayFromFile(final File file) {
@@ -374,7 +378,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         // Set user avatar
         if (!TextUtils.isEmpty(UserUtils.getUserAvatar())) {
-            Picasso.with(getActivity()).load(UserUtils.getUserAvatar()).into(headerAvatar);
+            Picasso.with(getActivity()).load(UserUtils.getUserAvatar()).fit().centerCrop().into(headerAvatar);
         }
 
         // Set user name

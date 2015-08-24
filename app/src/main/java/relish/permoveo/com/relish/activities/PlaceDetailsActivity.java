@@ -843,7 +843,7 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
                 revealAnimator.setDuration(ANIMATION_DURATION);
                 revealAnimator.start();
             }
-        }, 350);
+        }, 250);
     }
 }
 
