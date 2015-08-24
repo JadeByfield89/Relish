@@ -205,7 +205,7 @@ public class NavigationDrawerFragment extends Fragment {
 
         String avatarUrl = UserUtils.getUserAvatar();
         if (avatarUrl != null && !avatarUrl.isEmpty()) {
-            Picasso.with(getActivity()).load(avatarUrl).into(avatar);
+            Picasso.with(getActivity()).load(avatarUrl).fit().centerCrop().into(avatar);
         }
         TextView dialogMessage = (TextView) view.findViewById(R.id.upload_avatar_message);
         dialogMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
