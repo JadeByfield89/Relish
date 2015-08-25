@@ -109,7 +109,12 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
 
             @Override
             public void onPageSelected(int position) {
-                getSupportActionBar().setTitle(TITLES[position]);
+                if(position == 0) {
+                    getSupportActionBar().setTitle(currentPlace.name);
+                } else{
+                    getSupportActionBar().setTitle(TITLES[position]);
+
+                }
                 currentStep = position;
             }
 

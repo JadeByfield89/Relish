@@ -86,7 +86,7 @@ public class FriendGroupsDialog extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         if (TextUtils.isEmpty(friend.image)) {
-            friendImage.setImageResource(R.drawable.avatar_placeholder);
+            friendImage.setImageResource(R.drawable.relish_avatar_placeholder);
         } else {
             Picasso.with(getActivity())
                     .load(friend.image)

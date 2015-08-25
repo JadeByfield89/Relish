@@ -9,6 +9,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
+        android:src="@drawable/relish_avatar_placeholder"
         android:layout_alignParentLeft="true"/>
 
     <LinearLayout

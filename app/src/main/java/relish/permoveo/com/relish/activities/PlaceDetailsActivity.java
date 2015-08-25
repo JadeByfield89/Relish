@@ -83,9 +83,7 @@ import relish.permoveo.com.relish.view.RatingView;
 //import relish.permoveo.com.relish.animation.ViewPropertyAnimator;
 
 
-
-
-public class PlaceDetailsActivity extends RelishActivity implements  ObservableScrollViewCallbacks {
+public class PlaceDetailsActivity extends RelishActivity implements ObservableScrollViewCallbacks {
 
     public static final String PASSED_PLACE = "passed_place_extra";
     private static final String FETCHED_PLACE = "fetched_place_extra";
@@ -107,6 +105,9 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
     public final static int ANIMATION_DURATION = 250;
 
     public final static int MINIMUN_X_DISTANCE = 200;
+
+    private static final String GOOGLE_DEFAULT_IMAGE = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=250";
+
 
     private boolean mRevealFlag;
     private float mFabSize;
@@ -396,11 +397,14 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
         ImageView reviewImage = reviewImageMap.get(review.getAuthorName());
         if (reviewImage != null) {
             if (TextUtils.isEmpty(review.getAuthorImage())) {
-                reviewImage.setImageResource(R.drawable.avatar_placeholder);
+                reviewImage.setImageResource(R.drawable.relish_avatar_placeholder);
+            } else if (review.getLargeAuthorImage().equals(GOOGLE_DEFAULT_IMAGE)) {
+                reviewImage.setImageResource(R.drawable.relish_avatar_placeholder);
             } else {
                 Picasso.with(this)
                         .load(review.getLargeAuthorImage())
                         .into(reviewImage);
+                Log.d("PlaceDetailsActivity", "Review author image -> " + review.getLargeAuthorImage());
             }
         }
     }
@@ -617,7 +621,7 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
                     int y = fakeFabLocation[1] - fabHeight / 2
                             - (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? (int) (placeDetailsFab.getElevation() / 2) : 0)
                             + (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT ? getStatusBarHeight() : 0);
-                  AnimationUtils.animateFAB(animatedFab,false, true, y);
+                    AnimationUtils.animateFAB(animatedFab, false, true, y);
                 }
             } else {
                 //to top
@@ -707,8 +711,8 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
 
             animatedFab.setVisibility(View.INVISIBLE);
             mRevealFlag = false;
-           //activity_container.setBackgroundColor(getResources()
-                  // .getColor(R.color.main_color));
+            //activity_container.setBackgroundColor(getResources()
+            // .getColor(R.color.main_color));
             reveal_container.setVisibility(View.VISIBLE);
             toolbar.setVisibility(View.GONE);
 
@@ -742,7 +746,6 @@ public class PlaceDetailsActivity extends RelishActivity implements  ObservableS
                     .putExtra(InviteFlowActivity.PLACE_FOR_INVITE_EXTRA, fetchedPlace), INVITE_FLOW_REQUEST);
         }
     };
-
 
 
     /**
