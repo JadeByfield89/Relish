@@ -55,7 +55,12 @@ public class PlaceDetailsRequest extends RelishRequest<String, Void, PlaceDetail
                 callback.failed(response.error);
             } else {
                 try {
-                    callback.completed(response.place.reviews, response.place.openingHours.weekdayText);
+                    if(response.place.openingHours != null && response.place.openingHours.weekdayText != null) {
+                        callback.completed(response.place.reviews, response.place.openingHours.weekdayText);
+                    }
+                    else{
+                        callback.completed(response.place.reviews);
+                    }
                 }catch (NullPointerException e){
                     e.printStackTrace();
                 }
