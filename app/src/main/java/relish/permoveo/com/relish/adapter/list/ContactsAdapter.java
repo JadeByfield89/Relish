@@ -102,12 +102,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         Contact contact = (Contact) getItem(position);
 
         if (TextUtils.isEmpty(contact.image)) {
-            holder.contactImage.setImageResource(R.drawable.avatar_placeholder);
+            holder.contactImage.setImageResource(R.drawable.relish_avatar_placeholder);
         } else {
             Picasso.with(context)
                     .load(contact.image)
-                    .placeholder(R.drawable.avatar_placeholder)
-                    .error(R.drawable.avatar_placeholder)
+                    .placeholder(R.drawable.relish_avatar_placeholder)
+                    .error(R.drawable.relish_avatar_placeholder)
                     .into(holder.contactImage);
         }
 

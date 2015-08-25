@@ -76,6 +76,9 @@
             android:screenOrientation="portrait"
             android:label="@string/title_activity_invite_flow" >
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="ef2c8cb00606afe7e4047d699a0b841de58e9467" />
     </application>
 
 </manifest>
