@@ -11,6 +11,14 @@
         <item name="android:textColorHint">@android:color/white</item>
     </style>
 
+    <style name="CustomDigitsTheme" parent="Theme.AppCompat">
+        <item name="android:textColorPrimary">@color/main_color</item>
+        <item name="android:textColorSecondary">@android:color/darker_gray</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:textColorLink">@color/main_color</item>
+        <item name="colorAccent">@color/main_color</item>
+    </style>
+
     <style name="Theme.MyTheme" parent="Theme.AppCompat.Light">
 
         <item name="windowActionBar">false</item>
@@ -29,6 +37,10 @@
 
         <!-- You can also set colorControlNormal, colorControlActivated
              colorControlHighlight & colorSwitchThumbNormal. -->
+        <item name="android:textColorPrimary">@color/main_color</item>
+        <item name="android:textColorSecondary">@android:color/darker_gray</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:textColorLink">@color/main_color</item>
     </style>
 
     <style name="RelishDialog" parent="Theme.AppCompat.Light.Dialog">

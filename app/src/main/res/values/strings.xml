@@ -6,6 +6,7 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_signup">SignupActivity</string>
     <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="title_activity_sms">SMSVerificationActivity</string>
     <string name="hint_password">Password</string>
     <string name="hint_email">Email address</string>
     <string name="hint_username">Username</string>
@@ -46,7 +47,7 @@
     <string name="no_gps">No GPS Signal Detected</string>
     <string name="no_internet">No Internet Connection Detected</string>
     <string name="add_friends_title">Add friends</string>
-    <string formatted = "false" name="friends_list_empty">You haven\'t added anyone to the %s group yet. Tap the button below to find your %s and add them</string>
+    <string formatted="false" name="friends_list_empty">You haven\'t added anyone to the %s group yet. Tap the button below to find your %s and add them</string>
     <string name="invites_list_empty">You don\'t have any invites yet.\nInvites from friends will be shown here once they are received</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -142,6 +143,11 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="avatar_from_gallery">From Gallery</string>
 
 
+    <!-- SMS Validation Screen -->
+    <string name="sms_enter_number">VERIFY YOUR PHONE NUMBER</string>
+    <string name="sms_sub_one"> Relish allows you to send and receive invites via SMS, so we need to verify your mobile number.</string>
+    <string name="sms_code_sent">We\'ve just sent you a confirmation code, enter it in the field above to get started.</string>
+    <string name="sms_enter_code">ENTER CONFIRMATION CODE</string>
 
 
 </resources>

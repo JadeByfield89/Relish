@@ -134,7 +134,7 @@ public class SignupActivity extends RelishActivity {
                             public void done(ParseUser parseUser, ParseException e) {
                                 hideLoader();
                                 if (e == null) {
-                                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                                    startActivity(new Intent(SignupActivity.this, SMSVerificationActivity.class));
                                     finish();
                                 } else {
                                     Toast.makeText(SignupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();

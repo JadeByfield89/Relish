@@ -52,6 +52,10 @@
             android:name=".activities.WelcomeActivity"
             android:label="@string/title_activity_welcome"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.SMSVerificationActivity"
+            android:label="@string/title_activity_sms"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.gms.version"
