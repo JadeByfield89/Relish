@@ -80,7 +80,7 @@ public class FriendsListAdapter extends RecyclerView.Adapter<FriendsListAdapter.
         } else {
             Picasso.with(context)
                     .load(friend.image)
-                    .placeholder(R.drawable.avatar_placeholder)
+                    .placeholder(R.drawable.avatar_placeholder).fit().centerCrop()
                     .error(R.drawable.avatar_placeholder)
                     .into(holder.friendImage);
         }

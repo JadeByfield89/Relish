@@ -15,7 +15,7 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/pager_invite"
         android:layout_below="@+id/toolbar"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="6dp"
         android:layout_above="@+id/pager_indicator"
         android:layout_height="match_parent"
         android:layout_width="match_parent"/>

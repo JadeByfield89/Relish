@@ -126,7 +126,7 @@ public class PickPlaceInviteFragment extends Fragment {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     myLocation.setVisibility(View.GONE);
-                    close.setVisibility(View.VISIBLE);
+                    //close.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -144,7 +144,7 @@ public class PickPlaceInviteFragment extends Fragment {
                 } else {
                     invitePlace.clearFocus();
                     close.setVisibility(View.GONE);
-                    myLocation.setVisibility(View.VISIBLE);
+                    //myLocation.setVisibility(View.VISIBLE);
 
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(invitePlace.getWindowToken(), 0);
@@ -180,12 +180,12 @@ public class PickPlaceInviteFragment extends Fragment {
             invitePlaceHours.setTypeface(TypefaceUtil.PROXIMA_NOVA);
             invitePlaceHours.setIncludeFontPadding(false);
 
-            close.setVisibility(View.VISIBLE);
+            //close.setVisibility(View.VISIBLE);
             myLocation.setVisibility(View.GONE);
         } else {
             invitePlace.clearFocus();
             close.setVisibility(View.GONE);
-            myLocation.setVisibility(View.VISIBLE);
+            //myLocation.setVisibility(View.VISIBLE);
         }
 
         setUpMapIfNeeded();

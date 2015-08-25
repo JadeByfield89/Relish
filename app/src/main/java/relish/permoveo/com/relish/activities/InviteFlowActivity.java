@@ -64,10 +64,11 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
         setSupportActionBar(toolbar);
 //        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_close);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(TITLES[currentStep]);
+
 
         if (getIntent().hasExtra(PLACE_FOR_INVITE_EXTRA)) {
             currentPlace = (YelpPlace) getIntent().getSerializableExtra(PLACE_FOR_INVITE_EXTRA);
+            getSupportActionBar().setTitle(currentPlace.name);
             if (!TextUtils.isEmpty(currentPlace.image)) {
                 Target target = new Target() {
                     @Override
