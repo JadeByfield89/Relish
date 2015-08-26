@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import com.charbgr.BlurNavigationDrawer.v7.BlurActionBarDrawerToggle;
 import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.view.ViewHelper;
 
@@ -24,6 +23,7 @@ public class RelishDrawerToggle extends BlurActionBarDrawerToggle {
     private View mainView;
     private FloatingActionButton fab;
     private OnDrawerSlideListener mListener;
+    private boolean blurEnabled;
 
     public RelishDrawerToggle(Activity activity, DrawerLayout drawerLayout, Toolbar toolbar) {
         super(activity, drawerLayout, toolbar, R.string.menu_open, R.string.menu_close);
@@ -35,6 +35,11 @@ public class RelishDrawerToggle extends BlurActionBarDrawerToggle {
 
     public void setMainView(final View v) {
         this.mainView = v;
+    }
+
+    public void setBlurEnabled(boolean blur){
+        blurEnabled = blur;
+        super.setBlurEnabled(blurEnabled);
     }
 
     public void setFragment(final Fragment fragment) {

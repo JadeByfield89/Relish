@@ -204,7 +204,7 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
             inviteButton.setScaleX(1 - (slideOffset));
             inviteButton.setScaleY(1 - (slideOffset));
 
-            
+
         }
 
 

@@ -89,7 +89,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
 
             hideLoader();
             if (current != null && current instanceof OnResumeLoadingCallbacks && current.isAdded()) {
-                ((OnResumeLoadingCallbacks) current).loadData(false, false );
+                ((OnResumeLoadingCallbacks) current).loadData(false, false);
             }
             LocalBroadcastManager.getInstance(MainActivity.this).unregisterReceiver(this);
         }
@@ -276,16 +276,20 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
             case 0:
                 if (!(current instanceof PlacesFragment))
                     current = new PlacesFragment();
+                    drawerToggle.setBlurEnabled(true);
                 break;
             case 1:
                 if (!(current instanceof InvitesFragment))
                     current = new InvitesFragment();
-                    drawerToggle.setFragment(current);
+                drawerToggle.setFragment(current);
+                drawerToggle.setBlurEnabled(false);
+
 
                 break;
             case 2:
                 if (!(current instanceof FriendsFragment))
                     current = new FriendsFragment();
+                    drawerToggle.setBlurEnabled(true);
                 break;
             case 4:
                 if (!(current instanceof SettingsFragment))
@@ -341,7 +345,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
 
     @Override
     public void onFilterSelectionComplete(ArrayList<String> categories) {
-        if(current instanceof  PlacesFragment){
+        if (current instanceof PlacesFragment) {
             ((PlacesFragment) current).setCategories(categories);
             closeDrawer();
             ((PlacesFragment) current).reloadData();
