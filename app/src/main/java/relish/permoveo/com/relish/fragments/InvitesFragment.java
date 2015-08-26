@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,10 @@ import android.widget.TextView;
 
 import com.alexvasilkov.foldablelayout.UnfoldableView;
 import com.alexvasilkov.foldablelayout.shading.GlanceFoldShading;
+import com.melnykov.fab.FloatingActionButton;
 import com.mobeta.android.dslv.DragSortListView;
 import com.mobeta.android.dslv.SimpleFloatViewManager;
+import com.nineoldandroids.view.ViewHelper;
 
 import java.util.ArrayList;
 
@@ -25,16 +28,18 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.activities.MainActivity;
 import relish.permoveo.com.relish.adapter.list.InvitesListAdapter;
 import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.BounceProgressBar;
+import relish.permoveo.com.relish.view.RelishDrawerToggle;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InvitesFragment extends Fragment implements AdapterView.OnItemClickListener, View.OnClickListener, AdapterView.OnItemLongClickListener {
+public class InvitesFragment extends Fragment implements AdapterView.OnItemClickListener, View.OnClickListener, AdapterView.OnItemLongClickListener, RelishDrawerToggle.OnDrawerSlideListener {
 
     @Bind(R.id.touch_interceptor_view)
     View touchInterceptorView;
@@ -60,15 +65,28 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
     @Bind(R.id.invites_list_view)
     DragSortListView invitesListView;
 
+    @Bind(R.id.fab_invite)
+    FloatingActionButton inviteButton;
+
     private InvitesListAdapter listAdapter;
+
+    private static final float SCALE_FACTOR = 0.0f;
+    private float previousOffset;
+
+    private boolean previousOffsetStored;
+    private boolean fabReadyToAnimate;
+
 
 //    private InvitesAdapter invitesAdapter;
 
     private boolean isUnfolded;
+    private boolean animated;
 
+    private boolean drawerClosed;
 
     public InvitesFragment() {
         // Required empty public constructor
+
     }
 
 
@@ -135,11 +153,12 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
         emptyMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         emptyMessage.setIncludeFontPadding(false);
 
+        setFabReadyToAnimation(true);
         return v;
     }
 
     @OnClick(R.id.touch_interceptor_view)
-    public void openDetails(View itemView){
+    public void openDetails(View itemView) {
         unfoldableView.unfold(itemView, detailsView);
     }
 
@@ -151,7 +170,7 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
 
     @Override
     public void onClick(View view) {
-        if(isUnfolded){
+        if (isUnfolded) {
             unfoldableView.foldBack();
         }
     }
@@ -173,4 +192,23 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
         emptyView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
     }
+
+    private void setFabReadyToAnimation(boolean ready) {
+        fabReadyToAnimate = true;
+    }
+
+    @Override
+    public void OnDrawerSliding(float slideOffset) {
+
+        if (inviteButton != null) {
+            inviteButton.setScaleX(1 - (slideOffset));
+            inviteButton.setScaleY(1 - (slideOffset));
+
+            
+        }
+
+
+    }
+
+
 }

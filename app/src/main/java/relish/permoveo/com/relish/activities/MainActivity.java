@@ -75,7 +75,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
     private CharSequence mTitle;
     private String[] navMenuTitles;
     RelishDrawerToggle drawerToggle;
-    boolean drawerOpen = false;
+    public boolean drawerOpen = false;
     Fragment current = null;
     Dialog d;
     NavigationDrawerFragment navDrawer;
@@ -280,6 +280,8 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
             case 1:
                 if (!(current instanceof InvitesFragment))
                     current = new InvitesFragment();
+                    drawerToggle.setFragment(current);
+
                 break;
             case 2:
                 if (!(current instanceof FriendsFragment))

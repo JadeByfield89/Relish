@@ -146,7 +146,7 @@
         android:layout_height="match_parent" />
 
     <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/fab_place_details"
+        android:id="@+id/fab_invite"
         android:layout_width="@dimen/fab_size"
         android:layout_height="@dimen/fab_size"
         android:layout_alignParentRight="true"
