@@ -16,7 +16,7 @@
         <relish.permoveo.com.relish.view.DynamicHeightImageView
             android:id="@+id/grid_item_place_image"
             android:scaleType="centerCrop"
-            android:background="@color/photo_placeholder"
+            android:background="@drawable/relish_avatar_placeholder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
