@@ -276,6 +276,7 @@ public class BlurBuilder {
             }
         } catch (OutOfMemoryError e) {
             e.printStackTrace();
+            bitmap.getPixels(pix, 0, 0, 0, 0, bitmap.getWidth(), bitmap.getHeight());
         }
 
         Log.e("pix", w + " " + h + " " + pix.length);
