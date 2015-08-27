@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,6 +101,19 @@ public class PickPlaceInviteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_pick_place_invite, container, false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        try {
+            Fragment fragment = (getFragmentManager().findFragmentById(R.id.map));
+            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.remove(fragment);
+            ft.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

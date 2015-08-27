@@ -14,6 +14,7 @@ public class Friend implements Serializable {
     public String name;
     public String group;
     public String address;
+    public boolean isSelected;
     public ParseGeoPoint location;
 
     public String formatDistance(double distance) {

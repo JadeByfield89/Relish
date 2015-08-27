@@ -16,6 +16,7 @@
         android:glEsVersion="0x00020000"
         android:required="true" />
 
+
     <application
         android:name=".application.RelishApplication"
         android:allowBackup="true"
@@ -63,9 +64,6 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCDLHtKjC8m9rplq9GuiV4KaxKonAhS1AM" />
-        <!--<meta-data-->
-            <!--android:name="com.google.android.geo.API_KEY"-->
-            <!--android:value="AIzaSyCDLHtKjC8m9rplq9GuiV4KaxKonAhS1AM" />-->
 
         <activity
             android:name=".activities.PlaceDetailsActivity"
@@ -83,6 +81,7 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="ef2c8cb00606afe7e4047d699a0b841de58e9467" />
+
     </application>
 
 </manifest>
