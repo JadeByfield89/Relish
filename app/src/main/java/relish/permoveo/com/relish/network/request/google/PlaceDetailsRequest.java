@@ -57,8 +57,7 @@ public class PlaceDetailsRequest extends RelishRequest<String, Void, PlaceDetail
                 try {
                     if(response.place.openingHours != null && response.place.openingHours.weekdayText != null) {
                         callback.completed(response.place.reviews, response.place.openingHours.weekdayText);
-                    }
-                    else{
+                    } else {
                         callback.completed(response.place.reviews);
                     }
                 }catch (NullPointerException e){
