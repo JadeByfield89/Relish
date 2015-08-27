@@ -16,7 +16,7 @@
             android:gravity="center"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            android:background="@color/main_color"
+            android:background="@drawable/relish_bg_pattern"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textColor="@android:color/white" />

@@ -19,8 +19,9 @@
             android:paddingBottom="16dp"
             android:layout_height="wrap_content"
             android:text="Choose Group"
+            android:background="@drawable/relish_bg_pattern"
+
             android:textSize="18sp"
-            android:background="@color/main_color"
             android:textColor="@android:color/white" />
 
         <de.hdodenhof.circleimageview.CircleImageView
