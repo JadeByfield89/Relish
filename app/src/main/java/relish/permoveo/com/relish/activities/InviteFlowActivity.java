@@ -100,6 +100,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
         invitePagerAdapter = new InvitePagerAdapter(getSupportFragmentManager(), currentPlace);
         invitePager.setAdapter(invitePagerAdapter);
         pagerIndicator.setViewPager(invitePager);
+        invitePager.setOffscreenPageLimit(4);
 
         pagerIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -113,7 +114,6 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
                     getSupportActionBar().setTitle(currentPlace.name);
                 } else{
                     getSupportActionBar().setTitle(TITLES[position]);
-
                 }
                 currentStep = position;
             }
