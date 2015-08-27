@@ -664,6 +664,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         path.moveTo(0, 0);
         path.curveTo(-200, 200, -400, 100, -600, 50);
 
+
         revealAnimator = ObjectAnimator.ofObject(this, "fabLoc",
                 new PathEvaluator(), path.getPoints().toArray());
 
