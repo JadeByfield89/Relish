@@ -62,7 +62,7 @@
     <string name="add_friends_contacts_title">CONTACTS</string>
     <string name="add_friends_facebook_title">FACEBOOK</string>
     <string name="invite_continue">CONTINUE</string>
-    <string name="invite_friends_title">Select Friends</string>
+    <string name="invite_friends_title">Add People</string>
     <!--Welcome Screens -->
     <string name="welcome_skip">SKIP</string>
     <string name="welcome_ok">OK</string>
