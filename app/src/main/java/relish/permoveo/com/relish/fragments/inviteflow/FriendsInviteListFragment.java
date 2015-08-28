@@ -32,8 +32,6 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
  */
 public class FriendsInviteListFragment extends Fragment implements ISelectable {
 
-    private static final String FRIENDS_GROUP = "friends_group";
-    private String group;
     private InviteFriendsListAdapter adapter;
 
     @Bind(R.id.empty_list_container)
@@ -52,20 +50,9 @@ public class FriendsInviteListFragment extends Fragment implements ISelectable {
         // Required empty public constructor
     }
 
-    public static FriendsInviteListFragment newInstance(String group) {
-        FriendsInviteListFragment friendsListFragment = new FriendsInviteListFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(FRIENDS_GROUP, group);
-        friendsListFragment.setArguments(bundle);
-        return friendsListFragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            group = getArguments().getString(FRIENDS_GROUP);
-        }
         adapter = new InviteFriendsListAdapter(getActivity());
     }
 
@@ -80,7 +67,7 @@ public class FriendsInviteListFragment extends Fragment implements ISelectable {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        emptyMessage.setText(String.format(getString(R.string.invite_friends_list_empty), group));
+        emptyMessage.setText(getString(R.string.invite_friends_list_empty));
         emptyMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         emptyMessage.setIncludeFontPadding(false);
 
@@ -99,7 +86,7 @@ public class FriendsInviteListFragment extends Fragment implements ISelectable {
     }
 
     private void render() {
-        FriendsManager.retrieveFriendsList(group, new FriendsManager.FriendsManagerCallback<ArrayList<Friend>, ParseException>() {
+        FriendsManager.retrieveFriendsList(new FriendsManager.FriendsManagerCallback<ArrayList<Friend>, ParseException>() {
             @Override
             public void done(ArrayList<Friend> friends, ParseException e) {
                 if (e == null) {

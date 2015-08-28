@@ -1,8 +1,6 @@
 package relish.permoveo.com.relish.fragments.search;
 
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -29,7 +27,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.list.AddFriendsListAdapter;
-import relish.permoveo.com.relish.dialogs.FriendGroupsDialog;
 import relish.permoveo.com.relish.manager.FriendsManager;
 import relish.permoveo.com.relish.model.Friend;
 import relish.permoveo.com.relish.view.BounceProgressBar;
@@ -39,12 +36,9 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
  */
 public class RelishUsersFragment extends Fragment {
 
-    public static final int FRIENDS_GROUP_REQUEST_CODE = 111;
-
     private MenuItem searchItem;
     private AddFriendsListAdapter adapter;
     private String oldQuery;
-    private CircularProgressButton current;
 
     @Bind(R.id.bounce_progress)
     BounceProgressBar bounceProgressBar;
@@ -66,13 +60,27 @@ public class RelishUsersFragment extends Fragment {
         adapter = new AddFriendsListAdapter(getActivity(), new AddFriendsListAdapter.ViewHolder.AddFriendButtonClickListener() {
             @Override
             public void onClick(final View view) {
-                current = (CircularProgressButton) view.findViewById(R.id.friend_btn);
+                final CircularProgressButton current = (CircularProgressButton) view.findViewById(R.id.friend_btn);
                 int position = recyclerView.getChildPosition(view);
                 final Friend friend = (Friend) adapter.getItem(position);
                 if (current.getProgress() != 100) {
-                    FriendGroupsDialog dialog = FriendGroupsDialog.newInstance(friend);
-                    dialog.setTargetFragment(RelishUsersFragment.this, FRIENDS_GROUP_REQUEST_CODE);
-                    dialog.show(getChildFragmentManager(), "friends_group_dialog");
+                    current.setProgress(50);
+                    FriendsManager.addFriend(friend.id, new FriendsManager.FriendsManagerCallback<Object, ParseException>() {
+                        @Override
+                        public void done(Object o, ParseException e) {
+                            if (e == null) {
+                                current.setCompleteText("Friends");
+                                current.setProgress(100);
+                            } else {
+                                current.setProgress(0);
+                                if (isAdded())
+                                    Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+//                    FriendGroupsDialog dialog = FriendGroupsDialog.newInstance(friend);
+//                    dialog.setTargetFragment(RelishUsersFragment.this, FRIENDS_GROUP_REQUEST_CODE);
+//                    dialog.show(getChildFragmentManager(), "friends_group_dialog");
                 }
             }
         });
@@ -182,29 +190,4 @@ public class RelishUsersFragment extends Fragment {
         searchView.findViewById(R.id.search_button).performClick();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == FRIENDS_GROUP_REQUEST_CODE) {
-            if (current != null && current.getProgress() != 100) {
-                current.setProgress(50);
-                final String groupName = data.getStringExtra(FriendGroupsDialog.CHOSEN_GROUP);
-                String friendId = data.getStringExtra(FriendGroupsDialog.CHOSEN_FRIEND);
-                FriendsManager.addFriend(groupName, friendId, new FriendsManager.FriendsManagerCallback<Object, ParseException>() {
-                    @Override
-                    public void done(Object o, ParseException e) {
-                        if (e == null) {
-                            current.setCompleteText(groupName);
-                            current.setProgress(100);
-                        } else {
-                            current.setProgress(0);
-                            if (isAdded())
-                                Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                        }
-                        current = null;
-                    }
-                });
-            }
-        }
-    }
 }

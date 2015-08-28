@@ -12,8 +12,8 @@ public class Friend implements Serializable {
     public String id;
     public String image;
     public String name;
-    public String group;
     public String address;
+    public boolean isMyFriend;
     public boolean isSelected;
     public ParseGeoPoint location;
 

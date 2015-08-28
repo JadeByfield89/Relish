@@ -55,10 +55,6 @@ public class FriendsManager {
         });
     }
 
-    public static void retrieveFriendsGroupsCount(final FriendsManagerCallback callback) {
-        new FriendsGroupsCountTask(callback).execute();
-    }
-
     public static void retrieveFriendsCount(final FriendsManagerCallback callback) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Friendship");
         query.whereEqualTo("userIds", ParseUser.getCurrentUser().getObjectId());
@@ -74,9 +70,8 @@ public class FriendsManager {
         });
     }
 
-    public static void retrieveFriendsList(final String group, final FriendsManagerCallback callback) {
+    public static void retrieveFriendsList(final FriendsManagerCallback callback) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Friendship");
-        query.whereEqualTo("group", group);
         query.whereEqualTo("userIds", ParseUser.getCurrentUser().getObjectId());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -103,18 +98,17 @@ public class FriendsManager {
         });
     }
 
-    public static void addFriend(final String groupName, final String friendId, final FriendsManagerCallback callback) {
+    public static void addFriend(final String friendId, final FriendsManagerCallback callback) {
         ParseObject friendship = new ParseObject("Friendship");
-        friendship.put("group", groupName);
         friendship.addAllUnique("userIds", Arrays.asList(friendId, ParseUser.getCurrentUser().getObjectId()));
         friendship.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    if (SharedPrefsUtil.get.lastVisibleFriendsCountForGroup(groupName.toLowerCase()) == -1) {
-                        SharedPrefsUtil.get.setLastVisibleFriendsCountForGroup(groupName, 1);
+                    if (SharedPrefsUtil.get.lastVisibleFriendsCount() == -1) {
+                        SharedPrefsUtil.get.setLastVisibleFriendsCount(1);
                     } else {
-                        SharedPrefsUtil.get.setLastVisibleFriendsCountForGroup(groupName.toLowerCase(), SharedPrefsUtil.get.lastVisibleFriendsCountForGroup(groupName.toLowerCase()) + 1);
+                        SharedPrefsUtil.get.setLastVisibleFriendsCount(SharedPrefsUtil.get.lastVisibleFriendsCount() + 1);
                     }
                     callback.done(null, null);
                 } else {
@@ -124,7 +118,7 @@ public class FriendsManager {
         });
     }
 
-    private static class FriendsGroupsCountTask extends AsyncTask<Void, Void, Integer[]> {
+    private static class FriendsGroupsCountTask extends AsyncTask<Void, Void, Integer> {
 
         private FriendsManagerCallback callback;
 
@@ -133,33 +127,22 @@ public class FriendsManager {
         }
 
         @Override
-        protected Integer[] doInBackground(Void... params) {
+        protected Integer doInBackground(Void... params) {
             ParseQuery<ParseObject> friendsQuery = ParseQuery.getQuery("Friendship");
-            friendsQuery.whereEqualTo("group", "Friends");
             friendsQuery.whereEqualTo("userIds", ParseUser.getCurrentUser().getObjectId());
 
-            ParseQuery<ParseObject> colleaguesQuery = ParseQuery.getQuery("Friendship");
-            colleaguesQuery.whereEqualTo("group", "Colleagues");
-            colleaguesQuery.whereEqualTo("userIds", ParseUser.getCurrentUser().getObjectId());
-
-            ParseQuery<ParseObject> coworkersQuery = ParseQuery.getQuery("Friendship");
-            coworkersQuery.whereEqualTo("group", "Coworkers");
-            coworkersQuery.whereEqualTo("userIds", ParseUser.getCurrentUser().getObjectId());
-
-            Integer[] counters = new Integer[3];
+            Integer count = 0;
             try {
-                counters[0] = friendsQuery.find().size();
-                counters[1] = colleaguesQuery.find().size();
-                counters[2] = coworkersQuery.find().size();
+                count = friendsQuery.find().size();
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-            return counters;
+            return count;
         }
 
         @Override
-        protected void onPostExecute(Integer[] integers) {
+        protected void onPostExecute(Integer integers) {
             super.onPostExecute(integers);
             callback.done(integers, null);
         }
@@ -194,8 +177,7 @@ public class FriendsManager {
                 try {
                     List<ParseObject> friendships = existingFriendsQuery.find();
                     if (friendships != null && friendships.size() > 0) {
-                        ParseObject friendship = friendships.get(0);
-                        friend.group = (String) friendship.get("group");
+                        friend.isMyFriend = true;
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();

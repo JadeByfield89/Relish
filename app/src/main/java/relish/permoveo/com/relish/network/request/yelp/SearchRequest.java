@@ -71,16 +71,12 @@ public class SearchRequest extends RelishRequest<Integer, Void, PlacesResponse> 
             Log.d("SearchRequest", "Category size is greater than 1");
 
             for (String category : categories) {
-
                 if(categories.indexOf(category) == 0){
                     builder.append(category);
                 }else {
                     builder.append("," + category);
                 }
-
                 Log.d("SearchRequest", "Category filters are " + builder.toString());
-
-
             }
 
             request.addQuerystringParameter("category_filter", builder.toString());

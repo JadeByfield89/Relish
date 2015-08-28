@@ -27,7 +27,7 @@ public enum SharedPrefsUtil {
         sharedPreferences.edit().putBoolean(PARAM_APP_LAUNCHED, true).commit();
     }
 
-    public int lastVisibleFriendsCountForGroup(String group) { return sharedPreferences.getInt(PARAM_LAST_VISIBLE_FRIENDS_COUNT + "_" + group, -1); }
+    public int lastVisibleFriendsCount() { return sharedPreferences.getInt(PARAM_LAST_VISIBLE_FRIENDS_COUNT + "_friends", -1); }
 
-    public void setLastVisibleFriendsCountForGroup(String group, int count) { sharedPreferences.edit().putInt(PARAM_LAST_VISIBLE_FRIENDS_COUNT + "_" + group, count).commit(); }
+    public void setLastVisibleFriendsCount(int count) { sharedPreferences.edit().putInt(PARAM_LAST_VISIBLE_FRIENDS_COUNT + "_friends", count).commit(); }
 }

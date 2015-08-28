@@ -11,7 +11,7 @@ import relish.permoveo.com.relish.fragments.inviteflow.FriendsInviteListFragment
  */
 public class FriendsInvitePagerAdapter extends FragmentPagerAdapter {
 
-    private String[] TITLES = new String[]{"Friends", "Colleagues", "Coworkers"};
+    private String[] TITLES = new String[]{"Friends", "Contacts"};
 
     public FriendsInvitePagerAdapter(FragmentManager fm) {
         super(fm);
@@ -24,7 +24,7 @@ public class FriendsInvitePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return FriendsInviteListFragment.newInstance(TITLES[position]);
+        return new FriendsInviteListFragment();
     }
 
     @Override

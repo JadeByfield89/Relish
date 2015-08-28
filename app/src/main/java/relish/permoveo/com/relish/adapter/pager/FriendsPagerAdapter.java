@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 
-import java.util.ArrayList;
-
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.fragments.FriendsListFragment;
 import relish.permoveo.com.relish.model.ViewPagerHeader;
@@ -24,31 +22,29 @@ import relish.permoveo.com.relish.util.SharedPrefsUtil;
  */
 public class FriendsPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.CustomTabProvider {
 
-    private ArrayList<ViewPagerHeader> headers;
+    private ViewPagerHeader header;
 
     public FriendsPagerAdapter(FragmentManager manager) {
         super(manager);
-        headers = new ArrayList<>();
-        headers.add(new ViewPagerHeader("Friends", 0));
-        headers.add(new ViewPagerHeader("Colleagues", 0));
-        headers.add(new ViewPagerHeader("Coworkers", 0));
+        header = new ViewPagerHeader("Friends", 0);
+//        headers.add(new ViewPagerHeader("Colleagues", 0));
+//        headers.add(new ViewPagerHeader("Coworkers", 0));
     }
 
-    public void swap(int[] counters) {
-        for (int i = 0; i < counters.length; i++) {
-            headers.get(i).image = counters[i];
-        }
+    public void swap(int count, int newCount) {
+        header.image = newCount;
+        header.title = count + " Friends";
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return headers.size();
+        return 1;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return FriendsListFragment.newInstance(headers.get(position).title);
+        return new FriendsListFragment();
     }
 
     @Override
@@ -62,7 +58,6 @@ public class FriendsPagerAdapter extends FragmentPagerAdapter implements PagerSl
         TextView tabTitle = (TextView) tabLayout.findViewById(R.id.tab_title);
         TextView tabBadge = (TextView) tabLayout.findViewById(R.id.tab_badge);
 
-        ViewPagerHeader header = headers.get(i);
         tabTitle.setText(header.title.toUpperCase());
 
         if (header.image != -1 && header.image != 0) {
@@ -81,12 +76,11 @@ public class FriendsPagerAdapter extends FragmentPagerAdapter implements PagerSl
         tabTitle.setSelected(true);
         tabBadge.setVisibility(View.GONE);
 
-        String group = tabTitle.getText().toString().toLowerCase();
         int newCount = TextUtils.isEmpty(tabBadge.getText()) ? 0 : Integer.valueOf(tabBadge.getText().toString());
-        if (SharedPrefsUtil.get.lastVisibleFriendsCountForGroup(group) == -1)
-            SharedPrefsUtil.get.setLastVisibleFriendsCountForGroup(group, newCount);
+        if (SharedPrefsUtil.get.lastVisibleFriendsCount() == -1)
+            SharedPrefsUtil.get.setLastVisibleFriendsCount(newCount);
         else
-            SharedPrefsUtil.get.setLastVisibleFriendsCountForGroup(group, SharedPrefsUtil.get.lastVisibleFriendsCountForGroup(group) + newCount);
+            SharedPrefsUtil.get.setLastVisibleFriendsCount(SharedPrefsUtil.get.lastVisibleFriendsCount() + newCount);
         tabBadge.setText("0");
     }
 

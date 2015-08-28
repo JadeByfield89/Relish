@@ -34,7 +34,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:background="#fff"
-
         tools:layout="@layout/fragment_filter_places"
         />
 

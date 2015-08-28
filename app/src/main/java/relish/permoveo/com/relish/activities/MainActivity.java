@@ -155,19 +155,11 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
                     @Override
                     public void done(Integer count, ParseException e) {
                         if (e == null && drawerOpen) {
-                            if (SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("friends") == -1
-                                    && SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("colleagues") == -1
-                                    && SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("coworkers") == -1)
+                            if (SharedPrefsUtil.get.lastVisibleFriendsCount() == -1)
                                 return;
 
-                            if (SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("friends") != -1)
-                                count -= SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("friends");
-
-                            if (SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("colleagues") != -1)
-                                count -= SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("colleagues");
-
-                            if (SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("coworkers") != -1)
-                                count -= SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("coworkers");
+                            if (SharedPrefsUtil.get.lastVisibleFriendsCount() != -1)
+                                count -= SharedPrefsUtil.get.lastVisibleFriendsCount();
 
                             navDrawer.reloadWithData("Friends", count);
                         }
@@ -276,20 +268,18 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
             case 0:
                 if (!(current instanceof PlacesFragment))
                     current = new PlacesFragment();
-                    drawerToggle.setBlurEnabled(true);
+                drawerToggle.setBlurEnabled(true);
                 break;
             case 1:
                 if (!(current instanceof InvitesFragment))
                     current = new InvitesFragment();
                 drawerToggle.setFragment(current);
                 drawerToggle.setBlurEnabled(false);
-
-
                 break;
             case 2:
                 if (!(current instanceof FriendsFragment))
                     current = new FriendsFragment();
-                    drawerToggle.setBlurEnabled(true);
+                drawerToggle.setBlurEnabled(true);
                 break;
             case 4:
                 if (!(current instanceof SettingsFragment))
@@ -308,6 +298,12 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
             if (drawerLayout != null)
                 drawerLayout.closeDrawer(drawerView);
             setTitle(navMenuTitles[position]);
+            if (mCurrentSelectedPosition == 0) {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED, filterFragment.getView());
+            } else {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, filterFragment.getView());
+            }
+
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error in creating fragment");

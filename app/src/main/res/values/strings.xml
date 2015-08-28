@@ -47,8 +47,8 @@
     <string name="no_gps">No GPS Signal Detected</string>
     <string name="no_internet">No Internet Connection Detected</string>
     <string name="add_friends_title">Add friends</string>
-    <string formatted="false" name="invite_friends_list_empty">You don\'t have anyone in the %s group</string>
-    <string formatted="false" name="friends_list_empty">You haven\'t added anyone to the %s group yet. Tap the button below to find your %s and add them</string>
+    <string name="invite_friends_list_empty">You don\'t have anyone in the Friends</string>
+    <string name="friends_list_empty">You haven\'t added anyone to the Friends yet. Tap the button below to find your Friends and add them</string>
     <string name="invites_list_empty">You don\'t have any invites yet.\nInvites from friends will be shown here once they are received</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

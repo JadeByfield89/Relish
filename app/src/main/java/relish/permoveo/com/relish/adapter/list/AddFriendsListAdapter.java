@@ -103,10 +103,10 @@ public class AddFriendsListAdapter extends RecyclerView.Adapter<AddFriendsListAd
         holder.friendBtn.setIndeterminateProgressMode(true);
         holder.friendBtn.setTransformationMethod(null);
 
-        holder.friendBtn.setCompleteText(friend.group);
-        if (!TextUtils.isEmpty(friend.group)) {
+        holder.friendBtn.setCompleteText("Friends");
+        if (friend.isMyFriend) {
             holder.friendBtn.setProgress(100);
-            holder.friendBtn.setText(friend.group);
+            holder.friendBtn.setText("Friends");
         }
         else
             holder.friendBtn.setProgress(0);

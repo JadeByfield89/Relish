@@ -34,8 +34,6 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
  */
 public class FriendsListFragment extends Fragment {
 
-    private static final String FRIENDS_GROUP = "friends_group";
-    private String group;
     private FriendsListAdapter adapter;
 
     @Bind(R.id.empty_list_container)
@@ -53,14 +51,6 @@ public class FriendsListFragment extends Fragment {
     @Bind(R.id.add_button)
     Button addButton;
 
-    public static FriendsListFragment newInstance(String group) {
-        FriendsListFragment friendsListFragment = new FriendsListFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(FRIENDS_GROUP, group);
-        friendsListFragment.setArguments(bundle);
-        return friendsListFragment;
-    }
-
     public FriendsListFragment() {
         // Required empty public constructor
     }
@@ -68,9 +58,6 @@ public class FriendsListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            group = getArguments().getString(FRIENDS_GROUP);
-        }
         adapter = new FriendsListAdapter(getActivity());
     }
 
@@ -80,8 +67,8 @@ public class FriendsListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_friends_list, container, false);
         ButterKnife.bind(this, v);
         //emptyMessage.setText(String.format(getString(R.string.friends_list_empty), group, group));
-        emptyMessage.setText(String.format(getString(R.string.friends_list_empty), group, group));
-        addButton.setText("Add " + group);
+        emptyMessage.setText(getString(R.string.friends_list_empty));
+        addButton.setText("Add Friends");
         addButton.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +95,7 @@ public class FriendsListFragment extends Fragment {
     }
 
     private void render() {
-        FriendsManager.retrieveFriendsList(group, new FriendsManager.FriendsManagerCallback<ArrayList<Friend>, ParseException>() {
+        FriendsManager.retrieveFriendsList(new FriendsManager.FriendsManagerCallback<ArrayList<Friend>, ParseException>() {
             @Override
             public void done(ArrayList<Friend> friends, ParseException e) {
                 if (e == null) {

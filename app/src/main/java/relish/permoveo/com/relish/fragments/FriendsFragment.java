@@ -46,32 +46,6 @@ public class FriendsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         adapter = new FriendsPagerAdapter(getChildFragmentManager());
-        FriendsManager.retrieveFriendsGroupsCount(new FriendsManager.FriendsManagerCallback<Integer[], ParseException>() {
-            @Override
-            public void done(final Integer[] integers, ParseException e) {
-                if (e == null) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("friends") == -1)
-                                SharedPrefsUtil.get.setLastVisibleFriendsCountForGroup("friends", integers[0]);
-                            if (SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("colleagues") == -1)
-                                SharedPrefsUtil.get.setLastVisibleFriendsCountForGroup("colleagues", integers[1]);
-                            if (SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("coworkers") == -1)
-                                SharedPrefsUtil.get.setLastVisibleFriendsCountForGroup("coworkers", integers[2]);
-
-                            adapter.swap(new int[] {
-                                    integers[0] - SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("friends"),
-                                    integers[1] - SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("colleagues"),
-                                    integers[2] - SharedPrefsUtil.get.lastVisibleFriendsCountForGroup("coworkers")
-                            });
-                        }
-                    });
-                } else {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     @Override
@@ -101,8 +75,30 @@ public class FriendsFragment extends Fragment {
         viewPager.setAdapter(adapter);
         tabs.setViewPager(viewPager);
 
-        viewPager.setOffscreenPageLimit(3);
+        viewPager.setOffscreenPageLimit(1);
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        FriendsManager.retrieveFriendsCount(new FriendsManager.FriendsManagerCallback<Integer, ParseException>() {
+            @Override
+            public void done(final Integer count, ParseException e) {
+                if (e == null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (SharedPrefsUtil.get.lastVisibleFriendsCount() == -1)
+                                SharedPrefsUtil.get.setLastVisibleFriendsCount(count);
+
+                            adapter.swap(count, count - SharedPrefsUtil.get.lastVisibleFriendsCount());
+                        }
+                    });
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }
