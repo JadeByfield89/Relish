@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="invite_first_step">Pick a place</string>
-    <string name="invite_second_step">Select Friends</string>
+    <string name="invite_second_step">Add People</string>
     <string name="invite_third_step">Add Details</string>
     <string name="invite_fourth_step">Send</string>
 </resources>

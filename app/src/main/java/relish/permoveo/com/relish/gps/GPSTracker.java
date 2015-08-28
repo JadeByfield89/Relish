@@ -35,6 +35,7 @@ public enum GPSTracker implements LocationListener {
 
     private static final int TWO_MINUTES = 1000 * 60 * 2;
 
+
     private boolean isBetterLocation(Location location, Location currentBestLocation) {
         if (currentBestLocation == null) {
             // A new location is always better than no location
