@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.andexert.library.RippleView
+    android:id="@+id/ripple"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    app:rv_centered="true"
+    app:rv_alpha="255"
+    app:rv_type="rectangle"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/root"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="@drawable/invite_friend_background">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/contact_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"/>
+
+        <TextView
+            android:id="@+id/contact_name"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:singleLine="false"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/contact_image"
+            android:textColor="@color/invite_friend_name_color"
+            android:textSize="18sp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_height="1dp"
+            android:background="@color/friends_list_divider"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+
+</com.andexert.library.RippleView>

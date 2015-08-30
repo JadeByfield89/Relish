@@ -1,4 +1,4 @@
-package relish.permoveo.com.relish.adapter.list;
+package relish.permoveo.com.relish.adapter.list.inviteflow;
 
 import android.content.Context;
 import android.os.Handler;
@@ -7,6 +7,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import com.andexert.library.RippleView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -28,10 +31,11 @@ import relish.permoveo.com.relish.util.TypefaceUtil;
 /**
  * Created by rom4ek on 28.08.2015.
  */
-public class InviteFriendsListAdapter extends RecyclerView.Adapter<InviteFriendsListAdapter.ViewHolder> {
+public class InviteFriendsListAdapter extends RecyclerView.Adapter<InviteFriendsListAdapter.ViewHolder> implements Filterable {
 
     private static final int RIPPLE_ANIMATION_DURATION = 400;
     private ArrayList<Friend> dataset;
+    private ArrayList<Friend> originalValues;
     private Context context;
 
     public InviteFriendsListAdapter(Context context) {
@@ -171,5 +175,42 @@ public class InviteFriendsListAdapter extends RecyclerView.Adapter<InviteFriends
                 selected.add(friend);
         }
         return selected;
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+                List<Friend> FilteredArrList = new ArrayList<>();
+
+                if (originalValues == null) {
+                    originalValues = new ArrayList<>(dataset);
+                }
+
+                if (constraint == null || constraint.length() == 0) {
+                    results.count = originalValues.size();
+                    results.values = originalValues;
+                } else {
+                    constraint = constraint.toString().toLowerCase();
+                    for (int i = 0; i < originalValues.size(); i++) {
+                        Friend friend = originalValues.get(i);
+                        if (friend.name.toLowerCase().startsWith(constraint.toString())) {
+                            FilteredArrList.add(friend);
+                        }
+                    }
+                    results.count = FilteredArrList.size();
+                    results.values = FilteredArrList;
+                }
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                dataset = (ArrayList<Friend>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

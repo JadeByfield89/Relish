@@ -41,7 +41,6 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
  */
 public class ContactsFragment extends Fragment {
 
-    private static final int SMS_SENT = 12345;
     private MenuItem searchItem;
     private static final String[] PROJECTION = new String[]{
             ContactsContract.CommonDataKinds.Phone._ID,
@@ -51,8 +50,6 @@ public class ContactsFragment extends Fragment {
     };
 
     private ContactsAdapter adapter;
-    private Contact currentContact;
-    private CircularProgressButton currentBtn;
 
     @Bind(R.id.empty_contacts_container)
     LinearLayout emptyView;
@@ -75,9 +72,9 @@ public class ContactsFragment extends Fragment {
         adapter = new ContactsAdapter(getActivity(), new ContactsAdapter.ViewHolder.ContactsButtonClickListener() {
             @Override
             public void onClick(View view) {
-                currentBtn = (CircularProgressButton) view.findViewById(R.id.friend_btn);
+                CircularProgressButton currentBtn = (CircularProgressButton) view.findViewById(R.id.friend_btn);
                 int position = recyclerView.getChildPosition(view);
-                currentContact = (Contact) adapter.getItem(position);
+                Contact currentContact = (Contact) adapter.getItem(position);
                 if (currentBtn.getProgress() != 100) {
 //                    currentBtn.setProgress(50);
 
@@ -85,7 +82,7 @@ public class ContactsFragment extends Fragment {
                     Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
                     sendIntent.setData(Uri.parse("sms:" + currentContact.number));
                     sendIntent.putExtra("sms_body", message);
-                    startActivityForResult(sendIntent, SMS_SENT);
+                    startActivity(sendIntent);
 
 //                    PendingIntent sentPI = PendingIntent.getBroadcast(getActivity(), 0,
 //                            new Intent("SMS_SENT"), 0);

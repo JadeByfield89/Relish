@@ -9,6 +9,7 @@ public class Contact implements Serializable {
     public String number;
     public String name;
     public String image;
+    public boolean isSelected;
     public long id;
     public boolean isInvited;
 }

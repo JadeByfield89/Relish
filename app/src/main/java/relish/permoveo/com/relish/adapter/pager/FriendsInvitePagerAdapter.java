@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import relish.permoveo.com.relish.fragments.inviteflow.ContactsInviteFragment;
 import relish.permoveo.com.relish.fragments.inviteflow.FriendsInviteListFragment;
 
 /**
@@ -24,6 +25,12 @@ public class FriendsInvitePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        switch (position) {
+            case 0:
+                return new FriendsInviteListFragment();
+            case 1:
+                return new ContactsInviteFragment();
+        }
         return new FriendsInviteListFragment();
     }
 

@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +22,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
-import relish.permoveo.com.relish.adapter.list.InviteFriendsListAdapter;
+import relish.permoveo.com.relish.adapter.list.inviteflow.InviteFriendsListAdapter;
 import relish.permoveo.com.relish.interfaces.ISelectable;
 import relish.permoveo.com.relish.manager.FriendsManager;
 import relish.permoveo.com.relish.model.Friend;
@@ -30,7 +32,7 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FriendsInviteListFragment extends Fragment implements ISelectable {
+public class FriendsInviteListFragment extends Fragment implements ISelectable, Filterable {
 
     private InviteFriendsListAdapter adapter;
 
@@ -117,5 +119,10 @@ public class FriendsInviteListFragment extends Fragment implements ISelectable {
     @Override
     public ArrayList<Friend> getSelection() {
         return adapter != null ? adapter.getSelected() : new ArrayList<Friend>();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return adapter.getFilter();
     }
 }

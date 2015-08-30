@@ -5,10 +5,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
+import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -21,7 +25,6 @@ import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.pager.FriendsInvitePagerAdapter;
 import relish.permoveo.com.relish.interfaces.ISelectable;
 import relish.permoveo.com.relish.interfaces.PagerCallbacks;
-import relish.permoveo.com.relish.model.Friend;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
@@ -40,6 +43,9 @@ public class FriendsInviteFragment extends Fragment {
 
     @Bind(R.id.button_next)
     Button next;
+
+    @Bind(R.id.searchView)
+    SearchView searchView;
 
     private FriendsInvitePagerAdapter adapter;
     private PagerCallbacks pagerCallbacks;
@@ -62,6 +68,16 @@ public class FriendsInviteFragment extends Fragment {
         adapter = new FriendsInvitePagerAdapter(getChildFragmentManager());
     }
 
+
+    private Fragment getActiveFragment(ViewPager container, int position) {
+        String name = makeFragmentName(container.getId(), position);
+        return getChildFragmentManager().findFragmentByTag(name);
+    }
+
+    private static String makeFragmentName(int viewId, int index) {
+        return "android:switcher:" + viewId + ":" + index;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,12 +95,30 @@ public class FriendsInviteFragment extends Fragment {
         viewPager.setAdapter(adapter);
         tabs.setViewPager(viewPager);
 
-        viewPager.setOffscreenPageLimit(3);
+        tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(final int position) {
+                closeSearchView();
+                setOnQueryTextListener(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        viewPager.setOffscreenPageLimit(2);
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<Friend> selected = new ArrayList<>();
+                ArrayList selected = new ArrayList<>();
                 for (Fragment fragment : getChildFragmentManager().getFragments()) {
                     if (fragment instanceof ISelectable) {
                         selected.addAll(((ISelectable) fragment).getSelection());
@@ -92,6 +126,49 @@ public class FriendsInviteFragment extends Fragment {
                 }
                 if (pagerCallbacks != null)
                     pagerCallbacks.next();
+            }
+        });
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inviteFriendsTitle.setVisibility(View.GONE);
+            }
+        });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                inviteFriendsTitle.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
+        ((AppCompatAutoCompleteTextView) searchView.findViewById(R.id.search_src_text)).setTextColor(getResources().getColor(android.R.color.black));
+
+        setOnQueryTextListener(0);
+    }
+
+    public void closeSearchView() {
+        if (searchView != null && !searchView.isIconified()) {
+//            searchView.onActionViewCollapsed();
+            if (!TextUtils.isEmpty(((AppCompatAutoCompleteTextView) searchView.findViewById(R.id.search_src_text)).getText()))
+                searchView.findViewById(R.id.search_close_btn).performClick();
+
+            searchView.findViewById(R.id.search_close_btn).performClick();
+        }
+    }
+
+    private void setOnQueryTextListener(final int position) {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ((Filterable) getActiveFragment(viewPager, position)).getFilter().filter(newText);
+                return true;
             }
         });
     }
