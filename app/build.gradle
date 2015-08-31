@@ -32,6 +32,8 @@ android {
         maven {
             url "https://jitpack.io"
         }
+
+
     }
 
     defaultConfig {
@@ -43,6 +45,7 @@ android {
 
         // Enabling multidex support.
         multiDexEnabled true
+
     }
     buildTypes {
         release {
@@ -60,6 +63,7 @@ android {
         disable 'InvalidPackage'
         abortOnError false
     }
+
 }
 
 dependencies {

@@ -87,6 +87,7 @@ public class SMSVerificationActivity extends RelishActivity {
 
             Intent intent = new Intent(SMSVerificationActivity.this, MainActivity.class);
             startActivity(intent);
+            finish();
         } catch(NullPointerException e){
             e.printStackTrace();
         }
