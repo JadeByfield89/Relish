@@ -29,7 +29,7 @@
 
         <Button
             android:id="@+id/verify_phone_number"
-            android:text="Verify My Number"
+            android:text="Ok, Verify My Number"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/verify_number_button_selector"
             android:paddingTop="8dp"
