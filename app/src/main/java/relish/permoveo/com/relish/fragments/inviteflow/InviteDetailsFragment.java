@@ -3,6 +3,7 @@ package relish.permoveo.com.relish.fragments.inviteflow;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -80,6 +83,9 @@ public class InviteDetailsFragment extends Fragment implements DatePickerDialog.
     @Bind(R.id.details_invite_note)
     EditText inviteNote;
 
+    @Bind(R.id.invite_details_card)
+    RelativeLayout inviteDetailsCard;
+
     private ReminderAdapter reminderAdapter;
     private PagerCallbacks pagerCallbacks;
     private InviteCreator creator;
@@ -131,8 +137,14 @@ public class InviteDetailsFragment extends Fragment implements DatePickerDialog.
                 if (!TextUtils.isEmpty(inviteNote.getText())) {
                     creator.getInvite().note = inviteNote.getText().toString();
                 }
-                if (pagerCallbacks != null)
-                    pagerCallbacks.next();
+
+                if (validate()) {
+                    if (pagerCallbacks != null)
+                        pagerCallbacks.next();
+                } else {
+                    YoYo.with(Techniques.Shake)
+                            .playOn(inviteDetailsCard);
+                }
             }
         });
 
@@ -196,7 +208,7 @@ public class InviteDetailsFragment extends Fragment implements DatePickerDialog.
     private void render() {
         if (creator.getInvite() != null) {
             if (creator.getInvite().location != null && !TextUtils.isEmpty(creator.getInvite().location.address)) {
-                inviteLocation.setText(creator.getInvite().location.address);
+                inviteLocation.setText(creator.getInvite().location.address.substring(0, creator.getInvite().location.address.indexOf(',')));
             } else {
                 inviteLocation.setText("");
             }
@@ -270,5 +282,43 @@ public class InviteDetailsFragment extends Fragment implements DatePickerDialog.
         DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("h:mm a");
         inviteTime.setText(timeFormatter.print(time));
         creator.getInvite().time = time.getMillis();
+    }
+
+    private boolean validate() {
+        if (creator.getInvite() == null) {
+            return false;
+        } else {
+            if (creator.getInvite().date == 0l) {
+                String message = "";
+                if (creator.getInvite().time == 0l || TextUtils.isEmpty(inviteTitle.getText())) {
+                    message = getString(R.string.all_fields_error);
+                } else {
+                    message = String.format(getString(R.string.one_field_error), "date");
+                }
+                Snackbar.make(inviteDetailsCard, message, Snackbar.LENGTH_LONG).show();
+                return false;
+            }
+            if (creator.getInvite().time == 0l) {
+                String message = "";
+                if (creator.getInvite().date == 0l || TextUtils.isEmpty(inviteTitle.getText())) {
+                    message = getString(R.string.all_fields_error);
+                } else {
+                    message = String.format(getString(R.string.one_field_error), "time");
+                }
+                Snackbar.make(inviteDetailsCard, message, Snackbar.LENGTH_LONG).show();
+                return false;
+            }
+            if (TextUtils.isEmpty(inviteTitle.getText())) {
+                String message = "";
+                if (creator.getInvite().time == 0l || creator.getInvite().date == 0l) {
+                    message = getString(R.string.all_fields_error);
+                } else {
+                    message = String.format(getString(R.string.one_field_error), "title");
+                }
+                Snackbar.make(inviteDetailsCard, message, Snackbar.LENGTH_LONG).show();
+                return false;
+            }
+        }
+        return true;
     }
 }

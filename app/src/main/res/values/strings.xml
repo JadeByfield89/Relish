@@ -76,6 +76,9 @@
     <string name="reminder_1_hour">1 hour before</string>
     <string name="reminder_2_hours">2 hours before</string>
 
+    <string name="all_fields_error">Sorry, one or more fields seem to be missing</string>
+    <string formatted="false" name="one_field_error">Please, enter a %s for this invite</string>
+
     <string name="enter_date">Enter date</string>
     <string name="enter_time">Enter time</string>
 
