@@ -6,9 +6,15 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -18,13 +24,15 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.pager.InvitePagerAdapter;
+import relish.permoveo.com.relish.fragments.inviteflow.EmptyCardFragment;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.interfaces.PagerCallbacks;
 import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.util.BlurBuilder;
+import relish.permoveo.com.relish.util.TypefaceUtil;
 
-public class InviteFlowActivity extends RelishActivity implements PagerCallbacks, InviteCreator{
+public class InviteFlowActivity extends RelishActivity implements PagerCallbacks, InviteCreator, EmptyCardFragment.OnInviteSentListener{
 
     public static final String PLACE_FOR_INVITE_EXTRA = "extra_place_for_invite";
 
@@ -43,6 +51,12 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    @Bind(R.id.invite_success_title)
+    TextView inviteSuccessTitle;
+
+    @Bind(R.id.layout_success)
+    RelativeLayout successLayout;
+
     private String[] TITLES;
     private YelpPlace currentPlace;
     private Invite invite;
@@ -53,6 +67,8 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite_flow);
         ButterKnife.bind(this);
+
+        inviteSuccessTitle.setTypeface(TypefaceUtil.BRANNBOLL_BOLD);
 
         if (savedInstanceState != null) {
             currentStep = savedInstanceState.getInt("current_step");
@@ -119,7 +135,11 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
             public void onPageSelected(int position) {
                 if(position == 0) {
                     getSupportActionBar().setTitle(currentPlace.name);
+
                 } else{
+                    if(position == 3){
+                        inviteSuccessTitle.setVisibility(View.VISIBLE);
+                    }
                     getSupportActionBar().setTitle(TITLES[position]);
                 }
                 currentStep = position;
@@ -175,5 +195,18 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
     @Override
     public void updateInvite(Invite invite) {
         this.invite = invite;
+    }
+
+    @Override
+    public void onInviteSent(boolean success) {
+        if(success){
+            showInviteSuccessAnimation();
+        }
+    }
+
+    private void showInviteSuccessAnimation(){
+        Log.d("InviteFlowActivity", "showInviteSuccessAnimation()");
+        inviteSuccessTitle.setVisibility(View.VISIBLE);
+        //YoYo.with(Techniques.DropOut).duration(300).playOn(inviteSuccessTitle);
     }
 }

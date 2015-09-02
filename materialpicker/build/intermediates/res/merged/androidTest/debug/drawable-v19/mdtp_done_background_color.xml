@@ -22,4 +22,4 @@
           android:drawable="@color/mdtp_neutral_pressed" />
 
     <item android:drawable="@color/mdtp_circle_background" />
-</selector><!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/drawable-v19/mdtp_done_background_color.xml --><!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/build/intermediates/bundles/debug/res/drawable-v19/mdtp_done_background_color.xml -->
+</selector><!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/drawable-v19/mdtp_done_background_color.xml --><!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/build/intermediates/bundles/debug/res/drawable-v19/mdtp_done_background_color.xml -->

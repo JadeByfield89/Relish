@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/build/intermediates/bundles/debug/res/values-sw600dp-land/values-sw600dp-land.xml -->
+    <!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/build/intermediates/bundles/debug/res/values-sw600dp-land/values-sw600dp-land.xml -->
     <eat-comment/>
     <dimen name="mdtp_ampm_label_size">16sp</dimen>
     <dimen name="mdtp_ampm_left_padding">6dip</dimen>

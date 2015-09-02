@@ -22,4 +22,4 @@
           android:drawable="@color/mdtp_accent_color" />
 
     <item android:drawable="@color/mdtp_white" />
-</selector><!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/drawable-land/mdtp_done_background_color.xml --><!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/build/intermediates/bundles/debug/res/drawable-land/mdtp_done_background_color.xml -->
+</selector><!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/drawable-land/mdtp_done_background_color.xml --><!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/build/intermediates/bundles/debug/res/drawable-land/mdtp_done_background_color.xml -->

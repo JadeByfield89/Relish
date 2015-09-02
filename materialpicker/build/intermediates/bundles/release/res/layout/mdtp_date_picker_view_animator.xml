@@ -20,4 +20,4 @@
      android:layout_height="@dimen/mdtp_date_picker_view_animator_height"
      android:gravity="center"
      android:paddingLeft="8dp"
-     android:paddingRight="8dp" /><!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/layout/mdtp_date_picker_view_animator.xml -->
+     android:paddingRight="8dp" /><!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/layout/mdtp_date_picker_view_animator.xml -->

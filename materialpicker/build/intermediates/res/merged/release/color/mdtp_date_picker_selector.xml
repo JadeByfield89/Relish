@@ -20,4 +20,4 @@
     <item android:state_pressed="false" android:state_selected="false"
         android:color="@color/mdtp_accent_color_focused"/>
 
-</selector><!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/color/mdtp_date_picker_selector.xml -->
+</selector><!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/color/mdtp_date_picker_selector.xml -->

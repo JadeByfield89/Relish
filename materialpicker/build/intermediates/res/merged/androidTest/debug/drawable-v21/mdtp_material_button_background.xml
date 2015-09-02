@@ -6,4 +6,4 @@
         android:id="@android:id/mask"
         android:drawable="@drawable/mdtp_material_button_selected" />
 
-</ripple><!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/drawable-v21/mdtp_material_button_background.xml --><!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/build/intermediates/bundles/debug/res/drawable-v21/mdtp_material_button_background.xml -->
+</ripple><!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/drawable-v21/mdtp_material_button_background.xml --><!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/build/intermediates/bundles/debug/res/drawable-v21/mdtp_material_button_background.xml -->

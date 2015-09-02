@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/colors.xml -->
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="mdtp_accent_color">#FF6724</color>
     <color name="mdtp_accent_color_dark">#da5e2a</color>
@@ -39,7 +39,7 @@
     <color name="mdtp_red_focused">@color/mdtp_accent_color_dark</color>
     <color name="mdtp_transparent_black">#7f000000</color>
     <color name="mdtp_white">#ffffff</color>
-    <!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/dimens.xml -->
+    <!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="mdtp_ampm_label_size">16sp</dimen>
     <dimen name="mdtp_ampm_left_padding">6dip</dimen>
@@ -77,14 +77,14 @@
     <dimen name="mdtp_year_label_height">64dp</dimen>
     <dimen name="mdtp_year_label_text_size">22dp</dimen>
     <item format="float" name="mdtp_ampm_circle_radius_multiplier" type="string">0.22</item>
-    <!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/strings.xml -->
+    <!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="mdtp_cancel">@android:string/cancel</string>
-    <!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/dimens.xml -->
+    <!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <item format="float" name="mdtp_circle_radius_multiplier" type="string">0.82</item>
     <item format="float" name="mdtp_circle_radius_multiplier_24HourMode" type="string">0.85</item>
-    <!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/strings.xml -->
+    <!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="mdtp_day_of_week_label_typeface" translatable="false">sans-serif</string>
     <string name="mdtp_day_picker_description">Month grid of days</string>
@@ -93,12 +93,12 @@
     <string name="mdtp_hour_picker_description">Hours circular slider</string>
     <string name="mdtp_item_is_selected"><ns1:g example="2013" id="item">%1$s</ns1:g> selected</string>
     <string name="mdtp_minute_picker_description">Minutes circular slider</string>
-    <!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/dimens.xml -->
+    <!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <item format="float" name="mdtp_numbers_radius_multiplier_inner" type="string">0.60</item>
     <item format="float" name="mdtp_numbers_radius_multiplier_normal" type="string">0.81</item>
     <item format="float" name="mdtp_numbers_radius_multiplier_outer" type="string">0.83</item>
-    <!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/strings.xml -->
+    <!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="mdtp_ok">@android:string/ok</string>
     <string name="mdtp_radial_numbers_typeface" translatable="false">sans-serif</string>
@@ -107,18 +107,18 @@
     <string name="mdtp_select_hours">Select hours</string>
     <string name="mdtp_select_minutes">Select minutes</string>
     <string name="mdtp_select_year">Select year</string>
-    <!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/dimens.xml -->
+    <!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <item format="float" name="mdtp_selection_radius_multiplier" type="string">0.16</item>
     <item format="float" name="mdtp_text_size_multiplier_inner" type="string">0.11</item>
     <item format="float" name="mdtp_text_size_multiplier_normal" type="string">0.12</item>
     <item format="float" name="mdtp_text_size_multiplier_outer" type="string">0.08</item>
-    <!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/strings.xml -->
+    <!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="mdtp_time_placeholder" translatable="false">--</string>
     <string name="mdtp_time_separator" translatable="false">:</string>
     <string name="mdtp_year_picker_description">Year list</string>
-    <!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/styles.xml -->
+    <!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_up</item>

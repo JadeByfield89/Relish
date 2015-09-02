@@ -41,4 +41,4 @@
         style="@style/mdtp_ActionButton.Text"
         android:text="@string/mdtp_ok" />
 </LinearLayout>
-<!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/layout/mdtp_done_button.xml --><!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/build/intermediates/bundles/debug/res/layout/mdtp_done_button.xml -->
+<!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/layout/mdtp_done_button.xml --><!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/build/intermediates/bundles/debug/res/layout/mdtp_done_button.xml -->

@@ -24,4 +24,4 @@
     android:textColor="@color/mdtp_white"
     android:textSize="@dimen/mdtp_date_picker_header_text_size"
     android:importantForAccessibility="no" />
-<!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/layout/mdtp_date_picker_header_view.xml -->
+<!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/layout/mdtp_date_picker_header_view.xml -->

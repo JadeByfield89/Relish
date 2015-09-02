@@ -7,4 +7,4 @@
         android:interpolator="@android:anim/accelerate_interpolator"
         android:toXDelta="0" />
 
-</set><!-- From: file:/C:/Users/qq/AndroidStudioProjects/Relish/materialpicker/src/main/res/anim/slide_up.xml -->
+</set><!-- From: file:/Users/byfieldj/Desktop/AndroidStudioProjects/Relish/materialpicker/src/main/res/anim/slide_up.xml -->
