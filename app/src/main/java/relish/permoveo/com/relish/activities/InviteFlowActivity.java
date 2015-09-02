@@ -18,11 +18,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.pager.InvitePagerAdapter;
+import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.interfaces.PagerCallbacks;
+import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.util.BlurBuilder;
 
-public class InviteFlowActivity extends RelishActivity implements PagerCallbacks{
+public class InviteFlowActivity extends RelishActivity implements PagerCallbacks, InviteCreator{
 
     public static final String PLACE_FOR_INVITE_EXTRA = "extra_place_for_invite";
 
@@ -43,6 +45,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
 
     private String[] TITLES;
     private YelpPlace currentPlace;
+    private Invite invite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
 
         if (savedInstanceState != null) {
             currentStep = savedInstanceState.getInt("current_step");
+            invite = (Invite) savedInstanceState.getSerializable("current_invite");
         }
 
         TITLES = new String[]{getString(R.string.invite_first_step),
@@ -65,9 +69,12 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
 //        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_close);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        invite = new Invite();
 
         if (getIntent().hasExtra(PLACE_FOR_INVITE_EXTRA)) {
             currentPlace = (YelpPlace) getIntent().getSerializableExtra(PLACE_FOR_INVITE_EXTRA);
+            invite.name = currentPlace.name;
+            invite.location = currentPlace.location;
             getSupportActionBar().setTitle(currentPlace.name);
             if (!TextUtils.isEmpty(currentPlace.image)) {
                 Target target = new Target() {
@@ -134,6 +141,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putInt("current_step", currentStep);
+        outState.putSerializable("current_invite", invite);
         super.onSaveInstanceState(outState);
     }
 
@@ -157,5 +165,15 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
     @Override
     public void previous() {
 
+    }
+
+    @Override
+    public Invite getInvite() {
+        return invite;
+    }
+
+    @Override
+    public void updateInvite(Invite invite) {
+        this.invite = invite;
     }
 }

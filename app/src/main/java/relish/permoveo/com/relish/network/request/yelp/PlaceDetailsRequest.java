@@ -31,7 +31,7 @@ public class PlaceDetailsRequest extends RelishRequest<String, Void, PlaceDetail
     public PlaceDetailsRequest(IRequestable callback) {
         super(callback);
         gson = new GsonBuilder()
-                .registerTypeAdapter(YelpPlace.RestaurantLocation.class, new RestaurantLocationDeserializer())
+                .registerTypeAdapter(YelpPlace.PlaceLocation.class, new RestaurantLocationDeserializer())
                 .registerTypeAdapter(Review.class, new YelpReviewDeserializer())
                 .create();
     }

@@ -30,14 +30,14 @@ public class SearchRequest extends RelishRequest<Integer, Void, PlacesResponse> 
     public SearchRequest(IRequestable callback) {
         super(callback);
         gson = new GsonBuilder()
-                .registerTypeAdapter(YelpPlace.RestaurantLocation.class, new RestaurantLocationDeserializer())
+                .registerTypeAdapter(YelpPlace.PlaceLocation.class, new RestaurantLocationDeserializer())
                 .create();
     }
 
     public SearchRequest(IRequestable callback, ArrayList<String> categories) {
         super(callback);
         gson = new GsonBuilder()
-                .registerTypeAdapter(YelpPlace.RestaurantLocation.class, new RestaurantLocationDeserializer())
+                .registerTypeAdapter(YelpPlace.PlaceLocation.class, new RestaurantLocationDeserializer())
                 .create();
 
         this.categories = categories;

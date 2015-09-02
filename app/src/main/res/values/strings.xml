@@ -63,6 +63,22 @@
     <string name="add_friends_facebook_title">FACEBOOK</string>
     <string name="invite_continue">CONTINUE</string>
     <string name="invite_friends_title">Add People</string>
+    <string name="invite_details_invite_title">Invite Title</string>
+    <string name="invite_details_location">Location</string>
+    <string name="invite_details_time">Time</string>
+    <string name="invite_details_date">Date</string>
+    <string name="invite_details_reminder">Reminder</string>
+    <string name="enter_title_hint">Enter title</string>
+    <string name="note_hint">Note</string>
+    <string name="no_reminder">No reminder</string>
+    <string name="reminder_15_mins">15 minutes before</string>
+    <string name="reminder_30_mins">30 minutes before</string>
+    <string name="reminder_1_hour">1 hour before</string>
+    <string name="reminder_2_hours">2 hours before</string>
+
+    <string name="enter_date">Enter date</string>
+    <string name="enter_time">Enter time</string>
+
     <!--Welcome Screens -->
     <string name="welcome_skip">SKIP</string>
     <string name="welcome_ok">OK</string>

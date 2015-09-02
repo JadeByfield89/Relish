@@ -15,4 +15,20 @@
         <item></item>
         <item>@drawable/ic_settings_selector</item>
     </array>
+
+    <string-array name="reminder_titles">
+        <item>@string/no_reminder</item>
+        <item>@string/reminder_15_mins</item>
+        <item>@string/reminder_30_mins</item>
+        <item>@string/reminder_1_hour</item>
+        <item>@string/reminder_2_hours</item>
+    </string-array>
+
+    <integer-array name="reminder_seconds">
+        <item>0</item>
+        <item>900</item>
+        <item>1800</item>
+        <item>3600</item>
+        <item>7200</item>
+    </integer-array>
 </resources>

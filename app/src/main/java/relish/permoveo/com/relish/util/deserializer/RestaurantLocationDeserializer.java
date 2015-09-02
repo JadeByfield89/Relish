@@ -14,11 +14,11 @@ import relish.permoveo.com.relish.model.yelp.YelpPlace;
 /**
  * Created by rom4ek on 03.08.2015.
  */
-public class RestaurantLocationDeserializer implements JsonDeserializer<YelpPlace.RestaurantLocation> {
+public class RestaurantLocationDeserializer implements JsonDeserializer<YelpPlace.PlaceLocation> {
     @Override
-    public YelpPlace.RestaurantLocation deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public YelpPlace.PlaceLocation deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject locationObj = json.getAsJsonObject();
-        YelpPlace.RestaurantLocation location = new YelpPlace.RestaurantLocation();
+        YelpPlace.PlaceLocation location = new YelpPlace.PlaceLocation();
 
         JsonObject coordinateObj = locationObj.get("coordinate").getAsJsonObject();
         location.lat = coordinateObj.get("latitude").getAsDouble();

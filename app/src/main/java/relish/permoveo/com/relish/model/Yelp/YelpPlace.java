@@ -26,7 +26,7 @@ public class YelpPlace implements Serializable {
     public String snippet;
     @SerializedName("mobile_url")
     public String url;
-    public RestaurantLocation location;
+    public PlaceLocation location;
     public ArrayList<Review> reviews;
     public ArrayList<String> weekdayText;
 
@@ -67,7 +67,7 @@ public class YelpPlace implements Serializable {
     /**
      * Created by rom4ek on 03.08.2015.
      */
-    public static class RestaurantLocation implements Serializable {
+    public static class PlaceLocation implements Serializable {
 
         public String address;
         public double lat;

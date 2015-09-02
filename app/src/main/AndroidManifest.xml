@@ -76,7 +76,7 @@
         <activity
             android:name=".activities.InviteFlowActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustNothing|stateHidden"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:label="@string/title_activity_invite_flow" >
         </activity>
         <meta-data
