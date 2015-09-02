@@ -6,6 +6,7 @@
                 tools:context="relish.permoveo.com.relish.fragments.inviteflow.InviteDetailsFragment">
 
     <RelativeLayout
+        android:id="@+id/invite_details_card"
         android:layout_width="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
