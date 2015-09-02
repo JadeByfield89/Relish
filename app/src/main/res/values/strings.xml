@@ -171,7 +171,7 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="sms_enter_code">ENTER CONFIRMATION CODE</string>
 
     <!-- Invite Success -->
-    <string name="invite_success">Invite Sent!</string>
+    <string name="invite_success">Invite Sent</string>
 
 
 </resources>

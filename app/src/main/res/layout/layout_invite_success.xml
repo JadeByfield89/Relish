@@ -1,19 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 
     <TextView
         android:id="@+id/invite_success_title"
-        android:text="@string/invite_success"
-        android:textSize="60sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:textColor="#fff"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:text="@string/invite_success"
+        android:textColor="#fff"
+        android:textSize="70sp"
+        android:visibility="invisible" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/invite_share_card"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/invite_success_title"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="20dp"
+        android:visibility="invisible"
+        card_view:cardCornerRadius="1dp"
+        card_view:cardElevation="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:visibility="visible"
+            android:layout_height="wrap_content" android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/share_facebook"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/share_facebook" />
+
+        <Button
+            android:id="@+id/share_twitter"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_toRightOf="@id/share_facebook"
+            android:background="@drawable/share_twitter" />
 
 
+        <Button
+            android:id="@+id/share_google_plus"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_toRightOf="@id/share_twitter"
+            android:background="@drawable/share_google_plus" />
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
 
 
 </RelativeLayout>
