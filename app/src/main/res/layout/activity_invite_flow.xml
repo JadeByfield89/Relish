@@ -1,38 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 
     <ImageView
         android:id="@+id/invite_place_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop" />
 
-    <include layout="@layout/toolbar"/>
+
+    <include layout="@layout/toolbar" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager_invite"
-        android:layout_below="@+id/toolbar"
-        android:layout_marginTop="6dp"
-        android:layout_above="@+id/pager_indicator"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+        android:layout_above="@+id/pager_indicator"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="6dp" />
 
     <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/pager_indicator"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        app:radius="4dp"
-        app:fillColor="@color/page_indicator_page_color"
-        app:pageColor="@color/page_indicator_fill_color"
-        app:strokeColor="@color/page_indicator_fill_color"
-        android:layout_marginTop="8dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
-        android:layout_width="match_parent"/>
+        android:layout_marginTop="8dp"
+        android:padding="5dp"
+        app:fillColor="@color/page_indicator_page_color"
+        app:pageColor="@color/page_indicator_fill_color"
+        app:radius="4dp"
+        app:strokeColor="@color/page_indicator_fill_color" />
+
+    <include
+        android:id="@+id/layout_success"
+        layout="@layout/layout_invite_success"
+         />
 
 
 </RelativeLayout>

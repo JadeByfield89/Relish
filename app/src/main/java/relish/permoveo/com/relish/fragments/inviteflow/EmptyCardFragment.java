@@ -1,9 +1,11 @@
 package relish.permoveo.com.relish.fragments.inviteflow;
 
 import android.animation.Animator;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +28,9 @@ public class EmptyCardFragment extends Fragment {
     @Bind(R.id.button_animate)
     Button animateButton;
 
-    private static final int ANIMATION_DURATION = 200;
+    private static final int ANIMATION_DURATION = 500;
+
+    private OnInviteSentListener mListener;
 
     @Nullable
     @Override
@@ -45,11 +49,42 @@ public class EmptyCardFragment extends Fragment {
     }
 
     private void startSendAnimation(View view) {
-        final int cardWidth = view.getWidth();
-        final int cardHeight = view.getHeight();
+        YoYo.with(Techniques.ZoomOutRight).duration(ANIMATION_DURATION).withListener(new com.nineoldandroids.animation.Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(com.nineoldandroids.animation.Animator animation) {
 
+            }
 
+            @Override
+            public void onAnimationEnd(com.nineoldandroids.animation.Animator animation) {
+                   mListener.onInviteSent(true);
+            }
 
-        YoYo.with(Techniques.ZoomOutRight).duration(500).playOn(view);
+            @Override
+            public void onAnimationCancel(com.nineoldandroids.animation.Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(com.nineoldandroids.animation.Animator animation) {
+
+            }
+        }).playOn(view);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try{
+            mListener = (OnInviteSentListener) activity;
+        }catch(ClassCastException e){
+            e.printStackTrace();
+            Log.d("EmptyCardFragment", "Activity must implement OnInviteSentListener!");
+        }
+    }
+
+    public interface OnInviteSentListener{
+
+        public void onInviteSent(boolean success);
     }
 }
