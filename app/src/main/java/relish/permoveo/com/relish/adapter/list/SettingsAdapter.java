@@ -9,11 +9,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.model.Setting;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
@@ -24,11 +26,15 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int HEADER = 0;
     private static final int NORMAL = 1;
     private static final int TOGGLE = 2;
+    private ArrayList<Setting> settings;
 
-    private static final int SETTINGS_COUNT = 12;
     @Override
     public int getItemCount() {
-        return SETTINGS_COUNT;
+        return settings.size();
+    }
+
+    public SettingsAdapter(ArrayList<Setting> settings){
+        this.settings = settings;
     }
 
 
@@ -57,14 +63,21 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof SettingsHeaderViewHolder){
-//            ((SettingsHeaderViewHolder) holder).header.setText("HEADER");
+            ((SettingsHeaderViewHolder) holder).header.setText(settings.get(position).getTitle());
         }else if( holder instanceof SettingsViewHolder){
-           // holder.title.setText("Title");
-            //holder.subtitle.setText("Subtitle");
+           ((SettingsViewHolder) holder).title.setText(settings.get(position).getTitle());
+            if(settings.get(position).getSubtitle().isEmpty()){
+                ((SettingsViewHolder) holder).subtitle.setVisibility(View.GONE);
+            }else
+                ((SettingsViewHolder) holder).subtitle.setText(settings.get(position).getSubtitle());
+
         }
         else if(holder instanceof  SettingsToggleViewHolder){
-           // ((SettingsToggleViewHolder) holder).title.setText("Title");
-            //((SettingsToggleViewHolder) holder).title.setText("Subtitle");
+            ((SettingsToggleViewHolder) holder).title.setText(settings.get(position).getTitle());
+            if(settings.get(position).getSubtitle().isEmpty()){
+                ((SettingsToggleViewHolder) holder).subtitle.setVisibility(View.GONE);
+            }else
+                ((SettingsToggleViewHolder) holder).subtitle.setText(settings.get(position).getSubtitle());
 
         }
 
@@ -141,6 +154,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return HEADER;
         }
         else if(position == 1){
+            return TOGGLE;
+        }
+        else if(position == 3){
             return TOGGLE;
         }
         else{

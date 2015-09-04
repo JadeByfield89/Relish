@@ -7,16 +7,29 @@ import java.util.Map;
  */
 public class Setting {
 
-    private Map<String, String> dataSet;
+    private String title;
+    private String subtitle;
+    private boolean hasToggle;
 
-    public Setting(Map<String, String> data){
-        this.dataSet = data;
+    public Setting(String title, String subtitle, boolean hasToggle){
+        this.title = title;
+        this.subtitle = subtitle;
+        this.hasToggle = hasToggle;
     }
 
-    public Map<String, String> getSettings(){
-
-        return dataSet;
+    public String getTitle(){
+        return title;
     }
+
+    public String getSubtitle(){
+        return subtitle;
+    }
+
+    public boolean hasToggle(){
+        return hasToggle;
+    }
+
+
 
 
 }
