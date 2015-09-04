@@ -163,4 +163,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return NORMAL;
         }
     }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 }
