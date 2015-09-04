@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="settings_header_general">GENERAL</string>
+    <string name="settings_header_social">SOCIAL STUFF</string>
+    <string name="settings_header_support">HELP</string>
+
+    <string name="settings_item_push_notifications">Push Notifications</string>
+    <string name="settings_item_tip_calculator">Tip Calculator</string>
+    <string name="settings_item_location_sharing">Location Sharing</string>
+    <string name="settings_item_location_sharing_sub">Share my current location with my friends</string>
+
+    <string name="settings_item_twitter">Relish on Twitter</string>
+    <string name="settings_item_facebook">Relish on Facebook</string>
+    <string name="settings_item_tell_friends">Tell your friends</string>
+    <string name="settings_item_rate_us">Rate Relish!</string>
+    <string name="settings_item_about_relish">About Relish</string>
+    <string name="settings_item_contact_support">Contact Support</string>
+    <string name="settings_item_version_number">Version Number</string>
+    <string name="settings_item_version_number_sub">0.8.0</string>
+    <string name="settings_item_change_password">Change Password</string>
+    <string name="settings_item_logout">Logout</string>
+</resources>

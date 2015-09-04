@@ -1,641 +1,638 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/loader_background"
     android:clickable="true"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/filter_clear"
-        android:text="@string/header_clear"
-        android:layout_alignParentTop="true"
-        android:textColor="@color/main_color"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="18dp"
-        android:textStyle="bold"
-        android:layout_marginRight="90dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/filter_done"
-        android:text="@string/header_done"
-        android:layout_alignParentTop="true"
-        android:textColor="@color/main_color"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="18dp"
-        android:textStyle="bold"
-        android:layout_marginRight="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-
-    <TextView
-        android:id="@+id/filter_sort_by"
-        android:layout_alignParentLeft="true"
-        android:text="@string/header_sort_by"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="16dp"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></TextView>
-
-    <RelativeLayout
-        android:id="@+id/categories_container"
-        android:layout_below="@id/filter_sort_by"
-        android:layout_alignLeft="@id/filter_sort_by"
-        android:layout_marginTop="12dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
         <TextView
-            android:id="@+id/type_caribbean"
+            android:id="@+id/filter_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_caribbean"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="90dp"
+            android:layout_marginTop="18dp"
+            android:text="@string/header_clear"
+            android:textColor="@color/main_color"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/filter_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="18dp"
+            android:text="@string/header_done"
+            android:textColor="@color/main_color"
+            android:textStyle="bold" />
 
 
         <TextView
-            android:id="@+id/type_chinese"
+            android:id="@+id/filter_sort_by"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_toRightOf="@id/type_caribbean"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_chinese"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="50dp"
+            android:text="@string/header_sort_by"
+            android:textSize="13sp"
+            android:textStyle="bold"></TextView>
+
+        <RelativeLayout
+            android:id="@+id/categories_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/filter_sort_by"
+            android:layout_below="@id/filter_sort_by"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:id="@+id/type_caribbean"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_caribbean"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+
+            <TextView
+                android:id="@+id/type_chinese"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@id/type_caribbean"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_chinese"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+
+            <TextView
+                android:id="@+id/type_delis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@id/type_chinese"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_delis"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_thai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_caribbean"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_thai"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+
+            <TextView
+                android:id="@+id/type_soulfood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_thai"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_soul_food"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_buffets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_chinese"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@+id/type_japanese"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_buffets"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_japanese"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_chinese"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@id/type_thai"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_japanese"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_kosher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_soulfood"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_kosher"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_brasserie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_japanese"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@id/type_soulfood"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_brasseries"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_mexican"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_japanese"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@id/type_brasserie"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_mexican"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+
+            <TextView
+                android:id="@+id/type_greek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_soulfood"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@id/type_kosher"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_greek"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_halal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_soulfood"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@id/type_greek"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_halal"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_spanish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_mexican"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@id/type_halal"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_spanish"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_gluten_free"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_kosher"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_gluten_free"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_latin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/type_vegan"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@+id/type_italian"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_latin_american"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+
+            <TextView
+                android:id="@+id/type_breakfast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_kosher"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@id/type_gluten_free"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_breakfast_brunch"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_fast_food"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_gluten_free"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_fast_food"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_seafood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_gluten_free"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@id/type_fast_food"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_seafood"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_american"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_gluten_free"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@id/type_seafood"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_american"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+
+            <TextView
+                android:id="@+id/type_vegan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_fast_food"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_vegan"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_vegetarian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_fast_food"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@id/type_vegan"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_vegetarian"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_asian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_fast_food"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@id/type_vegetarian"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_asian"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_italian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_vegan"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_italian"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+            <TextView
+                android:id="@+id/type_cafes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/type_vegan"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_toRightOf="@id/type_latin"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:gravity="center"
+                android:paddingBottom="6dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="6dp"
+                android:text="@string/type_cafes"
+                android:textColor="@color/add_friend_radio_color"
+                android:textSize="@dimen/places_categories_text_size" />
+
+
+        </RelativeLayout>
 
 
         <TextView
-            android:id="@+id/type_delis"
+            android:id="@+id/tv_header_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_toRightOf="@id/type_chinese"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_delis"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
+            android:layout_alignLeft="@id/categories_container"
+            android:layout_below="@id/categories_container"
+            android:layout_marginTop="35dp"
+            android:text="@string/header_distance"
+            android:textSize="13sp"
+            android:textStyle="bold"></TextView>
 
-        <TextView
-            android:id="@+id/type_thai"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/distance_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_below="@id/type_caribbean"
-            android:layout_marginTop="12dp"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_thai"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
+            android:layout_alignLeft="@id/tv_header_distance"
+            android:layout_below="@id/tv_header_distance"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
 
-        <TextView
-            android:id="@+id/type_soulfood"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/type_thai"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_soul_food"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
+            <TextView
+                android:id="@+id/distance_half_mile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:paddingBottom="6dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="6dp"
+                android:text="@string/distance_half_mile"
+                android:textColor="@color/select_distance_radio_color" />
 
-        <TextView
-            android:id="@+id/type_buffets"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/type_chinese"
-            android:layout_toRightOf="@+id/type_japanese"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_buffets"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
 
-        <TextView
-            android:id="@+id/type_japanese"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/type_chinese"
-            android:layout_toRightOf="@id/type_thai"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_japanese"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
+            <TextView
+                android:id="@+id/distance_mile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:paddingBottom="6dp"
 
-        <TextView
-            android:id="@+id/type_kosher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/type_soulfood"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_kosher"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="6dp"
+                android:text="@string/distance_mile"
+                android:textColor="@color/select_distance_radio_color" />
 
-        <TextView
-            android:id="@+id/type_brasserie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_toRightOf="@id/type_soulfood"
-            android:layout_below="@id/type_japanese"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_brasseries"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
 
-        <TextView
-            android:id="@+id/type_mexican"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_toRightOf="@id/type_brasserie"
-            android:layout_below="@id/type_japanese"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_mexican"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
+            <TextView
+                android:id="@+id/distance_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:paddingBottom="6dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="6dp"
+
+                android:text="@string/distance_5_miles"
+                android:textColor="@color/select_distance_radio_color" />
+
+
+            <TextView
+                android:id="@+id/distance_10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:paddingBottom="6dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="6dp"
+
+                android:text="@string/distance_10_miles"
+                android:textColor="@color/select_distance_radio_color" />
+
+            <TextView
+                android:id="@+id/distance_25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/add_friend_radio_background"
+                android:clickable="true"
+                android:paddingBottom="6dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+
+                android:paddingTop="6dp"
+                android:text="@string/distance_25_miles"
+                android:textColor="@color/select_distance_radio_color" />
+
+
+        </LinearLayout>
 
 
         <TextView
-            android:id="@+id/type_greek"
+            android:id="@+id/header_sort_by_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_toRightOf="@id/type_kosher"
-            android:layout_below="@id/type_soulfood"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_greek"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
+            android:layout_alignLeft="@id/distance_container"
+            android:layout_below="@id/distance_container"
+            android:layout_marginTop="30dp"
+            android:text="@string/header_sort_distance"
+            android:textSize="13sp"
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/type_halal"
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/switch_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_toRightOf="@id/type_greek"
-            android:layout_below="@id/type_soulfood"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_halal"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
-
-        <TextView
-            android:id="@+id/type_spanish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/type_mexican"
-            android:layout_toRightOf="@id/type_halal"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_spanish"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
-
-        <TextView
-            android:id="@+id/type_gluten_free"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/type_kosher"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_gluten_free"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
-
-        <TextView
-            android:id="@+id/type_latin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_below="@+id/type_vegan"
-            android:layout_toRightOf="@+id/type_italian"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_latin_american"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/header_sort_by_rating"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="-10dp"
+            android:checked="true">
 
 
-        <TextView
-            android:id="@+id/type_breakfast"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/type_kosher"
-            android:layout_toRightOf="@id/type_gluten_free"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_breakfast_brunch"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
-
-        <TextView
-            android:id="@+id/type_fast_food"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/type_gluten_free"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_fast_food"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
-
-        <TextView
-            android:id="@+id/type_seafood"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_toRightOf="@id/type_fast_food"
-            android:layout_below="@id/type_gluten_free"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_seafood"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
-
-        <TextView
-            android:id="@+id/type_american"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_toRightOf="@id/type_seafood"
-            android:layout_below="@id/type_gluten_free"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_american"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
-
-
-        <TextView
-            android:id="@+id/type_vegan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/type_fast_food"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_vegan"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
-
-        <TextView
-            android:id="@+id/type_vegetarian"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/type_fast_food"
-            android:layout_toRightOf="@id/type_vegan"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_vegetarian"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
-
-        <TextView
-            android:id="@+id/type_asian"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/type_fast_food"
-            android:layout_toRightOf="@id/type_vegetarian"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_asian"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
-
-        <TextView
-            android:id="@+id/type_italian"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/type_vegan"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_italian"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
-
-        <TextView
-            android:id="@+id/type_cafes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/places_categories_text_size"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:gravity="center"
-            android:layout_marginTop="12dp"
-            android:layout_below="@id/type_vegan"
-            android:layout_toRightOf="@id/type_latin"
-            android:layout_marginRight="10dp"
-            android:text="@string/type_cafes"
-            android:textColor="@color/add_friend_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:clickable="true" />
-
+        </android.support.v7.widget.SwitchCompat>
 
     </RelativeLayout>
-
-
-    <TextView
-        android:id="@+id/tv_header_distance"
-        android:text="@string/header_distance"
-        android:layout_below="@id/categories_container"
-        android:layout_marginTop="35dp"
-        android:layout_alignLeft="@id/categories_container"
-        android:textStyle="bold"
-        android:textSize="13sp"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"></TextView>
-
-    <LinearLayout
-        android:layout_below="@id/tv_header_distance"
-        android:layout_marginTop="10dp"
-        android:id="@+id/distance_container"
-        android:layout_alignLeft="@id/tv_header_distance"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-        <TextView
-            android:id="@+id/distance_half_mile"
-            android:text="@string/distance_half_mile"
-            android:layout_width="wrap_content"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:clickable="true"
-            android:textColor="@color/select_distance_radio_color"
-            android:background="@drawable/add_friend_radio_background"
-            android:layout_height="wrap_content" />
-
-
-        <TextView
-            android:id="@+id/distance_mile"
-            android:text="@string/distance_mile"
-            android:layout_width="wrap_content"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="12dp"
-            android:textColor="@color/select_distance_radio_color"
-
-            android:layout_marginLeft="5dp"
-            android:paddingRight="12dp"
-            android:clickable="true"
-            android:background="@drawable/add_friend_radio_background"
-            android:layout_height="wrap_content" />
-
-
-        <TextView
-            android:id="@+id/distance_5"
-            android:text="@string/distance_5_miles"
-            android:layout_width="wrap_content"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:layout_marginLeft="5dp"
-            android:clickable="true"
-            android:textColor="@color/select_distance_radio_color"
-
-            android:background="@drawable/add_friend_radio_background"
-            android:layout_height="wrap_content" />
-
-
-        <TextView
-            android:id="@+id/distance_10"
-            android:text="@string/distance_10_miles"
-            android:layout_width="wrap_content"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:layout_marginLeft="5dp"
-            android:clickable="true"
-            android:textColor="@color/select_distance_radio_color"
-
-            android:background="@drawable/add_friend_radio_background"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/distance_25"
-            android:text="@string/distance_25_miles"
-            android:layout_width="wrap_content"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:paddingLeft="12dp"
-            android:paddingRight="12dp"
-            android:layout_marginLeft="5dp"
-            android:textColor="@color/select_distance_radio_color"
-
-            android:clickable="true"
-            android:background="@drawable/add_friend_radio_background"
-            android:layout_height="wrap_content" />
-
-
-    </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/header_sort_by_rating"
-        android:text="@string/header_sort_distance"
-        android:layout_below="@id/distance_container"
-        android:layout_marginTop="30dp"
-        android:textStyle="bold"
-        android:textSize="13sp"
-        android:layout_alignLeft="@id/distance_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/switch_rating"
-        android:layout_width="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/header_sort_by_rating"
-        android:layout_marginTop="-10dp"
-        android:layout_marginRight="20dp"
-        android:checked="true"
-        android:layout_height="wrap_content">
-
-
-
-
-    </android.support.v7.widget.SwitchCompat>
-
-    </RelativeLayout>
-
 
 
 </ScrollView>
