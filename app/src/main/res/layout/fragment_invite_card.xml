@@ -19,6 +19,7 @@
         <Button
             android:id="@+id/button_animate"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_centerInParent="true"
             android:layout_height="wrap_content" android:text="Animate!"/>
         </RelativeLayout>

@@ -28,39 +28,82 @@
         card_view:cardCornerRadius="1dp"
         card_view:cardElevation="2dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:visibility="visible"
-            android:layout_height="wrap_content" android:orientation="horizontal">
+            android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/share_facebook"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="50dp"
-            android:background="@drawable/share_facebook" />
+            <TextView
+                android:id="@+id/invite_message"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/share_message"
+                android:textColor="@color/invite_title_color"
+                android:includeFontPadding="false"
+                android:textSize="28sp" />
 
-        <Button
-            android:id="@+id/share_twitter"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="50dp"
-            android:layout_toRightOf="@id/share_facebook"
-            android:background="@drawable/share_twitter" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:visibility="visible"
+                android:gravity="center"
+                android:layout_below="@+id/invite_message"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/share_facebook"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:clickable="true"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/facebook_share"/>
+
+                </RelativeLayout>
 
 
-        <Button
-            android:id="@+id/share_google_plus"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="50dp"
-            android:layout_toRightOf="@id/share_twitter"
-            android:background="@drawable/share_google_plus" />
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
-        </LinearLayout>
+                    <ImageView
+                        android:id="@+id/share_twitter"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:clickable="true"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/twitter_share"/>
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/share_plus"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:clickable="true"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/plus_share"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
 
     </android.support.v7.widget.CardView>

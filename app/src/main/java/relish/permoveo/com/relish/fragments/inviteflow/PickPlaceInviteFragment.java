@@ -3,6 +3,8 @@ package relish.permoveo.com.relish.fragments.inviteflow;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -23,10 +25,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.gps.GPSTracker;
+import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.interfaces.PagerCallbacks;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.util.TypefaceUtil;
@@ -67,7 +73,7 @@ public class PickPlaceInviteFragment extends Fragment {
     private GoogleMap mMap;
     private Marker placeMarker;
     private PagerCallbacks pagerCallbacks;
-
+    private InviteCreator creator;
 
     public PickPlaceInviteFragment() {
         // Required empty public constructor
@@ -87,6 +93,9 @@ public class PickPlaceInviteFragment extends Fragment {
 
         if (activity instanceof PagerCallbacks)
             pagerCallbacks = (PagerCallbacks) activity;
+
+        if (activity instanceof InviteCreator)
+            creator = (InviteCreator) activity;
     }
 
     @Override
@@ -226,7 +235,35 @@ public class PickPlaceInviteFragment extends Fragment {
         if (currentPlace != null) {
             if (placeMarker == null) {
                 placeMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(currentPlace.location.lat, currentPlace.location.lng)));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentPlace.location.lat, currentPlace.location.lng), 17.0f));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentPlace.location.lat, currentPlace.location.lng), 17.0f), new GoogleMap.CancelableCallback() {
+                    @Override
+                    public void onFinish() {
+                        mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                            @Override
+                            public void onSnapshotReady(Bitmap bitmap) {
+                                ContextWrapper cw = new ContextWrapper(getActivity().getApplicationContext());
+                                // path to /data/data/yourapp/app_data/imageDir
+                                File directory = cw.getDir("images", Context.MODE_PRIVATE);
+                                File snapshotPath = new File(directory, "snapshot.png");
+
+                                FileOutputStream fos = null;
+                                try {
+                                    fos = new FileOutputStream(snapshotPath);
+                                    bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
+                                    fos.close();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                creator.getInvite().mapSnapshot = snapshotPath.getAbsolutePath();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+                });
             }
         } else {
             if (GPSTracker.get.getLocation() != null) {

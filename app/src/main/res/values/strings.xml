@@ -62,12 +62,15 @@
     <string name="add_friends_contacts_title">CONTACTS</string>
     <string name="add_friends_facebook_title">FACEBOOK</string>
     <string name="invite_continue">CONTINUE</string>
+    <string name="invite_send">SEND</string>
     <string name="invite_friends_title">Add People</string>
     <string name="invite_details_invite_title">Invite Title</string>
     <string name="invite_details_location">Location</string>
     <string name="invite_details_time">Time</string>
     <string name="invite_details_date">Date</string>
     <string name="invite_details_reminder">Reminder</string>
+    <string name="invite_send_sendto">Send to</string>
+    <string name="persons_more">more</string>
     <string name="enter_title_hint">Enter title</string>
     <string name="note_hint">Note</string>
     <string name="no_reminder">No reminder</string>
@@ -78,6 +81,9 @@
 
     <string name="all_fields_error">Sorry, one or more fields seem to be missing</string>
     <string formatted="false" name="one_field_error">Please, enter a %s for this invite</string>
+    <string name="friends_error">Please, select friends/contacts for this invite</string>
+
+    <string name="share_message">Share Invite</string>
 
     <string name="enter_date">Enter date</string>
     <string name="enter_time">Enter time</string>

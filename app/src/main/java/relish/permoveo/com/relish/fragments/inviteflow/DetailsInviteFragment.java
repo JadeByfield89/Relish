@@ -33,13 +33,14 @@ import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.list.inviteflow.ReminderAdapter;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.interfaces.PagerCallbacks;
+import relish.permoveo.com.relish.interfaces.RenderCallbacks;
 import relish.permoveo.com.relish.model.Reminder;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InviteDetailsFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class DetailsInviteFragment extends Fragment implements RenderCallbacks, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     @Bind(R.id.details_invite_title_desc)
     TextView inviteTitleDesc;
@@ -90,7 +91,7 @@ public class InviteDetailsFragment extends Fragment implements DatePickerDialog.
     private PagerCallbacks pagerCallbacks;
     private InviteCreator creator;
 
-    public InviteDetailsFragment() {
+    public DetailsInviteFragment() {
         // Required empty public constructor
     }
 
@@ -134,11 +135,12 @@ public class InviteDetailsFragment extends Fragment implements DatePickerDialog.
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(inviteNote.getText())) {
-                    creator.getInvite().note = inviteNote.getText().toString();
-                }
-
                 if (validate()) {
+                    if (!TextUtils.isEmpty(inviteNote.getText())) {
+                        creator.getInvite().note = inviteNote.getText().toString();
+                    }
+                    creator.getInvite().title = inviteTitle.getText().toString();
+
                     if (pagerCallbacks != null)
                         pagerCallbacks.next();
                 } else {
@@ -157,7 +159,7 @@ public class InviteDetailsFragment extends Fragment implements DatePickerDialog.
                 }
 
                 TimePickerDialog tpd = TimePickerDialog.newInstance(
-                        InviteDetailsFragment.this,
+                        DetailsInviteFragment.this,
                         now.getHourOfDay(),
                         now.getMinuteOfHour(),
                         false
@@ -175,7 +177,7 @@ public class InviteDetailsFragment extends Fragment implements DatePickerDialog.
                 }
 
                 DatePickerDialog dtp = DatePickerDialog.newInstance(
-                        InviteDetailsFragment.this,
+                        DetailsInviteFragment.this,
                         now.getYear(),
                         now.getMonthOfYear() - 1,
                         now.getDayOfMonth()
@@ -202,10 +204,10 @@ public class InviteDetailsFragment extends Fragment implements DatePickerDialog.
     @Override
     public void onResume() {
         super.onResume();
-        render();
     }
 
-    private void render() {
+    @Override
+    public void render() {
         if (creator.getInvite() != null) {
             if (creator.getInvite().location != null && !TextUtils.isEmpty(creator.getInvite().location.address)) {
                 inviteLocation.setText(creator.getInvite().location.address.substring(0, creator.getInvite().location.address.indexOf(',')));
@@ -229,7 +231,7 @@ public class InviteDetailsFragment extends Fragment implements DatePickerDialog.
             if (creator.getInvite().date != 0l) {
                 DateTime date = new DateTime().withMillis(creator.getInvite().date);
                 DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("E, MMMM d");
-                inviteTime.setText(dateFormatter.print(date));
+                inviteDate.setText(dateFormatter.print(date));
             } else {
                 inviteDate.setText(getString(R.string.enter_date));
             }
@@ -242,11 +244,12 @@ public class InviteDetailsFragment extends Fragment implements DatePickerDialog.
                 inviteTime.setText(getString(R.string.enter_time));
             }
         } else {
-            inviteDate.setText(getString(R.string.enter_date));
-            inviteTime.setText(getString(R.string.enter_time));
-            reminderSpinner.setSelection(0);
-            inviteLocation.setText("");
-            inviteTitle.setText("");
+//            inviteDate.setText(getString(R.string.enter_date));
+//            inviteTime.setText(getString(R.string.enter_time));
+//            reminderSpinner.setSelection(0);
+//            inviteLocation.setText("");
+//            inviteTitle.setText("");
+            getActivity().finish();
         }
     }
 

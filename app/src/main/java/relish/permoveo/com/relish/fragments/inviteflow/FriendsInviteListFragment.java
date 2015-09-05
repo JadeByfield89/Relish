@@ -1,6 +1,7 @@
 package relish.permoveo.com.relish.fragments.inviteflow;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -24,8 +25,10 @@ import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.list.inviteflow.InviteFriendsListAdapter;
 import relish.permoveo.com.relish.interfaces.ISelectable;
+import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.manager.FriendsManager;
 import relish.permoveo.com.relish.model.Friend;
+import relish.permoveo.com.relish.model.InvitePerson;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.BounceProgressBar;
 
@@ -48,8 +51,18 @@ public class FriendsInviteListFragment extends Fragment implements ISelectable, 
     @Bind(R.id.invite_friends_list_recycler)
     RecyclerView recyclerView;
 
+    private InviteCreator creator;
+
     public FriendsInviteListFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof InviteCreator) {
+            creator = (InviteCreator) activity;
+        }
     }
 
     @Override
@@ -79,12 +92,12 @@ public class FriendsInviteListFragment extends Fragment implements ISelectable, 
 //        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        render();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        render();
     }
 
     private void render() {
@@ -96,6 +109,14 @@ public class FriendsInviteListFragment extends Fragment implements ISelectable, 
                         emptyView.setVisibility(View.GONE);
                         bounceProgressBar.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
+                        for (Friend friend : friends) {
+                            for (InvitePerson invited : creator.getInvite().invited) {
+                                if (invited instanceof Friend && ((Friend) invited).id.equals(friend.id)) {
+                                    friend.isSelected = true;
+                                }
+                            }
+                        }
+
                         adapter.swap(friends);
                     } else {
                         adapter.clear();

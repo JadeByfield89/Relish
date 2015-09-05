@@ -3,6 +3,7 @@ package relish.permoveo.com.relish.activities;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,6 +23,8 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.viewpagerindicator.CirclePageIndicator;
 
+import java.lang.reflect.Field;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
@@ -29,10 +32,13 @@ import relish.permoveo.com.relish.adapter.pager.InvitePagerAdapter;
 import relish.permoveo.com.relish.fragments.inviteflow.EmptyCardFragment;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.interfaces.PagerCallbacks;
+import relish.permoveo.com.relish.interfaces.RenderCallbacks;
 import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.util.BlurBuilder;
+import relish.permoveo.com.relish.util.FixedSpeedScroller;
 import relish.permoveo.com.relish.util.TypefaceUtil;
+import relish.permoveo.com.relish.view.NonSwipeableViewPager;
 
 public class InviteFlowActivity extends RelishActivity implements PagerCallbacks, InviteCreator, EmptyCardFragment.OnInviteSentListener{
 
@@ -42,7 +48,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
     private int currentStep = 0;
 
     @Bind(R.id.pager_invite)
-    ViewPager invitePager;
+    NonSwipeableViewPager invitePager;
 
     @Bind(R.id.invite_place_image)
     ImageView invitePlaceImage;
@@ -63,13 +69,16 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
     CardView successCardView;
 
     @Bind(R.id.share_facebook)
-    Button shareFacebook;
+    ImageView shareFacebook;
 
     @Bind(R.id.share_twitter)
-    Button shareTwitter;
+    ImageView shareTwitter;
 
-    @Bind(R.id.share_google_plus)
-    Button shareGooglePlus;
+    @Bind(R.id.share_plus)
+    ImageView shareGooglePlus;
+
+    @Bind(R.id.invite_message)
+    TextView inviteMessage;
 
     private String[] TITLES;
     private YelpPlace currentPlace;
@@ -82,7 +91,18 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
         setContentView(R.layout.activity_invite_flow);
         ButterKnife.bind(this);
 
+        try {
+            Field mScroller;
+            mScroller = ViewPager.class.getDeclaredField("mScroller");
+            mScroller.setAccessible(true);
+            FixedSpeedScroller scroller = new FixedSpeedScroller(invitePager.getContext(), new LinearInterpolator());
+            mScroller.set(invitePager, scroller);
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ignored) {
+        }
+
+
         inviteSuccessTitle.setTypeface(TypefaceUtil.BRANNBOLL_BOLD);
+        inviteMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
 
         if (savedInstanceState != null) {
             currentStep = savedInstanceState.getInt("current_step");
@@ -149,11 +169,12 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
             public void onPageSelected(int position) {
                 if(position == 0) {
                     getSupportActionBar().setTitle(currentPlace.name);
-
-                } else{
+                } else {
                     getSupportActionBar().setTitle(TITLES[position]);
                 }
                 currentStep = position;
+                if (getActiveFragment(invitePager, currentStep) instanceof RenderCallbacks)
+                    ((RenderCallbacks) getActiveFragment(invitePager, currentStep)).render();
             }
 
             @Override
@@ -181,11 +202,19 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            setResult(RESULT_CANCELED);
-            finish();
+            previous();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected Fragment getActiveFragment(ViewPager container, int position) {
+        String name = makeFragmentName(container.getId(), position);
+        return getSupportFragmentManager().findFragmentByTag(name);
+    }
+
+    protected static String makeFragmentName(int viewId, int index) {
+        return "android:switcher:" + viewId + ":" + index;
     }
 
     @Override
@@ -195,7 +224,12 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
 
     @Override
     public void previous() {
-
+        if (invitePager.getCurrentItem() == 0) {
+            setResult(RESULT_CANCELED);
+            finish();
+        } else {
+            invitePager.setCurrentItem(invitePager.getCurrentItem() - 1, true);
+        }
     }
 
     @Override

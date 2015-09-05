@@ -5,10 +5,8 @@ import java.io.Serializable;
 /**
  * Created by Roman on 13.08.15.
  */
-public class Contact implements Serializable {
-    public String number;
+public class Contact extends InvitePerson implements Serializable {
     public String name;
-    public String image;
     public boolean isSelected;
     public long id;
     public boolean isInvited;

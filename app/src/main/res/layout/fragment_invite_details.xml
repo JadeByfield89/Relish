@@ -3,7 +3,7 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="relish.permoveo.com.relish.fragments.inviteflow.InviteDetailsFragment">
+                tools:context="relish.permoveo.com.relish.fragments.inviteflow.DetailsInviteFragment">
 
     <RelativeLayout
         android:id="@+id/invite_details_card"

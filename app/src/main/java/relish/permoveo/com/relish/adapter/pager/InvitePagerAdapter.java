@@ -4,10 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import relish.permoveo.com.relish.fragments.inviteflow.EmptyCardFragment;
+import relish.permoveo.com.relish.fragments.inviteflow.DetailsInviteFragment;
 import relish.permoveo.com.relish.fragments.inviteflow.FriendsInviteFragment;
-import relish.permoveo.com.relish.fragments.inviteflow.InviteDetailsFragment;
 import relish.permoveo.com.relish.fragments.inviteflow.PickPlaceInviteFragment;
+import relish.permoveo.com.relish.fragments.inviteflow.SendInviteFragment;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 
 /**
@@ -37,9 +37,9 @@ public class InvitePagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return new FriendsInviteFragment();
             case 2:
-                return new InviteDetailsFragment();
+                return new DetailsInviteFragment();
             case 3:
-                return new EmptyCardFragment();
+                return new SendInviteFragment();
             default:
                 return null;
         }

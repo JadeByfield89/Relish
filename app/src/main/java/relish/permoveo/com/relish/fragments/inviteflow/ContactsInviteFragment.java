@@ -2,6 +2,7 @@ package relish.permoveo.com.relish.fragments.inviteflow;
 
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,7 +29,9 @@ import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.list.inviteflow.InviteContactsListAdapter;
 import relish.permoveo.com.relish.interfaces.ISelectable;
+import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.model.Contact;
+import relish.permoveo.com.relish.model.InvitePerson;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.BounceProgressBar;
 
@@ -58,7 +61,17 @@ public class ContactsInviteFragment extends Fragment implements ISelectable, Fil
     @Bind(R.id.empty_message)
     TextView emptyMessage;
 
+    private InviteCreator creator;
+
     public ContactsInviteFragment() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof InviteCreator) {
+            creator = (InviteCreator) context;
+        }
     }
 
     @Override
@@ -137,6 +150,13 @@ public class ContactsInviteFragment extends Fragment implements ISelectable, Fil
         protected void onPostExecute(Map<String, Contact> contacts) {
             super.onPostExecute(contacts);
             if (contacts != null && contacts.size() > 0) {
+                for (Contact contact : contacts.values()) {
+                    for (InvitePerson invited : creator.getInvite().invited) {
+                        if (invited instanceof Contact && ((Contact) invited).number.equals(contact.number)) {
+                            contact.isSelected = true;
+                        }
+                    }
+                }
                 adapter.swap(new ArrayList<>(contacts.values()));
                 contactsProgress.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);

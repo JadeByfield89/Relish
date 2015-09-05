@@ -1,6 +1,7 @@
 package relish.permoveo.com.relish.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 
@@ -15,4 +16,6 @@ public class Invite implements Serializable {
     public long date = 0l;
     public long time = 0l;
     public String note;
+    public String mapSnapshot;
+    public ArrayList<InvitePerson> invited = new ArrayList<>();
 }

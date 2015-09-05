@@ -3,6 +3,7 @@ package relish.permoveo.com.relish.fragments.inviteflow;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
@@ -13,9 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Filterable;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.ArrayList;
 
@@ -24,6 +28,7 @@ import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.pager.FriendsInvitePagerAdapter;
 import relish.permoveo.com.relish.interfaces.ISelectable;
+import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.interfaces.PagerCallbacks;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
@@ -31,6 +36,9 @@ import relish.permoveo.com.relish.util.TypefaceUtil;
  * A simple {@link Fragment} subclass.
  */
 public class FriendsInviteFragment extends Fragment {
+
+    @Bind(R.id.invite_friends_card)
+    RelativeLayout inviteFriendsCard;
 
     @Bind(R.id.invite_friends_title)
     TextView inviteFriendsTitle;
@@ -49,6 +57,7 @@ public class FriendsInviteFragment extends Fragment {
 
     private FriendsInvitePagerAdapter adapter;
     private PagerCallbacks pagerCallbacks;
+    private InviteCreator creator;
 
     public FriendsInviteFragment() {
         // Required empty public constructor
@@ -59,6 +68,10 @@ public class FriendsInviteFragment extends Fragment {
         super.onAttach(activity);
         if (activity instanceof PagerCallbacks) {
             pagerCallbacks = (PagerCallbacks) activity;
+        }
+
+        if (activity instanceof InviteCreator) {
+            creator = (InviteCreator) activity;
         }
     }
 
@@ -124,8 +137,16 @@ public class FriendsInviteFragment extends Fragment {
                         selected.addAll(((ISelectable) fragment).getSelection());
                     }
                 }
-                if (pagerCallbacks != null)
-                    pagerCallbacks.next();
+
+                if (selected.size() > 0) {
+                    creator.getInvite().invited = new ArrayList<>(selected);
+                    if (pagerCallbacks != null)
+                        pagerCallbacks.next();
+                } else {
+                    YoYo.with(Techniques.Shake)
+                            .playOn(inviteFriendsCard);
+                    Snackbar.make(inviteFriendsCard, getString(R.string.friends_error), Snackbar.LENGTH_LONG).show();
+                }
             }
         });
 
