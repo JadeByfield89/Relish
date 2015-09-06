@@ -210,7 +210,7 @@ public class DetailsInviteFragment extends Fragment implements RenderCallbacks, 
     public void render() {
         if (creator.getInvite() != null) {
             if (creator.getInvite().location != null && !TextUtils.isEmpty(creator.getInvite().location.address)) {
-                inviteLocation.setText(creator.getInvite().location.address.substring(0, creator.getInvite().location.address.indexOf(',')));
+                inviteLocation.setText(creator.getInvite().getFormattedAddress());
             } else {
                 inviteLocation.setText("");
             }
@@ -229,17 +229,13 @@ public class DetailsInviteFragment extends Fragment implements RenderCallbacks, 
             }
 
             if (creator.getInvite().date != 0l) {
-                DateTime date = new DateTime().withMillis(creator.getInvite().date);
-                DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("E, MMMM d");
-                inviteDate.setText(dateFormatter.print(date));
+                inviteDate.setText(creator.getInvite().getFormattedDate());
             } else {
                 inviteDate.setText(getString(R.string.enter_date));
             }
 
             if (creator.getInvite().time != 0l) {
-                DateTime time = new DateTime().withMillis(creator.getInvite().time);
-                DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("h:mm a");
-                inviteTime.setText(timeFormatter.print(time));
+                inviteTime.setText(creator.getInvite().getFormattedTime());
             } else {
                 inviteTime.setText(getString(R.string.enter_time));
             }

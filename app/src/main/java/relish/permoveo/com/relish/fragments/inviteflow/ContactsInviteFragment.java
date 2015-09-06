@@ -133,7 +133,7 @@ public class ContactsInviteFragment extends Fragment implements ISelectable, Fil
                             Contact contact = new Contact();
                             contact.id = cursor.getLong(contactIdIndex);
                             contact.name = cursor.getString(displayNameIndex);
-                            contact.number = cursor.getString(phoneIndex);
+                            contact.number = cursor.getString(phoneIndex).trim();
                             contact.image = cursor.getString(photoUriIndex);
                             if (!contacts.containsKey(contact.name) && !TextUtils.isEmpty(contact.number))
                                 contacts.put(contact.name, contact);

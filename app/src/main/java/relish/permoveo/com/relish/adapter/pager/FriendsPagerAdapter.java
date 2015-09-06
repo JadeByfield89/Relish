@@ -1,5 +1,6 @@
 package relish.permoveo.com.relish.adapter.pager;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -23,9 +24,11 @@ import relish.permoveo.com.relish.util.SharedPrefsUtil;
 public class FriendsPagerAdapter extends FragmentPagerAdapter implements PagerSlidingTabStrip.CustomTabProvider {
 
     private ViewPagerHeader header;
+    private Context context;
 
-    public FriendsPagerAdapter(FragmentManager manager) {
+    public FriendsPagerAdapter(Context context, FragmentManager manager) {
         super(manager);
+        this.context = context;
         header = new ViewPagerHeader("Friends", 0);
 //        headers.add(new ViewPagerHeader("Colleagues", 0));
 //        headers.add(new ViewPagerHeader("Coworkers", 0));
@@ -33,7 +36,7 @@ public class FriendsPagerAdapter extends FragmentPagerAdapter implements PagerSl
 
     public void swap(int count, int newCount) {
         header.image = newCount;
-        header.title = count + " Friends";
+        header.title = count + " " + context.getResources().getQuantityString(R.plurals.friends, count);
         notifyDataSetChanged();
     }
 

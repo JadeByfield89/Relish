@@ -3,8 +3,6 @@ package relish.permoveo.com.relish.fragments.inviteflow;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -24,9 +22,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.io.File;
-import java.io.FileOutputStream;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -238,25 +233,25 @@ public class PickPlaceInviteFragment extends Fragment {
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentPlace.location.lat, currentPlace.location.lng), 17.0f), new GoogleMap.CancelableCallback() {
                     @Override
                     public void onFinish() {
-                        mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
-                            @Override
-                            public void onSnapshotReady(Bitmap bitmap) {
-                                ContextWrapper cw = new ContextWrapper(getActivity().getApplicationContext());
-                                // path to /data/data/yourapp/app_data/imageDir
-                                File directory = cw.getDir("images", Context.MODE_PRIVATE);
-                                File snapshotPath = new File(directory, "snapshot.png");
-
-                                FileOutputStream fos = null;
-                                try {
-                                    fos = new FileOutputStream(snapshotPath);
-                                    bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
-                                    fos.close();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                creator.getInvite().mapSnapshot = snapshotPath.getAbsolutePath();
-                            }
-                        });
+//                        mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+//                            @Override
+//                            public void onSnapshotReady(Bitmap bitmap) {
+//                                ContextWrapper cw = new ContextWrapper(getActivity().getApplicationContext());
+//                                // path to /data/data/yourapp/app_data/imageDir
+//                                File directory = cw.getDir("images", Context.MODE_PRIVATE);
+//                                File snapshotPath = new File(directory, "snapshot.png");
+//
+//                                FileOutputStream fos = null;
+//                                try {
+//                                    fos = new FileOutputStream(snapshotPath);
+//                                    bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
+//                                    fos.close();
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+//                                creator.getInvite().mapSnapshot = snapshotPath.getAbsolutePath();
+//                            }
+//                        });
                     }
 
                     @Override

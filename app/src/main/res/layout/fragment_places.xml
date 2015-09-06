@@ -65,15 +65,6 @@
                 android:textSize="14sp" />
         </FrameLayout>
 
-        <com.pnikosis.materialishprogress.ProgressWheel
-            android:id="@+id/places_header_progress"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:visibility="gone"
-            app:matProg_barColor="@color/main_color"
-            app:matProg_progressIndeterminate="true"
-            android:layout_centerInParent="true" />
-
     </RelativeLayout>
 
     <View

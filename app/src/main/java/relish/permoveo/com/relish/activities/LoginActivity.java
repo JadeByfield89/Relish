@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 
 import butterknife.Bind;
@@ -126,6 +127,10 @@ public class LoginActivity extends RelishActivity {
                             ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
                             ParseUser.getCurrentUser().saveInBackground();
                         }
+                        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                        installation.put("userId", parseUser.getObjectId());
+                        installation.saveInBackground();
+
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         setResult(RESULT_OK);
                         finish();

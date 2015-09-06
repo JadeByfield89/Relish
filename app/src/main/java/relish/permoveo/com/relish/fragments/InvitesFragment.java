@@ -3,10 +3,8 @@ package relish.permoveo.com.relish.fragments;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +16,6 @@ import android.widget.TextView;
 import com.alexvasilkov.foldablelayout.UnfoldableView;
 import com.alexvasilkov.foldablelayout.shading.GlanceFoldShading;
 import com.melnykov.fab.FloatingActionButton;
-import com.mobeta.android.dslv.DragSortListView;
-import com.mobeta.android.dslv.SimpleFloatViewManager;
-import com.nineoldandroids.view.ViewHelper;
 
 import java.util.ArrayList;
 
@@ -28,7 +23,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import relish.permoveo.com.relish.R;
-import relish.permoveo.com.relish.activities.MainActivity;
 import relish.permoveo.com.relish.adapter.list.InvitesListAdapter;
 import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.util.TypefaceUtil;
@@ -62,8 +56,8 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
     @Bind(R.id.unfoldable_view)
     UnfoldableView unfoldableView;
 
-    @Bind(R.id.invites_list_view)
-    DragSortListView invitesListView;
+//    @Bind(R.id.invites_list_view)
+//    DragSortListView invitesListView;
 
     @Bind(R.id.fab_invite)
     FloatingActionButton inviteButton;
@@ -109,12 +103,12 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
 
         listAdapter = new InvitesListAdapter(invites, getActivity());
 //        invitesListView.setAdapter(listAdapter);
-        invitesListView.setOnItemClickListener(this);
+//        invitesListView.setOnItemClickListener(this);
 
 
-        SimpleFloatViewManager simpleFloatViewManager = new SimpleFloatViewManager(invitesListView);
-        simpleFloatViewManager.setBackgroundColor(Color.TRANSPARENT);
-        invitesListView.setFloatViewManager(simpleFloatViewManager);
+//        SimpleFloatViewManager simpleFloatViewManager = new SimpleFloatViewManager(invitesListView);
+//        simpleFloatViewManager.setBackgroundColor(Color.TRANSPARENT);
+//        invitesListView.setFloatViewManager(simpleFloatViewManager);
         //invitesListView.setDragListener(this);
         //invitesListView.setOnItemLongClickListener(this);
 
@@ -177,7 +171,7 @@ public class InvitesFragment extends Fragment implements AdapterView.OnItemClick
 
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-        invitesListView.setDragEnabled(true);
+//        invitesListView.setDragEnabled(true);
         //invitesListView.startDrag(view, 0, view.getX(), view.getY());
         return false;
     }

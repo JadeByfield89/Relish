@@ -1,6 +1,5 @@
 package relish.permoveo.com.relish.fragments.inviteflow;
 
-import android.animation.Animator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,8 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -19,6 +16,7 @@ import com.daimajia.androidanimations.library.YoYo;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.interfaces.OnInviteSentListener;
 
 /**
  * Created by byfieldj on 8/18/15.
@@ -83,8 +81,4 @@ public class EmptyCardFragment extends Fragment {
         }
     }
 
-    public interface OnInviteSentListener{
-
-        public void onInviteSent(boolean success);
-    }
 }

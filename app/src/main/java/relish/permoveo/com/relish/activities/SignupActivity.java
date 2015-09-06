@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -133,6 +134,10 @@ public class SignupActivity extends RelishActivity {
                             @Override
                             public void done(ParseUser parseUser, ParseException e) {
                                 hideLoader();
+
+                                ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                                installation.put("userId", parseUser.getObjectId());
+                                installation.saveInBackground();
                                 if (e == null) {
                                     startActivity(new Intent(SignupActivity.this, SMSVerificationActivity.class));
                                     finish();

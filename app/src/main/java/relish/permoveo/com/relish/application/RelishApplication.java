@@ -4,12 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-
 import com.crashlytics.android.Crashlytics;
 import com.digits.sdk.android.Digits;
 import com.facebook.FacebookSdk;
 import com.parse.Parse;
-
+import com.parse.ParseInstallation;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 
@@ -39,6 +38,7 @@ public class RelishApplication extends Application {
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new Crashlytics(), new TwitterCore(authConfig), new Digits());
         Parse.initialize(this, ConstantUtil.PARSE_APPLICATION_ID, ConstantUtil.PARSE_CLIENT_KEY);
+        ParseInstallation.getCurrentInstallation().saveInBackground();
         FacebookSdk.sdkInitialize(getApplicationContext());
         TypefaceUtil.init(this);
         GPSTracker.get.init(this);

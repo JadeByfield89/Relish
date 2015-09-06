@@ -12,6 +12,7 @@ public enum SharedPrefsUtil {
 
     public static String PARAM_APP_LAUNCHED = "appLaunched";
     public static String PARAM_LAST_VISIBLE_FRIENDS_COUNT = "last_visible_friends_count_for";
+    public static String PARAM_LAST_VISIBLE_INVITES_COUNT = "last_visible_invites_count";
     private SharedPreferences sharedPreferences;
 
 
@@ -30,4 +31,8 @@ public enum SharedPrefsUtil {
     public int lastVisibleFriendsCount() { return sharedPreferences.getInt(PARAM_LAST_VISIBLE_FRIENDS_COUNT + "_friends", -1); }
 
     public void setLastVisibleFriendsCount(int count) { sharedPreferences.edit().putInt(PARAM_LAST_VISIBLE_FRIENDS_COUNT + "_friends", count).commit(); }
+
+    public int lastVisibleInvitesCount() { return sharedPreferences.getInt(PARAM_LAST_VISIBLE_INVITES_COUNT, -1); }
+
+    public void setLastVisibleInvitesCount(int count) { sharedPreferences.edit().putInt(PARAM_LAST_VISIBLE_INVITES_COUNT , count).commit(); }
 }

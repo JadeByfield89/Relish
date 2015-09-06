@@ -6,25 +6,13 @@
                 tools:context="relish.permoveo.com.relish.fragments.inviteflow.DetailsInviteFragment">
 
     <RelativeLayout
-        android:id="@+id/invite_details_card"
+        android:id="@+id/invite_send_card"
         android:layout_width="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/invite_card_background"
         android:layout_height="match_parent">
-
-        <com.joooonho.SelectableRoundedImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/snapshot"
-            android:layout_height="104dp"
-            android:scaleType="centerCrop"
-            android:layout_width="match_parent"
-            android:layout_alignParentTop="true"
-            app:sriv_left_top_corner_radius="10dip"
-            app:sriv_right_top_corner_radius="10dip"
-            app:sriv_left_bottom_corner_radius="0dip"
-            app:sriv_right_bottom_corner_radius="0dip"/>
 
         <fragment
             android:id="@+id/map"
@@ -50,7 +38,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/snapshot"
+            android:layout_below="@+id/map"
             android:layout_above="@+id/button_next"
             android:scrollbars="none">
 
@@ -293,7 +281,25 @@
             <!--android:layout_height="3dp"-->
             <!--android:background="@drawable/shadow_color_light"/>-->
 
-        <Button
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <relish.permoveo.com.relish.view.BounceProgressBar
+                xmlns:bpb="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/bounce_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                bpb:shape="circle"
+                bpb:singleSrcSize="12dp"
+                bpb:speed="250"
+                bpb:src="@android:color/white"/>
+
+            <Button
             android:id="@+id/button_send"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -301,8 +307,9 @@
             android:textColor="@android:color/white"
             android:padding="16dp"
             android:text="@string/invite_send"
-            android:background="@drawable/invite_button"
-            android:layout_alignParentBottom="true"/>
+            android:background="@drawable/invite_button"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

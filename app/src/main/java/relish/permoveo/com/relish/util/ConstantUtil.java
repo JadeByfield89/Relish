@@ -38,4 +38,8 @@ public class ConstantUtil {
     /*========================= APPLICAITON CONSTANTS ========================= */
     public static final String ACTION_GET_LOCATION = "relish.permoveo.com.relish.ACTION_GET_LOCATION";
 
+    /*========================= PUSH JSON DATA KEYS ========================= */
+    public static final String SENDER_IMAGE_KEY = "key_sender_image";
+    public static final String INVITE_TITLE_KEY = "key_invite_title";
+    public static final String INVITE_MESSAGE_KEY = "key_invite_message";
 }

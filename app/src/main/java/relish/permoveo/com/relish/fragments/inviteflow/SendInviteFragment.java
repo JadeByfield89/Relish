@@ -1,9 +1,17 @@
 package relish.permoveo.com.relish.fragments.inviteflow;
 
 
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.telephony.SmsManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,19 +20,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.joooonho.SelectableRoundedImageView;
+import com.parse.ParseException;
+import com.parse.ParseInstallation;
+import com.parse.ParsePush;
+import com.parse.ParseQuery;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -34,9 +48,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
+import relish.permoveo.com.relish.interfaces.OnInviteSentListener;
 import relish.permoveo.com.relish.interfaces.RenderCallbacks;
+import relish.permoveo.com.relish.manager.InvitesManager;
+import relish.permoveo.com.relish.model.Contact;
+import relish.permoveo.com.relish.model.Friend;
 import relish.permoveo.com.relish.model.InvitePerson;
+import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
+import relish.permoveo.com.relish.util.UserUtils;
+import relish.permoveo.com.relish.util.urlshortener.UrlShortener;
+import relish.permoveo.com.relish.view.BounceProgressBar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -79,22 +101,28 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
     @Bind(R.id.invite_send_note_container)
     RelativeLayout sendNoteContainer;
 
-    @Bind(R.id.snapshot)
-    SelectableRoundedImageView snapshot;
+    @Bind(R.id.invite_send_card)
+    RelativeLayout inviteSendCard;
+
+    @Bind(R.id.bounce_progress)
+    BounceProgressBar progressBar;
 
     private InviteCreator creator;
     private GoogleMap mMap;
     private Marker placeMarker;
+    private OnInviteSentListener mListener;
 
     public SendInviteFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof InviteCreator)
-            creator = (InviteCreator) context;
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof InviteCreator)
+            creator = (InviteCreator) activity;
+        if (activity instanceof OnInviteSentListener)
+            mListener = (OnInviteSentListener) activity;
     }
 
     @Override
@@ -114,11 +142,108 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sendButton.setText("");
+                sendButton.setEnabled(false);
+                progressBar.setVisibility(View.VISIBLE);
+                InvitesManager.createInvite(creator.getInvite(), new InvitesManager.InvitesManagerCallback<Object, ParseException>() {
+                    @Override
+                    public void done(Object o, ParseException e) {
+                        if (e == null) {
+                            UrlShortener.shortenUrl(getString(R.string.app_url), new UrlShortener.UrlShortenerCallback() {
+                                @Override
+                                public void onUrlShorten(final String shortUrl) {
+                                    if (isAdded())
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if (creator.getInvite().reminder != 0) {
+                                                    PendingIntent pintent = PendingIntent.getBroadcast(getActivity(), 0, new Intent("com.blah.blah.somemessage"), 0);
+                                                    AlarmManager manager = (AlarmManager) (getActivity().getSystemService(Context.ALARM_SERVICE));
+                                                    // set alarm to fire 5 sec (1000*5) from now (SystemClock.elapsedRealtime())
+                                                    DateTime time = new DateTime().withMillis(creator.getInvite().time);
+                                                    DateTime date = new DateTime().withMillis(creator.getInvite().date);
+                                                    DateTime when = new DateTime()
+                                                            .withYear(date.getYear())
+                                                            .withMonthOfYear(date.getMonthOfYear())
+                                                            .withDayOfMonth(date.getDayOfMonth())
+                                                            .withHourOfDay(time.getHourOfDay())
+                                                            .withMinuteOfHour(time.getMinuteOfHour());
+                                                    manager.set(AlarmManager.RTC_WAKEUP, when.getMillis(), pintent);
+                                                }
 
+                                                // for sending SMS
+                                                SmsManager smsManager = SmsManager.getDefault();
+                                                String smsMessage = String.format(getString(R.string.share_sms_message),
+                                                        creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), shortUrl);
+                                                ArrayList<String> parts = smsManager.divideMessage(smsMessage);
+
+                                                ArrayList<String> friendsIds = new ArrayList<>();
+                                                for (InvitePerson person : creator.getInvite().invited) {
+                                                    if (person instanceof Contact)
+                                                        smsManager.sendMultipartTextMessage(person.number, null, parts, null, null);
+                                                    else if (person instanceof Friend)
+                                                        friendsIds.add(((Friend) person).id);
+                                                }
+
+                                                // for sending push notifications
+                                                ParsePush parsePush = new ParsePush();
+                                                ParseQuery pQuery = ParseInstallation.getQuery();
+                                                pQuery.whereContainedIn("userId", friendsIds);
+                                                JSONObject pushData = new JSONObject();
+                                                try {
+                                                    pushData.put(ConstantUtil.SENDER_IMAGE_KEY, UserUtils.getUserAvatar());
+                                                    pushData.put("title", creator.getInvite().title);
+                                                    pushData.put("alert", String.format(getString(R.string.share_push_message),
+                                                            UserUtils.getUsername(), creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime()));
+                                                } catch (JSONException e1) {
+                                                    e1.printStackTrace();
+                                                }
+                                                parsePush.setQuery(pQuery);
+                                                parsePush.setData(pushData);
+                                                parsePush.sendInBackground();
+                                                startSendAnimation(inviteSendCard);
+                                            }
+                                        });
+                                }
+                            });
+                        } else {
+                            if (isAdded()) {
+                                sendButton.setText(getString(R.string.invite_send));
+                                sendButton.setEnabled(true);
+                                progressBar.setVisibility(View.GONE);
+                                Snackbar.make(inviteSendCard, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                });
             }
         });
 
         setUpMapIfNeeded();
+    }
+
+    private void startSendAnimation(View view) {
+        YoYo.with(Techniques.ZoomOutRight).duration(500).withListener(new com.nineoldandroids.animation.Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(com.nineoldandroids.animation.Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(com.nineoldandroids.animation.Animator animation) {
+                mListener.onInviteSent(true);
+            }
+
+            @Override
+            public void onAnimationCancel(com.nineoldandroids.animation.Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(com.nineoldandroids.animation.Animator animation) {
+
+            }
+        }).playOn(view);
     }
 
     private void setUpMapIfNeeded() {
@@ -161,13 +286,8 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
     @Override
     public void render() {
         if (creator.getInvite() != null) {
-            DateTime date = new DateTime().withMillis(creator.getInvite().date);
-            DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("E, MMMM d");
-            sendDate.setText(dateFormatter.print(date));
-
-            DateTime time = new DateTime().withMillis(creator.getInvite().time);
-            DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("h:mm a");
-            sendTime.setText(timeFormatter.print(time));
+            sendDate.setText(creator.getInvite().getFormattedDate());
+            sendTime.setText(creator.getInvite().getFormattedTime());
 
             if (!TextUtils.isEmpty(creator.getInvite().note)) {
                 sendNoteContainer.setVisibility(View.VISIBLE);
@@ -182,7 +302,6 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
 //                        .load(new File(creator.getInvite().mapSnapshot))
 //                        .into(snapshot);
 //            } else {
-                snapshot.setVisibility(View.GONE);
 //            }
 
             ArrayList<String> avatars = new ArrayList<>();
@@ -297,5 +416,67 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
         morePersons.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
         sendDate.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
         sendTime.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+    }
+
+    private void sendSMS(String phoneNumber, String message)
+    {
+        String SENT = "SMS_SENT";
+        String DELIVERED = "SMS_DELIVERED";
+
+        PendingIntent sentPI = PendingIntent.getBroadcast(getActivity(), 0,
+                new Intent(SENT), 0);
+
+        PendingIntent deliveredPI = PendingIntent.getBroadcast(getActivity(), 0,
+                new Intent(DELIVERED), 0);
+
+        //---when the SMS has been sent---
+        getActivity().registerReceiver(new BroadcastReceiver(){
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                switch (getResultCode())
+                {
+                    case Activity.RESULT_OK:
+                        Toast.makeText(getActivity(), "SMS sent",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                        Toast.makeText(getActivity(), "Generic failure",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_NO_SERVICE:
+                        Toast.makeText(getActivity(), "No service",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_NULL_PDU:
+                        Toast.makeText(getActivity(), "Null PDU",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_RADIO_OFF:
+                        Toast.makeText(getActivity(), "Radio off",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        }, new IntentFilter(SENT));
+
+        //---when the SMS has been delivered---
+        getActivity().registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                switch (getResultCode()) {
+                    case Activity.RESULT_OK:
+                        Toast.makeText(getActivity(), "SMS delivered",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        Toast.makeText(getActivity(), "SMS not delivered",
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        }, new IntentFilter(DELIVERED));
+
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
     }
 }

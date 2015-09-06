@@ -45,7 +45,7 @@ public class FriendsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        adapter = new FriendsPagerAdapter(getChildFragmentManager());
+        adapter = new FriendsPagerAdapter(getActivity(), getChildFragmentManager());
     }
 
     @Override

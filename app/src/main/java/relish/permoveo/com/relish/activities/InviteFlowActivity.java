@@ -29,8 +29,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.pager.InvitePagerAdapter;
-import relish.permoveo.com.relish.fragments.inviteflow.EmptyCardFragment;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
+import relish.permoveo.com.relish.interfaces.OnInviteSentListener;
 import relish.permoveo.com.relish.interfaces.PagerCallbacks;
 import relish.permoveo.com.relish.interfaces.RenderCallbacks;
 import relish.permoveo.com.relish.model.Invite;
@@ -40,7 +40,7 @@ import relish.permoveo.com.relish.util.FixedSpeedScroller;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.NonSwipeableViewPager;
 
-public class InviteFlowActivity extends RelishActivity implements PagerCallbacks, InviteCreator, EmptyCardFragment.OnInviteSentListener{
+public class InviteFlowActivity extends RelishActivity implements PagerCallbacks, InviteCreator, OnInviteSentListener {
 
     public static final String PLACE_FOR_INVITE_EXTRA = "extra_place_for_invite";
 
@@ -130,7 +130,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
                 Target target = new Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        invitePlaceImage.setImageBitmap(BlurBuilder.fastblur(bitmap, 10));
+                        invitePlaceImage.setImageBitmap(BlurBuilder.blur(InviteFlowActivity.this, bitmap, 6));
                     }
 
                     @Override
@@ -224,7 +224,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
 
     @Override
     public void previous() {
-        if (invitePager.getCurrentItem() == 0) {
+        if (invitePager.getCurrentItem() == 0 || (invitePager.getCurrentItem() == 3 && getInvite().isSent)) {
             setResult(RESULT_CANCELED);
             finish();
         } else {
@@ -251,6 +251,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
 
     private void showInviteSuccessAnimation(){
         Log.d("InviteFlowActivity", "showInviteSuccessAnimation()");
+        getInvite().isSent = true;
         inviteSuccessTitle.setVisibility(View.VISIBLE);
         YoYo.with(Techniques.DropOut).duration(1000).playOn(inviteSuccessTitle);
 
