@@ -1,7 +1,5 @@
 package relish.permoveo.com.relish.model;
 
-import com.parse.ParseGeoPoint;
-
 import java.io.Serializable;
 import java.text.DecimalFormat;
 
@@ -14,7 +12,8 @@ public class Friend extends InvitePerson implements Serializable {
     public String address;
     public boolean isMyFriend;
     public boolean isSelected;
-    public ParseGeoPoint location;
+    public double lat;
+    public double lng;
 
     public String formatDistance(double distance) {
         DecimalFormat twoDForm = new DecimalFormat("#.#");

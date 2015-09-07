@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,8 +35,6 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public SettingsAdapter(ArrayList<Setting> settings){
         this.settings = settings;
     }
-
-
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -68,16 +65,20 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
            ((SettingsViewHolder) holder).title.setText(settings.get(position).getTitle());
             if(settings.get(position).getSubtitle().isEmpty()){
                 ((SettingsViewHolder) holder).subtitle.setVisibility(View.GONE);
-            }else
+            }else {
+                ((SettingsViewHolder) holder).subtitle.setVisibility(View.VISIBLE);
                 ((SettingsViewHolder) holder).subtitle.setText(settings.get(position).getSubtitle());
+            }
 
         }
         else if(holder instanceof  SettingsToggleViewHolder){
             ((SettingsToggleViewHolder) holder).title.setText(settings.get(position).getTitle());
             if(settings.get(position).getSubtitle().isEmpty()){
                 ((SettingsToggleViewHolder) holder).subtitle.setVisibility(View.GONE);
-            }else
+            }else {
+                ((SettingsToggleViewHolder) holder).subtitle.setVisibility(View.VISIBLE);
                 ((SettingsToggleViewHolder) holder).subtitle.setText(settings.get(position).getSubtitle());
+            }
 
         }
 

@@ -217,10 +217,12 @@ public class FriendsManager {
                         friend.image = parseFile.getUrl();
                     }
                     if (user.containsKey("location")) {
-                        friend.location = (ParseGeoPoint) user.get("location");
+                        ParseGeoPoint friendLocation = (ParseGeoPoint) user.get("location");
+                        friend.lat = friendLocation.getLatitude();
+                        friend.lng = friendLocation.getLongitude();
                         Geocoder geocoder = new Geocoder(context);
                         try {
-                            List<Address> listAddresses = geocoder.getFromLocation(friend.location.getLatitude(), friend.location.getLongitude(), 1);
+                            List<Address> listAddresses = geocoder.getFromLocation(friend.lat, friend.lng, 1);
                             if (null != listAddresses && listAddresses.size() > 0) {
                                 if (listAddresses.get(0).getMaxAddressLineIndex() > 0)
                                     friend.address = listAddresses.get(0).getAddressLine(1);

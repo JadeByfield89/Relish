@@ -105,7 +105,7 @@ public class InviteFriendsListAdapter extends RecyclerView.Adapter<InviteFriends
         holder.friendName.setIncludeFontPadding(false);
         holder.friendName.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
-        if (friend.location != null && GPSTracker.get.getLocation() != null) {
+        if ((friend.lat != 0.0d && friend.lng != 0.0d) && GPSTracker.get.getLocation() != null) {
             holder.friendLocationContainer.setVisibility(View.VISIBLE);
 
             //Only remove the zip code if this string contains a number
@@ -115,7 +115,7 @@ public class InviteFriendsListAdapter extends RecyclerView.Adapter<InviteFriends
                 }
             }
 
-            double distanceTo = LocationUtil.distance(friend.location.getLatitude(), friend.location.getLongitude(), GPSTracker.get.getLocation().getLatitude(), GPSTracker.get.getLocation().getLongitude());
+            double distanceTo = LocationUtil.distance(friend.lat, friend.lng, GPSTracker.get.getLocation().getLatitude(), GPSTracker.get.getLocation().getLongitude());
             holder.friendLocation.setText(friend.formatDistance(distanceTo) +
                     " " +
                     context.getResources().getQuantityString(R.plurals.miles, distanceTo == 1.0d ? 1 : 2, distanceTo)

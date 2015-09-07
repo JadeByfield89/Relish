@@ -502,6 +502,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         super.onResume();
         if (fromInvite) {
             animateFromInvite();
+            fromInvite = false;
         }
 
         API.getYelpPlaceDetails(passedPlace.id, new IRequestable() {

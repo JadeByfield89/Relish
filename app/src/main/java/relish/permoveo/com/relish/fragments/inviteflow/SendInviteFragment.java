@@ -104,6 +104,9 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
     @Bind(R.id.invite_send_card)
     RelativeLayout inviteSendCard;
 
+    @Bind(R.id.invite_send_root)
+    RelativeLayout inviteSendRoot;
+
     @Bind(R.id.bounce_progress)
     BounceProgressBar progressBar;
 
@@ -201,7 +204,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                                 parsePush.setQuery(pQuery);
                                                 parsePush.setData(pushData);
                                                 parsePush.sendInBackground();
-                                                startSendAnimation(inviteSendCard);
+                                                startSendAnimation(inviteSendRoot);
                                             }
                                         });
                                 }
