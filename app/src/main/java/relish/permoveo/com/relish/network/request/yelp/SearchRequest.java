@@ -51,13 +51,9 @@ public class SearchRequest extends RelishRequest<Integer, Void, PlacesResponse> 
         Integer page = params[0];
         OAuthRequest request = new OAuthRequest(Verb.GET, ConstantUtil.YELP_PLACES_SEARCH_URL);
         request.addQuerystringParameter("limit", String.valueOf(ConstantUtil.PLACES_LIMIT_SEARCH));
-<<<<<<< HEAD
         //request.addQuerystringParameter("ll", "40.6782" + "," + "-73.9442");
        request.addQuerystringParameter("ll", String.valueOf(GPSTracker.get.getLocation().getLatitude()) + "," + String.valueOf(GPSTracker.get.getLocation().getLongitude()));
-=======
-//        request.addQuerystringParameter("ll", "40.6782" + "," + "-73.9442");
-        request.addQuerystringParameter("ll", String.valueOf(GPSTracker.get.getLocation().getLatitude()) + "," + String.valueOf(GPSTracker.get.getLocation().getLongitude()));
->>>>>>> 84ff523cb8c4cf2f437c9f6380b70cacad4ffefb
+
         request.addQuerystringParameter("offset", String.valueOf(ConstantUtil.PLACES_LIMIT_SEARCH * page));
         //request.addQuerystringParameter("sort", String.valueOf(ConstantUtil.PLACES_SORTING_ORDER));
 //            request.addQuerystringParameter("radius_filter", String.valueOf(ConstantUtil.PLACES_RADIUS_SEARCH));
