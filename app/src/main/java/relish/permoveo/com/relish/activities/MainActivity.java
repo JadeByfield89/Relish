@@ -284,6 +284,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
             case 4:
                 if (!(current instanceof SettingsFragment))
                     current = new SettingsFragment();
+                drawerToggle.setBlurEnabled(true);
                 break;
         }
 
