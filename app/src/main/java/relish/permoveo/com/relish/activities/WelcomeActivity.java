@@ -5,16 +5,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.viewpagerindicator.CirclePageIndicator;
+
+import java.lang.reflect.Field;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.pager.WelcomePagerAdapter;
+import relish.permoveo.com.relish.util.FixedSpeedScroller;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
@@ -53,6 +57,15 @@ public class WelcomeActivity extends RelishActivity implements ViewPager.OnPageC
         setContentView(R.layout.activity_welcome);
 
         ButterKnife.bind(this);
+
+        try {
+            Field mScroller;
+            mScroller = ViewPager.class.getDeclaredField("mScroller");
+            mScroller.setAccessible(true);
+            FixedSpeedScroller scroller = new FixedSpeedScroller(viewPager.getContext(), new LinearInterpolator());
+            mScroller.set(viewPager, scroller);
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ignored) {
+        }
 
         pagerAdapter = new WelcomePagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);

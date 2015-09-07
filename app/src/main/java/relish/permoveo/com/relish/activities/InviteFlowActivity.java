@@ -131,7 +131,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
                 Target target = new Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        invitePlaceImage.setImageBitmap(BlurBuilder.blur(InviteFlowActivity.this, bitmap, 6));
+                        invitePlaceImage.setImageBitmap(BlurBuilder.blur(InviteFlowActivity.this, bitmap, 10));
                     }
 
                     @Override
