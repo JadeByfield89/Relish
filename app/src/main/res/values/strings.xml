@@ -86,10 +86,13 @@
     <string name="share_message">Share Invite</string>
     <string formatted="false" name="share_sms_message">Hey, I\'ve just invited you to eat with me at %s, on %s, at %s via the Relish app! You can download the app here to get more info, and see who else is going :) %s</string>
     <string formatted="false" name="share_push_message">Hey, %s has just invited you to eat at %s, on %s, at %s!</string>
+    <string formatted="false" name="share_social">I\'ve just invited some friends to eat with me at %s via Relish. Easiest way to invite friends to eat! %s</string>
     <string translatable="false" name="app_url">http://www.google.com/</string>
     <string name="enter_date">Enter date</string>
     <string name="enter_time">Enter time</string>
 
+    <string name="action_accept">ACCEPT</string>
+    <string name="action_decline">DECLINE</string>
     <!--Welcome Screens -->
     <string name="welcome_skip">SKIP</string>
     <string name="welcome_ok">OK</string>
