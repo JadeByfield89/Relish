@@ -24,7 +24,7 @@
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:layout_marginTop="20dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         card_view:cardCornerRadius="1dp"
         card_view:cardElevation="2dp">
 

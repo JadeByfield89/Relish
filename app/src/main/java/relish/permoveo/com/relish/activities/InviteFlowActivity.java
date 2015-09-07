@@ -37,6 +37,7 @@ import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.util.BlurBuilder;
 import relish.permoveo.com.relish.util.FixedSpeedScroller;
+import relish.permoveo.com.relish.util.SharingUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.NonSwipeableViewPager;
 
@@ -167,7 +168,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
 
             @Override
             public void onPageSelected(int position) {
-                if(position == 0) {
+                if (position == 0) {
                     getSupportActionBar().setTitle(currentPlace.name);
                 } else {
                     getSupportActionBar().setTitle(TITLES[position]);
@@ -180,6 +181,30 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
             @Override
             public void onPageScrollStateChanged(int state) {
 
+            }
+        });
+
+        shareFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(SharingUtil.getFacebookIntent(InviteFlowActivity.this,
+                        String.format(getString(R.string.share_social), getInvite().name, "")));
+            }
+        });
+
+        shareTwitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(SharingUtil.getTwitterIntent(InviteFlowActivity.this,
+                        String.format(getString(R.string.share_social), getInvite().name, "")));
+            }
+        });
+
+        shareGooglePlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(SharingUtil.getPlusIntent(InviteFlowActivity.this,
+                        String.format(getString(R.string.share_social), getInvite().name, "")));
             }
         });
     }
