@@ -402,7 +402,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
                 reviewImage.setImageResource(R.drawable.relish_avatar_placeholder);
             } else {
                 Picasso.with(this)
-                        .load(review.getLargeAuthorImage())
+                        .load(review.getLargeAuthorImage()).placeholder(R.drawable.relish_avatar_placeholder).fit().centerCrop()
                         .into(reviewImage);
                 Log.d("PlaceDetailsActivity", "Review author image -> " + review.getLargeAuthorImage());
             }

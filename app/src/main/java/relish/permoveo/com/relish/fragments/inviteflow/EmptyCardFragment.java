@@ -28,7 +28,6 @@ public class EmptyCardFragment extends Fragment {
 
     private static final int ANIMATION_DURATION = 500;
 
-    private OnInviteSentListener mListener;
 
     @Nullable
     @Override
@@ -55,7 +54,6 @@ public class EmptyCardFragment extends Fragment {
 
             @Override
             public void onAnimationEnd(com.nineoldandroids.animation.Animator animation) {
-                   mListener.onInviteSent(true);
             }
 
             @Override
@@ -70,15 +68,6 @@ public class EmptyCardFragment extends Fragment {
         }).playOn(view);
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try{
-            mListener = (OnInviteSentListener) activity;
-        }catch(ClassCastException e){
-            e.printStackTrace();
-            Log.d("EmptyCardFragment", "Activity must implement OnInviteSentListener!");
-        }
-    }
+
 
 }

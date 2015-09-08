@@ -148,10 +148,13 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if(position == 0){
             return HEADER;
         }
-        else if (position == 4){
+        else if (position == 5){
             return HEADER;
         }
-        else if(position == 9){
+        else if(position == 4){
+            return TOGGLE;
+        }
+        else if(position == 10){
             return HEADER;
         }
         else if(position == 1){

@@ -49,7 +49,7 @@ public class SettingsFragment extends Fragment {
     }
 
 
-    private void initSettings(){
+    private void initSettings() {
         ArrayList<Setting> settings = new ArrayList<Setting>();
 
         //General Header
@@ -71,6 +71,10 @@ public class SettingsFragment extends Fragment {
         Setting setting_location_sub = new Setting(getString(R.string.settings_item_location_sharing), getString(R.string.settings_item_location_sharing_sub), true);
         settings.add(setting_location_sub);
 
+        //Google Calendar Setting
+        Setting setting_google_calendar = new Setting(getString(R.string.settings_item_google_calendar), getString(R.string.settings_item_google_calendar_sub), true);
+        settings.add(setting_google_calendar);
+
         //Social Stuff Header
         Setting header_social_stuff = new Setting(getString(R.string.settings_header_social), "", false);
         settings.add(header_social_stuff);
@@ -90,7 +94,7 @@ public class SettingsFragment extends Fragment {
         Setting header_help = new Setting(getString(R.string.settings_header_support), "", false);
         settings.add(header_help);
 
-        Setting setting_about= new Setting(getString(R.string.settings_item_about_relish), "", false);
+        Setting setting_about = new Setting(getString(R.string.settings_item_about_relish), "", false);
         settings.add(setting_about);
 
         Setting setting_contact = new Setting(getString(R.string.settings_item_contact_support), "", false);
