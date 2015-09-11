@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/map_snapshot"
-            android:layout_above="@+id/button_next"
+            android:layout_above="@+id/button_send_container"
             android:scrollbars="none">
 
             <LinearLayout
@@ -295,6 +295,7 @@
 
 
         <RelativeLayout
+            android:id="@+id/button_send_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">

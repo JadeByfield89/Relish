@@ -14,7 +14,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp">
+        android:paddingBottom="8dp">
 
         <com.joooonho.SelectableRoundedImageView
             android:id="@+id/invite_map_snapshot"
@@ -91,7 +91,7 @@
             layout="@layout/invited_layout"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="10dp"
             android:layout_below="@+id/invite_place_address"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"/>

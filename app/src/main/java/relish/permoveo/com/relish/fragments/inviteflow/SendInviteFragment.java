@@ -13,11 +13,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.telephony.SmsManager;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.joooonho.SelectableRoundedImageView;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
@@ -110,6 +113,13 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
     @Bind(R.id.bounce_progress)
     BounceProgressBar progressBar;
 
+    @Bind(R.id.invite_layout)
+    LinearLayout inviteLayout;
+
+    @Bind(R.id.map_snapshot)
+    SelectableRoundedImageView mapSnapshot;
+
+
     private InviteCreator creator;
     private GoogleMap mMap;
     private Marker placeMarker;
@@ -152,63 +162,63 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                     @Override
                     public void done(Object o, ParseException e) {
                         if (e == null) {
-                                    if (isAdded())
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                if (creator.getInvite().reminder != 0) {
-                                                    PendingIntent pintent = PendingIntent.getBroadcast(getActivity(), 0, new Intent("com.blah.blah.somemessage"), 0);
-                                                    AlarmManager manager = (AlarmManager) (getActivity().getSystemService(Context.ALARM_SERVICE));
-                                                    // set alarm to fire 5 sec (1000*5) from now (SystemClock.elapsedRealtime())
-                                                    DateTime time = new DateTime().withMillis(creator.getInvite().time);
-                                                    DateTime date = new DateTime().withMillis(creator.getInvite().date);
-                                                    DateTime when = new DateTime()
-                                                            .withYear(date.getYear())
-                                                            .withMonthOfYear(date.getMonthOfYear())
-                                                            .withDayOfMonth(date.getDayOfMonth())
-                                                            .withHourOfDay(time.getHourOfDay())
-                                                            .withMinuteOfHour(time.getMinuteOfHour());
-                                                    manager.set(AlarmManager.RTC_WAKEUP, when.getMillis(), pintent);
-                                                }
+                            if (isAdded())
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (creator.getInvite().reminder != 0) {
+                                            PendingIntent pintent = PendingIntent.getBroadcast(getActivity(), 0, new Intent("com.blah.blah.somemessage"), 0);
+                                            AlarmManager manager = (AlarmManager) (getActivity().getSystemService(Context.ALARM_SERVICE));
+                                            // set alarm to fire 5 sec (1000*5) from now (SystemClock.elapsedRealtime())
+                                            DateTime time = new DateTime().withMillis(creator.getInvite().time);
+                                            DateTime date = new DateTime().withMillis(creator.getInvite().date);
+                                            DateTime when = new DateTime()
+                                                    .withYear(date.getYear())
+                                                    .withMonthOfYear(date.getMonthOfYear())
+                                                    .withDayOfMonth(date.getDayOfMonth())
+                                                    .withHourOfDay(time.getHourOfDay())
+                                                    .withMinuteOfHour(time.getMinuteOfHour());
+                                            manager.set(AlarmManager.RTC_WAKEUP, when.getMillis(), pintent);
+                                        }
 
-                                                // for sending SMS
-                                                //SmsManager smsManager = SmsManager.getDefault();
+                                        // for sending SMS
+                                        //SmsManager smsManager = SmsManager.getDefault();
 
-                                                String senderName = UserUtils.getUsername();
-                                                String smsMessage = String.format(getString(R.string.share_sms_message),
-                                                        senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime());
-                                                //ArrayList<String> parts = smsManager.divideMessage(smsMessage);
+                                        String senderName = UserUtils.getUsername();
+                                        String smsMessage = String.format(getString(R.string.share_sms_message),
+                                                senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime());
+                                        //ArrayList<String> parts = smsManager.divideMessage(smsMessage);
 
-                                                TwilioSmsManager manager = new TwilioSmsManager();
+                                        TwilioSmsManager manager = new TwilioSmsManager();
 
-                                                ArrayList<String> friendsIds = new ArrayList<>();
-                                                for (InvitePerson person : creator.getInvite().invited) {
-                                                    if (person instanceof Contact)
-                                                        manager.sendInviteSmsViaTwilio(person.number, smsMessage);
-                                                        //smsManager.sendMultipartTextMessage(person.number, null, parts, null, null);
-                                                    else if (person instanceof Friend)
-                                                        friendsIds.add(((Friend) person).id);
-                                                }
+                                        ArrayList<String> friendsIds = new ArrayList<>();
+                                        for (InvitePerson person : creator.getInvite().invited) {
+                                            if (person instanceof Contact)
+                                                manager.sendInviteSmsViaTwilio(person.number, smsMessage);
+                                                //smsManager.sendMultipartTextMessage(person.number, null, parts, null, null);
+                                            else if (person instanceof Friend)
+                                                friendsIds.add(((Friend) person).id);
+                                        }
 
-                                                // for sending push notifications
-                                                ParsePush parsePush = new ParsePush();
-                                                ParseQuery pQuery = ParseInstallation.getQuery();
-                                                pQuery.whereContainedIn("userId", friendsIds);
-                                                JSONObject pushData = new JSONObject();
-                                                try {
-                                                    pushData.put(ConstantUtil.SENDER_IMAGE_KEY, UserUtils.getUserAvatar());
-                                                    pushData.put("title", creator.getInvite().title);
-                                                    pushData.put("alert", String.format(getString(R.string.share_push_message),
-                                                            UserUtils.getUsername(), creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime()));
-                                                } catch (JSONException e1) {
-                                                    e1.printStackTrace();
-                                                }
-                                                parsePush.setQuery(pQuery);
-                                                parsePush.setData(pushData);
-                                                parsePush.sendInBackground();
-                                                startSendAnimation(inviteSendRoot);
-                                            }
-                                        });
+                                        // for sending push notifications
+                                        ParsePush parsePush = new ParsePush();
+                                        ParseQuery pQuery = ParseInstallation.getQuery();
+                                        pQuery.whereContainedIn("userId", friendsIds);
+                                        JSONObject pushData = new JSONObject();
+                                        try {
+                                            pushData.put(ConstantUtil.SENDER_IMAGE_KEY, UserUtils.getUserAvatar());
+                                            pushData.put("title", creator.getInvite().title);
+                                            pushData.put("alert", String.format(getString(R.string.share_push_message),
+                                                    UserUtils.getUsername(), creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime()));
+                                        } catch (JSONException e1) {
+                                            e1.printStackTrace();
+                                        }
+                                        parsePush.setQuery(pQuery);
+                                        parsePush.setData(pushData);
+                                        parsePush.sendInBackground();
+                                        startSendAnimation(inviteSendRoot);
+                                    }
+                                });
 
 
                         } else {
@@ -224,7 +234,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
             }
         });
 
-        setUpMapIfNeeded();
+//        setUpMapIfNeeded();
     }
 
     private void startSendAnimation(View view) {
@@ -285,7 +295,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
     @Override
     public void onResume() {
         super.onResume();
-        setUpMapIfNeeded();
+//        setUpMapIfNeeded();
     }
 
     @Override
@@ -300,6 +310,10 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
             } else {
                 sendNoteContainer.setVisibility(View.GONE);
             }
+
+            Picasso.with(getActivity())
+                    .load(creator.getInvite().mapSnapshot)
+                    .into(mapSnapshot);
 
 //            if (!TextUtils.isEmpty(creator.getInvite().mapSnapshot)) {
 //                snapshot.setVisibility(View.VISIBLE);
@@ -322,6 +336,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
     }
 
     private void renderInvited(ArrayList<String> avatars) {
+        inviteLayout.setGravity(Gravity.RIGHT | Gravity.END | Gravity.CENTER_VERTICAL);
         if (avatars.size() == 0) {
             firstPerson.setVisibility(View.GONE);
             secondPerson.setVisibility(View.GONE);
