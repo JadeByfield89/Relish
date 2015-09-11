@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    android:id="@+id/invite_share_card"
+    android:layout_width="match_parent"
+    android:background="@android:color/white"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/invite_success_title"
+    card_view:cardCornerRadius="2dp"
+    card_view:cardElevation="2dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp">
+
+        <com.joooonho.SelectableRoundedImageView
+            android:id="@+id/invite_map_snapshot"
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:scaleType="centerCrop"
+            app:sriv_left_top_corner_radius="4dip"
+            app:sriv_right_top_corner_radius="4dip"
+            app:sriv_left_bottom_corner_radius="0dip"
+            app:sriv_right_bottom_corner_radius="0dip"/>
+
+        <View
+            android:id="@+id/shadow_bottom"
+            android:layout_alignBottom="@+id/invite_map_snapshot"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@drawable/shadow_reverse"/>
+
+        <RelativeLayout
+            android:id="@+id/invite_container"
+            android:layout_width="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_below="@+id/invite_map_snapshot"
+            android:layout_marginTop="16dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:includeFontPadding="false"
+                android:layout_centerVertical="true"
+                android:id="@+id/invite_title"
+                android:textSize="16sp"
+                android:textColor="@color/invite_details_input_color"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+            <TextView
+                android:includeFontPadding="false"
+                android:id="@+id/invite_date_time"
+                android:textSize="12sp"
+                android:textColor="@color/empty_color"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+        <TextView
+        android:id="@+id/invite_place_name"
+        android:layout_below="@id/invite_container"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textColor="@color/invite_details_input_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:includeFontPadding="false"
+        android:id="@+id/invite_place_address"
+        android:textColor="@color/invite_details_input_color"
+        android:layout_below="@id/invite_place_name"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/invited_layout"
+            layout="@layout/invited_layout"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_below="@+id/invite_place_address"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

@@ -16,23 +16,33 @@
         android:background="@drawable/invite_card_background"
         android:layout_height="match_parent">
 
-        <fragment
-            android:id="@+id/map"
-            android:layout_marginTop="24dp"
-            class="com.google.android.gms.maps.SupportMapFragment"
+        <com.joooonho.SelectableRoundedImageView
+            android:id="@+id/map_snapshot"
             android:layout_width="match_parent"
-            android:layout_height="120dp"/>
+            android:layout_height="112dp"
+            android:scaleType="centerCrop"
+            app:sriv_left_top_corner_radius="10dip"
+            app:sriv_right_top_corner_radius="10dip"
+            app:sriv_left_bottom_corner_radius="0dip"
+            app:sriv_right_bottom_corner_radius="0dip"/>
 
-        <View
-            android:id="@+id/shadow_top"
-            android:layout_alignTop="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@drawable/shadow_color_light"/>
+        <!--<fragment-->
+        <!--android:id="@+id/map"-->
+        <!--android:layout_marginTop="24dp"-->
+        <!--class="com.google.android.gms.maps.SupportMapFragment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="120dp"/>-->
+
+            <!--<View-->
+                <!--android:id="@+id/shadow_top"-->
+                <!--android:layout_alignTop="@+id/map_snapshot"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="3dp"-->
+                <!--android:background="@drawable/shadow_color_light"/>-->
 
         <View
             android:id="@+id/shadow_bottom"
-            android:layout_alignBottom="@+id/map"
+            android:layout_alignBottom="@+id/map_snapshot"
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:background="@drawable/shadow_reverse"/>
@@ -40,7 +50,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/map"
+            android:layout_below="@+id/map_snapshot"
             android:layout_above="@+id/button_next"
             android:scrollbars="none">
 
@@ -289,6 +299,16 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
 
+            <Button
+                android:id="@+id/button_send"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:padding="16dp"
+                android:text="@string/invite_send"
+                android:background="@drawable/invite_button"/>
+
             <relish.permoveo.com.relish.view.BounceProgressBar
                 xmlns:bpb="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/bounce_progress"
@@ -301,15 +321,6 @@
                 bpb:speed="250"
                 bpb:src="@android:color/white"/>
 
-            <Button
-            android:id="@+id/button_send"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            android:padding="16dp"
-            android:text="@string/invite_send"
-            android:background="@drawable/invite_button"/>
 
         </RelativeLayout>
 

@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
 import android.text.Spannable;
@@ -179,6 +180,9 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 
     @Bind(R.id.pager_indicator)
     CirclePageIndicator pagerIndicator;
+
+    @Bind(R.id.invite_share_card)
+    CardView inviteShareCard;
 
 
     private FloatingActionButton animatedFab;
@@ -650,6 +654,9 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 
     @OnClick({R.id.fake_fab_place_details, R.id.fab_place_details})
     public void fabClicked() {
+        invitePager.setVisibility(View.VISIBLE);
+        pagerIndicator.setVisibility(View.VISIBLE);
+        inviteShareCard.setVisibility(View.GONE);
         //BlurBuilder.Blur.fastblur(this, placeDetalsScrollView.getDrawingCache(), 5, true);
         animatedFab = AnimationUtils.wasAnimatedToBottom ? fakePlaceDetailsFab : placeDetailsFab;
         if (AnimationUtils.wasAnimatedToBottom) {
@@ -772,6 +779,16 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == INVITE_FLOW_REQUEST) {
             fromInvite = true;
+
+            if (data != null) {
+
+                boolean isSent = data.getBooleanExtra(InviteFlowActivity.IS_INVITE_SENT_EXTRA, false);
+                if (isSent) {
+                    invitePager.setVisibility(View.GONE);
+                    pagerIndicator.setVisibility(View.GONE);
+                    inviteShareCard.setVisibility(View.VISIBLE);
+                }
+            }
         }
     }
 

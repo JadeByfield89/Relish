@@ -1,6 +1,7 @@
 package relish.permoveo.com.relish.model.yelp;
 
 import com.google.gson.annotations.SerializedName;
+import com.parse.ParseGeoPoint;
 
 import org.joda.time.DateTime;
 
@@ -68,6 +69,14 @@ public class YelpPlace implements Serializable {
      * Created by rom4ek on 03.08.2015.
      */
     public static class PlaceLocation implements Serializable {
+
+        public PlaceLocation() {}
+
+        public PlaceLocation(String address, ParseGeoPoint location) {
+            this.address = address;
+            this.lat = location.getLatitude();
+            this.lng = location.getLongitude();
+        }
 
         public String address;
         public double lat;

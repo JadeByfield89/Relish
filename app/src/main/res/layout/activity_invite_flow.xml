@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
 
     <ImageView
@@ -36,10 +36,19 @@
         app:radius="4dp"
         app:strokeColor="@color/page_indicator_fill_color" />
 
+    <TextView
+        android:id="@+id/invite_success_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:text="@string/invite_success"
+        android:textColor="#fff"
+        android:textSize="70sp"
+        android:visibility="invisible" />
+
     <include
         android:id="@+id/layout_success"
-        layout="@layout/layout_invite_success"
-         />
-
+        layout="@layout/layout_invite_success"/>
 
 </RelativeLayout>

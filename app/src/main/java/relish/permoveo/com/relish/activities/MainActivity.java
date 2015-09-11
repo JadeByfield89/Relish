@@ -311,6 +311,15 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        if (!(current instanceof PlacesFragment)) {
+            navDrawer.selectItem(0);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private void updateContent(boolean belowToolbar) {
         if (contentFrame == null) return;
 

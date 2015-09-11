@@ -2,7 +2,7 @@
 <resources>
     <plurals name="persons">
         <item quantity="one">person</item>
-        <item quantity="other">persons</item>
+        <item quantity="other">people</item>
     </plurals>
     <plurals name="friends">
         <item quantity="one">friend</item>

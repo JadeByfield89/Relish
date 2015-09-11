@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 
 import com.squareup.okhttp.OkHttpClient;
 
+import relish.permoveo.com.relish.util.ConstantUtil;
+
 /**
  * Created by rom4ek on 06.09.2015.
  */
@@ -29,7 +31,7 @@ public class UrlShortener {
             GoogleShortenerPerformer shortener = new GoogleShortenerPerformer(new OkHttpClient());
             GooglShortenerResult result = shortener.shortenUrl(
                     new GooglShortenerRequestBuilder()
-                            .buildRequest(params[0])
+                            .buildRequest(params[0], ConstantUtil.GOOGLE_API_KEY)
             );
             if (GooglShortenerResult.Status.SUCCESS.equals(result.getStatus()) ) {
                 return result.getShortenedUrl();

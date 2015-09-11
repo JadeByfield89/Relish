@@ -1,5 +1,6 @@
 package relish.permoveo.com.relish.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -38,12 +39,14 @@ import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.util.BlurBuilder;
 import relish.permoveo.com.relish.util.FixedSpeedScroller;
 import relish.permoveo.com.relish.util.SharingUtil;
+import relish.permoveo.com.relish.util.StaticMapsUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.NonSwipeableViewPager;
 
 public class InviteFlowActivity extends RelishActivity implements PagerCallbacks, InviteCreator, OnInviteSentListener {
 
     public static final String PLACE_FOR_INVITE_EXTRA = "extra_place_for_invite";
+    public static final String IS_INVITE_SENT_EXTRA = "extra_is_invite_sent";
 
     private InvitePagerAdapter invitePagerAdapter;
     private int currentStep = 0;
@@ -126,6 +129,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
             currentPlace = (YelpPlace) getIntent().getSerializableExtra(PLACE_FOR_INVITE_EXTRA);
             invite.name = currentPlace.name;
             invite.location = currentPlace.location;
+            invite.mapSnapshot = StaticMapsUtil.buildUrl(currentPlace.location.lat, currentPlace.location.lng);
             getSupportActionBar().setTitle(currentPlace.name);
             if (!TextUtils.isEmpty(currentPlace.image)) {
                 Target target = new Target() {
@@ -188,7 +192,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
             @Override
             public void onClick(View v) {
                 startActivity(SharingUtil.getFacebookIntent(InviteFlowActivity.this,
-                        String.format(getString(R.string.share_social), getInvite().name, "")));
+                        String.format(getString(R.string.share_social), getInvite().name)));
             }
         });
 
@@ -196,7 +200,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
             @Override
             public void onClick(View v) {
                 startActivity(SharingUtil.getTwitterIntent(InviteFlowActivity.this,
-                        String.format(getString(R.string.share_social), getInvite().name, "")));
+                        String.format(getString(R.string.share_social), getInvite().name)));
             }
         });
 
@@ -204,9 +208,20 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
             @Override
             public void onClick(View v) {
                 startActivity(SharingUtil.getPlusIntent(InviteFlowActivity.this,
-                        String.format(getString(R.string.share_social), getInvite().name, "")));
+                        String.format(getString(R.string.share_social), getInvite().name)));
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (invitePager != null && invitePager.getCurrentItem() == 3 && getInvite().isSent) {
+            setResult(RESULT_CANCELED, new Intent().putExtra(IS_INVITE_SENT_EXTRA, true));
+            finish();
+        } else {
+            super.onBackPressed();
+        }
+
     }
 
     @Override
@@ -250,7 +265,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
     @Override
     public void previous() {
         if (invitePager.getCurrentItem() == 0 || (invitePager.getCurrentItem() == 3 && getInvite().isSent)) {
-            setResult(RESULT_CANCELED);
+            setResult(RESULT_CANCELED, new Intent().putExtra(IS_INVITE_SENT_EXTRA, invitePager.getCurrentItem() == 3));
             finish();
         } else {
             invitePager.setCurrentItem(invitePager.getCurrentItem() - 1, true);
@@ -282,6 +297,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
 
         successCardView.setVisibility(View.VISIBLE);
         YoYo.with(Techniques.BounceInUp).duration(1000).playOn(successCardView);
+        inviteMessage.setVisibility(View.VISIBLE);
         shareFacebook.setVisibility(View.VISIBLE);
         shareTwitter.setVisibility(View.VISIBLE);
         shareGooglePlus.setVisibility(View.VISIBLE);

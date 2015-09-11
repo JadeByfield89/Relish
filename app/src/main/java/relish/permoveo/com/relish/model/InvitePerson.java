@@ -8,4 +8,5 @@ import java.io.Serializable;
 public class InvitePerson implements Serializable {
     public String image;
     public String number;
+    public String name;
 }

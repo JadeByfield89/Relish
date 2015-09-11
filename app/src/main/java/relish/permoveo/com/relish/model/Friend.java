@@ -8,7 +8,6 @@ import java.text.DecimalFormat;
  */
 public class Friend extends InvitePerson implements Serializable {
     public String id;
-    public String name;
     public String address;
     public boolean isMyFriend;
     public boolean isSelected;
