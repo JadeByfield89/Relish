@@ -84,10 +84,11 @@
     <string name="friends_error">Please, select friends/contacts for this invite</string>
 
     <string name="share_message">Share Invite</string>
-    <string formatted="false" name="share_sms_message">Hey, your friend %s just invited you to eat with them at %s, on %s, at %s via the Relish app! Reply YES to accept your invite, or NO to decline. \nYou can also download the Relish app to view your invite, see who else is going and get more details at http://relishwith.us</string>
+    <string formatted="false" name="share_sms_message">Hey, your friend %s just invited you to eat with them at %s, on %s, at %s via the Relish app! Reply YES to accept your invite, or NO to decline. \n\nYou can also download the Relish app to see who else is going and get more details at http://relishwith.us</string>
     <string formatted="false" name="share_push_message">Hey, %s has just invited you to eat at %s, on %s, at %s!</string>
-    <string formatted="false" name="share_social">I\'ve just invited some friends to eat with me at %s via the #RelishApp. Easiest way to invite friends to eat! http://www.relishwith.us</string>
+    <string formatted="false" name="share_social">I\'ve just invited some friends to eat with me at %s via the #RelishApp. Easiest way to invite friends to eat! http://relishwith.us</string>
     <string translatable="false" name="app_url">http://www.google.com/</string>
+    <string name="invite_contact_message">Hey, I\'m using the Relish app to find new places to eat, and invite my friends to join me. Check it out! \n\nhttp://relishwith.us</string>
     <string name="enter_date">Enter date</string>
     <string name="enter_time">Enter time</string>
 

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/dialog_root_view"
+    android:background="@color/fragment_background"
+    android:layout_height="300dp">
+
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="@color/main_color"
+        android:textStyle="bold"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Share Relish"></TextView>
+
+
+    <LinearLayout
+        android:id="@+id/message_container"
+        android:layout_alignLeft="@id/dialog_title"
+        android:background="#fff"
+        android:layout_below="@id/dialog_title"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+
+        <EditText
+            android:text="@string/invite_contact_message"
+            android:layout_marginLeft="5dp"
+            android:textSize="16sp"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/background_dark"
+            android:layout_marginTop="5dp"
+            android:id="@+id/contact_invite_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_below="@id/message_container"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@id/message_container"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/invite_cancel"
+            android:text="CANCEL"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/dialog_button_idle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/invite_send"
+            android:text="SEND"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/main_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>
