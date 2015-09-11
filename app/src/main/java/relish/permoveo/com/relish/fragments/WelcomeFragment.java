@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
@@ -68,10 +71,18 @@ public class WelcomeFragment extends Fragment {
         headerText.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
         subText.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
+        YoYo.with(Techniques.FadeInDown).playOn(headerText);
+        headerText.setVisibility(View.VISIBLE);
+        YoYo.with(Techniques.FadeInUp).playOn(subText);
+        subText.setVisibility(View.VISIBLE);
+
         switch (pagePosition) {
             case 0:
+
                 headerText.setText(R.string.welcome_1_header);
                 subText.setText(R.string.welcome_1_sub);
+
+
                 break;
             case 1:
                 headerText.setText(R.string.welcome_2_header);

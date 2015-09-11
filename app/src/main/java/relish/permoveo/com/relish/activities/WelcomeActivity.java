@@ -95,7 +95,7 @@ public class WelcomeActivity extends RelishActivity implements ViewPager.OnPageC
 
             okText.setVisibility(View.VISIBLE);
 
-            backButton.setVisibility(View.VISIBLE);
+            //backButton.setVisibility(View.VISIBLE);
         } else {
             okText.setVisibility(View.GONE);
             backButton.setVisibility(View.GONE);
