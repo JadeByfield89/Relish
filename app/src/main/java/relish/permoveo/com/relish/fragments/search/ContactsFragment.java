@@ -60,7 +60,6 @@ public class ContactsFragment extends Fragment {
     @Bind(R.id.contacts_recycler)
     RecyclerView recyclerView;
 
-
     public ContactsFragment() {
         // Required empty public constructor
     }
