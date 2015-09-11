@@ -55,9 +55,9 @@ import relish.permoveo.com.relish.model.Contact;
 import relish.permoveo.com.relish.model.Friend;
 import relish.permoveo.com.relish.model.InvitePerson;
 import relish.permoveo.com.relish.util.ConstantUtil;
+import relish.permoveo.com.relish.util.TwilioSmsManager;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.util.UserUtils;
-import relish.permoveo.com.relish.util.urlshortener.UrlShortener;
 import relish.permoveo.com.relish.view.BounceProgressBar;
 
 /**
@@ -152,9 +152,6 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                     @Override
                     public void done(Object o, ParseException e) {
                         if (e == null) {
-                            UrlShortener.shortenUrl(getString(R.string.app_url), new UrlShortener.UrlShortenerCallback() {
-                                @Override
-                                public void onUrlShorten(final String shortUrl) {
                                     if (isAdded())
                                         getActivity().runOnUiThread(new Runnable() {
                                             @Override
@@ -175,15 +172,20 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                                 }
 
                                                 // for sending SMS
-                                                SmsManager smsManager = SmsManager.getDefault();
+                                                //SmsManager smsManager = SmsManager.getDefault();
+
+                                                String senderName = UserUtils.getUsername();
                                                 String smsMessage = String.format(getString(R.string.share_sms_message),
-                                                        creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), shortUrl);
-                                                ArrayList<String> parts = smsManager.divideMessage(smsMessage);
+                                                        senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime());
+                                                //ArrayList<String> parts = smsManager.divideMessage(smsMessage);
+
+                                                TwilioSmsManager manager = new TwilioSmsManager();
 
                                                 ArrayList<String> friendsIds = new ArrayList<>();
                                                 for (InvitePerson person : creator.getInvite().invited) {
                                                     if (person instanceof Contact)
-                                                        smsManager.sendMultipartTextMessage(person.number, null, parts, null, null);
+                                                        manager.sendInviteSmsViaTwilio(person.number, smsMessage);
+                                                        //smsManager.sendMultipartTextMessage(person.number, null, parts, null, null);
                                                     else if (person instanceof Friend)
                                                         friendsIds.add(((Friend) person).id);
                                                 }
@@ -207,8 +209,8 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                                 startSendAnimation(inviteSendRoot);
                                             }
                                         });
-                                }
-                            });
+
+
                         } else {
                             if (isAdded()) {
                                 sendButton.setText(getString(R.string.invite_send));

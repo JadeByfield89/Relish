@@ -120,14 +120,14 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         holder.contactBtn.setIndeterminateProgressMode(true);
         holder.contactBtn.setTransformationMethod(null);
 
-        holder.contactBtn.setCompleteText("Invited");
-        holder.contactBtn.setIdleText("Invite");
+        holder.contactBtn.setCompleteText("Share");
+        holder.contactBtn.setIdleText("Share");
         if (contact.isInvited) {
             holder.contactBtn.setProgress(100);
-            holder.contactBtn.setText("Invited");
+            holder.contactBtn.setText("Share");
         } else {
             holder.contactBtn.setProgress(0);
-            holder.contactBtn.setText("Invite");
+            holder.contactBtn.setText("Share");
         }
     }
 
