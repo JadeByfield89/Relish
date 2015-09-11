@@ -3,6 +3,7 @@ package relish.permoveo.com.relish.adapter.list;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -121,6 +122,8 @@ public class InvitesListAdapter extends RecyclerView.Adapter<InvitesListAdapter.
             holder.secondPerson.setVisibility(View.GONE);
             holder.thirdPerson.setVisibility(View.GONE);
             holder.morePersons.setVisibility(View.VISIBLE);
+            ((LinearLayout.LayoutParams) holder.morePersons.getLayoutParams()).leftMargin = 0;
+            holder.morePersons.requestLayout();
             holder.morePersons.setText(invite.invited.size() +
                     " " + context.getResources().getQuantityString(R.plurals.persons, invite.invited.size()));
         } else if (avatars.size() == 1) {
@@ -136,6 +139,9 @@ public class InvitesListAdapter extends RecyclerView.Adapter<InvitesListAdapter.
             holder.secondPerson.setVisibility(View.GONE);
             holder.thirdPerson.setVisibility(View.GONE);
             if (invite.invited.size() - 1 != 0) {
+                ((LinearLayout.LayoutParams) holder.morePersons.getLayoutParams()).leftMargin =
+                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4.0f, context.getResources().getDisplayMetrics());
+                holder.morePersons.requestLayout();
                 holder.morePersons.setVisibility(View.VISIBLE);
                 holder.morePersons.setText("+ " + (invite.invited.size() - 1) + " " + context.getString(R.string.persons_more));
             } else {
@@ -162,6 +168,9 @@ public class InvitesListAdapter extends RecyclerView.Adapter<InvitesListAdapter.
 
             holder.thirdPerson.setVisibility(View.GONE);
             if (invite.invited.size() - 2 != 0) {
+                ((LinearLayout.LayoutParams) holder.morePersons.getLayoutParams()).leftMargin =
+                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4.0f, context.getResources().getDisplayMetrics());
+                holder.morePersons.requestLayout();
                 holder.morePersons.setVisibility(View.VISIBLE);
                 holder.morePersons.setText("+ " + (invite.invited.size() - 2) + " " + context.getString(R.string.persons_more));
             } else {
@@ -196,6 +205,9 @@ public class InvitesListAdapter extends RecyclerView.Adapter<InvitesListAdapter.
                     .into(holder.thirdPerson);
 
             if (invite.invited.size() - 3 != 0) {
+                ((LinearLayout.LayoutParams) holder.morePersons.getLayoutParams()).leftMargin =
+                        (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4.0f, context.getResources().getDisplayMetrics());
+                holder.morePersons.requestLayout();
                 holder.morePersons.setVisibility(View.VISIBLE);
                 holder.morePersons.setText("+ " + (invite.invited.size() - 3) + " " + context.getString(R.string.persons_more));
             } else {

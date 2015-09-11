@@ -14,6 +14,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import relish.permoveo.com.relish.model.Contact;
@@ -37,8 +38,13 @@ public class InvitesManager {
     }
 
     public static void retrieveInvitesList(final InvitesManagerCallback callback) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Invite");
-        query.whereEqualTo("invitedFriends", ParseUser.getCurrentUser().getObjectId());
+        ParseQuery<ParseObject> creatorQuery = ParseQuery.getQuery("Invite");
+        creatorQuery.whereEqualTo("creatorId", ParseUser.getCurrentUser().getObjectId());
+
+        ParseQuery<ParseObject> friendsQuery = ParseQuery.getQuery("Invite");
+        friendsQuery.whereEqualTo("invitedFriends", ParseUser.getCurrentUser().getObjectId());
+
+        ParseQuery<ParseObject> query = ParseQuery.or(Arrays.asList(creatorQuery, friendsQuery));
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
