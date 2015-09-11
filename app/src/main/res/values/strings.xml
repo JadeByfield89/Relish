@@ -88,6 +88,7 @@
     <string formatted="false" name="share_push_message">Hey, %s has just invited you to eat at %s, on %s, at %s!</string>
     <string formatted="false" name="share_social">I\'ve just invited some friends to eat with me at %s via the #RelishApp. Easiest way to invite friends to eat! http://relishwith.us</string>
     <string translatable="false" name="app_url">http://www.google.com/</string>
+    <string name="invite_contact_message">Hey, I\'m using the Relish app to find new places to eat, and invite my friends to join me. Check it out! \n\nhttp://relishwith.us</string>
     <string name="enter_date">Enter date</string>
     <string name="enter_time">Enter time</string>
 

@@ -6,8 +6,10 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.dd.CircularProgressButton;
@@ -47,7 +49,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         CircleImageView contactImage;
 
         @Bind(R.id.friend_btn)
-        CircularProgressButton contactBtn;
+        ImageButton contactBtn;
 
         public ViewHolder(View itemView, final ContactsButtonClickListener viewHolderClickListener) {
             super(itemView);
@@ -115,12 +117,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         holder.contactName.setIncludeFontPadding(false);
         holder.contactName.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
-        holder.contactBtn.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        /*holder.contactBtn.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         holder.contactBtn.setIncludeFontPadding(true);
         holder.contactBtn.setIndeterminateProgressMode(true);
-        holder.contactBtn.setTransformationMethod(null);
+        holder.contactBtn.setTransformationMethod(null);*/
 
-        holder.contactBtn.setCompleteText("Share");
+       /* holder.contactBtn.setCompleteText("Share");
         holder.contactBtn.setIdleText("Share");
         if (contact.isInvited) {
             holder.contactBtn.setProgress(100);
@@ -128,7 +130,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         } else {
             holder.contactBtn.setProgress(0);
             holder.contactBtn.setText("Share");
-        }
+        }*/
     }
 
     public Object getItem(final int position) {

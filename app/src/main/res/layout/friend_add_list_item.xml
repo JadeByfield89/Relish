@@ -23,21 +23,13 @@
         android:textSize="16sp"
         android:layout_marginLeft="16dp" />
 
-    <com.dd.CircularProgressButton
+    <ImageButton
         android:id="@+id/friend_btn"
         android:layout_alignParentRight="true"
-        app:cpb_textIdle="@string/progress_button_idle"
-        app:cpb_textComplete="@string/progress_button_completed"
-        app:cpb_selectorIdle="@drawable/progress_button_idle"
-        app:cpb_colorIndicator="@color/main_color"
-        app:cpb_colorProgress="@android:color/transparent"
-        app:cpb_selectorComplete="@drawable/progress_button_completed"
-        app:cpb_cornerRadius="15dp"
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:textColor="@android:color/white"
-        android:textSize="12sp" />
+        android:background="@drawable/ic_content_send" />
 
     <View
         android:layout_width="match_parent"

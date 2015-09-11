@@ -1,9 +1,16 @@
 package relish.permoveo.com.relish.fragments.search;
 
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +21,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.telephony.SmsManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,10 +29,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.dd.CircularProgressButton;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -34,6 +48,7 @@ import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.list.ContactsAdapter;
 import relish.permoveo.com.relish.model.Contact;
+import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.BounceProgressBar;
 
 /**
@@ -60,6 +75,8 @@ public class ContactsFragment extends Fragment {
     @Bind(R.id.contacts_recycler)
     RecyclerView recyclerView;
 
+    AlertDialog dialog;
+
     public ContactsFragment() {
         // Required empty public constructor
     }
@@ -71,17 +88,17 @@ public class ContactsFragment extends Fragment {
         adapter = new ContactsAdapter(getActivity(), new ContactsAdapter.ViewHolder.ContactsButtonClickListener() {
             @Override
             public void onClick(View view) {
-                CircularProgressButton currentBtn = (CircularProgressButton) view.findViewById(R.id.friend_btn);
                 int position = recyclerView.getChildPosition(view);
                 Contact currentContact = (Contact) adapter.getItem(position);
-                if (currentBtn.getProgress() != 100) {
-//                    currentBtn.setProgress(50);
 
-                    String message = getString(R.string.sms_invitation);
+
+                   /* String message = getString(R.string.sms_invitation);
                     Intent sendIntent = new Intent(Intent.ACTION_SENDTO);
                     sendIntent.setData(Uri.parse("sms:" + currentContact.number));
                     sendIntent.putExtra("sms_body", message);
-                    startActivity(sendIntent);
+                    startActivity(sendIntent);*/
+
+                showContactInviteDialog(currentContact);
 
 //                    PendingIntent sentPI = PendingIntent.getBroadcast(getActivity(), 0,
 //                            new Intent("SMS_SENT"), 0);
@@ -99,9 +116,77 @@ public class ContactsFragment extends Fragment {
 //
 //                    SmsManager sms = SmsManager.getDefault();
 //                    sms.sendTextMessage(currentContact.number, null, getString(R.string.sms_invitation), sentPI, null);
-                }
+
             }
         });
+    }
+
+    private void showContactInviteDialog(final Contact contact) {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_invite_contact, (ViewGroup) getView().getRootView(), false);
+
+        View rootView = view.findViewById(R.id.dialog_root_view);
+
+        TextView dialogTitle = (TextView) view.findViewById(R.id.dialog_title);
+        dialogTitle.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+
+        EditText dialogMessage = (EditText) view.findViewById(R.id.contact_invite_message);
+        dialogMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+
+
+        TextView dialogCancel = (TextView) view.findViewById(R.id.invite_cancel);
+        dialogCancel.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+        TextView dialogSend = (TextView) view.findViewById(R.id.invite_send);
+        dialogSend.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+
+
+        dialogBuilder.setView(view);
+
+        dialog = dialogBuilder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+
+        dialogCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialogSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendSMSMessage(contact);
+            }
+        });
+
+
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        dialog.show();
+        dialog.getWindow().setLayout(1000, 1000);
+
+
+    }
+
+    private void sendSMSMessage(final Contact contact) {
+        PendingIntent sentPI = PendingIntent.getBroadcast(getActivity(), 0,
+                new Intent("SMS_SENT"), 0);
+
+        getActivity().registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (getResultCode() == Activity.RESULT_OK) {
+                    adapter.update(contact);
+                }
+            }
+        }, new IntentFilter("SMS_SENT"));
+
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(contact.number, null, getString(R.string.invite_contact_message), sentPI, null);
+
+        dialog.dismiss();
     }
 
     @Override
