@@ -1,6 +1,7 @@
 package relish.permoveo.com.relish.activities;
 
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -101,7 +102,14 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        if (savedInstanceState != null) {
+        if (getIntent().getBooleanExtra(ConstantUtil.FROM_NOTIFICATION_EXTRA, false)) {
+            mCurrentSelectedPosition = 1;
+            int notificationId = getIntent().getIntExtra(ConstantUtil.NOTIFICATION_ID_EXTRA, -1);
+            if (notificationId != -1) {
+                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                notificationManager.cancel(notificationId);
+            }
+        }else if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
         }
 

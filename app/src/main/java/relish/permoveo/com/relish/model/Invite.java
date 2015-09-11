@@ -25,6 +25,7 @@ public class Invite implements Serializable {
     public long date = 0l;
     public long time = 0l;
     public boolean isSent = false;
+    public String image;
     public String note;
     public String mapSnapshot;
     public ArrayList<InvitePerson> invited = new ArrayList<>();
@@ -37,6 +38,8 @@ public class Invite implements Serializable {
         invite.date = parseObject.getLong("date");
         invite.time = parseObject.getLong("time");
         invite.title = parseObject.getString("title");
+        if (parseObject.containsKey("image"))
+            invite.image = parseObject.getString("image");
         if (parseObject.containsKey("note"))
             invite.note = parseObject.getString("note");
         invite.name = parseObject.getString("placeName");

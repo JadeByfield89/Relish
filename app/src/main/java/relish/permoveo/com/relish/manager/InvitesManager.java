@@ -82,6 +82,8 @@ public class InvitesManager {
         }
         inviteObj.addAllUnique("invitedContacts", invitedContacts);
         inviteObj.addAllUnique("invitedFriends", invitedFriends);
+        if (!TextUtils.isEmpty(invite.image))
+            inviteObj.put("image", invite.image);
         if (!TextUtils.isEmpty(invite.note))
             inviteObj.put("note", invite.note);
 

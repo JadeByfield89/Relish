@@ -1,5 +1,6 @@
 package relish.permoveo.com.relish.receivers;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -24,6 +25,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.activities.MainActivity;
 import relish.permoveo.com.relish.util.BitmapUtil;
 import relish.permoveo.com.relish.util.ConstantUtil;
 
@@ -34,6 +36,7 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
 
     private NotificationManager nm;
     private Context context;
+    private int notificationId = 1488;
     private Notification notification;
 
     private class LoadAvatarTask extends AsyncTask<String, Void, Bitmap> {
@@ -46,7 +49,6 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
-            int notificationId = (int) System.currentTimeMillis();
 
             if (bitmap != null) {
                 int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64.0f, context.getResources().getDisplayMetrics());
@@ -74,6 +76,13 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
                 }
             }
         }
+    }
+
+    @Override
+    protected Class<? extends Activity> getActivity(Context context, Intent intent) {
+        intent.putExtra(ConstantUtil.NOTIFICATION_ID_EXTRA, notification);
+        intent.putExtra(ConstantUtil.FROM_NOTIFICATION_EXTRA, true);
+        return MainActivity.class;
     }
 
     @Override
@@ -114,8 +123,6 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
             }
         }
         if (notification != null && TextUtils.isEmpty(image)) {
-            int notificationId = (int) System.currentTimeMillis();
-
             try {
                 nm.notify(notificationId, notification);
             } catch (SecurityException var6) {
@@ -145,11 +152,14 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
                 Intent contentIntent = new Intent("com.parse.push.intent.OPEN");
                 contentIntent.putExtras(extras);
                 contentIntent.setPackage(packageName);
+
                 Intent deleteIntent = new Intent("com.parse.push.intent.DELETE");
                 deleteIntent.putExtras(extras);
                 deleteIntent.setPackage(packageName);
+
                 PendingIntent pContentIntent = PendingIntent.getBroadcast(context, contentIntentRequestCode, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 PendingIntent pDeleteIntent = PendingIntent.getBroadcast(context, deleteIntentRequestCode, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
                 NotificationCompat.Builder parseBuilder = new NotificationCompat.Builder(context);
                 parseBuilder.setContentTitle(title)
                         .setContentText(alert)
