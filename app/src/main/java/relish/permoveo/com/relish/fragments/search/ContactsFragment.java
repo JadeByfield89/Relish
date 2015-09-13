@@ -76,6 +76,7 @@ public class ContactsFragment extends Fragment {
     RecyclerView recyclerView;
 
     AlertDialog dialog;
+    EditText dialogMessage;
 
     public ContactsFragment() {
         // Required empty public constructor
@@ -130,7 +131,7 @@ public class ContactsFragment extends Fragment {
         TextView dialogTitle = (TextView) view.findViewById(R.id.dialog_title);
         dialogTitle.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
 
-        EditText dialogMessage = (EditText) view.findViewById(R.id.contact_invite_message);
+        dialogMessage = (EditText) view.findViewById(R.id.contact_invite_message);
         dialogMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
 
@@ -184,7 +185,7 @@ public class ContactsFragment extends Fragment {
         }, new IntentFilter("SMS_SENT"));
 
         SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(contact.number, null, getString(R.string.invite_contact_message), sentPI, null);
+        sms.sendTextMessage(contact.number, null, dialogMessage.getText().toString(), sentPI, null);
 
         dialog.dismiss();
     }
