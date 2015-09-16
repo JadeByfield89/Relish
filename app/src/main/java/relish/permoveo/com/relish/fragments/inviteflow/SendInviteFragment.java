@@ -181,9 +181,13 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                             manager.set(AlarmManager.RTC_WAKEUP, when.getMillis(), pintent);
                                         }
 
-                                        // for sending SMS
-                                        //SmsManager smsManager = SmsManager.getDefault();
 
+                                        // TODO: Add logic for sending invite via email from
+                                        // invites@relishwith.us email account
+
+                                        
+
+                                        // for sending SMS
                                         String senderName = UserUtils.getUsername();
                                         String smsMessage = String.format(getString(R.string.share_sms_message),
                                                 senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime());
