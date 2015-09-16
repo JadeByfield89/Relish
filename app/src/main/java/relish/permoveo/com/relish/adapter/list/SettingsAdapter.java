@@ -72,6 +72,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         }
         else if(holder instanceof  SettingsToggleViewHolder){
+            if(position == 4){
+                ((SettingsToggleViewHolder) holder).toggle.setChecked(false);
+            }
             ((SettingsToggleViewHolder) holder).title.setText(settings.get(position).getTitle());
             if(settings.get(position).getSubtitle().isEmpty()){
                 ((SettingsToggleViewHolder) holder).subtitle.setVisibility(View.GONE);

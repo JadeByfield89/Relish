@@ -216,6 +216,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
     @Override
     public void onBackPressed() {
         if (invitePager != null && invitePager.getCurrentItem() == 3 && getInvite().isSent) {
+            successCardView.setVisibility(View.GONE);
             setResult(RESULT_CANCELED, new Intent().putExtra(IS_INVITE_SENT_EXTRA, true));
             finish();
         } else {

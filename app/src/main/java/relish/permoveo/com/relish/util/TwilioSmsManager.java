@@ -68,6 +68,7 @@ public class TwilioSmsManager {
             request.addBodyParameter("Body", message);
             request.addBodyParameter("To", number);
             request.addBodyParameter("From", TWILIO_PHONE_NUMBER);
+            request.addBodyParameter("InviteId", "Hey Zhao!");
 
 
             Response response = request.send();

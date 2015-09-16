@@ -438,8 +438,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
         sendTime.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
     }
 
-    private void sendSMS(String phoneNumber, String message)
-    {
+    private void sendSMS(String phoneNumber, String message) {
         String SENT = "SMS_SENT";
         String DELIVERED = "SMS_DELIVERED";
 
@@ -450,11 +449,10 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                 new Intent(DELIVERED), 0);
 
         //---when the SMS has been sent---
-        getActivity().registerReceiver(new BroadcastReceiver(){
+        getActivity().registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context arg0, Intent arg1) {
-                switch (getResultCode())
-                {
+                switch (getResultCode()) {
                     case Activity.RESULT_OK:
                         Toast.makeText(getActivity(), "SMS sent",
                                 Toast.LENGTH_SHORT).show();

@@ -9,4 +9,5 @@ public class Contact extends InvitePerson implements Serializable {
     public boolean isSelected;
     public long id;
     public boolean isInvited;
+    public String email;
 }
