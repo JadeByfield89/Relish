@@ -133,18 +133,48 @@ public class InvitesManager {
                 InvitePerson person = invite.invited.get(i);
                 if (person instanceof Contact) {
                     Contact contact = (Contact) person;
-                    ParseObject contactObj = new ParseObject("Contact");
-                    if (!TextUtils.isEmpty(contact.email))
-                        contactObj.put("contactEmail", contact.email);
-                    if (!TextUtils.isEmpty(contact.number))
-                        contactObj.put("contactNumber", contact.number);
-                    if (!TextUtils.isEmpty(contact.image) && contact.imageFile != null) {
-                        contactObj.put("avatar", contact.imageFile);
+                    // check if the contact already exists
+                    ParseQuery<ParseObject> phoneQuery = null;
+                    if (!TextUtils.isEmpty(contact.number)) {
+                        phoneQuery = ParseQuery.getQuery("Contact");
+                        phoneQuery.whereEqualTo("contactNumber", contact.number);
                     }
-                    contactObj.put("contactName", contact.name);
+
+                    ParseQuery<ParseObject> emailQuery = null;
+                    if (!TextUtils.isEmpty(contact.email)) {
+                        emailQuery = ParseQuery.getQuery("Contact");
+                        emailQuery.whereEqualTo("contactEmail", contact.email);
+                    }
+
+                    ArrayList<ParseQuery<ParseObject>> queries = new ArrayList<>();
+                    if (phoneQuery != null)
+                        queries.add(phoneQuery);
+                    if (emailQuery != null)
+                        queries.add(emailQuery);
+
+                    ParseQuery<ParseObject> query = ParseQuery.or(queries);
                     try {
-                        contactObj.save();
-                        invite.invited.set(i, new Contact(contactObj.getObjectId()));
+                        List<ParseObject> result = query.find();
+                        if (result != null && result.size() > 0) {
+                            ParseObject contactObj = result.get(0);
+                            person.id = contactObj.getObjectId();
+                        } else {
+                            ParseObject contactObj = new ParseObject("Contact");
+                            if (!TextUtils.isEmpty(contact.email))
+                                contactObj.put("contactEmail", contact.email);
+                            if (!TextUtils.isEmpty(contact.number))
+                                contactObj.put("contactNumber", contact.number);
+                            if (!TextUtils.isEmpty(contact.image) && contact.imageFile != null) {
+                                contactObj.put("avatar", contact.imageFile);
+                            }
+                            contactObj.put("contactName", contact.name);
+                            try {
+                                contactObj.save();
+                                person.id = contactObj.getObjectId();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }

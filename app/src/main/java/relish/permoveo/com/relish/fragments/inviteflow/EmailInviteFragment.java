@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,7 +28,6 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
-import relish.permoveo.com.relish.adapter.list.inviteflow.InviteContactsListAdapter;
 import relish.permoveo.com.relish.adapter.list.inviteflow.InviteEmailListAdapter;
 import relish.permoveo.com.relish.interfaces.ISelectable;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
@@ -146,7 +144,7 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
 
                             //Create Contact object for each email contact
                             Contact contact = new Contact();
-                            contact.id = cur.getLong(contactIdIndex);
+                            contact.longId = cur.getLong(contactIdIndex);
                             contact.name = name;
                             contact.email = emlAddr;
 
