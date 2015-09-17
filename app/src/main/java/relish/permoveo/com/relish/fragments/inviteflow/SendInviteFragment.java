@@ -186,11 +186,10 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                         // invites@relishwith.us email account
 
 
-
                                         // for sending SMS
                                         String senderName = UserUtils.getUsername();
                                         String smsMessage = String.format(getString(R.string.share_sms_message),
-                                                senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime());
+                                                senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), InvitesManager.currentInviteId, InvitesManager.currentInviteId, InvitesManager.currentInviteId);
                                         //ArrayList<String> parts = smsManager.divideMessage(smsMessage);
 
                                         TwilioSmsManager manager = new TwilioSmsManager();

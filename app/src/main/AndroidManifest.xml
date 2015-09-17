@@ -126,6 +126,7 @@
 
         <activity
             android:name=".activities.InviteDetailsActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_invite_details" >
         </activity>
     </application>
