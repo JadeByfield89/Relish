@@ -70,7 +70,7 @@ public class TwilioSmsManager {
             Log.d("TwilioSMSManager", "Message -> " + message);
 
             request.addBodyParameter("Body", message);
-            request.addBodyParameter("To", "3475812311");
+            request.addBodyParameter("To", number);
             request.addBodyParameter("From", TWILIO_PHONE_NUMBER);
             request.addBodyParameter("MediaUrl", "http://inviteid.jpg");
 
