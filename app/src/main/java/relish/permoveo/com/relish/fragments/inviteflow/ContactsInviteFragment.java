@@ -4,6 +4,7 @@ package relish.permoveo.com.relish.fragments.inviteflow;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -20,9 +21,15 @@ import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.parse.ParseFile;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -131,10 +138,32 @@ public class ContactsInviteFragment extends Fragment implements ISelectable, Fil
 
                         while (cursor.moveToNext()) {
                             Contact contact = new Contact();
-                            contact.id = cursor.getLong(contactIdIndex);
+                            contact.longId = cursor.getLong(contactIdIndex);
                             contact.name = cursor.getString(displayNameIndex);
                             contact.number = cursor.getString(phoneIndex).trim();
                             contact.image = cursor.getString(photoUriIndex);
+
+                            if (!TextUtils.isEmpty(contact.image)) {
+                                InputStream inputStream;
+                                try {
+                                    inputStream = getActivity().getContentResolver().openInputStream(Uri.parse(contact.image));
+                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                    try {
+                                        byte[] buf = new byte[1024];
+                                        int n;
+                                        while (-1 != (n = inputStream.read(buf)))
+                                            baos.write(buf, 0, n);
+
+                                        String fileName = "avatar" + UUID.randomUUID().toString() + ".jpg";
+                                        contact.imageFile = new ParseFile(fileName, baos.toByteArray());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
                             if (!contacts.containsKey(contact.name) && !TextUtils.isEmpty(contact.number))
                                 contacts.put(contact.name, contact);
                         }

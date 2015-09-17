@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.joooonho.SelectableRoundedImageView;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -68,6 +69,9 @@ public class InvitesListAdapter extends RecyclerView.Adapter<InvitesListAdapter.
         @Bind(R.id.invited_layout)
         LinearLayout inviteLayout;
 
+        @Bind(R.id.invite_status)
+        TextView inviteStatus;
+
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -91,14 +95,29 @@ public class InvitesListAdapter extends RecyclerView.Adapter<InvitesListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         Invite invite = (Invite) getItem(position);
 
         setTypeface(holder);
 
-        Picasso.with(context)
-                .load(invite.mapSnapshot)
-                .into(holder.inviteMapSnapshot);
+        if (!TextUtils.isEmpty(invite.image)) {
+            Picasso.with(context)
+                    .load(invite.image)
+                    .into(holder.inviteMapSnapshot, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                        }
+
+                        @Override
+                        public void onError() {
+                            holder.inviteMapSnapshot.setBackgroundColor(context.getResources().getColor(R.color.photo_placeholder));
+                        }
+                    });
+        } else {
+            Picasso.with(context)
+                    .load(invite.mapSnapshot)
+                    .into(holder.inviteMapSnapshot);
+        }
 
         holder.inviteTitle.setText(invite.title);
         holder.invitePlaceName.setText(invite.name);
@@ -106,11 +125,29 @@ public class InvitesListAdapter extends RecyclerView.Adapter<InvitesListAdapter.
         holder.inviteDateTime.setText(invite.getFormattedDateTime());
 
         renderInvited(holder, invite);
+        renderStatus(holder, invite);
+    }
+
+    private void renderStatus(ViewHolder holder, Invite invite) {
+        switch (invite.status) {
+            case PENDING:
+                break;
+            case ACCEPTED:
+                holder.inviteStatus.setTextColor(context.getResources().getColor(R.color.main_color));
+                break;
+            case DECLINED:
+                holder.inviteStatus.setTextColor(context.getResources().getColor(R.color.empty_color));
+                break;
+        }
+        holder.inviteStatus.setText(invite.status.toString());
     }
 
     private void renderInvited(ViewHolder holder, Invite invite) {
         ArrayList<String> avatars = new ArrayList<>();
-        for (InvitePerson person : invite.invited) {
+        ArrayList<InvitePerson> invitedAndAccepted = new ArrayList<>();
+        invitedAndAccepted.addAll(invite.invited);
+        invitedAndAccepted.addAll(invite.accepted);
+        for (InvitePerson person : invitedAndAccepted) {
             if (!TextUtils.isEmpty(person.image) && avatars.size() < 3) {
                 avatars.add(person.image);
             }
@@ -124,8 +161,8 @@ public class InvitesListAdapter extends RecyclerView.Adapter<InvitesListAdapter.
             holder.morePersons.setVisibility(View.VISIBLE);
             ((LinearLayout.LayoutParams) holder.morePersons.getLayoutParams()).leftMargin = 0;
             holder.morePersons.requestLayout();
-            holder.morePersons.setText(invite.invited.size() +
-                    " " + context.getResources().getQuantityString(R.plurals.persons, invite.invited.size()));
+            holder.morePersons.setText(invitedAndAccepted.size() +
+                    " " + context.getResources().getQuantityString(R.plurals.persons, invitedAndAccepted.size()));
         } else if (avatars.size() == 1) {
             holder.firstPerson.setVisibility(View.VISIBLE);
             Picasso.with(context)
@@ -138,12 +175,12 @@ public class InvitesListAdapter extends RecyclerView.Adapter<InvitesListAdapter.
 
             holder.secondPerson.setVisibility(View.GONE);
             holder.thirdPerson.setVisibility(View.GONE);
-            if (invite.invited.size() - 1 != 0) {
+            if (invitedAndAccepted.size() - 1 != 0) {
                 ((LinearLayout.LayoutParams) holder.morePersons.getLayoutParams()).leftMargin =
                         (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4.0f, context.getResources().getDisplayMetrics());
                 holder.morePersons.requestLayout();
                 holder.morePersons.setVisibility(View.VISIBLE);
-                holder.morePersons.setText("+ " + (invite.invited.size() - 1) + " " + context.getString(R.string.persons_more));
+                holder.morePersons.setText("+ " + (invitedAndAccepted.size() - 1) + " " + context.getString(R.string.persons_more));
             } else {
                 holder.morePersons.setVisibility(View.GONE);
             }
@@ -167,12 +204,12 @@ public class InvitesListAdapter extends RecyclerView.Adapter<InvitesListAdapter.
                     .into(holder.secondPerson);
 
             holder.thirdPerson.setVisibility(View.GONE);
-            if (invite.invited.size() - 2 != 0) {
+            if (invitedAndAccepted.size() - 2 != 0) {
                 ((LinearLayout.LayoutParams) holder.morePersons.getLayoutParams()).leftMargin =
                         (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4.0f, context.getResources().getDisplayMetrics());
                 holder.morePersons.requestLayout();
                 holder.morePersons.setVisibility(View.VISIBLE);
-                holder.morePersons.setText("+ " + (invite.invited.size() - 2) + " " + context.getString(R.string.persons_more));
+                holder.morePersons.setText("+ " + (invitedAndAccepted.size() - 2) + " " + context.getString(R.string.persons_more));
             } else {
                 holder.morePersons.setVisibility(View.GONE);
             }
@@ -204,12 +241,12 @@ public class InvitesListAdapter extends RecyclerView.Adapter<InvitesListAdapter.
                     .error(R.drawable.relish_avatar_placeholder)
                     .into(holder.thirdPerson);
 
-            if (invite.invited.size() - 3 != 0) {
+            if (invitedAndAccepted.size() - 3 != 0) {
                 ((LinearLayout.LayoutParams) holder.morePersons.getLayoutParams()).leftMargin =
                         (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4.0f, context.getResources().getDisplayMetrics());
                 holder.morePersons.requestLayout();
                 holder.morePersons.setVisibility(View.VISIBLE);
-                holder.morePersons.setText("+ " + (invite.invited.size() - 3) + " " + context.getString(R.string.persons_more));
+                holder.morePersons.setText("+ " + (invitedAndAccepted.size() - 3) + " " + context.getString(R.string.persons_more));
             } else {
                 holder.morePersons.setVisibility(View.GONE);
             }
@@ -222,6 +259,7 @@ public class InvitesListAdapter extends RecyclerView.Adapter<InvitesListAdapter.
         holder.invitePlaceAddress.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         holder.morePersons.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         holder.inviteTitle.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+        holder.inviteStatus.setTypeface(TypefaceUtil.PROXIMA_NOVA);
     }
 
     @Override

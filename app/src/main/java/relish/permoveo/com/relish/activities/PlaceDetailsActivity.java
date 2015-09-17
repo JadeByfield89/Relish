@@ -97,8 +97,6 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
     private int mScrollThreshold;
     private int fabHeight;
     private int fabShadowSize;
-    private boolean wasAnimatedToBottom = false;
-    private boolean wasAnimatedToTop = false;
     private int[] fabLocation, fakeFabLocation;
     private Map<String, ImageView> reviewImageMap;
 
@@ -125,7 +123,6 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 
     @Bind(R.id.bounce_progress)
     BounceProgressBar bounceProgress;
-
 
     @Bind(R.id.place_details_inform_message)
     TextView placeDetailsMessage;

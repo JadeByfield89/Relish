@@ -39,7 +39,6 @@ import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.util.BlurBuilder;
 import relish.permoveo.com.relish.util.FixedSpeedScroller;
 import relish.permoveo.com.relish.util.SharingUtil;
-import relish.permoveo.com.relish.util.StaticMapsUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.NonSwipeableViewPager;
 
@@ -127,9 +126,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
 
         if (getIntent().hasExtra(PLACE_FOR_INVITE_EXTRA)) {
             currentPlace = (YelpPlace) getIntent().getSerializableExtra(PLACE_FOR_INVITE_EXTRA);
-            invite.name = currentPlace.name;
-            invite.location = currentPlace.location;
-            invite.mapSnapshot = StaticMapsUtil.buildUrl(currentPlace.location.lat, currentPlace.location.lng);
+            invite = Invite.from(currentPlace);
             getSupportActionBar().setTitle(currentPlace.name);
             if (!TextUtils.isEmpty(currentPlace.image)) {
                 Target target = new Target() {

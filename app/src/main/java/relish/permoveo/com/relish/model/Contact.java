@@ -1,5 +1,7 @@
 package relish.permoveo.com.relish.model;
 
+import com.parse.ParseFile;
+
 import java.io.Serializable;
 
 /**
@@ -7,6 +9,14 @@ import java.io.Serializable;
  */
 public class Contact extends InvitePerson implements Serializable {
     public boolean isSelected;
-    public long id;
+    public long longId;
+    public String email;
     public boolean isInvited;
+    public ParseFile imageFile;
+
+    public Contact() {}
+
+    public Contact(String id) {
+        this.id = id;
+    }
 }

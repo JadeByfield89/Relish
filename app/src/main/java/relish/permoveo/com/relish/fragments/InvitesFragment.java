@@ -3,6 +3,7 @@ package relish.permoveo.com.relish.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,9 +23,11 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.activities.InviteDetailsActivity;
 import relish.permoveo.com.relish.adapter.list.InvitesListAdapter;
 import relish.permoveo.com.relish.manager.InvitesManager;
 import relish.permoveo.com.relish.model.Invite;
+import relish.permoveo.com.relish.util.RecyclerItemClickListener;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.util.VerticalSpaceItemDecoration;
 import relish.permoveo.com.relish.view.BounceProgressBar;
@@ -86,6 +89,25 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
         recyclerView.addItemDecoration(new VerticalSpaceItemDecoration(spaces));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Invite invite = (Invite) adapter.getItem(position);
+                View image = view.findViewById(R.id.invite_map_snapshot);
+                View title = view.findViewById(R.id.invite_title);
+                ViewCompat.setTransitionName(image, InviteDetailsActivity.SHARED_IMAGE_NAME);
+                ViewCompat.setTransitionName(title, InviteDetailsActivity.SHARED_TITLE_NAME);
+                InviteDetailsActivity.launch(getActivity(), image, title, invite);
+            }
+        }));
+
+        inviteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        inviteButton.attachToRecyclerView(recyclerView);
     }
 
     @Override

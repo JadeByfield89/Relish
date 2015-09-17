@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -34,11 +33,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
-import com.dd.CircularProgressButton;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -257,7 +251,7 @@ public class ContactsFragment extends Fragment {
 
                         while (cursor.moveToNext()) {
                             Contact contact = new Contact();
-                            contact.id = cursor.getLong(contactIdIndex);
+                            contact.longId = cursor.getLong(contactIdIndex);
                             contact.name = cursor.getString(displayNameIndex);
                             contact.number = cursor.getString(phoneIndex);
                             contact.image = cursor.getString(photoUriIndex);

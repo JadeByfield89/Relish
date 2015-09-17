@@ -6,13 +6,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.dd.CircularProgressButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -76,7 +74,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         int index = -1;
         for (int i = 0; i < dataset.size(); i++) {
             Contact c = dataset.get(i);
-            if (c.id == contact.id) {
+            if (c.longId == contact.longId) {
                 index = i;
                 break;
             }

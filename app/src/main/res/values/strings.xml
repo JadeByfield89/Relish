@@ -79,6 +79,13 @@
     <string name="reminder_1_hour">1 hour before</string>
     <string name="reminder_2_hours">2 hours before</string>
 
+    <string name="invited_title">Awaiting response</string>
+    <string name="accepted_title">Who\’s going</string>
+    <string name="declined_title">Who isn\'t going</string>
+
+    <string name="accept_btn">Accept</string>
+    <string name="decline_btn">Decline</string>
+
     <string name="all_fields_error">Sorry, one or more fields seem to be missing</string>
     <string formatted="false" name="one_field_error">Please, enter a %s for this invite</string>
     <string name="friends_error">Please, select friends/contacts for this invite</string>
@@ -184,6 +191,7 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
 
     <!-- Invite Success -->
     <string name="invite_success">Invite Sent</string>
+    <string name="title_activity_invite_details">InviteDetailsActivity</string>
 
 
 </resources>

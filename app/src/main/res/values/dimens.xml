@@ -3,6 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="featured_image_size">356dp</dimen>
+    <dimen name="invite_image_size">256dp</dimen>
     <dimen name="fab_top_margin">328dp</dimen>
     <dimen name="fab_size">64dp</dimen>
     <dimen name="fab_shadow_size">12dp</dimen>
