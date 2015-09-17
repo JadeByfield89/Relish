@@ -133,6 +133,7 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
 
                 if (cur.moveToFirst()) {
                     final int contactIdIndex = cur.getColumnIndex(ContactsContract.Contacts._ID);
+                    final int contactPhotoUriIndex = cur.getColumnIndex(ContactsContract.Contacts.PHOTO_ID);
 
                     do {
                         // names comes in hand sometimes
@@ -146,9 +147,10 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
 
                             //Create Contact object for each email contact
                             Contact contact = new Contact();
-                            contact.id = cur.getLong(contactIdIndex);
+                            contact.id = ""+cur.getLong(contactIdIndex);
                             contact.name = name;
                             contact.email = emlAddr;
+                            contact.image = cur.getString(contactPhotoUriIndex);
 
                             if (!contacts.containsKey(contact.name) && !TextUtils.isEmpty(contact.email))
                                 contacts.put(contact.name, contact);

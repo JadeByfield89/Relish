@@ -185,7 +185,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                         // TODO: Add logic for sending invite via email from
                                         // invites@relishwith.us email account
 
-                                        
+
 
                                         // for sending SMS
                                         String senderName = UserUtils.getUsername();

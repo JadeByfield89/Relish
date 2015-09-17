@@ -5,6 +5,7 @@ import android.util.Base64;
 import android.util.Log;
 
 
+import org.scribe.exceptions.OAuthException;
 import org.scribe.model.OAuthRequest;
 import org.scribe.model.Response;
 import org.scribe.model.Verb;
@@ -20,7 +21,7 @@ public class TwilioSmsManager {
 
     private static final String TWILIO_SMS_URL = "https://api.twilio.com/2010-04-01/Accounts/%s/Messages";
     private static final String ACCOUNT_SID = "AC8ee5b87d49507692506223092e785d3c";
-    private static final String AUTH_TOKEN = "8609776cafcb86864709e49323884158";
+    private static final String AUTH_TOKEN = "e485ba03a5f386b89a09db9fb6a6f5b4";
     private static final String TWILIO_PHONE_NUMBER = "+17323911373";
     private String phoneNumber;
     private String message;
@@ -65,14 +66,22 @@ public class TwilioSmsManager {
 
             request.addHeader("Authorization", base64EncodedCredentials);
 
+            Log.d("TwilioSMSManager", "To number ->" + number);
+            Log.d("TwilioSMSManager", "Message -> " + message);
+
             request.addBodyParameter("Body", message);
-            request.addBodyParameter("To", number);
+            request.addBodyParameter("To", "3475812311");
             request.addBodyParameter("From", TWILIO_PHONE_NUMBER);
-            request.addBodyParameter("InviteId", "Hey Zhao!");
+            request.addBodyParameter("MediaUrl", "http://inviteid.jpg");
 
 
-            Response response = request.send();
-            Log.d("TwilioSmsManager", "Twilio SMS Response -> " + response.getBody());
+            try {
+                Response response = request.send();
+                Log.d("TwilioSmsManager", "Twilio SMS Response -> " + response.getBody());
+
+            }catch(OAuthException e){
+                e.printStackTrace();
+            }
 
             return null;
         }
