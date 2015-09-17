@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="relish.permoveo.com.relish.fragments.inviteflow.ContactsInviteFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/email_contacts_invite_recycler"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:visibility="gone"
+        android:dividerHeight="0dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false"
+        android:layout_width="match_parent"/>
+
+    <LinearLayout
+        android:id="@+id/email_empty_contacts_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:visibility="gone"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:gravity="center">
+
+        <ImageView
+            android:src="@drawable/ic_freinds_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/email_empty_message"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/empty_color"
+            android:text="@string/no_email_contacts"
+            android:textSize="18sp"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <relish.permoveo.com.relish.view.BounceProgressBar
+        xmlns:bpb="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/bounce_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        bpb:shape="circle"
+        bpb:singleSrcSize="14dp"
+        bpb:speed="250"
+        bpb:src="@color/main_color"/>
+
+</RelativeLayout>

@@ -27,13 +27,25 @@
             android:id="@+id/contact_name"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp"
-            android:layout_centerVertical="true"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:singleLine="false"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/contact_image"
             android:textColor="@color/invite_friend_name_color"
             android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/contact_number"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:singleLine="true"
+            android:text="347-581-2311"
+            android:layout_below="@id/contact_name"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/contact_image"
+            android:textColor="@color/dialog_button_idle"
+            android:textSize="15sp"/>
 
         <View
             android:layout_width="match_parent"
