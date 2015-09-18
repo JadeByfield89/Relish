@@ -28,17 +28,8 @@ public class TwilioSmsManager {
 
 
     public void sendInviteSmsViaTwilio(final String number, final String message) {
-        //TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
-
-        // Build a filter for the MessageList
-        /*List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("Body", message));
-        params.add(new BasicNameValuePair("To", number));
-        params.add(new BasicNameValuePair("From", TWILIO_PHONE_NUMBER));*/
 
        new SendSMSTask(number, message).execute();
-
-
 
     }
 
@@ -79,6 +70,8 @@ public class TwilioSmsManager {
                 Log.d("TwilioSmsManager", "Twilio SMS Response -> " + response.getBody());
 
             }catch(OAuthException e){
+                e.printStackTrace();
+            }catch(Exception e){
                 e.printStackTrace();
             }
 

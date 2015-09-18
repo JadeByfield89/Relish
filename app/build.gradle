@@ -112,11 +112,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
     compile 'com.android.support:design:23.0.0'
     compile 'com.joooonho:selectableroundedimageview:1.0.1'
-
-    //compile('com.twilio.sdk:twilio-java-sdk:4.5.0') {
-    //}
     compile project(':materialpicker')
-    //compile 'org.apache.httpcomponents:httpclient:4.5'
 }
 
 

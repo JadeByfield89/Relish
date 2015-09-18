@@ -13,8 +13,8 @@
 
     <string name="settings_item_location_sharing_sub">Share my current location with friends</string>
 
-    <string name="settings_item_twitter">Relish on Twitter</string>
-    <string name="settings_item_facebook">Relish on Facebook</string>
+    <string name="settings_item_twitter">Follow Relish on Twitter</string>
+    <string name="settings_item_facebook">Like Relish on Facebook</string>
     <string name="settings_item_tell_friends">Tell your friends</string>
     <string name="settings_item_rate_us">Rate Relish!</string>
     <string name="settings_item_about_relish">About Relish</string>

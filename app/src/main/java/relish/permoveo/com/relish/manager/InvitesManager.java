@@ -185,19 +185,7 @@ public class InvitesManager {
                 }
             }
 
-            // Get a count of all Invite objects currently in parse
-            ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
-            invitesQuery.countInBackground(new CountCallback() {
-                public void done(int count, ParseException e) {
-                    if (e == null) {
-                        totalInvitesCount = count;
-                        Log.d("InvitesManager", "Parse Invites count-> " + count);
-                        currentInviteId = ++count;
 
-
-                    }
-                }
-            });
 
 
                     return invite;
@@ -209,7 +197,7 @@ public class InvitesManager {
 
 
 
-                    ParseObject inviteObj = new ParseObject("Invite");
+                    final ParseObject inviteObj = new ParseObject("Invite");
                     inviteObj.put("creatorId", ParseUser.getCurrentUser().getObjectId());
                     inviteObj.put("mapSnapshot", invite.mapSnapshot);
                     inviteObj.put("date", invite.date);
@@ -219,7 +207,12 @@ public class InvitesManager {
                     inviteObj.put("placeRating", invite.rating);
                     inviteObj.put("address", invite.location.address);
                     inviteObj.put("location", new ParseGeoPoint(invite.location.lat, invite.location.lng));
-                    inviteObj.put("inviteId", currentInviteId);
+
+
+
+
+                    //inviteObj.put("inviteId", currentInviteId);
+
                     ArrayList<String> invitedContacts = new ArrayList<>();
                     ArrayList<String> invitedFriends = new ArrayList<>();
                     for (InvitePerson person : invite.invited) {
@@ -250,7 +243,30 @@ public class InvitesManager {
                                 } else {
                                     SharedPrefsUtil.get.setLastVisibleInvitesCount(SharedPrefsUtil.get.lastVisibleFriendsCount() + 1);
                                 }
+
+
+                                // Get a count of all Invite objects currently in parse
+                                ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
+                                invitesQuery.countInBackground(new CountCallback() {
+                                    public void done(int count, ParseException e) {
+                                        if (e == null) {
+                                            totalInvitesCount = count;
+                                            Log.d("InvitesManager", "Parse Invites count-> " + count);
+                                            currentInviteId = count;
+
+                                            inviteObj.put("inviteId", currentInviteId);
+
+                                            inviteObj.saveInBackground(new SaveCallback() {
+                                                @Override
+                                                public void done(ParseException e) {
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+
                                 callback.done(null, null);
+
                             } else {
                                 callback.done(null, e);
                             }

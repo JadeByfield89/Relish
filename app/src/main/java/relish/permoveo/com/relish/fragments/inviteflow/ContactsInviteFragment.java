@@ -13,6 +13,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -141,6 +142,8 @@ public class ContactsInviteFragment extends Fragment implements ISelectable, Fil
                             contact.longId = cursor.getLong(contactIdIndex);
                             contact.name = cursor.getString(displayNameIndex);
                             contact.number = cursor.getString(phoneIndex).trim();
+                            contact.number = formatPhoneNumber(contact.number);
+                            Log.d("ContactsInviteFragment ", "non formatted number " +  contact.number);
                             contact.image = cursor.getString(photoUriIndex);
 
                             if (!TextUtils.isEmpty(contact.image)) {
@@ -197,6 +200,20 @@ public class ContactsInviteFragment extends Fragment implements ISelectable, Fil
                 emptyView.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    private String formatPhoneNumber(String number){
+        String formattedNumber = number.replace("(", "");
+        formattedNumber = formattedNumber.replace(")","");
+        formattedNumber = formattedNumber.replace("-","");
+        formattedNumber = formattedNumber.replace(" ","");
+
+        // Needs to prefixed with +1
+        if(formattedNumber.length() == 10){
+            formattedNumber = "+1" + formattedNumber;
+        }
+        Log.d("ContactsInviteFragment", "formatted number" +formattedNumber);
+        return formattedNumber;
     }
 
     @Override

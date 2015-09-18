@@ -13,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.telephony.SmsManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,10 +34,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.joooonho.SelectableRoundedImageView;
+import com.parse.CountCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
+import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
@@ -186,24 +190,41 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                         // invites@relishwith.us email account
 
 
-                                        // for sending SMS
-                                        String senderName = UserUtils.getUsername();
-                                        String smsMessage = String.format(getString(R.string.share_sms_message),
-                                                senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), InvitesManager.currentInviteId, InvitesManager.currentInviteId, InvitesManager.currentInviteId);
-                                        //ArrayList<String> parts = smsManager.divideMessage(smsMessage);
+                                        // SENDING INVITE VIA SMS
+                                        int inviteId;
 
-                                        TwilioSmsManager manager = new TwilioSmsManager();
+                                        // Get a count of all Invite objects currently in parse
+                                        // and asign that count to be this invite's id
+                                        ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
+                                        invitesQuery.countInBackground(new CountCallback() {
+                                            public void done(int count, ParseException e) {
+                                                if (e == null) {
+                                                    Log.d("InvitesManager", "Parse Invites count-> " + count);
 
+                                                    String senderName = UserUtils.getUsername();
+                                                    String smsMessage = String.format(getString(R.string.share_sms_message),
+                                                            senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), count, count, count);
+
+                                                    TwilioSmsManager manager = new TwilioSmsManager();
+
+                                                    for (InvitePerson person : creator.getInvite().invited) {
+                                                        if (person instanceof Contact)
+                                                            manager.sendInviteSmsViaTwilio(person.number, smsMessage);
+                                                    }
+
+                                                }
+                                            }
+                                        });
+
+
+                                        // SENDING INVITE VIA PUSH NOTIFICATIONS
                                         ArrayList<String> friendsIds = new ArrayList<>();
                                         for (InvitePerson person : creator.getInvite().invited) {
                                             if (person instanceof Contact)
-                                                manager.sendInviteSmsViaTwilio(person.number, smsMessage);
-                                                //smsManager.sendMultipartTextMessage(person.number, null, parts, null, null);
-                                            else if (person instanceof Friend)
-                                                friendsIds.add(((Friend) person).id);
+                                                if (person instanceof Friend)
+                                                    friendsIds.add(((Friend) person).id);
                                         }
 
-                                        // for sending push notifications
                                         ParsePush parsePush = new ParsePush();
                                         ParseQuery pQuery = ParseInstallation.getQuery();
                                         pQuery.whereContainedIn("userId", friendsIds);
@@ -220,6 +241,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                         parsePush.setData(pushData);
                                         parsePush.sendInBackground();
                                         startSendAnimation(inviteSendRoot);
+
                                     }
                                 });
 
