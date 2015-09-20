@@ -29,6 +29,7 @@ public class Invite implements Serializable {
 
     // Invite info
     public String id;
+    public String inviteId;
     public String creatorId;
     public String title;
     public int reminder = -1;

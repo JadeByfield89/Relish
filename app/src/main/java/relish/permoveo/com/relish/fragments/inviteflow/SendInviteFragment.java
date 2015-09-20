@@ -57,6 +57,7 @@ import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.interfaces.OnInviteSentListener;
 import relish.permoveo.com.relish.interfaces.RenderCallbacks;
+import relish.permoveo.com.relish.manager.EmailInviteManager;
 import relish.permoveo.com.relish.manager.InvitesManager;
 import relish.permoveo.com.relish.model.Contact;
 import relish.permoveo.com.relish.model.Friend;
@@ -185,14 +186,6 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                             manager.set(AlarmManager.RTC_WAKEUP, when.getMillis(), pintent);
                                         }
 
-
-                                        // TODO: Add logic for sending invite via email from
-                                        // invites@relishwith.us email account
-
-
-                                        // SENDING INVITE VIA SMS
-                                        int inviteId;
-
                                         // Get a count of all Invite objects currently in parse
                                         // and asign that count to be this invite's id
                                         ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
@@ -205,11 +198,38 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                                     String smsMessage = String.format(getString(R.string.share_sms_message),
                                                             senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), count, count, count);
 
-                                                    TwilioSmsManager manager = new TwilioSmsManager();
 
+                                                    // SEND VIA SMS IF PHONE CONTACTS WERE SELECTED
+                                                    TwilioSmsManager manager = new TwilioSmsManager();
                                                     for (InvitePerson person : creator.getInvite().invited) {
-                                                        if (person instanceof Contact)
-                                                            manager.sendInviteSmsViaTwilio(person.number, smsMessage);
+                                                        if (person instanceof Contact) {
+                                                            if (!TextUtils.isEmpty(person.number)) {
+                                                                manager.sendInviteSmsViaTwilio(person.number, smsMessage);
+                                                            }
+
+                                                            else{
+                                                                Log.d("SendInviteFragment", "Can't send SMS, contact number is empty");
+                                                            }
+                                                        }
+
+                                                    }
+
+
+                                                    // SEND INVITE VIA EMAIL IF EMAIL CONTACTS WERE SELECTED
+                                                    for(InvitePerson person: creator.getInvite().invited){
+                                                        if(person instanceof Contact){
+                                                            Log.d("SendInviteFragment", "Sending invite to " + ((Contact) person).email);
+                                                            creator.getInvite().inviteId = ""+count;
+                                                            EmailInviteManager emailInviteManager = new EmailInviteManager((Contact)person, creator.getInvite());
+                                                            emailInviteManager.sendEmailInvite(new OnInviteSentListener() {
+                                                                @Override
+                                                                public void onInviteSent(boolean success) {
+
+                                                                }
+                                                            });
+
+                                                        }
+
                                                     }
 
                                                 }

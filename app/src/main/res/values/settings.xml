@@ -6,7 +6,7 @@
     <string name="settings_header_support">HELP</string>
 
     <string name="settings_item_push_notifications">Push Notifications</string>
-    <string name="settings_item_tip_calculator">Tip Calculator</string>
+    <string name="settings_item_tip_calculator">Split the bill</string>
     <string name="settings_item_location_sharing">Location Sharing</string>
     <string name="settings_item_google_calendar">Sync with Google Calendar</string>
     <string name="settings_item_google_calendar_sub">Add invites to my Google Calendar</string>
