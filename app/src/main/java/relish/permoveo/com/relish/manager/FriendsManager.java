@@ -124,10 +124,6 @@ public class FriendsManager {
         });
     }
 
-    public static void addFriend(final String friendId) {
-        addFriend(friendId, null);
-    }
-
     public static void addFriend(final String friendId, final FriendsManagerCallback callback) {
         ParseObject friendship = new ParseObject("Friendship");
         friendship.addAllUnique("userIds", Arrays.asList(friendId, ParseUser.getCurrentUser().getObjectId()));
@@ -140,9 +136,8 @@ public class FriendsManager {
                     } else {
                         SharedPrefsUtil.get.setLastVisibleFriendsCount(SharedPrefsUtil.get.lastVisibleFriendsCount() + 1);
                     }
-                    if (callback != null)
-                        callback.done(null, null);
-                } else if (callback != null) {
+                    callback.done(null, null);
+                } else {
                     callback.done(null, e);
                 }
             }
