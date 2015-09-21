@@ -126,8 +126,8 @@ public class InvitesManager {
     public static void declineInvite(Invite invite, final InvitesManagerCallback callback) {
         ParseObject inviteObj = ParseObject.createWithoutData("Invite", invite.id);
         inviteObj.addUnique("declinedFriends", ParseUser.getCurrentUser().getObjectId());
-        inviteObj.removeAll("acceptedFriends", Arrays.asList(new String[]{ParseUser.getCurrentUser().getObjectId()}));
-        inviteObj.removeAll("invitedFriends", Arrays.asList(new String[]{ParseUser.getCurrentUser().getObjectId()}));
+        inviteObj.removeAll("acceptedFriends", Collections.singletonList(ParseUser.getCurrentUser().getObjectId()));
+        inviteObj.removeAll("invitedFriends", Collections.singletonList(ParseUser.getCurrentUser().getObjectId()));
 
         InvitePerson current = invite.getPersonById(ParseUser.getCurrentUser().getObjectId());
         invite.declined.add(current);
