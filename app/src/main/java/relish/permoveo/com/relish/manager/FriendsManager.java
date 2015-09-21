@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import relish.permoveo.com.relish.model.Contact;
 import relish.permoveo.com.relish.model.Friend;
 import relish.permoveo.com.relish.util.SharedPrefsUtil;
 
@@ -34,6 +35,31 @@ public class FriendsManager {
 
     public interface FriendsManagerCallback<T1, T2> {
         void done(T1 t1, T2 t2);
+    }
+
+    public static void findContact(String email, String phone, final FriendsManagerCallback callback) {
+        ParseQuery<ParseObject> phoneQuery = ParseQuery.getQuery("Contact");
+        phoneQuery.whereEqualTo("contactNumber", phone);
+
+        ParseQuery<ParseObject> emailQuery = ParseQuery.getQuery("Contact");
+        emailQuery.whereEqualTo("contactEmail", email);
+
+        ParseQuery searchQuery = ParseQuery.or(Arrays.asList(phoneQuery, emailQuery));
+        searchQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    if (list != null && list.size() > 0) {
+                        ParseObject contactObj = list.get(0);
+                        callback.done(Contact.from(contactObj), null);
+                    } else {
+                        callback.done(null, e);
+                    }
+                } else {
+                    callback.done(null, e);
+                }
+            }
+        });
     }
 
     public static void searchFriend(String query, final FriendsManagerCallback callback) {
@@ -98,6 +124,10 @@ public class FriendsManager {
         });
     }
 
+    public static void addFriend(final String friendId) {
+        addFriend(friendId, null);
+    }
+
     public static void addFriend(final String friendId, final FriendsManagerCallback callback) {
         ParseObject friendship = new ParseObject("Friendship");
         friendship.addAllUnique("userIds", Arrays.asList(friendId, ParseUser.getCurrentUser().getObjectId()));
@@ -110,8 +140,9 @@ public class FriendsManager {
                     } else {
                         SharedPrefsUtil.get.setLastVisibleFriendsCount(SharedPrefsUtil.get.lastVisibleFriendsCount() + 1);
                     }
-                    callback.done(null, null);
-                } else {
+                    if (callback != null)
+                        callback.done(null, null);
+                } else if (callback != null) {
                     callback.done(null, e);
                 }
             }

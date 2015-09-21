@@ -17,6 +17,7 @@ import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import relish.permoveo.com.relish.model.Contact;
@@ -63,7 +64,34 @@ public class InvitesManager {
                     if (parseObjects == null || parseObjects.size() == 0) {
                         callback.done(invites, null);
                     } else {
-                        new LoadInvitesWithFriendsTask(callback).execute(new ArrayList<>(parseObjects));
+                        new LoadInvitesWithFriendsTask(ParseUser.getCurrentUser().getObjectId(), callback).execute(new ArrayList<>(parseObjects));
+                    }
+                } else {
+                    callback.done(null, e);
+                }
+            }
+        });
+    }
+
+    public static void findInvites(final String id, final InvitesManagerCallback callback) {
+        ParseQuery<ParseObject> acceptedQuery = ParseQuery.getQuery("Invite");
+        acceptedQuery.whereEqualTo("acceptedContacts", id);
+
+        ParseQuery<ParseObject> declinedQuery = ParseQuery.getQuery("Invite");
+        declinedQuery.whereEqualTo("declinedContacts", id);
+
+        ParseQuery<ParseObject> invitedQuery = ParseQuery.getQuery("Invite");
+        invitedQuery.whereEqualTo("invitedContacts", id);
+        ParseQuery<ParseObject> query = ParseQuery.or(Arrays.asList(acceptedQuery, declinedQuery, invitedQuery));
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                if (e == null) {
+                    ArrayList<Invite> invites = new ArrayList<>();
+                    if (parseObjects == null || parseObjects.size() == 0) {
+                        callback.done(invites, null);
+                    } else {
+                        new LoadInvitesWithFriendsTask(id, callback).execute(new ArrayList<>(parseObjects));
                     }
                 } else {
                     callback.done(null, e);
@@ -75,8 +103,8 @@ public class InvitesManager {
     public static void acceptInvite(Invite invite, final InvitesManagerCallback callback) {
         ParseObject inviteObj = ParseObject.createWithoutData("Invite", invite.id);
         inviteObj.addUnique("acceptedFriends", ParseUser.getCurrentUser().getObjectId());
-        inviteObj.removeAll("declinedFriends", Arrays.asList(new String[]{ParseUser.getCurrentUser().getObjectId()}));
-        inviteObj.removeAll("invitedFriends", Arrays.asList(new String[]{ParseUser.getCurrentUser().getObjectId()}));
+        inviteObj.removeAll("declinedFriends", Collections.singletonList(ParseUser.getCurrentUser().getObjectId()));
+        inviteObj.removeAll("invitedFriends", Collections.singletonList(ParseUser.getCurrentUser().getObjectId()));
 
         InvitePerson current = invite.getPersonById(ParseUser.getCurrentUser().getObjectId());
         invite.accepted.add(current);
@@ -119,14 +147,14 @@ public class InvitesManager {
     }
 
     public static void createInvite(final Invite invite, final InvitesManagerCallback callback) {
-        new CreateInviteWIthContactsTask(callback).execute(invite);
+        new CreateInviteWithContactsTask(callback).execute(invite);
     }
 
-    private static class CreateInviteWIthContactsTask extends AsyncTask<Invite, Void, Invite> {
+    private static class CreateInviteWithContactsTask extends AsyncTask<Invite, Void, Invite> {
 
         private InvitesManagerCallback callback;
 
-        public CreateInviteWIthContactsTask(InvitesManagerCallback callback) {
+        public CreateInviteWithContactsTask(InvitesManagerCallback callback) {
             this.callback = callback;
         }
 
@@ -184,19 +212,12 @@ public class InvitesManager {
                     }
                 }
             }
-
-
-
-
                     return invite;
                 }
 
                 @Override
                 protected void onPostExecute(Invite invite) {
                     super.onPostExecute(invite);
-
-
-
                     final ParseObject inviteObj = new ParseObject("Invite");
                     inviteObj.put("creatorId", ParseUser.getCurrentUser().getObjectId());
                     inviteObj.put("mapSnapshot", invite.mapSnapshot);
@@ -207,12 +228,7 @@ public class InvitesManager {
                     inviteObj.put("placeRating", invite.rating);
                     inviteObj.put("address", invite.location.address);
                     inviteObj.put("location", new ParseGeoPoint(invite.location.lat, invite.location.lng));
-
-
-
-
                     //inviteObj.put("inviteId", currentInviteId);
-
                     ArrayList<String> invitedContacts = new ArrayList<>();
                     ArrayList<String> invitedFriends = new ArrayList<>();
                     for (InvitePerson person : invite.invited) {
@@ -278,9 +294,11 @@ public class InvitesManager {
             private static class LoadInvitesWithFriendsTask extends AsyncTask<ArrayList<ParseObject>, Void, ArrayList<Invite>> {
 
                 private InvitesManagerCallback callback;
+                private String userId;
 
-                public LoadInvitesWithFriendsTask(InvitesManagerCallback callback) {
+                public LoadInvitesWithFriendsTask(String userId, InvitesManagerCallback callback) {
                     this.callback = callback;
+                    this.userId = userId;
                 }
 
                 private ArrayList<InvitePerson> fetchUsers(ArrayList<String> objectIds) {
@@ -339,40 +357,49 @@ public class InvitesManager {
                         invite.invited = new ArrayList<>();
                         ArrayList<String> invitedIds = (ArrayList<String>) parseObject.get("invitedFriends");
                         if (invitedIds != null) {
-                            if (invitedIds.contains(ParseUser.getCurrentUser().getObjectId()))
+                            if (invitedIds.contains(userId))
                                 invite.status = Invite.InviteStatus.PENDING;
                             invite.invited.addAll(fetchUsers(invitedIds));
                         }
 
                         ArrayList<String> invitedContacts = (ArrayList<String>) parseObject.get("invitedContacts");
-                        if (invitedContacts != null)
+                        if (invitedContacts != null) {
+                            if (invitedContacts.contains(userId))
+                                invite.status = Invite.InviteStatus.PENDING;
                             invite.invited.addAll(fetchContacts(invitedContacts));
+                        }
 
                         // fetch accepted contacts and friends
                         invite.accepted = new ArrayList<>();
                         ArrayList<String> acceptedIds = (ArrayList<String>) parseObject.get("acceptedFriends");
                         if (acceptedIds != null) {
-                            if (acceptedIds.contains(ParseUser.getCurrentUser().getObjectId()))
+                            if (acceptedIds.contains(userId))
                                 invite.status = Invite.InviteStatus.ACCEPTED;
                             invite.accepted.addAll(fetchUsers(acceptedIds));
                         }
 
                         ArrayList<String> acceptedContacts = (ArrayList<String>) parseObject.get("acceptedContacts");
-                        if (acceptedContacts != null)
+                        if (acceptedContacts != null) {
+                            if (acceptedContacts.contains(userId))
+                                invite.status = Invite.InviteStatus.ACCEPTED;
                             invite.accepted.addAll(fetchContacts(acceptedContacts));
+                        }
 
                         // fetch declined contacts and friends
                         invite.declined = new ArrayList<>();
                         ArrayList<String> declinedIds = (ArrayList<String>) parseObject.get("declinedFriends");
                         if (declinedIds != null) {
-                            if (declinedIds.contains(ParseUser.getCurrentUser().getObjectId()))
+                            if (declinedIds.contains(userId))
                                 invite.status = Invite.InviteStatus.DECLINED;
                             invite.declined.addAll(fetchUsers(declinedIds));
                         }
 
                         ArrayList<String> declinedContacts = (ArrayList<String>) parseObject.get("declinedContacts");
-                        if (declinedContacts != null)
+                        if (declinedContacts != null) {
+                            if (declinedContacts.contains(userId))
+                                invite.status = Invite.InviteStatus.DECLINED;
                             invite.declined.addAll(fetchContacts(declinedContacts));
+                        }
 
                         invites.add(invite);
                     }

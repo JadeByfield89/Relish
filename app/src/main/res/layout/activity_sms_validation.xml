@@ -11,8 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="300dp">
 
-
-
         <TextView
             android:id="@+id/enter_number"
             android:text="@string/sms_enter_number"
@@ -21,10 +19,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-
-            />
+            android:layout_height="wrap_content"/>
 
 
         <Button
@@ -42,10 +37,6 @@
             android:layout_height="wrap_content" />
 
 
-
-
-
-
         <TextView
             android:id="@+id/sms_sub_one"
             android:textColor="#fff"
@@ -58,8 +49,6 @@
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-
-
         </LinearLayout>
 
     <View
@@ -68,10 +57,5 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_below="@+id/sms_info"/>
-
-
-
-
-
 
 </RelativeLayout>

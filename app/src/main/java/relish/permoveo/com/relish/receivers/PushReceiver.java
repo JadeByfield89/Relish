@@ -81,7 +81,7 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
     @Override
     protected Class<? extends Activity> getActivity(Context context, Intent intent) {
         intent.putExtra(ConstantUtil.NOTIFICATION_ID_EXTRA, notification);
-        intent.putExtra(ConstantUtil.FROM_NOTIFICATION_EXTRA, true);
+        intent.putExtra(ConstantUtil.TO_INVITES_LIST, true);
         return MainActivity.class;
     }
 
