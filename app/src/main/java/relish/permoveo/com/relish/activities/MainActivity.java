@@ -102,7 +102,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        if (getIntent().getBooleanExtra(ConstantUtil.FROM_NOTIFICATION_EXTRA, false)) {
+        if (getIntent().getBooleanExtra(ConstantUtil.TO_INVITES_LIST, false)) {
             mCurrentSelectedPosition = 1;
             int notificationId = getIntent().getIntExtra(ConstantUtil.NOTIFICATION_ID_EXTRA, -1);
             if (notificationId != -1) {

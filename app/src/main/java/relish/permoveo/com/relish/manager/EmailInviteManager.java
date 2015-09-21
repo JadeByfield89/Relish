@@ -28,11 +28,7 @@ public class EmailInviteManager {
     }
 
     public void sendEmailInvite(final OnInviteSentListener listener) {
-
         new SendEmailInviteTask().execute();
-
-
-
     }
 
     private class SendEmailInviteTask extends AsyncTask<Void, Void, Void>{
