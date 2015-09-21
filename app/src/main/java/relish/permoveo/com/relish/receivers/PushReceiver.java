@@ -138,11 +138,15 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
     @Override
     protected Notification getNotification(Context context, Intent intent) {
         JSONObject pushData = null;
+        String type = "";
         try {
             pushData = new JSONObject(intent.getStringExtra("com.parse.Data"));
             if (pushData != null && (pushData.has("alert") || pushData.has("title"))) {
                 String title = pushData.optString("title", context.getString(R.string.app_name));
                 String alert = pushData.optString("alert", "Notification received.");
+                if(pushData.has("type")){
+                    type = pushData.getString("type");
+                }
                 String tickerText = String.format(Locale.getDefault(), "%s: %s", new Object[]{title, alert});
                 Bundle extras = intent.getExtras();
                 Random random = new Random();
@@ -164,14 +168,19 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
                 parseBuilder.setContentTitle(title)
                         .setContentText(alert)
                         .setTicker(tickerText)
-                        .addAction(R.drawable.ic_action_accept, context.getString(R.string.action_accept), pContentIntent)
-                        .addAction(R.drawable.ic_action_decline, context.getString(R.string.action_decline), pContentIntent)
                         .setSmallIcon(this.getSmallIconId(context, intent))
                         .setLargeIcon(this.getLargeIcon(context, intent))
                         .setContentIntent(pContentIntent)
                         .setDeleteIntent(pDeleteIntent)
                         .setAutoCancel(true)
                         .setDefaults(-1);
+                if(type.equals("inviteResponse")){
+                    
+                }
+                else{
+                    parseBuilder.addAction(R.drawable.ic_action_accept, context.getString(R.string.action_accept), pContentIntent);
+                    parseBuilder.addAction(R.drawable.ic_action_decline, context.getString(R.string.action_decline), pContentIntent);
+                }
                 if (alert != null && alert.length() > 38) {
                     parseBuilder.setStyle((new NotificationCompat.BigTextStyle()).bigText(alert));
                 }
