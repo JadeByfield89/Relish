@@ -194,9 +194,6 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                                 if (e == null) {
                                                     Log.d("InvitesManager", "Parse Invites count-> " + count);
 
-                                                    String senderName = UserUtils.getUsername();
-                                                    String smsMessage = String.format(getString(R.string.share_sms_message),
-                                                            senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), count, count, count);
 
 
                                                     // SEND VIA SMS IF PHONE CONTACTS WERE SELECTED
@@ -204,11 +201,15 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                                     for (InvitePerson person : creator.getInvite().invited) {
                                                         if (person instanceof Contact) {
                                                             if (!TextUtils.isEmpty(person.number)) {
-                                                                manager.sendInviteSmsViaTwilio(person.number, smsMessage);
-                                                            }
+                                                                String senderName = UserUtils.getUsername();
+                                                                String smsMessage = String.format(getString(R.string.share_sms_message),
+                                                                        person.name, senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), count, count, count);
 
-                                                            else{
-                                                                Log.d("SendInviteFragment", "Can't send SMS, contact number is empty");
+                                                                if (!TextUtils.isEmpty(person.number)) {
+                                                                    manager.sendInviteSmsViaTwilio(person.number, smsMessage);
+                                                                } else {
+                                                                    Log.d("SendInviteFragment", "Can't send SMS, contact number is empty");
+                                                                }
                                                             }
                                                         }
 
@@ -217,17 +218,19 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
 
                                                     // SEND INVITE VIA EMAIL IF EMAIL CONTACTS WERE SELECTED
                                                     for(InvitePerson person: creator.getInvite().invited){
-                                                        if(person instanceof Contact){
-                                                            Log.d("SendInviteFragment", "Sending invite to " + ((Contact) person).email);
-                                                            creator.getInvite().inviteId = ""+count;
-                                                            EmailInviteManager emailInviteManager = new EmailInviteManager((Contact)person, creator.getInvite());
-                                                            emailInviteManager.sendEmailInvite(new OnInviteSentListener() {
-                                                                @Override
-                                                                public void onInviteSent(boolean success) {
+                                                        if(person instanceof Contact) {
+                                                            if (TextUtils.isEmpty(person.number) && !TextUtils.isEmpty(((Contact) person).email)) {
+                                                                Log.d("SendInviteFragment", "Sending invite to " + ((Contact) person).email);
+                                                                creator.getInvite().inviteId = "" + count;
+                                                                EmailInviteManager emailInviteManager = new EmailInviteManager((Contact) person, creator.getInvite());
+                                                                emailInviteManager.sendEmailInvite(new OnInviteSentListener() {
+                                                                    @Override
+                                                                    public void onInviteSent(boolean success) {
 
-                                                                }
-                                                            });
+                                                                    }
+                                                                });
 
+                                                            }
                                                         }
 
                                                     }
