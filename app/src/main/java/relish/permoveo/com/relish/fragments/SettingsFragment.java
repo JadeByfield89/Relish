@@ -104,7 +104,7 @@ public class SettingsFragment extends Fragment {
 
             // Relish on Facebook
             case 7:
-                String facebookScheme = "fb://profile/" + "124443854567426";
+                String facebookScheme = "https://www.facebook.com/RelishApp";
                 Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(facebookScheme));
                 startActivity(facebookIntent);
                 break;

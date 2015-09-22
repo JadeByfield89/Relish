@@ -196,7 +196,7 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
 
     <!-- Rating dialog -->
     <string name="settings_rating_dialog_title">RATE YOUR EXPERIENCE</string>
-    <string name="settings_rating_dialog_message">We\'d love to know your opinion. How would you rate our app so far?</string>
+    <string name="settings_rating_dialog_message">We\'d love to know your opinion. How would you rate Relish so far?</string>
     <string name="settings_rating_dialog_thanks">THANKS FOR THE RATING!</string>
     <string name="settings_rating_dialog_store">SUBMIT TO PLAY STORE</string>
 
