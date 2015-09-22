@@ -17,6 +17,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import io.fabric.sdk.android.Fabric;
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.manager.FriendsManager;
+import relish.permoveo.com.relish.manager.InvitesManager;
 import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.SharedPrefsUtil;
@@ -45,6 +46,7 @@ public class RelishApplication extends Application {
         API.init(this);
         JodaTimeAndroid.init(this);
         FriendsManager.initialize(this);
+        InvitesManager.initialize(this);
         SharedPrefsUtil.get.init(this);
 
     }

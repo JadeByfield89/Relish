@@ -10,21 +10,29 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.model.Contact;
 import relish.permoveo.com.relish.model.Friend;
 import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.InvitePerson;
+import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.SharedPrefsUtil;
+import relish.permoveo.com.relish.util.UserUtils;
 
 /**
  * Created by rom4ek on 04.09.2015.
@@ -100,7 +108,7 @@ public class InvitesManager {
         });
     }
 
-    public static void acceptInvite(Invite invite, final InvitesManagerCallback callback) {
+    public static void acceptInvite(final Invite invite, final InvitesManagerCallback callback) {
         ParseObject inviteObj = ParseObject.createWithoutData("Invite", invite.id);
         inviteObj.addUnique("acceptedFriends", ParseUser.getCurrentUser().getObjectId());
         inviteObj.removeAll("declinedFriends", Collections.singletonList(ParseUser.getCurrentUser().getObjectId()));
@@ -115,6 +123,23 @@ public class InvitesManager {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
+                    ParsePush parsePush = new ParsePush();
+                    ParseQuery pQuery = ParseInstallation.getQuery();
+                    pQuery.whereContainedIn("userId", Collections.singletonList(invite.creatorId));
+                    JSONObject pushData = new JSONObject();
+                    try {
+                        pushData.put(ConstantUtil.SENDER_IMAGE_KEY, UserUtils.getUserAvatar());
+                        pushData.put("id", invite.id);
+                        pushData.put("type", Invite.InviteType.RESPONSE.toString());
+                        pushData.put("title", invite.title);
+                        pushData.put("alert", String.format(context.getString(R.string.user_response), UserUtils.getUsername()));
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+                    parsePush.setQuery(pQuery);
+                    parsePush.setData(pushData);
+                    parsePush.sendInBackground();
+
                     callback.done(true, null);
                 } else {
                     callback.done(false, e);
@@ -123,7 +148,7 @@ public class InvitesManager {
         });
     }
 
-    public static void declineInvite(Invite invite, final InvitesManagerCallback callback) {
+    public static void declineInvite(final Invite invite, final InvitesManagerCallback callback) {
         ParseObject inviteObj = ParseObject.createWithoutData("Invite", invite.id);
         inviteObj.addUnique("declinedFriends", ParseUser.getCurrentUser().getObjectId());
         inviteObj.removeAll("acceptedFriends", Collections.singletonList(ParseUser.getCurrentUser().getObjectId()));
@@ -138,6 +163,22 @@ public class InvitesManager {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
+                    ParsePush parsePush = new ParsePush();
+                    ParseQuery pQuery = ParseInstallation.getQuery();
+                    pQuery.whereContainedIn("userId", Collections.singletonList(invite.creatorId));
+                    JSONObject pushData = new JSONObject();
+                    try {
+                        pushData.put(ConstantUtil.SENDER_IMAGE_KEY, UserUtils.getUserAvatar());
+                        pushData.put("id", invite.id);
+                        pushData.put("type", Invite.InviteType.RESPONSE.toString());
+                        pushData.put("title", invite.title);
+                        pushData.put("alert", String.format(context.getString(R.string.user_response), UserUtils.getUsername()));
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+                    parsePush.setQuery(pQuery);
+                    parsePush.setData(pushData);
+                    parsePush.sendInBackground();
                     callback.done(true, null);
                 } else {
                     callback.done(false, e);
