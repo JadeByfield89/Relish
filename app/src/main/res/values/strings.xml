@@ -194,5 +194,11 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="invite_success">Invite Sent</string>
     <string name="title_activity_invite_details">InviteDetailsActivity</string>
 
+    <!-- Rating dialog -->
+    <string name="settings_rating_dialog_title">RATE YOUR EXPERIENCE</string>
+    <string name="settings_rating_dialog_message">We\'d love to know your opinion. How would you rate Relish so far?</string>
+    <string name="settings_rating_dialog_thanks">THANKS FOR THE RATING!</string>
+    <string name="settings_rating_dialog_store">SUBMIT TO PLAY STORE</string>
+
 
 </resources>
