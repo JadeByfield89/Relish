@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.PowerManager;
 import android.support.v7.app.NotificationCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -18,6 +19,7 @@ import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.activities.MainActivity;
 import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.util.ConstantUtil;
+import relish.permoveo.com.relish.util.WakeLocker;
 
 public class ReminderReceiver extends BroadcastReceiver {
     private NotificationManager nm;
@@ -28,6 +30,7 @@ public class ReminderReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        WakeLocker.acquire(context);
         nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = getNotification(context, intent);
         if (notification != null) {
@@ -94,6 +97,9 @@ public class ReminderReceiver extends BroadcastReceiver {
             parseBuilder.setStyle((new NotificationCompat.BigTextStyle()).bigText(message));
         }
 
+        WakeLocker.release();
         return parseBuilder.build();
     }
+
+
 }

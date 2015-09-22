@@ -607,6 +607,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         toolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
         ViewHelper.setTranslationY(placeDetailsImage, scrollY / 2);
 
+
 //        float damping = 0.5f;
 //        int dampedScroll = (int) (scrollY * damping);
 //        int offset = lastDumpedScroll - dampedScroll;

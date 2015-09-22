@@ -82,6 +82,16 @@ public class RelishActivity extends AppCompatActivity {
         }
     }
 
+    protected void updateNavigationBarColor(final int color){
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        /*if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setNavigationBarColor(color);
+        }*/
+    }
+
     protected void showLoader() {
         showLoader(null);
     }
