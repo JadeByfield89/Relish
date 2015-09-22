@@ -1,10 +1,14 @@
 package relish.permoveo.com.relish.util;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Base64;
 
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+
+import relish.permoveo.com.relish.activities.SignupActivity;
 
 /**
  * Utility class for getting user info, can use to retrieve username, first name, email, avatar url, etc
@@ -59,6 +63,12 @@ public class UserUtils {
         }
         return getUserAvatar();
 
+    }
+
+    public static void logoutUser(final Context context){
+        ParseUser.logOutInBackground();
+        Intent intent = new Intent(context, SignupActivity.class);
+        context.startActivity(intent);
     }
 
 

@@ -20,6 +20,8 @@ import android.view.Window;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.twitter.sdk.android.core.models.User;
+
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -30,6 +32,7 @@ import relish.permoveo.com.relish.model.Setting;
 import relish.permoveo.com.relish.util.RecyclerItemClickListener;
 import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
+import relish.permoveo.com.relish.util.UserUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -123,12 +126,19 @@ public class SettingsFragment extends Fragment {
                  showRatingDialog();
                 break;
 
+            // About Relish
             case 11:
                 showAboutDialog();
                 break;
 
+            // Contact Support
             case 12:
                 contactSupport();
+                break;
+
+            // Log out
+            case 15:
+                UserUtils.logoutUser(getContext());
                 break;
 
         }
