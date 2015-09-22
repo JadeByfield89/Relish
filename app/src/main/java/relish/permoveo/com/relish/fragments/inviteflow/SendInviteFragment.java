@@ -40,7 +40,6 @@ import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
-import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
@@ -61,6 +60,7 @@ import relish.permoveo.com.relish.manager.EmailInviteManager;
 import relish.permoveo.com.relish.manager.InvitesManager;
 import relish.permoveo.com.relish.model.Contact;
 import relish.permoveo.com.relish.model.Friend;
+import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.InvitePerson;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.TwilioSmsManager;
@@ -163,9 +163,9 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                 sendButton.setText("");
                 sendButton.setEnabled(false);
                 progressBar.setVisibility(View.VISIBLE);
-                InvitesManager.createInvite(creator.getInvite(), new InvitesManager.InvitesManagerCallback<Object, ParseException>() {
+                InvitesManager.createInvite(creator.getInvite(), new InvitesManager.InvitesManagerCallback<String, ParseException>() {
                     @Override
-                    public void done(Object o, ParseException e) {
+                    public void done(final String objectId, ParseException e) {
                         if (e == null) {
                             if (isAdded())
                                 getActivity().runOnUiThread(new Runnable() {
@@ -243,7 +243,6 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                         // SENDING INVITE VIA PUSH NOTIFICATIONS
                                         ArrayList<String> friendsIds = new ArrayList<>();
                                         for (InvitePerson person : creator.getInvite().invited) {
-                                            if (person instanceof Contact)
                                                 if (person instanceof Friend)
                                                     friendsIds.add(((Friend) person).id);
                                         }
@@ -254,6 +253,8 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                         JSONObject pushData = new JSONObject();
                                         try {
                                             pushData.put(ConstantUtil.SENDER_IMAGE_KEY, UserUtils.getUserAvatar());
+                                            pushData.put("id", objectId);
+                                            pushData.put("type", Invite.InviteType.RECEIVED.toString());
                                             pushData.put("title", creator.getInvite().title);
                                             pushData.put("alert", String.format(getString(R.string.share_push_message),
                                                     UserUtils.getUsername(), creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime()));

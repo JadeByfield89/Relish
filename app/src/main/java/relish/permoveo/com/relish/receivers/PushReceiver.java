@@ -26,6 +26,7 @@ import java.util.Random;
 
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.activities.MainActivity;
+import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.util.BitmapUtil;
 import relish.permoveo.com.relish.util.ConstantUtil;
 
@@ -80,7 +81,7 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
 
     @Override
     protected Class<? extends Activity> getActivity(Context context, Intent intent) {
-        intent.putExtra(ConstantUtil.NOTIFICATION_ID_EXTRA, notification);
+        intent.putExtra(ConstantUtil.NOTIFICATION_ID_EXTRA, notificationId);
         intent.putExtra(ConstantUtil.TO_INVITES_LIST, true);
         return MainActivity.class;
     }
@@ -138,21 +139,24 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
     @Override
     protected Notification getNotification(Context context, Intent intent) {
         JSONObject pushData = null;
-        String type = "";
+        Invite.InviteType type = null;
         try {
             pushData = new JSONObject(intent.getStringExtra("com.parse.Data"));
             if (pushData != null && (pushData.has("alert") || pushData.has("title"))) {
                 String title = pushData.optString("title", context.getString(R.string.app_name));
                 String alert = pushData.optString("alert", "Notification received.");
                 if(pushData.has("type")){
-                    type = pushData.getString("type");
+                    type = Invite.InviteType.parse(pushData.getString("type"));
                 }
                 String tickerText = String.format(Locale.getDefault(), "%s: %s", new Object[]{title, alert});
                 Bundle extras = intent.getExtras();
                 Random random = new Random();
                 int contentIntentRequestCode = random.nextInt();
+                int acceptIntentRequestCode = random.nextInt();
+                int declineIntentRequestCode = random.nextInt();
                 int deleteIntentRequestCode = random.nextInt();
                 String packageName = context.getPackageName();
+
                 Intent contentIntent = new Intent("com.parse.push.intent.OPEN");
                 contentIntent.putExtras(extras);
                 contentIntent.setPackage(packageName);
@@ -161,6 +165,26 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
                 deleteIntent.putExtras(extras);
                 deleteIntent.setPackage(packageName);
 
+                Class clazz = this.getActivity(context, intent);
+
+                Intent acceptIntent = new Intent(context, clazz);
+                acceptIntent.putExtras(extras);
+                acceptIntent.setPackage(packageName);
+                acceptIntent.putExtra(ConstantUtil.INVITE_ID_EXTRA, pushData.getString("id"));
+                acceptIntent.putExtra(ConstantUtil.NOTIFICATION_ACTION_EXTRA, true);
+                acceptIntent.putExtra(ConstantUtil.NOTIFICATION_ID_EXTRA, notificationId);
+                acceptIntent.putExtra(ConstantUtil.TO_INVITES_LIST, true);
+
+                Intent declineIntent = new Intent(context, clazz);
+                declineIntent.putExtras(extras);
+                declineIntent.setPackage(packageName);
+                declineIntent.putExtra(ConstantUtil.INVITE_ID_EXTRA, pushData.getString("id"));
+                declineIntent.putExtra(ConstantUtil.NOTIFICATION_ACTION_EXTRA, false);
+                declineIntent.putExtra(ConstantUtil.NOTIFICATION_ID_EXTRA, notificationId);
+                declineIntent.putExtra(ConstantUtil.TO_INVITES_LIST, true);
+
+                PendingIntent pDeclineIntent = PendingIntent.getActivity(context, declineIntentRequestCode, declineIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pAcceptIntent = PendingIntent.getActivity(context, acceptIntentRequestCode, acceptIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 PendingIntent pContentIntent = PendingIntent.getBroadcast(context, contentIntentRequestCode, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 PendingIntent pDeleteIntent = PendingIntent.getBroadcast(context, deleteIntentRequestCode, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -174,12 +198,16 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
                         .setDeleteIntent(pDeleteIntent)
                         .setAutoCancel(true)
                         .setDefaults(-1);
-                if(type.equals("inviteResponse")){
-                    
-                }
-                else{
-                    parseBuilder.addAction(R.drawable.ic_action_accept, context.getString(R.string.action_accept), pContentIntent);
-                    parseBuilder.addAction(R.drawable.ic_action_decline, context.getString(R.string.action_decline), pContentIntent);
+
+                switch (type) {
+                    case RECEIVED:
+                        parseBuilder.addAction(R.drawable.ic_action_accept, context.getString(R.string.action_accept), pAcceptIntent);
+                        parseBuilder.addAction(R.drawable.ic_action_decline, context.getString(R.string.action_decline), pDeclineIntent);
+                        break;
+                    case RESPONSE:
+                        break;
+                    case UPDATE:
+                        break;
                 }
                 if (alert != null && alert.length() > 38) {
                     parseBuilder.setStyle((new NotificationCompat.BigTextStyle()).bigText(alert));

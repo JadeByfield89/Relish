@@ -1,12 +1,14 @@
 package relish.permoveo.com.relish.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +41,9 @@ import relish.permoveo.com.relish.view.RelishDrawerToggle;
  */
 public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDrawerSlideListener {
 
+    private static final String TO_INVITE_DETAILS_PARAM = "to_invite_details_param";
+    private static final String ACTION_PARAM = "action_param";
+
     @Bind(R.id.invites_list_view)
     RecyclerView recyclerView;
 
@@ -55,16 +60,31 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
     FloatingActionButton inviteButton;
 
     private InvitesListAdapter adapter;
+    private String inviteId;
+    private boolean action;
 
     public InvitesFragment() {
         // Required empty public constructor
 
     }
 
+    public static InvitesFragment newInstance(String inviteId, boolean action) {
+        InvitesFragment fragment = new InvitesFragment();
+        Bundle args = new Bundle();
+        args.putString(TO_INVITE_DETAILS_PARAM, inviteId);
+        args.putBoolean(ACTION_PARAM, action);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new InvitesListAdapter(getActivity());
+        if (getArguments() != null) {
+            inviteId = getArguments().getString(TO_INVITE_DETAILS_PARAM, null);
+            action = getArguments().getBoolean(ACTION_PARAM, false);
+        }
     }
 
     @Override
@@ -97,7 +117,10 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
                 View title = view.findViewById(R.id.invite_title);
                 ViewCompat.setTransitionName(image, InviteDetailsActivity.SHARED_IMAGE_NAME);
                 ViewCompat.setTransitionName(title, InviteDetailsActivity.SHARED_TITLE_NAME);
-                InviteDetailsActivity.launch(getActivity(), image, title, invite);
+                if (!TextUtils.isEmpty(inviteId))
+                    InviteDetailsActivity.launch(getActivity(), image, title, invite, action);
+                else
+                    InviteDetailsActivity.launch(getActivity(), image, title, invite);
             }
         }));
 
@@ -126,6 +149,15 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
                         progressBar.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
                         adapter.swap(invites);
+
+                        if (!TextUtils.isEmpty(inviteId) && adapter.getChildById(inviteId) != null) {
+                            startActivity(new Intent(getActivity(), InviteDetailsActivity.class)
+                                    .putExtra(InviteDetailsActivity.EXTRA_INVITE, adapter.getChildById(inviteId))
+                                    .putExtra(InviteDetailsActivity.EXTRA_ACTION, action));
+
+                            inviteId = null;
+                            action = false;
+                        }
                     } else {
                         adapter.clear();
                         emptyView.setVisibility(View.VISIBLE);

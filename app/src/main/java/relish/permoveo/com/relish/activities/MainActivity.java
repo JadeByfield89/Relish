@@ -76,6 +76,8 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
     private CharSequence mTitle;
     private String[] navMenuTitles;
     RelishDrawerToggle drawerToggle;
+    private String inviteId = null;
+    private boolean action;
     public boolean drawerOpen = false;
     Fragment current = null;
     Dialog d;
@@ -108,6 +110,11 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
             if (notificationId != -1) {
                 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                 notificationManager.cancel(notificationId);
+            }
+
+            if (getIntent().getExtras().containsKey(ConstantUtil.NOTIFICATION_ACTION_EXTRA)) {
+                inviteId = getIntent().getExtras().getString(ConstantUtil.INVITE_ID_EXTRA);
+                action = getIntent().getBooleanExtra(ConstantUtil.NOTIFICATION_ACTION_EXTRA, false);
             }
         }else if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
@@ -280,7 +287,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
                 break;
             case 1:
                 if (!(current instanceof InvitesFragment))
-                    current = new InvitesFragment();
+                    current = InvitesFragment.newInstance(inviteId, action);
                 drawerToggle.setFragment(current);
                 drawerToggle.setBlurEnabled(false);
                 break;
@@ -313,6 +320,8 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
                 drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, filterFragment.getView());
             }
 
+            inviteId = null;
+            action = false;
         } else {
             // error in creating fragment
             Log.e("MainActivity", "Error in creating fragment");

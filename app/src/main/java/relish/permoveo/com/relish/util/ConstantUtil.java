@@ -37,6 +37,10 @@ public class ConstantUtil {
 
     /*========================= APPLICAITON CONSTANTS ========================= */
     public static final String ACTION_GET_LOCATION = "relish.permoveo.com.relish.ACTION_GET_LOCATION";
+    public static final String ACCEPT_ACTION = "relish.permoveo.com.relish.NOTIFICATION_ACCEPT";
+    public static final String DECLINE_ACTION = "relish.permoveo.com.relish.NOTIFICATION_DECLINE";
+    public static final String NOTIFICATION_ACTION_EXTRA = "extra_action_notification";
+    public static final String INVITE_ID_EXTRA = "extra_invite_id";
     public static final String TO_INVITES_LIST = "extra_from_notification";
     public static final String NOTIFICATION_ID_EXTRA = "extra_notification_id";
 

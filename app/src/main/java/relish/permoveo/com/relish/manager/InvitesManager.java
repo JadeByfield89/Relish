@@ -281,7 +281,7 @@ public class InvitesManager {
                                     }
                                 });
 
-                                callback.done(null, null);
+                                callback.done(inviteObj.getObjectId(), null);
 
                             } else {
                                 callback.done(null, e);

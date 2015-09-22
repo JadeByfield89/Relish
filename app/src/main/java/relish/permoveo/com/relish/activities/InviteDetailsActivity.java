@@ -57,12 +57,15 @@ import relish.permoveo.com.relish.view.RatingView;
 public class InviteDetailsActivity extends RelishActivity implements ObservableScrollViewCallbacks {
 
     public static final String EXTRA_INVITE = "invite_extra";
+    public static final String EXTRA_ACTION = "action_extra";
     public static final String SHARED_IMAGE_NAME = "InviteDetailsActivity:image";
     public static final String SHARED_TITLE_NAME = "InviteDetailsActivity:title";
 
     private Invite invite;
     private int parallaxImageHeight;
     private View currentViewInClmn;
+    private boolean action = false;
+    private boolean fromNotification = false;
 
     @Bind(R.id.invite_details_container)
     RelativeLayout activity_container;
@@ -147,6 +150,11 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
             invite = (Invite) savedInstanceState.getSerializable(EXTRA_INVITE);
         } else if (getIntent().hasExtra(EXTRA_INVITE)) {
             invite = (Invite) getIntent().getSerializableExtra(EXTRA_INVITE);
+
+            if (getIntent().hasExtra(EXTRA_ACTION)) {
+                fromNotification = true;
+                action = getIntent().getBooleanExtra(EXTRA_ACTION, false);
+            }
         }
 
         SpannableString s = new SpannableString(invite.title);
@@ -255,6 +263,17 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
 
         renderGrid();
         renderButtons();
+
+        if (fromNotification && invite.status == Invite.InviteStatus.PENDING) {
+            if (action) {
+                acceptBtn.performClick();
+            } else {
+                declineBtn.performClick();
+            }
+            fromNotification = false;
+            action = false;
+        }
+
 //        placeDetalsScrollView.setOnTouchListener(null);
         placeDetalsScrollView.setScrollViewCallbacks(this);
     }
@@ -687,6 +706,18 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
 
     }
+
+    public static void launch(Activity activity, View transitionImage, View transitionTitle, Invite invite, boolean action) {
+        ActivityOptionsCompat options =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
+                        Pair.create(transitionImage, SHARED_IMAGE_NAME),
+                        Pair.create(transitionTitle, SHARED_TITLE_NAME));
+        Intent intent = new Intent(activity, InviteDetailsActivity.class);
+        intent.putExtra(InviteDetailsActivity.EXTRA_INVITE, invite);
+        intent.putExtra(InviteDetailsActivity.EXTRA_ACTION, action);
+        ActivityCompat.startActivity(activity, intent, options.toBundle());
+    }
+
 
     public static void launch(Activity activity, View transitionImage, View transitionTitle, Invite invite) {
         ActivityOptionsCompat options =

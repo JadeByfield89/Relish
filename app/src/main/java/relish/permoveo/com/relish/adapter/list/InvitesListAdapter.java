@@ -83,6 +83,15 @@ public class InvitesListAdapter extends RecyclerView.Adapter<InvitesListAdapter.
         notifyDataSetChanged();
     }
 
+    public Invite getChildById(String id) {
+        for (int i = 0; i < dataset.size(); i++) {
+            Invite invite = dataset.get(i);
+            if (invite.id.equals(id))
+                return invite;
+        }
+        return null;
+    }
+
     public void swap(ArrayList<Invite> invites) {
         this.dataset = invites;
         notifyDataSetChanged();
