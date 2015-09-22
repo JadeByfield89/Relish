@@ -100,6 +100,8 @@
     <string name="invite_contact_message">Hey, I\'m using the Relish app to find new places to eat, and invite my friends to join me. Check it out! \n\nhttp://relishwith.us</string>
     <string name="enter_date">Enter date</string>
     <string name="enter_time">Enter time</string>
+    <string name="wrong_datetime">Wrong datetime!</string>
+
 
     <string name="action_accept">ACCEPT</string>
     <string name="action_decline">DECLINE</string>

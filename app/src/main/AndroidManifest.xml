@@ -126,9 +126,17 @@
 
         <activity
             android:name=".activities.InviteDetailsActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_invite_details" >
+            android:label="@string/title_activity_invite_details"
+            android:screenOrientation="portrait">
         </activity>
+
+        <receiver
+            android:name=".receivers.ReminderReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="relish.permoveo.com.relish.REMINDER"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

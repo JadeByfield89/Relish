@@ -172,9 +172,10 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                     @Override
                                     public void run() {
                                         if (creator.getInvite().reminder != 0) {
-                                            PendingIntent pintent = PendingIntent.getBroadcast(getActivity(), 0, new Intent("com.blah.blah.somemessage"), 0);
+                                            PendingIntent pintent = PendingIntent.getBroadcast(getActivity(), 0, new Intent("relish.permoveo.com.relish.REMINDER")
+                                                    .putExtra(ConstantUtil.INVITE_EXTRA, creator.getInvite()), 0);
                                             AlarmManager manager = (AlarmManager) (getActivity().getSystemService(Context.ALARM_SERVICE));
-                                            // set alarm to fire 5 sec (1000*5) from now (SystemClock.elapsedRealtime())
+
                                             DateTime time = new DateTime().withMillis(creator.getInvite().time);
                                             DateTime date = new DateTime().withMillis(creator.getInvite().date);
                                             DateTime when = new DateTime()
@@ -183,7 +184,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                                     .withDayOfMonth(date.getDayOfMonth())
                                                     .withHourOfDay(time.getHourOfDay())
                                                     .withMinuteOfHour(time.getMinuteOfHour());
-                                            manager.set(AlarmManager.RTC_WAKEUP, when.getMillis(), pintent);
+                                            manager.set(AlarmManager.RTC_WAKEUP, when.getMillis() - creator.getInvite().reminder * 1000, pintent);
                                         }
 
                                         // Get a count of all Invite objects currently in parse
@@ -193,8 +194,6 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                             public void done(int count, ParseException e) {
                                                 if (e == null) {
                                                     Log.d("InvitesManager", "Parse Invites count-> " + count);
-
-
 
                                                     // SEND VIA SMS IF PHONE CONTACTS WERE SELECTED
                                                     TwilioSmsManager manager = new TwilioSmsManager();
@@ -212,9 +211,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                                                 }
                                                             }
                                                         }
-
                                                     }
-
 
                                                     // SEND INVITE VIA EMAIL IF EMAIL CONTACTS WERE SELECTED
                                                     for(InvitePerson person: creator.getInvite().invited){

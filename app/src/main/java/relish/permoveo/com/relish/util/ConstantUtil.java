@@ -43,6 +43,7 @@ public class ConstantUtil {
     public static final String INVITE_ID_EXTRA = "extra_invite_id";
     public static final String TO_INVITES_LIST = "extra_from_notification";
     public static final String NOTIFICATION_ID_EXTRA = "extra_notification_id";
+    public static final String INVITE_EXTRA = "extra_invite";
 
     /*========================= PUSH JSON DATA KEYS ========================= */
     public static final String SENDER_IMAGE_KEY = "key_sender_image";
