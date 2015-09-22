@@ -1,6 +1,14 @@
 package relish.permoveo.com.relish.fragments;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +16,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -16,6 +27,9 @@ import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.list.SettingsAdapter;
 import relish.permoveo.com.relish.model.Setting;
+import relish.permoveo.com.relish.util.RecyclerItemClickListener;
+import relish.permoveo.com.relish.util.SharedPrefsUtil;
+import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +40,7 @@ public class SettingsFragment extends Fragment {
     RecyclerView settingsList;
 
     private SettingsAdapter adapter;
+    private float appRating;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -41,6 +56,12 @@ public class SettingsFragment extends Fragment {
 
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getContext());
         settingsList.setLayoutManager(manager);
+        settingsList.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                handleSettingsItemClick(view, position);
+            }
+        }));
 
 
         initSettings();
@@ -48,6 +69,121 @@ public class SettingsFragment extends Fragment {
         return v;
     }
 
+
+    private void handleSettingsItemClick(final View view, final int position) {
+        switch (position) {
+
+            // Push Notifications
+            case 1:
+                SharedPrefsUtil.get.togglePushNotifications();
+                break;
+
+            // Split the bill
+            case 2:
+
+                break;
+
+            // Location Sharing
+            case 3:
+                SharedPrefsUtil.get.toggleLocationSharing();
+                break;
+
+            //Sync with Google Calendar
+            case 4:
+                SharedPrefsUtil.get.toggleGoogleCalendarSync();
+                break;
+
+            // Relish on Twitter
+            case 6:
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=" + "jaybedreamin")));
+                }catch (Exception e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/" + "jaybedreamin")));
+                }
+                break;
+
+            // Relish on Facebook
+            case 7:
+                String facebookScheme = "fb://profile/" + "124443854567426";
+                Intent facebookIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(facebookScheme));
+                startActivity(facebookIntent);
+                break;
+
+            // Tell your friends
+            case 8:
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.invite_contact_message));
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+                break;
+
+            // Rate Relish
+            case 9:
+                 showRatingDialog();
+                break;
+
+        }
+    }
+
+    private void showRatingDialog(){
+       final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_rate_app, (ViewGroup) getView().getRootView(), false);
+
+        View rootView = view.findViewById(R.id.rating_dialog_root);
+
+        TextView dialogTitle = (TextView) view.findViewById(R.id.tvRateTitle);
+        dialogTitle.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+
+        TextView dialogMessage = (TextView) view.findViewById(R.id.tvRateMessage);
+        dialogTitle.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+
+        final TextView dialogThanks = (TextView) view.findViewById(R.id.tvThanksOrStore);
+        dialogTitle.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+
+
+        RatingBar ratingBar = (RatingBar) view.findViewById(R.id.rbRatingBar);
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                setAppRating(rating);
+                if (rating > 3.0) {
+                    dialogThanks.setVisibility(View.VISIBLE);
+                    dialogThanks.setText(getString(R.string.settings_rating_dialog_store));
+                } else {
+                    dialogThanks.setVisibility(View.VISIBLE);
+                    dialogThanks.setText(getString(R.string.settings_rating_dialog_thanks));
+
+                }
+            }
+        });
+
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+        stars.getDrawable(2).setColorFilter(Color.parseColor("#FF6724"), PorterDuff.Mode.SRC_ATOP);
+
+        dialogBuilder.setView(view);
+
+
+
+        final Dialog dialog = dialogBuilder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        dialogThanks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
+
+    }
+
+    private void setAppRating(final float rating){
+        this.appRating = rating;
+    }
 
     private void initSettings() {
         ArrayList<Setting> settings = new ArrayList<Setting>();
