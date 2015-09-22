@@ -123,7 +123,31 @@ public class SettingsFragment extends Fragment {
                  showRatingDialog();
                 break;
 
+            case 11:
+                showAboutDialog();
+                break;
+
+            case 12:
+                contactSupport();
+                break;
+
         }
+    }
+
+    private void contactSupport(){
+        String[] addresses = {"support@relishwith.us"};
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Relish Feedback");
+        intent.putExtra(Intent.EXTRA_TEXT, "I'm email body.");
+
+        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+            startActivity(intent);
+        }    }
+
+    private void showAboutDialog(){
+
     }
 
     private void showRatingDialog(){
@@ -136,10 +160,10 @@ public class SettingsFragment extends Fragment {
         dialogTitle.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
 
         TextView dialogMessage = (TextView) view.findViewById(R.id.tvRateMessage);
-        dialogTitle.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        dialogMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
         final TextView dialogThanks = (TextView) view.findViewById(R.id.tvThanksOrStore);
-        dialogTitle.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+        dialogThanks.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
 
 
         RatingBar ratingBar = (RatingBar) view.findViewById(R.id.rbRatingBar);
