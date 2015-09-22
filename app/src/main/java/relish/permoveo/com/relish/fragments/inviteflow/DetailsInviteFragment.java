@@ -141,6 +141,9 @@ public class DetailsInviteFragment extends Fragment implements RenderCallbacks, 
                     }
                     creator.getInvite().title = inviteTitle.getText().toString();
 
+                    Reminder reminder = (Reminder) reminderAdapter.getItem(reminderSpinner.getSelectedItemPosition());
+                    creator.getInvite().reminder = reminder.seconds;
+
                     if (pagerCallbacks != null)
                         pagerCallbacks.next();
                 } else {
@@ -269,6 +272,7 @@ public class DetailsInviteFragment extends Fragment implements RenderCallbacks, 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         DateTime date = new DateTime().withDate(year, monthOfYear + 1, dayOfMonth);
+
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("E, MMMM d");
         inviteDate.setText(dateFormatter.print(date));
         creator.getInvite().date = date.getMillis();
@@ -278,6 +282,7 @@ public class DetailsInviteFragment extends Fragment implements RenderCallbacks, 
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
         DateTime time = new DateTime()
                 .withHourOfDay(hourOfDay).withMinuteOfHour(minute);
+
         DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("h:mm a");
         inviteTime.setText(timeFormatter.print(time));
         creator.getInvite().time = time.getMillis();
@@ -315,6 +320,20 @@ public class DetailsInviteFragment extends Fragment implements RenderCallbacks, 
                     message = String.format(getString(R.string.one_field_error), "title");
                 }
                 Snackbar.make(inviteDetailsCard, message, Snackbar.LENGTH_LONG).show();
+                return false;
+            }
+
+            DateTime time = new DateTime().withMillis(creator.getInvite().time);
+            DateTime date = new DateTime().withMillis(creator.getInvite().date);
+            DateTime when = new DateTime()
+                    .withYear(date.getYear())
+                    .withMonthOfYear(date.getMonthOfYear())
+                    .withDayOfMonth(date.getDayOfMonth())
+                    .withHourOfDay(time.getHourOfDay())
+                    .withMinuteOfHour(time.getMinuteOfHour());
+
+            if (when.isBeforeNow()) {
+                Snackbar.make(inviteDetailsCard, getString(R.string.wrong_datetime), Snackbar.LENGTH_LONG).show();
                 return false;
             }
         }
