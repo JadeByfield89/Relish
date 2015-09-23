@@ -87,12 +87,12 @@
     <string name="accept_btn">Accept</string>
     <string name="decline_btn">Decline</string>
 
-    <string name="all_fields_error">Sorry, one or more fields seem to be missing</string>
-    <string formatted="false" name="one_field_error">Please, enter a %s for this invite</string>
-    <string name="friends_error">Please, select friends/contacts for this invite</string>
+    <string name="all_fields_error">Nice try, but one or more fields seem to be missing.</string>
+    <string formatted="false" name="one_field_error">Oops! Please enter a %s for this invite.</string>
+    <string name="friends_error">Put the beer down, and please select friends/contacts for this invite.</string>
 
     <string name="share_message">Share Invite</string>
-    <string formatted="false" name="share_sms_message">Hey %s, your friend %s just invited you to join them at %s, on %s, at %s via the Relish app! \n\nInvite Code: %s\n\n Reply &quot;YES %s&quot; to accept your invite, or &quot;NO %s&quot; to decline. \n\nYou can also download the Relish app to see who else is going, and get more details at http://relishwith.us</string>
+    <string formatted="false" name="share_sms_message">YOU\'RE INVITED!\nHey %s, your friend %s just invited you to join them at %s, on %s, at %s via the Relish app! \nInvite Code: %s\n Reply &quot;YES %s&quot; to accept your invite, or &quot;NO %s&quot; to decline. \n\nYou can also download the Relish app to see who else is going, and get more details at http://relishwith.us</string>
     <string formatted="false" name="share_push_message">Hey, %s has just invited you to eat at %s, on %s, at %s!</string>
     <string formatted="false" name="share_social">I\'ve just invited some friends to join me at %s via the #RelishApp! http://relishwith.us</string>
     <string formatted="fasle" name="user_response">User %s has responded to your invite!</string>
@@ -100,7 +100,7 @@
     <string name="invite_contact_message">Hey, I\'m using the Relish app to find new places to eat, and invite my friends to join me. Check it out! \n\nhttp://relishwith.us</string>
     <string name="enter_date">Enter date</string>
     <string name="enter_time">Enter time</string>
-    <string name="wrong_datetime">Wrong datetime!</string>
+    <string name="wrong_datetime">You\'re into time travel, huh? Please select a date &amp; time in the future.</string>
 
 
     <string name="action_accept">ACCEPT</string>

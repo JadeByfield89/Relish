@@ -111,6 +111,7 @@ dependencies {
     compile 'com.android.support:design:23.0.0'
     compile 'com.joooonho:selectableroundedimageview:1.0.1'
     compile project(':materialpicker')
+    compile 'com.github.gabrielemariotti.changeloglib:changelog:2.0.0'
 }
 
 

@@ -100,7 +100,7 @@ public class SettingsFragment extends Fragment {
             case 6:
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=" + "jaybedreamin")));
-                }catch (Exception e) {
+                } catch (Exception e) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/" + "jaybedreamin")));
                 }
                 break;
@@ -123,7 +123,7 @@ public class SettingsFragment extends Fragment {
 
             // Rate Relish
             case 9:
-                 showRatingDialog();
+                showRatingDialog();
                 break;
 
             // About Relish
@@ -144,7 +144,7 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-    private void contactSupport(){
+    private void contactSupport() {
         String[] addresses = {"support@relishwith.us"};
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"));
@@ -154,14 +154,16 @@ public class SettingsFragment extends Fragment {
 
         if (intent.resolveActivity(getContext().getPackageManager()) != null) {
             startActivity(intent);
-        }    }
-
-    private void showAboutDialog(){
-
+        }
     }
 
-    private void showRatingDialog(){
-       final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+    private void showAboutDialog() {
+        AboutDialogFragment aboutDialogFragment = new AboutDialogFragment();
+        aboutDialogFragment.show(getActivity().getSupportFragmentManager(), "About");
+    }
+
+    private void showRatingDialog() {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_rate_app, (ViewGroup) getView().getRootView(), false);
 
         View rootView = view.findViewById(R.id.rating_dialog_root);
@@ -198,7 +200,6 @@ public class SettingsFragment extends Fragment {
         dialogBuilder.setView(view);
 
 
-
         final Dialog dialog = dialogBuilder.create();
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -215,7 +216,7 @@ public class SettingsFragment extends Fragment {
 
     }
 
-    private void setAppRating(final float rating){
+    private void setAppRating(final float rating) {
         this.appRating = rating;
     }
 

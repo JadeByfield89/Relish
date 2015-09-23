@@ -66,4 +66,17 @@
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
+
+    <!-- ChangeLog/About dialog theme -->
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/main_color</item>
+        <item name="android:textColorPrimary">#000</item>
+        <item name="android:windowTitleStyle">@style/TitleDialogTextStyle</item>
+    </style>
+
+    <style name="TitleDialogTextStyle" parent="Base.DialogWindowTitle.AppCompat">
+        <item name="android:textColor">@color/main_color</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
+    </style>
+
 </resources>

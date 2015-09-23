@@ -170,7 +170,9 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
                 Intent acceptIntent = new Intent(context, clazz);
                 acceptIntent.putExtras(extras);
                 acceptIntent.setPackage(packageName);
-                acceptIntent.putExtra(ConstantUtil.INVITE_ID_EXTRA, pushData.getString("id"));
+                if(type.equals(Invite.InviteType.RECEIVED)) {
+                    acceptIntent.putExtra(ConstantUtil.INVITE_ID_EXTRA, pushData.getString("id"));
+                }
                 acceptIntent.putExtra(ConstantUtil.NOTIFICATION_ACTION_EXTRA, true);
                 acceptIntent.putExtra(ConstantUtil.NOTIFICATION_ID_EXTRA, notificationId);
                 acceptIntent.putExtra(ConstantUtil.TO_INVITES_LIST, true);
@@ -178,7 +180,9 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
                 Intent declineIntent = new Intent(context, clazz);
                 declineIntent.putExtras(extras);
                 declineIntent.setPackage(packageName);
-                declineIntent.putExtra(ConstantUtil.INVITE_ID_EXTRA, pushData.getString("id"));
+                if(type.equals(Invite.InviteType.RECEIVED)) {
+                    declineIntent.putExtra(ConstantUtil.INVITE_ID_EXTRA, pushData.getString("id"));
+                }
                 declineIntent.putExtra(ConstantUtil.NOTIFICATION_ACTION_EXTRA, false);
                 declineIntent.putExtra(ConstantUtil.NOTIFICATION_ID_EXTRA, notificationId);
                 declineIntent.putExtra(ConstantUtil.TO_INVITES_LIST, true);
