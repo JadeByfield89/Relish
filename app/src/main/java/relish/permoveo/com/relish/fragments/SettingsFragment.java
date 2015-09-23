@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.activities.TipCalculatorActivity;
 import relish.permoveo.com.relish.adapter.list.SettingsAdapter;
 import relish.permoveo.com.relish.model.Setting;
 import relish.permoveo.com.relish.util.RecyclerItemClickListener;
@@ -83,7 +84,8 @@ public class SettingsFragment extends Fragment {
 
             // Split the bill
             case 2:
-
+                Intent intent = new Intent(getContext(), TipCalculatorActivity.class);
+                startActivity(intent);
                 break;
 
             // Location Sharing

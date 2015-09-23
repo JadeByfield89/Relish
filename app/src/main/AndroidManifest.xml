@@ -126,9 +126,13 @@
 
         <activity
             android:name=".activities.InviteDetailsActivity"
-            android:label="@string/title_activity_invite_details"
+            android:label="@string/title_activity_calculator"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".activities.TipCalculatorActivity"
+            android:label="@string/title_activity_add_friends"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".receivers.ReminderReceiver"

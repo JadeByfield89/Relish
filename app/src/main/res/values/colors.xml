@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="main_color">#FF6724</color>
+    <color name="main_color_translucent">#44FF6724</color>
     <color name="main_color_dark">#da5e2a</color>
     <color name="status_bar_color">#40000000</color>
     <color name="drawer_item_text_color">#5d5d5d</color>

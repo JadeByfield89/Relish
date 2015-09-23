@@ -203,5 +203,14 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="settings_rating_dialog_thanks">THANKS FOR THE RATING!</string>
     <string name="settings_rating_dialog_store">SUBMIT TO PLAY STORE</string>
 
+    <!-- Tip Calculator -->
+    <string name="calculator_total">Total Amount</string>
+    <string name="calculator_tip_percentage">Tip percentage</string>
+    <string name="calculator_num_people">No. people</string>
+    <string name="calculator_tip_amount">Tip amount</string>
+    <string name="calculator_total_per_person">Total per person</string>
+    <string name="calculator_total_to_pay">Total to pay</string>
+    <string name="title_activity_calculator">Tip Calculator</string>
+
 
 </resources>
