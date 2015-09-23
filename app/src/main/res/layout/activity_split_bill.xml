@@ -23,7 +23,9 @@
             android:id="@+id/etTotal"
             android:textColor="#fff"
             android:textSize="55sp"
-            android:text="148.90"
+            android:text="0.00"
+            android:textCursorDrawable="@null"
+            android:cursorVisible="true"
             android:layout_marginTop="15dp"
             android:background="@null"
             android:inputType="numberDecimal"
@@ -56,7 +58,10 @@
         <EditText
             android:id="@+id/etTipPercentage"
             android:textColor="#fff"
-            android:text="18.0"
+            android:text="0.0"
+            android:cursorVisible="true"
+            android:textCursorDrawable="@null"
+
             android:background="@null"
             android:inputType="numberDecimal"
             android:layout_below="@id/tvTipPercentage"
@@ -91,7 +96,10 @@
         <EditText
             android:id="@+id/etNumPeople"
             android:textColor="#fff"
-            android:text="2"
+            android:text="0"
+            android:textCursorDrawable="@null"
+
+            android:cursorVisible="true"
             android:inputType="number"
             android:background="@null"
             android:layout_below="@id/tvNumPeople"
@@ -139,6 +147,7 @@
 
 
         <TextView
+            android:id="@+id/tvDisplayTipAmount"
             android:layout_width="wrap_content"
             android:text="@string/calculator_tip_amount"
             android:textSize="17sp"
@@ -151,7 +160,7 @@
             android:id="@+id/tvTipAmount"
             android:textColor="@color/drawer_item_text_color"
             android:textSize="17sp"
-            android:text="26.80"
+            android:text=""
             android:background="@null"
             android:textStyle="bold"
             android:layout_marginLeft="132dp"
@@ -177,6 +186,7 @@
 
 
         <TextView
+            android:id="@+id/tvDisplayTotalPerPerson"
             android:layout_width="wrap_content"
             android:text="@string/calculator_total_per_person"
             android:textSize="17sp"
@@ -189,7 +199,7 @@
             android:id="@+id/tvTotalPerPerson"
             android:textColor="@color/drawer_item_text_color"
             android:textSize="17sp"
-            android:text="87.85"
+            android:text=""
             android:background="@null"
             android:textStyle="bold"
             android:layout_marginLeft="100dp"
@@ -214,6 +224,7 @@
 
 
         <TextView
+            android:id="@+id/tvDisplayTotalToPay"
             android:layout_width="wrap_content"
             android:text="@string/calculator_total_to_pay"
             android:textSize="17sp"
@@ -226,10 +237,10 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/etTotalToPay"
+        android:id="@+id/tvTotalToPay"
         android:textColor="@color/drawer_item_text_color"
         android:textSize="30sp"
-        android:text="175.70"
+        android:text=""
         android:background="@null"
         android:textStyle="bold"
         android:layout_alignParentRight="true"
@@ -243,6 +254,7 @@
     <include layout="@layout/toolbar" />
 
     <Button
+        android:id="@+id/bSendMoney"
         android:layout_alignParentBottom="true"
         android:text="Send Money"
         android:padding="12dp"
