@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import relish.permoveo.com.relish.fragments.inviteflow.ContactsInviteFragment;
 import relish.permoveo.com.relish.fragments.inviteflow.EmailInviteFragment;
+import relish.permoveo.com.relish.fragments.inviteflow.EmptyCardFragment;
 import relish.permoveo.com.relish.fragments.inviteflow.FriendsInviteListFragment;
 
 /**
@@ -13,7 +14,7 @@ import relish.permoveo.com.relish.fragments.inviteflow.FriendsInviteListFragment
  */
 public class FriendsInvitePagerAdapter extends FragmentPagerAdapter {
 
-    private String[] TITLES = new String[]{"Friends", "Contacts", "Email"};
+    private String[] TITLES = new String[]{"Friends", "Phone", "Email", "Twitter"};
 
     public FriendsInvitePagerAdapter(FragmentManager fm) {
         super(fm);
@@ -33,6 +34,7 @@ public class FriendsInvitePagerAdapter extends FragmentPagerAdapter {
                 return new ContactsInviteFragment();
             case 2:
                 return new EmailInviteFragment();
+
         }
         return new FriendsInviteListFragment();
     }

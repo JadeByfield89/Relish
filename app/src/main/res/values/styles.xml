@@ -9,6 +9,17 @@
         <item name="colorControlHighlight">@android:color/white</item>
         <item name="colorControlNormal">@android:color/white</item>
         <item name="android:textColorHint">@android:color/white</item>
+
+    </style>
+
+    <!-- Popup Menu Background Color styles -->
+    <style name="MyPopupMenu"
+        parent="@android:style/Widget.Holo.ListPopupWindow">
+        <item name="android:popupBackground">@color/fragment_background</item>
+    </style>
+    <!-- Popup Menu Text Color styles -->
+    <style name="TextAppearance">
+        <item name="android:textColor">@color/main_color</item>
     </style>
 
     <style name="AppTheme" parent="AppTheme.Base" />
@@ -30,7 +41,35 @@
         <item name="android:popupBackground">#EEEEEE</item>
     </style>
 
+    <!-- APP Theme which extends Theme App Compact -->
+    <style name="CustomActionBarTheme" parent="@style/Theme.MyTheme">
+        <item name="android:actionOverflowButtonStyle">@style/OverflowButton</item>
+        <item name="actionOverflowButtonStyle">@style/OverflowButton</item>
+
+        <item name="android:dropDownListViewStyle">@style/PopupMenuListView</item>
+        <item name="dropDownListViewStyle">@style/PopupMenuListView</item>
+
+        <item name="actionBarDivider">@null</item>
+
+        <!-- OverFlow Menu Text Color -->
+        <item name="android:textColor">@color/main_color</item>
+    </style>
+
+    <!-- Set Custom Icon for Overflow Button in ActionBar -->
+    <style name="OverflowButton" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+    </style>
+
+    <!-- OverFlow menu Styles -->
+    <style name="PopupMenuListView" parent="@style/Widget.AppCompat.Light.ListView.DropDown">
+        <item name="android:divider">#dee0e2</item>
+        <item name="android:dividerHeight">2dp</item>
+        <item name="android:listSelector">@drawable/menu_item_background_color</item>
+        <item name="android:background">@color/fragment_background</item>
+    </style>
+
+
     <style name="Theme.MyTheme" parent="Theme.AppCompat.Light">
+
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -53,6 +92,7 @@
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:textColorLink">@color/main_color</item>
     </style>
+
 
     <style name="RelishDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>

@@ -188,7 +188,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                         }
 
                                         // Get a count of all Invite objects currently in parse
-                                        // and asign that count to be this invite's id
+                                        // and assign that count to be this invite's id
                                         ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
                                         invitesQuery.countInBackground(new CountCallback() {
                                             public void done(int count, ParseException e) {

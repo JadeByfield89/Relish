@@ -10,6 +10,7 @@
     <color name="image_overlay">#99000000</color>
     <color name="place_image_dim">#66222222</color>
     <color name="fragment_background">#ebeff2</color>
+
     <color name="place_grid_distance_color">#747474</color>
     <color name="photo_placeholder">#BDBDBD</color>
     <color name="signup_divider">#80FFFFFF</color>

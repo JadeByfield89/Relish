@@ -127,6 +127,8 @@
         <activity
             android:name=".activities.InviteDetailsActivity"
             android:label="@string/title_activity_calculator"
+            android:theme="@style/CustomActionBarTheme"
+
             android:screenOrientation="portrait">
         </activity>
         <activity

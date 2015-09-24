@@ -220,5 +220,9 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="pay_how">How do you want to pay your friends?</string>
     <string name="title_activity_send_money">Send Money</string>
 
+    <!-- Edit Invite -->
+    <string name="invite_edit">Edit Invite</string>
+    <string name="invite_cancel">Cancel Invite</string>
+
 
 </resources>

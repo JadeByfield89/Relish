@@ -17,6 +17,8 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -179,6 +181,13 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(invite.url));
         startActivity(i);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_invite_details, menu);
+        return true;
     }
 
     @Override
