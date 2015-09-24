@@ -3,6 +3,7 @@ package relish.permoveo.com.relish.util;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Base64;
+import android.util.Log;
 
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -35,6 +36,28 @@ public class UserUtils {
         } else
             return "";
     }
+
+    public static String getFullName() {
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            return currentUser.get("fullName").toString();
+        } else
+            return "";
+    }
+
+    public static String getFirstName() {
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            String fullname = currentUser.get("fullName").toString();
+            String first = fullname.split(" ")[0];
+            return first;
+        } else
+            return "";
+    }
+
+
 
     public static String getUserAvatar() {
 

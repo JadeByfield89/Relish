@@ -1,6 +1,7 @@
 package relish.permoveo.com.relish.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.widget.Toolbar;
@@ -113,6 +114,13 @@ public class TipCalculatorActivity extends RelishActivity {
         tipAmount.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
         etTipPercentage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         etNumPeople.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        sendMoney.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TipCalculatorActivity.this, SendMoneyActivity.class);
+                startActivity(intent);
+            }
+        });
 
         etTotalAmount.addTextChangedListener(new TextWatcher() {
             @Override
@@ -230,10 +238,15 @@ public class TipCalculatorActivity extends RelishActivity {
         DecimalFormat f = new DecimalFormat("##.00");
         String finalTip = f.format(tipRounded);
         Double finalTipDouble = Double.parseDouble(finalTip);
-        tipAmount.setText(""+finalTipDouble);
+        if(getTipPercentage() ==  0.0) {
+            tipAmount.setText("" + "0.00");
+        }else{
+            tipAmount.setText("" + finalTipDouble);
+
+        }
 
 
-        totalToPay.setText(""+roundedTotal);
+        totalToPay.setText("" + roundedTotal);
         if(getNumberOfPeople() == 0){
             totalPerPerson.setText("0.00");
 

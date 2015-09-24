@@ -10,6 +10,7 @@
     <string name="hint_password">Password</string>
     <string name="hint_email">Email address</string>
     <string name="hint_username">Username</string>
+    <string name="hint_fullname">Full Name</string>
     <string name="slogan">add friends, add flavor</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="dont_have_an_account">Don\'t have an account?</string>
@@ -211,6 +212,13 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="calculator_total_per_person">Total per person</string>
     <string name="calculator_total_to_pay">Total to pay</string>
     <string name="title_activity_calculator">Tip Calculator</string>
+
+    <!-- Payments -->
+    <string name="pay_square_cash">Square Cash</string>
+    <string name="pay_venmo">Venmo</string>
+    <string name="pay_google_wallet">Google Wallet</string>
+    <string name="pay_how">How do you want to pay your friends?</string>
+    <string name="title_activity_send_money">Send Money</string>
 
 
 </resources>

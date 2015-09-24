@@ -151,7 +151,7 @@
             android:layout_width="wrap_content"
             android:text="@string/calculator_tip_amount"
             android:textSize="17sp"
-            android:layout_marginLeft="18dp"
+            android:layout_marginLeft="16dp"
             android:textColor="@color/drawer_item_text_color"
             android:layout_height="wrap_content" />
 

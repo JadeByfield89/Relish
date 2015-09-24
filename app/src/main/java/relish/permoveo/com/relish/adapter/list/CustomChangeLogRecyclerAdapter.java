@@ -15,6 +15,7 @@ import android.widget.TextView;
 import it.gmariotti.changelibs.R.id;
 import it.gmariotti.changelibs.library.Constants;
 import it.gmariotti.changelibs.library.internal.ChangeLogRow;
+import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 import java.util.ArrayList;
@@ -74,6 +75,8 @@ public class CustomChangeLogRecyclerAdapter extends Adapter<ViewHolder> {
             if(viewHolder.textRow != null) {
                 viewHolder.textRow.setText(Html.fromHtml(item.getChangeText(this.mContext)));
                 viewHolder.textRow.setMovementMethod(LinkMovementMethod.getInstance());
+                viewHolder.textRow.setTextColor(mContext.getResources().getColor(R.color.main_color));
+
             }
 
             if(viewHolder.bulletRow != null) {

@@ -51,6 +51,43 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
+                android:layout_marginTop="-10dp"
+                android:layout_height="48dp">
+
+                <ImageView
+                    android:id="@+id/fullname_icon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:adjustViewBounds="true"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:src="@drawable/ic_username" />
+
+                <EditText
+                    android:id="@+id/et_fullname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/fullname_icon"
+                    android:layout_marginLeft="16dp"
+                    android:background="@null"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:hint="@string/hint_fullname" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/signup_divider"
+                    android:layout_alignParentBottom="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="48dp">
 
                 <ImageView
@@ -231,7 +268,7 @@
         android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 

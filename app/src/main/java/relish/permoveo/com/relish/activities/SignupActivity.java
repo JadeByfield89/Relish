@@ -59,6 +59,9 @@ public class SignupActivity extends RelishActivity {
     @Bind(R.id.btn_login)
     LinearLayout login;
 
+    @Bind(R.id.et_fullname)
+    EditText fullName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +77,7 @@ public class SignupActivity extends RelishActivity {
         relishLabel.setIncludeFontPadding(false);
         alreadyHaveAccountLabel.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         signInLabel.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        fullName.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
         passwordEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -122,9 +126,12 @@ public class SignupActivity extends RelishActivity {
             String email = emailEt.getText().toString();
             final String password = passwordEt.getText().toString();
 
+            final String fullname = fullName.getText().toString();
+
             user.setUsername(username);
             user.setPassword(password);
             user.setEmail(email);
+
 
             user.signUpInBackground(new SignUpCallback() {
                 @Override
@@ -134,6 +141,10 @@ public class SignupActivity extends RelishActivity {
                             @Override
                             public void done(ParseUser parseUser, ParseException e) {
                                 hideLoader();
+
+                                //Save user's full name
+                                parseUser.put("fullName", fullname);
+                                parseUser.saveInBackground();
 
                                 ParseInstallation installation = ParseInstallation.getCurrentInstallation();
                                 installation.put("userId", parseUser.getObjectId());
@@ -156,6 +167,24 @@ public class SignupActivity extends RelishActivity {
     }
 
     private boolean validate() {
+        String fullname = fullName.getText().toString();
+        String[] segments = fullname.split(" ");
+
+        if(TextUtils.isEmpty(fullName.getText())){
+            Toast.makeText(this, "Please enter your full name", Toast.LENGTH_LONG).show();
+            return  false;
+        }
+        if(segments.length < 2){
+            Toast.makeText(this, "Please enter your full name", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(segments.length > 2){
+            Toast.makeText(this, "Please enter your first and last name only", Toast.LENGTH_LONG).show();
+            return  false;
+        }
+
+
         if (TextUtils.isEmpty(usernameEt.getText())) {
             Toast.makeText(this, getString(R.string.error_username_empty), Toast.LENGTH_LONG).show();
             return false;

@@ -133,6 +133,10 @@
             android:name=".activities.TipCalculatorActivity"
             android:label="@string/title_activity_add_friends"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.SendMoneyActivity"
+            android:label="@string/title_activity_send_money"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".receivers.ReminderReceiver"
