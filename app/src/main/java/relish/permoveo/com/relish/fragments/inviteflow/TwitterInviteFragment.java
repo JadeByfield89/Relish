@@ -30,6 +30,7 @@ import relish.permoveo.com.relish.activities.MainActivity;
 import relish.permoveo.com.relish.activities.TwitterWebViewActivity;
 import relish.permoveo.com.relish.adapter.list.inviteflow.InviteContactsListAdapter;
 import relish.permoveo.com.relish.adapter.list.inviteflow.InviteTwitterListAdapter;
+import relish.permoveo.com.relish.application.RelishApplication;
 import relish.permoveo.com.relish.interfaces.ISelectable;
 import relish.permoveo.com.relish.model.Contact;
 import relish.permoveo.com.relish.util.SharedPrefsUtil;
@@ -109,6 +110,14 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
                 new LoginTask().execute();
             }
         });
+
+        if (RelishApplication.getTwitterFollowersList() != null) {
+            emptyView.setVisibility(View.GONE);
+            twitterRecycler.setVisibility(View.VISIBLE);
+            followersAdapter = new InviteTwitterListAdapter(getContext());
+            followersAdapter.swap(RelishApplication.getTwitterFollowersList());
+            twitterRecycler.setAdapter(followersAdapter);
+        }
     }
 
     @Override
@@ -173,9 +182,14 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
                 public void run() {
                     emptyView.setVisibility(View.GONE);
                     progress.setVisibility(View.VISIBLE);
+
+
+                    new GetFollowersTask().execute();
+
+
                 }
             });
-            new GetFollowersTask().execute();
+
         }
     }
 
@@ -210,43 +224,58 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
             //do {
 
 
+            //IDs ids = newTwitter.getFollowersIDs(-1);
+
+            //int[] followerPage = new int[100];
+
+            //long[] array = Arrays.copyOfRange(ids.getIDs(), 100, followerPage.length);
+
+            //First, let's get the current user's follower count
+            User currentUser = newTwitter.showUser(SharedPrefsUtil.get.getTwitterUsername());
+            int followersCount = currentUser.getFollowersCount();
+
+            //Twitter returns a maximum of 200 user results per cursor
+            // And only 15 GET requests can be made within a 15 minute window
+
+            // Therefore 15 * 200 = 3,000 followers can be fetched at most using this approach
+            // If the current user has more than 3,000 followers, we need to get batch IDs instead
+
+            if (followersCount < 3000) {
+                do {
+                    Log.d("TwitterInviteFragment", "Getting Followers for -> " + SharedPrefsUtil.get.getTwitterUsername());
+                    followers = newTwitter.getFollowersList(SharedPrefsUtil.get.getTwitterUsername(), cursor, 200);
+                    Log.d("TwitterInviteFragment", "Followers count -> " + followers.size());
+                    for (int j = 0; j < followers.size(); j++) {
+                        // TODO: Collect top 10 followers here
 
 
-                //IDs ids = newTwitter.getFollowersIDs(-1);
+                        User user = followers.get(j);
+                        Log.d("TwitterInviteFragment", "Follower count -> " + j);
+                        Contact contact = new Contact();
+                        contact.name = user.getName();
+                        contact.twitterUsername = "@" + user.getScreenName();
+                        Log.d("TwitterInviteFragment", "Follower username -> " + contact.twitterUsername);
 
-                //int[] followerPage = new int[100];
+                        contact.image = user.getProfileImageURL();
+                        followersList.add(contact);
+                        //} else {
+                        //  break;
+                        //}
 
-                //long[] array = Arrays.copyOfRange(ids.getIDs(), 100, followerPage.length);
+                    }
+
+                    //cursor = followers.getNextCursor();
+                } while ((cursor = followers.getNextCursor()) != 0);
+
+                RelishApplication.setTwitterFollowersList(followersList);
+            }
 
 
-              do {
-                  Log.d("TwitterInviteFragment", "Getting Followers for -> " + SharedPrefsUtil.get.getTwitterUsername());
-                  followers = newTwitter.getFollowersList(SharedPrefsUtil.get.getTwitterUsername(), cursor, 200);
-                  Log.d("TwitterInviteFragment", "Followers count -> " + followers.size());
-                  for (int j = 0; j < followers.size(); j++) {
-                      // TODO: Collect top 10 followers here
+            // User has more than 3k followers
+            else {
 
-                      //i++;
-                      // if (i <= 10) {
-                      User user = followers.get(j);
-                      Log.d("TwitterInviteFragment", "Follower count -> " + j);
-                      Contact contact = new Contact();
-                      contact.name = user.getName();
-                      contact.twitterUsername = "@" + user.getScreenName();
-                      Log.d("TwitterInviteFragment", "Follower username -> " + contact.twitterUsername);
+            }
 
-                      contact.image = user.getProfileImageURL();
-                      followersList.add(contact);
-                      //} else {
-                      //  break;
-                      //}
-
-                  }
-
-                  //cursor = followers.getNextCursor();
-              }while((cursor = followers.getNextCursor()) != 0);
-
-            //} while (i <= 10);
 
         } catch (Exception e) {
             e.printStackTrace();
