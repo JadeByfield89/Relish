@@ -207,11 +207,10 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
             newTwitter.setOAuthAccessToken(oathAccessToken);
             newTwitter.verifyCredentials();
 
-            do {
+            //do {
 
 
-                followers = newTwitter.getFollowersList("jaybedreamin", cursor);
-                Log.d("TwitterInviteFragment", "Followers count -> " + followers.size());
+
 
                 //IDs ids = newTwitter.getFollowersIDs(-1);
 
@@ -220,26 +219,34 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
                 //long[] array = Arrays.copyOfRange(ids.getIDs(), 100, followerPage.length);
 
 
-                for (User user : followers) {
-                    // TODO: Collect top 10 followers here
+              do {
+                  Log.d("TwitterInviteFragment", "Getting Followers for -> " + SharedPrefsUtil.get.getTwitterUsername());
+                  followers = newTwitter.getFollowersList(SharedPrefsUtil.get.getTwitterUsername(), cursor, 200);
+                  Log.d("TwitterInviteFragment", "Followers count -> " + followers.size());
+                  for (int j = 0; j < followers.size(); j++) {
+                      // TODO: Collect top 10 followers here
 
-                    i++;
-                    if (i <= 10) {
-                        Log.d("TwitterInviteFragment", "Follower count -> " + i);
-                        Contact contact = new Contact();
-                        contact.name = user.getName();
-                        contact.twitterUsername = "@" + user.getScreenName();
-                        Log.d("TwitterInviteFragment", "Follower username -> " + contact.twitterUsername);
+                      //i++;
+                      // if (i <= 10) {
+                      User user = followers.get(j);
+                      Log.d("TwitterInviteFragment", "Follower count -> " + j);
+                      Contact contact = new Contact();
+                      contact.name = user.getName();
+                      contact.twitterUsername = "@" + user.getScreenName();
+                      Log.d("TwitterInviteFragment", "Follower username -> " + contact.twitterUsername);
 
-                        contact.image = user.getProfileImageURL();
-                        followersList.add(contact);
-                    } else {
-                        break;
-                    }
+                      contact.image = user.getProfileImageURL();
+                      followersList.add(contact);
+                      //} else {
+                      //  break;
+                      //}
 
-                }
+                  }
 
-            } while (i <= 10);
+                  //cursor = followers.getNextCursor();
+              }while((cursor = followers.getNextCursor()) != 0);
+
+            //} while (i <= 10);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -364,10 +371,10 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
 
                 twitterUsername = user.getScreenName();
 
-                if(twitter != null) {
+                if (twitter != null) {
                     SharedPrefsUtil.get.saveTwitterInfo(accessToken, twitter);
-                }else{
-                    if(localTwitter != null){
+                } else {
+                    if (localTwitter != null) {
                         SharedPrefsUtil.get.saveTwitterInfo(accessToken, localTwitter);
 
                     }

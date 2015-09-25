@@ -122,7 +122,7 @@ public enum SharedPrefsUtil {
         try {
             user = twitter.showUser(userID);
 
-            String username = user.getName();
+            String username = user.getScreenName();
 
 			/* Storing oAuth tokens to shared preferences */
             SharedPreferences.Editor e = sharedPreferences.edit();
@@ -142,6 +142,10 @@ public enum SharedPrefsUtil {
 
     public boolean isLoggedIntoTwitter(){
         return sharedPreferences.getBoolean(PREF_KEY_TWITTER_LOGIN, false);
+    }
+
+    public String getTwitterUsername(){
+        return sharedPreferences.getString(PREF_USER_NAME, "");
     }
 
     public void setIsLoggedIntoTwitter(){
