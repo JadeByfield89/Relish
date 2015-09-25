@@ -300,4 +300,15 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
         shareTwitter.setVisibility(View.VISIBLE);
         shareGooglePlus.setVisibility(View.VISIBLE);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        for(Fragment fragment: getSupportFragmentManager().getFragments()){
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d("InviteFlowAcitivty", "InviteflowActivity onActivityResult");
+    }
 }

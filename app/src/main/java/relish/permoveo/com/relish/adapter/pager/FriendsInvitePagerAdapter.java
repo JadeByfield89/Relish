@@ -8,6 +8,7 @@ import relish.permoveo.com.relish.fragments.inviteflow.ContactsInviteFragment;
 import relish.permoveo.com.relish.fragments.inviteflow.EmailInviteFragment;
 import relish.permoveo.com.relish.fragments.inviteflow.EmptyCardFragment;
 import relish.permoveo.com.relish.fragments.inviteflow.FriendsInviteListFragment;
+import relish.permoveo.com.relish.fragments.inviteflow.TwitterInviteFragment;
 
 /**
  * Created by rom4ek on 28.08.2015.
@@ -34,6 +35,8 @@ public class FriendsInvitePagerAdapter extends FragmentPagerAdapter {
                 return new ContactsInviteFragment();
             case 2:
                 return new EmailInviteFragment();
+            case 3:
+                return new TwitterInviteFragment();
 
         }
         return new FriendsInviteListFragment();

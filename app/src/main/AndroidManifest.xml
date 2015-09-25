@@ -139,6 +139,10 @@
             android:name=".activities.SendMoneyActivity"
             android:label="@string/title_activity_send_money"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.TwitterWebViewActivity"
+            android:label="Twitter Webview Activity"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".receivers.ReminderReceiver"

@@ -2,6 +2,7 @@ package relish.permoveo.com.relish.fragments.inviteflow;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,7 +128,7 @@ public class FriendsInviteFragment extends Fragment {
             }
         });
 
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(3);
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,5 +194,15 @@ public class FriendsInviteFragment extends Fragment {
                 return true;
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("FriendsInviteFragment", "FriendsInviteFragment onActivityResult");
+        super.onActivityResult(requestCode, resultCode, data);
+
+        for(Fragment fragment: getChildFragmentManager().getFragments()){
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

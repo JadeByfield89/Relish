@@ -3,6 +3,12 @@ package relish.permoveo.com.relish.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.User;
+import twitter4j.auth.AccessToken;
 
 /**
  * Created by byfieldj on 8/4/15.
@@ -17,6 +23,14 @@ public enum SharedPrefsUtil {
     public static String PARAM_LOCATION_SHARING = "location_sharing";
     public static String PARAM_GOOGLE_CALENDAR_SYNC = "google_calendar_sync";
     private SharedPreferences sharedPreferences;
+
+
+    /* Shared preference keys */
+    private static final String PREF_NAME = "twitter_pref";
+    private static final String PREF_KEY_OAUTH_TOKEN = "oauth_token";
+    private static final String PREF_KEY_OAUTH_SECRET = "oauth_token_secret";
+    private static final String PREF_KEY_TWITTER_LOGIN = "is_twitter_loggedin";
+    private static final String PREF_USER_NAME = "twitter_user_name";
 
 
     public void init(final Context context) {
@@ -94,6 +108,52 @@ public enum SharedPrefsUtil {
     public boolean isGoogleCalendarSyncEnabled() {
         return sharedPreferences.getBoolean(PARAM_LOCATION_SHARING, false);
 
+    }
+
+    /**
+     * Saving user information, after user is authenticated for the first time.
+     * You don't need to show user to login, until user has a valid access toen
+     */
+    public void saveTwitterInfo(AccessToken accessToken, Twitter twitter) {
+
+        long userID = accessToken.getUserId();
+
+        User user;
+        try {
+            user = twitter.showUser(userID);
+
+            String username = user.getName();
+
+			/* Storing oAuth tokens to shared preferences */
+            SharedPreferences.Editor e = sharedPreferences.edit();
+            e.putString(PREF_KEY_OAUTH_TOKEN, accessToken.getToken());
+            Log.d("SharedPrefsUtil", "Saving Access Token -> " + accessToken.getToken());
+            e.putString(PREF_KEY_OAUTH_SECRET, accessToken.getTokenSecret());
+            Log.d("SharedPrefsUtil", "Saving Access Token Secret -> " + accessToken.getTokenSecret());
+
+            e.putBoolean(PREF_KEY_TWITTER_LOGIN, true);
+            e.putString(PREF_USER_NAME, username);
+            e.commit();
+
+        } catch (TwitterException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    public boolean isLoggedIntoTwitter(){
+        return sharedPreferences.getBoolean(PREF_KEY_TWITTER_LOGIN, false);
+    }
+
+    public void setIsLoggedIntoTwitter(){
+        sharedPreferences.edit().putBoolean(PREF_KEY_TWITTER_LOGIN, true).commit();
+    }
+
+    public String getSavedAccessToken(){
+        return sharedPreferences.getString(PREF_KEY_OAUTH_TOKEN, "");
+    }
+
+    public String getSavedAccessTokenSecret(){
+        return sharedPreferences.getString(PREF_KEY_OAUTH_SECRET, "");
     }
 
 }

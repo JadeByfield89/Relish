@@ -15,6 +15,8 @@ public class Contact extends InvitePerson implements Serializable {
     public boolean isInvited;
     public ParseFile imageFile;
 
+    public String twitterUsername;
+
     public Contact() {}
 
     public Contact(String id) {
@@ -29,10 +31,13 @@ public class Contact extends InvitePerson implements Serializable {
             contact.email = parseObject.getString("contactEmail");
         if (parseObject.containsKey("contactNumber"))
             contact.number = parseObject.getString("contactNumber");
+        if (parseObject.containsKey("twitterUsername"))
+            contact.twitterUsername = parseObject.getString("twitterUsername");
         if (parseObject.containsKey("avatar")) {
             ParseFile parseFile = (ParseFile) parseObject.get("avatar");
             contact.image = parseFile.getUrl();
         }
+
         return contact;
     }
 }

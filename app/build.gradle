@@ -32,6 +32,10 @@ android {
         maven {
             url "https://jitpack.io"
         }
+
+        packagingOptions {
+            exclude 'META-INF/LICENSE.txt'
+        }
     }
 
     configurations { all*.exclude group: 'com.android.support', module: 'support-annotations' }
@@ -86,7 +90,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.ksoichiro:android-observablescrollview:1.5.2'
     compile 'com.melnykov:floatingactionbutton:1.3.0'
-    compile ('com.google.api-client:google-api-client:1.20.0')
+    compile 'com.google.api-client:google-api-client:1.20.0'
     compile 'org.scribe:scribe:1.3.5'
     compile 'net.danlew:android.joda:2.8.1'
     compile(name: 'library-2.4.1', ext: 'aar')
@@ -112,6 +116,7 @@ dependencies {
     compile 'com.joooonho:selectableroundedimageview:1.0.1'
     compile project(':materialpicker')
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.0.0'
+    compile 'org.twitter4j:twitter4j-core:4.0.4'
 }
 
 

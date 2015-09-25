@@ -1,0 +1,75 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="relish.permoveo.com.relish.fragments.inviteflow.TwitterInviteFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/twitter_invite_recycler"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:visibility="gone"
+        android:dividerHeight="0dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false"
+        android:layout_width="match_parent"/>
+
+    <LinearLayout
+        android:id="@+id/empty_followers_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:visibility="visible"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:gravity="center">
+
+        <ImageView
+            android:src="@drawable/ic_freinds_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/empty_message"
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/empty_color"
+            android:text="@string/twitter_followers_empty"
+            android:textSize="18sp"
+            android:gravity="center"/>
+
+        <Button
+            android:id="@+id/bConnectTwitter"
+            android:layout_alignParentBottom="true"
+            android:text="@string/twitter_connect"
+            android:padding="12dp"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="12dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/connect_twitter_button_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <relish.permoveo.com.relish.view.BounceProgressBar
+        xmlns:bpb="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/bounce_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        bpb:shape="circle"
+        bpb:singleSrcSize="14dp"
+        bpb:speed="250"
+        bpb:src="@color/main_color"/>
+
+</RelativeLayout>

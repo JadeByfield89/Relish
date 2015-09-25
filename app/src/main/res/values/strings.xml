@@ -224,5 +224,10 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="invite_edit">Edit Invite</string>
     <string name="invite_cancel">Cancel Invite</string>
 
+    <!-- Twitter -->
+    <string name="twitter_connect">Connect Twitter Account</string>
+    <string name="twitter_signin">Sign in with Twitter</string>
+    <string name="twitter_followers_empty">You haven\'t connected your Twitter account yet.</string>
+
 
 </resources>
