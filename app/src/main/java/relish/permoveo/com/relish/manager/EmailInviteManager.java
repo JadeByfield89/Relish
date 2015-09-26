@@ -43,7 +43,7 @@ public class EmailInviteManager {
             request.addBodyParameter("inviteDateTime", invite.getFormattedDateTime());
             request.addBodyParameter("placeName", invite.name);
             request.addBodyParameter("placeAddress", invite.location.address);
-            request.addBodyParameter("inviteCreatorName", UserUtils.getUsername());
+            request.addBodyParameter("inviteCreatorName", UserUtils.getFirstName());
             request.addBodyParameter("inviteGuestCount", "" + (invite.invited.size() - 1));
             request.addBodyParameter("inviteCode", invite.inviteId);
             Log.d("EmailInviteManager", "inviteCode -> " + invite.inviteId);
