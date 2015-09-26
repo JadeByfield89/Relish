@@ -12,7 +12,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -30,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.parse.ParseException;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -37,6 +40,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.adapter.pager.FakeInvitePagerAdapter;
 import relish.permoveo.com.relish.fragments.FriendsFragment;
 import relish.permoveo.com.relish.fragments.InvitesFragment;
 import relish.permoveo.com.relish.fragments.NavigationDrawerFragment;
@@ -44,6 +48,7 @@ import relish.permoveo.com.relish.fragments.PlacesFilterFragment;
 import relish.permoveo.com.relish.fragments.PlacesFragment;
 import relish.permoveo.com.relish.fragments.SettingsFragment;
 import relish.permoveo.com.relish.gps.GPSTracker;
+import relish.permoveo.com.relish.interfaces.CircularRevealAnimator;
 import relish.permoveo.com.relish.interfaces.NavigationDrawerManagementCallbacks;
 import relish.permoveo.com.relish.interfaces.OnResumeLoadingCallbacks;
 import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
@@ -56,7 +61,7 @@ import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.view.RelishDrawerToggle;
 
 
-public class MainActivity extends RelishActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, ToolbarCallbacks, NavigationDrawerManagementCallbacks, PlacesFilterFragment.OnFilterSelectionCompleteListener {
+public class MainActivity extends RelishActivity implements CircularRevealAnimator, NavigationDrawerFragment.NavigationDrawerCallbacks, ToolbarCallbacks, NavigationDrawerManagementCallbacks, PlacesFilterFragment.OnFilterSelectionCompleteListener {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -66,6 +71,23 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
 
     @Bind(R.id.content_frame)
     FrameLayout contentFrame;
+
+    @Bind(R.id.pager_invite)
+    ViewPager invitePager;
+
+    @Bind(R.id.pager_indicator)
+    CirclePageIndicator pagerIndicator;
+
+    @Bind(R.id.invite_share_card)
+    CardView inviteShareCard;
+
+    @Bind(R.id.main_activity_container)
+    RelativeLayout activity_container;
+
+    @Bind(R.id.reveal_container)
+    RelativeLayout reveal_container;
+
+    private FakeInvitePagerAdapter invitePagerAdapter;
 
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
 
@@ -192,6 +214,9 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         setSupportActionBar(toolbar);
         getSupportActionBar().setElevation(7.0f);
 
+        invitePagerAdapter = new FakeInvitePagerAdapter(getSupportFragmentManager());
+        invitePager.setAdapter(invitePagerAdapter);
+        pagerIndicator.setViewPager(invitePager);
 
         updateToolbar(toolbar);
         navDrawer.selectItem(mCurrentSelectedPosition);
@@ -353,6 +378,21 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         return toolbar;
     }
 
+    @Override
+    public CirclePageIndicator getPageIndicator() {
+        return pagerIndicator;
+    }
+
+    @Override
+    public CardView getShareCard() {
+        return inviteShareCard;
+    }
+
+    @Override
+    public ViewPager getInvitePager() {
+        return invitePager;
+    }
+
     private TextView getActionBarTextView() {
         TextView titleTextView = null;
 
@@ -383,5 +423,15 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
     @Override
     public void closeDrawer() {
         drawerLayout.closeDrawer(Gravity.RIGHT);
+    }
+
+    @Override
+    public ViewGroup getActivityContainer() {
+        return activity_container;
+    }
+
+    @Override
+    public ViewGroup getRevealContainer() {
+        return reveal_container;
     }
 }

@@ -33,7 +33,7 @@ public class InvitePagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch(position){
             case 0:
-                return PickPlaceInviteFragment.newInstance(currentPlace);
+                return currentPlace == null ? new PickPlaceInviteFragment() : PickPlaceInviteFragment.newInstance(currentPlace);
             case 1:
                 return new FriendsInviteFragment();
             case 2:

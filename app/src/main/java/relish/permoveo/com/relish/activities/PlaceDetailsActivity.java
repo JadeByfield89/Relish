@@ -109,11 +109,9 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 
 
     private boolean mRevealFlag;
-    private float mFabSize;
 
     @Bind(R.id.place_details_container)
     RelativeLayout activity_container;
-
 
     @Bind(R.id.reveal_container)
     RelativeLayout reveal_container;
@@ -687,7 +685,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
                 if (Math.abs(startX - animatedFab.getX()) > MINIMUN_X_DISTANCE) {
 
                     if (!mRevealFlag) {
-                        activity_container.setY(activity_container.getY() + mFabSize / 2);
+                        activity_container.setY(activity_container.getY());
 
                         fabAnimator = animatedFab.animate()
                                 .scaleXBy(SCALE_FACTOR)
@@ -766,7 +764,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         animatedFab.setTranslationX(newLoc.mX);
 
         if (mRevealFlag)
-            animatedFab.setTranslationY(newLoc.mY - (mFabSize / 2));
+            animatedFab.setTranslationY(newLoc.mY);
         else
             animatedFab.setTranslationY(newLoc.mY);
     }

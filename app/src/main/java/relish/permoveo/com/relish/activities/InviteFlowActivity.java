@@ -2,6 +2,7 @@ package relish.permoveo.com.relish.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -137,7 +138,8 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
 
                     @Override
                     public void onBitmapFailed(Drawable errorDrawable) {
-                        invitePlaceImage.setBackgroundColor(getResources().getColor(R.color.main_color));
+                        invitePlaceImage.setImageBitmap(BlurBuilder.blur(InviteFlowActivity.this,
+                                BitmapFactory.decodeResource(getResources(), R.drawable.login_signup_background), 10));
                     }
 
                     @Override
@@ -150,10 +152,12 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
                         .load(currentPlace.getOriginalImage())
                         .into((Target) invitePlaceImage.getTag());
             } else {
-                invitePlaceImage.setBackgroundColor(getResources().getColor(R.color.main_color));
+                invitePlaceImage.setImageBitmap(BlurBuilder.blur(InviteFlowActivity.this,
+                        BitmapFactory.decodeResource(getResources(), R.drawable.login_signup_background), 10));
             }
         } else {
-            invitePlaceImage.setBackgroundColor(getResources().getColor(R.color.main_color));
+            invitePlaceImage.setImageBitmap(BlurBuilder.blur(InviteFlowActivity.this,
+                    BitmapFactory.decodeResource(getResources(), R.drawable.login_signup_background), 10));
         }
 
         invitePagerAdapter = new InvitePagerAdapter(getSupportFragmentManager(), currentPlace);
@@ -169,7 +173,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 0) {
+                if (position == 0 && currentPlace != null) {
                     getSupportActionBar().setTitle(currentPlace.name);
                 } else {
                     getSupportActionBar().setTitle(TITLES[position]);

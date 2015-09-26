@@ -1,18 +1,30 @@
 package relish.permoveo.com.relish.fragments;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +38,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.activities.InviteDetailsActivity;
+import relish.permoveo.com.relish.activities.InviteFlowActivity;
 import relish.permoveo.com.relish.adapter.list.InvitesListAdapter;
+import relish.permoveo.com.relish.animation.AnimatorPath;
+import relish.permoveo.com.relish.animation.PathEvaluator;
+import relish.permoveo.com.relish.animation.PathPoint;
+import relish.permoveo.com.relish.interfaces.CircularRevealAnimator;
 import relish.permoveo.com.relish.manager.InvitesManager;
 import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.util.RecyclerItemClickListener;
@@ -43,6 +60,7 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
 
     private static final String TO_INVITE_DETAILS_PARAM = "to_invite_details_param";
     private static final String ACTION_PARAM = "action_param";
+    private static final int INVITE_FLOW_REQUEST = 228;
 
     @Bind(R.id.invites_list_view)
     RecyclerView recyclerView;
@@ -60,12 +78,29 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
     FloatingActionButton inviteButton;
 
     private InvitesListAdapter adapter;
+    private CircularRevealAnimator animator;
     private String inviteId;
     private boolean action;
+
+    public final static float SCALE_FACTOR = 13f;
+    public final static int ANIMATION_DURATION = 250;
+    public final static int MINIMUN_X_DISTANCE = 200;
+
+    private boolean fromInvite;
+    private boolean mRevealFlag;
+    private ObjectAnimator revealAnimator;
+    private ViewPropertyAnimator fabAnimator;
 
     public InvitesFragment() {
         // Required empty public constructor
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof CircularRevealAnimator)
+            animator = (CircularRevealAnimator) context;
     }
 
     public static InvitesFragment newInstance(String inviteId, boolean action) {
@@ -127,7 +162,45 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
         inviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                animator.getInvitePager().setVisibility(View.VISIBLE);
+                animator.getPageIndicator().setVisibility(View.VISIBLE);
+                animator.getShareCard().setVisibility(View.GONE);
 
+                final float startX = inviteButton.getX();
+
+                AnimatorPath path = new AnimatorPath();
+                path.moveTo(0, 0);
+                path.curveTo(-200, 200, -400, 100, -600, 50);
+
+
+                revealAnimator = ObjectAnimator.ofObject(InvitesFragment.this, "fabLoc",
+                        new PathEvaluator(), path.getPoints().toArray());
+
+                revealAnimator.setInterpolator(new AccelerateInterpolator());
+                revealAnimator.setDuration(ANIMATION_DURATION);
+                revealAnimator.start();
+
+                revealAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        inviteButton.setImageDrawable(null);
+                        if (Math.abs(startX - inviteButton.getX()) > MINIMUN_X_DISTANCE) {
+
+                            if (!mRevealFlag) {
+                                animator.getActivityContainer().setY(animator.getActivityContainer().getY());
+
+                                fabAnimator = inviteButton.animate()
+                                        .scaleXBy(SCALE_FACTOR)
+                                        .scaleYBy(SCALE_FACTOR)
+                                        .setListener(mEndRevealListener)
+                                        .setDuration(ANIMATION_DURATION);
+
+                                mRevealFlag = true;
+                            }
+                        }
+                    }
+                });
             }
         });
         inviteButton.attachToRecyclerView(recyclerView);
@@ -136,6 +209,11 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
     @Override
     public void onResume() {
         super.onResume();
+        if (fromInvite) {
+            animateFromInvite();
+            fromInvite = false;
+        }
+
         render();
     }
 
@@ -185,5 +263,166 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
         }
     }
 
+    private AnimatorListenerAdapter mEndRevealListener = new AnimatorListenerAdapter() {
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            Log.d("onAnimationEnd", "onAnimationEnd");
+            revealAnimator.removeAllListeners();
+            revealAnimator.end();
+            revealAnimator.cancel();
+            fabAnimator.setListener(null);
+            fabAnimator.cancel();
+
+
+            inviteButton.setVisibility(View.INVISIBLE);
+            mRevealFlag = false;
+            //activity_container.setBackgroundColor(getResources()
+            // .getColor(R.color.main_color));
+            animator.getRevealContainer().setVisibility(View.VISIBLE);
+            animator.getToolbar().setVisibility(View.GONE);
+
+            /*for (int i = 0; i < activity_container.getChildCount(); i++) {
+                View v = activity_container.getChildAt(i);
+                android.view.ViewPropertyAnimator animator = v.animate()
+                        .scaleX(1).scaleY(1)
+                        .setDuration(ANIMATION_DURATION);
+
+                animator.setStartDelay(i * 50);
+                animator.start();
+            }
+
+            if(!alphaAnimationStarted) {
+                Animation in = new AlphaAnimation(0.0f, 1.0f);
+                in.setDuration(500);
+                invitePager.setAnimation(in);
+                alphaAnimationStarted = true;
+            }*/
+//            for (int i = 0; i < activity_container.getChildCount(); i++) {
+//                View v = activity_container.getChildAt(i);
+//                android.view.ViewPropertyAnimator animator = v.animate()
+//                        .scaleX(1).scaleY(1)
+//                        .setDuration(ANIMATION_DURATION);
+//
+//                animator.setStartDelay(i * 50);
+//                animator.start();
+//            }
+
+            startActivityForResult(new Intent(getActivity(), InviteFlowActivity.class), INVITE_FLOW_REQUEST);
+        }
+    };
+
+
+    /**
+     * We need this setter to translate between the information the animator
+     * produces (a new "PathPoint" describing the current animated location)
+     * and the information that the button requires (an xy location). The
+     * setter will be called by the ObjectAnimator given the 'fabLoc'
+     * property string.
+     */
+    public void setFabLoc(PathPoint newLoc) {
+        inviteButton.setTranslationX(newLoc.mX);
+
+        if (mRevealFlag)
+            inviteButton.setTranslationY(newLoc.mY);
+        else
+            inviteButton.setTranslationY(newLoc.mY);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == INVITE_FLOW_REQUEST) {
+            fromInvite = true;
+
+            if (data != null) {
+
+                boolean isSent = data.getBooleanExtra(InviteFlowActivity.IS_INVITE_SENT_EXTRA, false);
+                if (isSent) {
+                    animator.getInvitePager().setVisibility(View.GONE);
+                    animator.getPageIndicator().setVisibility(View.GONE);
+                    animator.getShareCard().setVisibility(View.VISIBLE);
+                }
+            }
+        }
+    }
+
+    private void animateFromInvite() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                animator.getRevealContainer().setVisibility(View.INVISIBLE);
+                inviteButton.setScaleX(SCALE_FACTOR);
+                inviteButton.setScaleY(SCALE_FACTOR);
+                inviteButton.setVisibility(View.VISIBLE);
+
+                ViewPropertyAnimator scaleAnimator = inviteButton.animate()
+                        .scaleXBy(-SCALE_FACTOR + 1.0f)
+                        .scaleYBy(-SCALE_FACTOR + 1.0f)
+                        .setDuration(500);
+                animateCurveFromInvite();
+            }
+        }, 500);
+    }
+
+    private void animateCurveFromInvite() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                AnimatorPath path = new AnimatorPath();
+                path.moveTo(-600, 50);
+                path.curveTo(-200, 200, -400, 100, 0, 0);
+
+                revealAnimator = ObjectAnimator.ofObject(InvitesFragment.this, "fabLoc",
+                        new PathEvaluator(), path.getPoints().toArray());
+
+                revealAnimator.setInterpolator(new DecelerateInterpolator());
+                revealAnimator.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        inviteButton.setImageResource(R.drawable.ic_editor_mode_edit);
+                        Animation toolbarAnimation = new AlphaAnimation(0.0f, 1.0f);
+                        toolbarAnimation.setDuration(300);
+                        toolbarAnimation.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                                animator.getToolbar().setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+                        animator.getToolbar().setAnimation(toolbarAnimation);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {
+
+                    }
+                });
+                revealAnimator.setDuration(ANIMATION_DURATION);
+                revealAnimator.start();
+            }
+        }, 300);
+    }
 
 }
