@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -74,6 +75,8 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
     @Bind(R.id.bounce_progress)
     BounceProgressBar progress;
 
+    @Bind(R.id.empty_message)
+    TextView emptyMessage;
 
     /* Any number for uniquely distinguish your request */
     public static final int WEBVIEW_REQUEST_CODE = 100;
@@ -96,6 +99,8 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
 
+
+        emptyMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         twitterRecycler.setLayoutManager(linearLayoutManager);
