@@ -164,11 +164,17 @@ public enum SharedPrefsUtil {
     }
 
     public void saveVenmoAccessToken(String token){
+        long saveTime = System.currentTimeMillis();
         sharedPreferences.edit().putString(PREF_VENMO_TOKEN, token).commit();
+        sharedPreferences.edit().putLong(PREF_VENMO_TOKEN_TIMESTAMP, saveTime).commit();
     }
 
     public String getVenmoAccessToken(){
         return sharedPreferences.getString(PREF_VENMO_TOKEN, "");
+    }
+
+    public long getVenmoAccessTokenSaveTime(){
+        return sharedPreferences.getLong(PREF_VENMO_TOKEN_TIMESTAMP, 0);
     }
 
 }

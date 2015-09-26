@@ -96,6 +96,7 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
     private static final int REQUEST_CODE_VENMO_APP_SWITCH = 89;
     private boolean paymentSent;
 
+    private static final long TOKEN_EXPIRY_TIME = 1800000L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,11 +127,11 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
             @Override
             public void onClick(View v) {
 
-                if(!paymentSent) {
+                if (!paymentSent) {
                     if (validateFields()) {
                         makeVenmoPayment();
                     }
-                }else{
+                } else {
                     finish();
                 }
             }
@@ -142,7 +143,7 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
             @Override
             public void onClick(View v) {
 
-                    handleVenmoPayment();
+                handleVenmoPayment();
 
             }
         });
@@ -163,12 +164,12 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
             Snackbar.make(payView, "Please enter a valid email address or phone number.", Snackbar.LENGTH_LONG).show();
             return false;
         }
-        if(TextUtils.isEmpty(payAmount.getText().toString()) && TextUtils.isDigitsOnly(payAmount.getText().toString())){
+        if (TextUtils.isEmpty(payAmount.getText().toString()) && TextUtils.isDigitsOnly(payAmount.getText().toString())) {
             Snackbar.make(payView, "Please enter a valid amount to send.", Snackbar.LENGTH_LONG).show();
             return false;
         }
 
-        if(TextUtils.isEmpty(note.getText().toString())){
+        if (TextUtils.isEmpty(note.getText().toString())) {
             Snackbar.make(payView, "Please enter a note for this transaction.", Snackbar.LENGTH_LONG).show();
             return false;
         }
@@ -220,10 +221,24 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
                 VenmoWebviewFragment fragment = new VenmoWebviewFragment();
                 fragment.show(getSupportFragmentManager(), "Venmo");
             } else {
-                titleHeading.setText("Who do you want to pay?");
-                hideViews();
-                payView.setVisibility(View.VISIBLE);
-                payViewVisible = true;
+                // Make sure Access Token is not expired
+                long previousTokenSaveTime = SharedPrefsUtil.get.getVenmoAccessTokenSaveTime();
+
+                long currentTime = System.currentTimeMillis();
+
+                // Our Venmo Access Token is still valid, proceed as usual
+                if (currentTime - previousTokenSaveTime < TOKEN_EXPIRY_TIME) {
+                    titleHeading.setText("Who do you want to pay?");
+                    hideViews();
+                    payView.setVisibility(View.VISIBLE);
+                    payViewVisible = true;
+                }
+
+                //No longer valid, need to launch webview and fetch a new token
+                else {
+                    VenmoWebviewFragment fragment = new VenmoWebviewFragment();
+                    fragment.show(getSupportFragmentManager(), "Venmo");
+                }
             }
         }
     }
@@ -378,7 +393,7 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
                 listener.onPaymentSent(true);
                 paymentSent = true;
             } else {
-                Toast.makeText(getBaseContext(), "There was an error sending payment to " + who, Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "There was an error sending payment", Toast.LENGTH_LONG).show();
             }
         }
     }
