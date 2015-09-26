@@ -49,4 +49,8 @@ public class ConstantUtil {
     public static final String SENDER_IMAGE_KEY = "key_sender_image";
     public static final String INVITE_TITLE_KEY = "key_invite_title";
     public static final String INVITE_MESSAGE_KEY = "key_invite_message";
+
+    /*========================Square & Goole Wallet Package names==============*/
+    public static final String SQUARE_CASH_PACKAGE = "com.squareup.cash";
+    public static final String GOOGLE_WALLET_PACKAGE = "com.google.android.apps.gmoney";
 }

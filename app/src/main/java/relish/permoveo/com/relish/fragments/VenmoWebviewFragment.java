@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -46,6 +47,10 @@ public class VenmoWebviewFragment extends DialogFragment {
 
         webview.setWebViewClient(new VenmoWebViewClient());
         webview.loadUrl(VENMO_AUTH_URL);
+
+
+        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         return v;
     }
 
@@ -83,9 +88,4 @@ public class VenmoWebviewFragment extends DialogFragment {
     }
 
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return super.onCreateDialog(savedInstanceState);
-    }
 }

@@ -105,7 +105,7 @@
 
 
     <string name="action_accept">ACCEPT</string>
-    <string name="action_decline">DECLINE</string>
+    <string name="action_decline">NO, THANKS</string>
     <!--Welcome Screens -->
     <string name="welcome_skip">SKIP</string>
     <string name="welcome_ok">OK</string>

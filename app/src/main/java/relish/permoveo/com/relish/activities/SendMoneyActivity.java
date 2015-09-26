@@ -38,6 +38,7 @@ import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.fragments.VenmoWebviewFragment;
 import relish.permoveo.com.relish.network.response.VenmoResponse;
+import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.util.TypefaceUtil;
@@ -149,6 +150,27 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
         });
 
 
+        squareIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!launchApp(ConstantUtil.SQUARE_CASH_PACKAGE)) {
+                    Snackbar.make(squareIcon, "Sorry, Square Cash is not installed.", Snackbar.LENGTH_LONG).show();
+
+                }
+            }
+        });
+
+        googleWallet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!launchApp(ConstantUtil.GOOGLE_WALLET_PACKAGE)) {
+                    Snackbar.make(googleWallet, "Sorry, Google Wallet is not installed.", Snackbar.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
         final Animation in = new AlphaAnimation(0.0f, 1.0f);
         in.setDuration(1000);
 
@@ -156,6 +178,18 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
         titleSquareCash.startAnimation(in);
         titleVenmo.startAnimation(in);
         titleGoogleWallet.startAnimation(in);
+    }
+
+    private boolean launchApp(String packageName) {
+        try {
+            Intent LaunchIntent = getPackageManager().getLaunchIntentForPackage(packageName);
+            startActivity(LaunchIntent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     private boolean validateFields() {
@@ -297,7 +331,7 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
     @Override
     public void onVenmoAccessTokenRetrieved(String token) {
 
-        Toast.makeText(this, "Access Token -> " + token, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Access Token -> " + token, Toast.LENGTH_LONG).show();
         SharedPrefsUtil.get.saveVenmoAccessToken(token);
         getSupportFragmentManager().popBackStack();
         titleHeading.setText("Who do you want to pay?");
