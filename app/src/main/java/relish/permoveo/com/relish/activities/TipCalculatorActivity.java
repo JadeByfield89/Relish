@@ -122,6 +122,8 @@ public class TipCalculatorActivity extends RelishActivity {
             }
         });
 
+        etTotalAmount.setSelection(etTotalAmount.getText().length());
+
         etTotalAmount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

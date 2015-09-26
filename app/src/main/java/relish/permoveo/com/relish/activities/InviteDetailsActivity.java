@@ -310,9 +310,15 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
 
         if (persons.size() > 0) {
             for (InvitePerson person : persons) {
+                if (person.id.equals(ParseUser.getCurrentUser().getObjectId())) {
+                    person.name = "me";
+                }
+
                 View result = addInvitePerson(column, person);
-                if (person.id.equals(ParseUser.getCurrentUser().getObjectId()))
+
+                if (person.id.equals(ParseUser.getCurrentUser().getObjectId())) {
                     currentViewInClmn = result;
+                }
             }
         } else {
             addInvitePerson(column, new InvitePerson());
