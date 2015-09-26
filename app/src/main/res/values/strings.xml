@@ -96,7 +96,7 @@
     <string formatted="false" name="share_sms_message">YOU\'RE INVITED!\nHey %s, your friend %s just invited you to join them at %s, on %s, at %s via the Relish app! \nInvite Code: %s\n Reply &quot;YES %s&quot; to accept your invite, or &quot;NO %s&quot; to decline. \n\nYou can also download the Relish app to see who else is going, and get more details at http://relishwith.us</string>
     <string formatted="false" name="share_push_message">Hey, %s has just invited you to eat at %s, on %s, at %s!</string>
     <string formatted="false" name="share_social">I\'ve just invited some friends to join me at %s via the #RelishApp! http://relishwith.us</string>
-    <string formatted="fasle" name="user_response">User %s has responded to your invite!</string>
+    <string formatted="fasle" name="user_response">%s has responded to your invite!</string>
     <string translatable="false" name="app_url">http://www.google.com/</string>
     <string name="invite_contact_message">Hey, I\'m using the Relish app to find new places to eat, and invite my friends to join me. Check it out! \n\nhttp://relishwith.us</string>
     <string name="enter_date">Enter date</string>
@@ -105,7 +105,7 @@
 
 
     <string name="action_accept">ACCEPT</string>
-    <string name="action_decline">DECLINE</string>
+    <string name="action_decline">NO, THANKS</string>
     <!--Welcome Screens -->
     <string name="welcome_skip">SKIP</string>
     <string name="welcome_ok">OK</string>

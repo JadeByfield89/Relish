@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="venmo_app_id">2954</string>
+    <string name="venmo_client_secret">5N8LxE6G9k3DQGAfgXn4WvZ3fbt9GFfd</string>
+    <string name="venmo_app_name">Relish</string>
+    <string name="venmo_callback_url">http://relishwith.us</string>
+</resources>

@@ -17,6 +17,8 @@ import com.andexert.library.RippleView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -40,6 +42,14 @@ public class InviteTwitterListAdapter extends RecyclerView.Adapter<InviteTwitter
         super();
         this.context = context;
         dataset = new ArrayList<>();
+
+    }
+
+    public class CustomComparator implements Comparator<Contact> {
+        @Override
+        public int compare(Contact first, Contact second) {
+            return first.name.compareTo(second.name);
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -71,6 +81,8 @@ public class InviteTwitterListAdapter extends RecyclerView.Adapter<InviteTwitter
 
     public void swap(ArrayList<Contact> contacts) {
         this.dataset = contacts;
+        Collections.sort(dataset, new CustomComparator());
+
         notifyDataSetChanged();
     }
 

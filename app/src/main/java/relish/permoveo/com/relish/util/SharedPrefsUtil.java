@@ -32,6 +32,9 @@ public enum SharedPrefsUtil {
     private static final String PREF_KEY_TWITTER_LOGIN = "is_twitter_loggedin";
     private static final String PREF_USER_NAME = "twitter_user_name";
 
+    // Venmo access token
+    private static final String PREF_VENMO_TOKEN = "venmo_token";
+    private static final String PREF_VENMO_TOKEN_TIMESTAMP = "venmo_token_timestamp";
 
     public void init(final Context context) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -158,6 +161,20 @@ public enum SharedPrefsUtil {
 
     public String getSavedAccessTokenSecret(){
         return sharedPreferences.getString(PREF_KEY_OAUTH_SECRET, "");
+    }
+
+    public void saveVenmoAccessToken(String token){
+        long saveTime = System.currentTimeMillis();
+        sharedPreferences.edit().putString(PREF_VENMO_TOKEN, token).commit();
+        sharedPreferences.edit().putLong(PREF_VENMO_TOKEN_TIMESTAMP, saveTime).commit();
+    }
+
+    public String getVenmoAccessToken(){
+        return sharedPreferences.getString(PREF_VENMO_TOKEN, "");
+    }
+
+    public long getVenmoAccessTokenSaveTime(){
+        return sharedPreferences.getLong(PREF_VENMO_TOKEN_TIMESTAMP, 0);
     }
 
 }

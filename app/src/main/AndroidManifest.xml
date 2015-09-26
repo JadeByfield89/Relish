@@ -143,6 +143,10 @@
             android:name=".activities.TwitterWebViewActivity"
             android:label="Twitter Webview Activity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".venmo.VenmoWebViewActivity"
+            android:label="Venmo Webview Activity"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".receivers.ReminderReceiver"

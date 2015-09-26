@@ -71,7 +71,8 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SendInviteFragment extends Fragment implements RenderCallbacks {
+public class
+        SendInviteFragment extends Fragment implements RenderCallbacks {
 
     @Bind(R.id.invite_send_date_desc)
     TextView sendDateDesc;
@@ -200,7 +201,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                                     for (InvitePerson person : creator.getInvite().invited) {
                                                         if (person instanceof Contact) {
                                                             if (!TextUtils.isEmpty(person.number)) {
-                                                                String senderName = UserUtils.getUsername();
+                                                                String senderName = UserUtils.getFirstName();
                                                                 String smsMessage = String.format(getString(R.string.share_sms_message),
                                                                         person.name, senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), count, count, count);
 
@@ -254,7 +255,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                             pushData.put("type", Invite.InviteType.RECEIVED.toString());
                                             pushData.put("title", creator.getInvite().title);
                                             pushData.put("alert", String.format(getString(R.string.share_push_message),
-                                                    UserUtils.getUsername(), creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime()));
+                                                    UserUtils.getFirstName(), creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime()));
                                         } catch (JSONException e1) {
                                             e1.printStackTrace();
                                         }
