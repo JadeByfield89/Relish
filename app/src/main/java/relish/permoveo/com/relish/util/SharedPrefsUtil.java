@@ -34,6 +34,7 @@ public enum SharedPrefsUtil {
 
     // Venmo access token
     private static final String PREF_VENMO_TOKEN = "venmo_token";
+    private static final String PREF_VENMO_TOKEN_TIMESTAMP = "venmo_token_timestamp";
 
     public void init(final Context context) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);

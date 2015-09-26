@@ -3,6 +3,7 @@ package relish.permoveo.com.relish.activities;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
@@ -93,6 +94,7 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
     private boolean payViewVisible;
 
     private static final int REQUEST_CODE_VENMO_APP_SWITCH = 89;
+    private boolean paymentSent;
 
 
     @Override
@@ -123,7 +125,14 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
         sendMoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                makeVenmoPayment();
+
+                if(!paymentSent) {
+                    if (validateFields()) {
+                        makeVenmoPayment();
+                    }
+                }else{
+                    finish();
+                }
             }
         });
 
@@ -133,7 +142,8 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
             @Override
             public void onClick(View v) {
 
-                handleVenmoPayment();
+                    handleVenmoPayment();
+
             }
         });
 
@@ -145,6 +155,25 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
         titleSquareCash.startAnimation(in);
         titleVenmo.startAnimation(in);
         titleGoogleWallet.startAnimation(in);
+    }
+
+    private boolean validateFields() {
+
+        if (TextUtils.isEmpty(emailOrPhone.getText().toString())) {
+            Snackbar.make(payView, "Please enter a valid email address or phone number.", Snackbar.LENGTH_LONG).show();
+            return false;
+        }
+        if(TextUtils.isEmpty(payAmount.getText().toString()) && TextUtils.isDigitsOnly(payAmount.getText().toString())){
+            Snackbar.make(payView, "Please enter a valid amount to send.", Snackbar.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(TextUtils.isEmpty(note.getText().toString())){
+            Snackbar.make(payView, "Please enter a note for this transaction.", Snackbar.LENGTH_LONG).show();
+            return false;
+        }
+
+        return true;
     }
 
     private void makeVenmoPayment() {
@@ -292,8 +321,8 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
             String whoParam = "email";
 
             // Email
-            if(who.contains("@")){
-                if(who.contains(" ")){
+            if (who.contains("@")) {
+                if (who.contains(" ")) {
                     who = who.replace(" ", "");
                 }
                 whoParam = "email";
@@ -301,13 +330,13 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
             }
 
             // Phone #
-            else if(TextUtils.isDigitsOnly(who) && who.length() == 10 ){
+            else if (TextUtils.isDigitsOnly(who) && who.length() == 10) {
                 whoParam = "phone";
             }
 
             // Phone # that was prefixed with "1"
-            else if(TextUtils.isDigitsOnly(who) && who.length() == 11){
-                if(who.startsWith("1")) {
+            else if (TextUtils.isDigitsOnly(who) && who.length() == 11) {
+                if (who.startsWith("1")) {
                     whoParam = "user_id";
                 }
             }
@@ -330,7 +359,7 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
                 JSONObject payment = data.getJSONObject("payment");
 
                 status = payment.getString("status");
-            }catch(JSONException e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
             Log.d("SendMoneyActivity", "Venmo Response -> " + body);
@@ -345,10 +374,10 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
         protected void onPostExecute(String status) {
             super.onPostExecute(status);
 
-            if(status.contains("pending") || status.contains("settled")){
+            if (status.contains("pending") || status.contains("settled")) {
                 listener.onPaymentSent(true);
-            }
-            else{
+                paymentSent = true;
+            } else {
                 Toast.makeText(getBaseContext(), "There was an error sending payment to " + who, Toast.LENGTH_LONG).show();
             }
         }
