@@ -49,12 +49,17 @@ public class PlacesAutocompleteAdapter extends RecyclerView.Adapter<PlacesAutoco
     public void onBindViewHolder(PlacesAutocompleteAdapter.ViewHolder holder, int position) {
         GooglePlace place = (GooglePlace) getItem(position);
 
-        String placeName = place.name.substring(0, 1).toUpperCase() + place.name.substring(1);
+        String placeName = "";
+        if(place.name != null && !place.name.isEmpty()) {
+            placeName = place.name.substring(0, 1).toUpperCase() + place.name.substring(1);
+        }
 
         holder.placeName.setText(placeName);
         holder.placeName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
 
-        holder.placeLocation.setText(place.address.substring(0, place.address.lastIndexOf(',')));
+        if(place.address != null & !place.address.isEmpty()) {
+            holder.placeLocation.setText(place.address.substring(0, place.address.lastIndexOf(',')));
+        }
         holder.placeLocation.setTypeface(TypefaceUtil.PROXIMA_NOVA);
     }
 
