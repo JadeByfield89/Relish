@@ -27,8 +27,8 @@ public class ConstantUtil {
     public static final String PLACES_SEARCH_TEXT_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json?";
     public static final String PLACES_AUTOCOMPLETE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
     public static final String GOOGLE_PLUS_PERSON_URL = "https://www.googleapis.com/plus/v1/people";
-//    public static final String GOOGLE_API_KEY = "AIzaSyC9iqxOdLUvyfOlMKSJaFRaTnmtqiWbkeI";
-    public static final String GOOGLE_API_KEY = "AIzaSyBS3kWo2opsPBrqsCjYX1JSJA7D2P2t0F4";
+    public static final String GOOGLE_API_KEY = "AIzaSyC9iqxOdLUvyfOlMKSJaFRaTnmtqiWbkeI";
+    //public static final String GOOGLE_API_KEY = "AIzaSyBS3kWo2opsPBrqsCjYX1JSJA7D2P2t0F4";
     public static final String RELISH_USER_AGENT = "relish.permoveo.com.relish.API";
     public static final int NEAREST_PLACES_RADIUS = 4500;
     public static final int MATCHING_PLACE_RADIUS = 500;

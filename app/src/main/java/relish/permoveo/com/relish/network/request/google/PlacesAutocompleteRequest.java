@@ -38,7 +38,7 @@ public class PlacesAutocompleteRequest extends RelishRequest<String, Void, Place
             }
             request.getUrl().put("sensor", "false");
             request.getUrl().put("query", URLEncoder.encode(input, "utf-8"));
-            request.getUrl().put("types", "food|restaurant");
+            //request.getUrl().put("types", "food|restaurant");
 //            request.getUrl().put("types", "geocode");
 //            request.getUrl().put("input", URLEncoder.encode(input, "utf-8"));
 

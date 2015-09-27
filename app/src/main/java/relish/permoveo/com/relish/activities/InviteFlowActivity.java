@@ -154,6 +154,13 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
         }
 
         invitePagerAdapter = new InvitePagerAdapter(getSupportFragmentManager(), currentPlace);
+
+        if(getIntent().hasExtra("isFromInviteFragment")){
+            invitePagerAdapter.setSource(0);
+        }
+        else{
+            invitePagerAdapter.setSource(1);
+        }
         invitePager.setAdapter(invitePagerAdapter);
         pagerIndicator.setViewPager(invitePager);
         invitePager.setOffscreenPageLimit(4);

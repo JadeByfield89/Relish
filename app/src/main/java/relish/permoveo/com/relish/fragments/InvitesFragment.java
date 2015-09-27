@@ -128,7 +128,10 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
 //                animator.start();
 //            }
 
-            startActivityForResult(new Intent(getActivity(), InviteFlowActivity.class), INVITE_FLOW_REQUEST);
+            Intent startInviteFlow = new Intent(getActivity(), InviteFlowActivity.class);
+            startInviteFlow.putExtra("isFromInviteFragment", true);
+
+            startActivityForResult(startInviteFlow, INVITE_FLOW_REQUEST);
         }
     };
 
@@ -203,6 +206,7 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
         inviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 animator.getInvitePager().setVisibility(View.VISIBLE);
                 animator.getPageIndicator().setVisibility(View.VISIBLE);
                 animator.getShareCard().setVisibility(View.GONE);
