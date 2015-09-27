@@ -10,4 +10,9 @@
     <dimen name="fab_threshold">2dp</dimen>
     <dimen name="places_grid_spacing">2dp</dimen>
     <dimen name="places_categories_text_size">13sp</dimen>
+
+    <dimen name="search_container_collapsed">30dp</dimen>
+    <dimen name="search_container_expanded">-2px</dimen>
+    <dimen name="map_container_collapsed">96dp</dimen>
+    <dimen name="map_container_expanded">-1px</dimen>
 </resources>

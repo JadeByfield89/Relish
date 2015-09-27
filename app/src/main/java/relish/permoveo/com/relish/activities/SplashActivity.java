@@ -19,7 +19,7 @@ import relish.permoveo.com.relish.util.TypefaceUtil;
 
 public class SplashActivity extends RelishActivity {
 
-    private static final int SPLASH_DELAY = 6000;
+    private static final int SPLASH_DELAY = 100;
     private MediaPlayer mediaPlayer;
     private boolean isActivityOnScreen;
 
@@ -30,7 +30,6 @@ public class SplashActivity extends RelishActivity {
         setContentView(R.layout.activity_splash);
 
         updateStatusBar(getResources().getColor(R.color.main_color_dark));
-
 
         TitanicTextView splashText = ButterKnife.findById(this, R.id.tv_splash);
 

@@ -23,14 +23,13 @@
             android:paddingBottom="12dp"
             android:paddingTop="12dp"
             android:focusableInTouchMode="true"
-            android:layout_height="30dp">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/search_icon"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_width="18dp"
-                android:visibility="gone"
                 android:layout_height="18dp"
                 android:src="@drawable/ic_search"/>
 
@@ -40,7 +39,6 @@
                 android:layout_centerVertical="true"
                 android:textColor="@color/invite_title_color"
                 android:textSize="18sp"
-                android:visibility="gone"
                 android:hint="Search"
                 android:layout_marginRight="16dp"
                 android:layout_marginLeft="16dp"
@@ -55,10 +53,22 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_width="16dp"
-                android:visibility="gone"
                 android:layout_height="16dp"
                 android:clickable="true"
                 android:src="@drawable/ic_close"/>
+
+            <relish.permoveo.com.relish.view.BounceProgressBar
+                xmlns:bpb="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/bounce_progress"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                bpb:shape="circle"
+                bpb:singleSrcSize="8dp"
+                bpb:speed="250"
+                bpb:src="@color/main_color"/>
 
             <ImageView
                 android:id="@+id/my_location_icon"
@@ -72,9 +82,8 @@
 
         </RelativeLayout>
 
-        <fragment
+        <com.google.android.gms.maps.MapView
             android:id="@+id/map"
-            class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/invite_place_info_container"
@@ -91,6 +100,18 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:layout_above="@+id/invite_place_info_container"/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:paddingTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:clipToPadding="false"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/map"
+            android:layout_above="@+id/button_next"/>
 
         <LinearLayout
             android:id="@+id/invite_place_info_container"
