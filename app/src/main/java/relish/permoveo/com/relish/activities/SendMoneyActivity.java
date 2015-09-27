@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -91,6 +92,9 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
 
     @Bind(R.id.bSendMoney)
     Button sendMoney;
+
+    @Bind(R.id.cvSelectApp)
+    CardView selectApp;
 
     private boolean payViewVisible;
 
@@ -278,6 +282,8 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
     }
 
     private void hideViews() {
+        selectApp.setVisibility(View.GONE);
+
         venmo.setVisibility(View.GONE);
         titleVenmo.setVisibility(View.GONE);
 
@@ -286,9 +292,12 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
 
         googleWallet.setVisibility(View.GONE);
         titleGoogleWallet.setVisibility(View.GONE);
+
     }
 
     private void showViews() {
+        selectApp.setVisibility(View.VISIBLE);
+
         venmo.setVisibility(View.VISIBLE);
         titleVenmo.setVisibility(View.VISIBLE);
 

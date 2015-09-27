@@ -160,10 +160,10 @@
             android:id="@+id/tvTipAmount"
             android:textColor="@color/drawer_item_text_color"
             android:textSize="17sp"
-            android:text=""
+            android:text="0.00"
             android:background="@null"
             android:textStyle="bold"
-            android:layout_marginLeft="145dp"
+            android:layout_marginLeft="154dp"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -202,7 +202,7 @@
             android:text="0.00"
             android:background="@null"
             android:textStyle="bold"
-            android:layout_marginLeft="109dp"
+            android:layout_marginLeft="118dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -240,14 +240,13 @@
         android:id="@+id/tvTotalToPay"
         android:textColor="@color/drawer_item_text_color"
         android:textSize="30sp"
-        android:text=""
+        android:text="0.00"
         android:background="@null"
         android:textStyle="bold"
         android:layout_alignParentRight="true"
         android:layout_below="@id/calculator_input_container"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="100dp"
-        android:layout_marginLeft="80dp"
+        android:layout_marginRight="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

@@ -126,6 +126,9 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
     @Bind(R.id.invite_details_note_title)
     TextView inviteDetailsNoteTitle;
 
+    @Bind(R.id.ivRatingImage)
+    ImageView ratingImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

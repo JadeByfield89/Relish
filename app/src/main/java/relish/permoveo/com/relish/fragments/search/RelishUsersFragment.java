@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -147,10 +148,14 @@ public class RelishUsersFragment extends Fragment {
                             bounceProgressBar.setVisibility(View.GONE);
                             recyclerView.setVisibility(View.VISIBLE);
                             emptyView.setVisibility(View.GONE);
+                            Log.d("RelishUsersFragment", "Search results size -> " + friends.size());
                         } else {
                             adapter.clear();
                             recyclerView.setVisibility(View.GONE);
                             emptyView.setVisibility(View.VISIBLE);
+                            bounceProgressBar.setVisibility(View.GONE);
+                            Log.d("RelishUsersFragment", "Search results size -> " + friends.size());
+
                         }
                     } else {
                         if (isAdded())

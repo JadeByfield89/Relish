@@ -201,9 +201,9 @@ public class
                                                     for (InvitePerson person : creator.getInvite().invited) {
                                                         if (person instanceof Contact) {
                                                             if (!TextUtils.isEmpty(person.number)) {
-                                                                String senderName = UserUtils.getFirstName();
+                                                                String senderName = UserUtils.getFullName();
                                                                 String smsMessage = String.format(getString(R.string.share_sms_message),
-                                                                        person.name, senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), count, count, count);
+                                                                         senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), count, count, count);
 
                                                                 if (!TextUtils.isEmpty(person.number)) {
                                                                     manager.sendInviteSmsViaTwilio(person.number, smsMessage);

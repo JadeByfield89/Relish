@@ -47,6 +47,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp">
 
+                    <ImageView
+                        android:id="@+id/ivRatingImage"
+                        android:layout_marginBottom="12dp"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone"
+                        android:layout_width="95dp"
+                        android:layout_height="20dp" />
+
                     <relish.permoveo.com.relish.view.RatingView
                         android:id="@+id/invite_details_rating_view"
                         android:layout_width="wrap_content"
