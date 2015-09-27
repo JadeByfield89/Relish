@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    tools:context="relish.permoveo.com.relish.fragments.inviteflow.TwitterInviteFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                tools:context="relish.permoveo.com.relish.fragments.inviteflow.TwitterInviteFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/twitter_invite_recycler"
@@ -56,7 +56,7 @@
             android:layout_centerHorizontal="true"
             android:background="@drawable/connect_twitter_button_bg"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <relish.permoveo.com.relish.view.BounceProgressBar

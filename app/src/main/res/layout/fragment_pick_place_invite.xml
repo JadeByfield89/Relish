@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <RelativeLayout
         android:orientation="vertical"
-        android:id="@+id/invite_card"
+        android:id="@+id/invite_pick_place_card"
         android:layout_width="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
@@ -103,9 +103,10 @@
 
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/autcomplete_places_list"
             android:layout_width="match_parent"
             android:visibility="gone"
-            android:paddingTop="16dp"
+            android:scrollbars="vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:clipToPadding="false"
@@ -136,21 +137,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:textColor="@color/place_grid_distance_color"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
             <TextView
                 android:id="@+id/invite_place_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:textSize="22sp" />
+                android:textSize="22sp"/>
 
             <TextView
                 android:id="@+id/invite_place_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/place_grid_distance_color"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
         </LinearLayout>
 

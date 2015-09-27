@@ -47,46 +47,37 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
 
     public static final String PLACE_FOR_INVITE_EXTRA = "extra_place_for_invite";
     public static final String IS_INVITE_SENT_EXTRA = "extra_is_invite_sent";
-
-    private InvitePagerAdapter invitePagerAdapter;
-    private int currentStep = 0;
-
     @Bind(R.id.pager_invite)
     NonSwipeableViewPager invitePager;
-
     @Bind(R.id.invite_place_image)
     ImageView invitePlaceImage;
-
     @Bind(R.id.pager_indicator)
     CirclePageIndicator pagerIndicator;
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-
     @Bind(R.id.invite_success_title)
     TextView inviteSuccessTitle;
-
     @Bind(R.id.layout_success)
     RelativeLayout successLayout;
-
     @Bind(R.id.invite_share_card)
     CardView successCardView;
-
     @Bind(R.id.share_facebook)
     ImageView shareFacebook;
-
     @Bind(R.id.share_twitter)
     ImageView shareTwitter;
-
     @Bind(R.id.share_plus)
     ImageView shareGooglePlus;
-
     @Bind(R.id.invite_message)
     TextView inviteMessage;
-
+    private InvitePagerAdapter invitePagerAdapter;
+    private int currentStep = 0;
     private String[] TITLES;
     private YelpPlace currentPlace;
     private Invite invite;
+
+    protected static String makeFragmentName(int viewId, int index) {
+        return "android:switcher:" + viewId + ":" + index;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +147,8 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
                         BitmapFactory.decodeResource(getResources(), R.drawable.login_signup_background), 10));
             }
         } else {
+            getSupportActionBar().setTitle(getString(R.string.invite_first_step));
+
             invitePlaceImage.setImageBitmap(BlurBuilder.blur(InviteFlowActivity.this,
                     BitmapFactory.decodeResource(getResources(), R.drawable.login_signup_background), 10));
         }
@@ -255,10 +248,6 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
         return getSupportFragmentManager().findFragmentByTag(name);
     }
 
-    protected static String makeFragmentName(int viewId, int index) {
-        return "android:switcher:" + viewId + ":" + index;
-    }
-
     @Override
     public void next() {
         invitePager.setCurrentItem(invitePager.getCurrentItem() + 1, true);
@@ -286,12 +275,12 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
 
     @Override
     public void onInviteSent(boolean success) {
-        if(success){
+        if (success) {
             showInviteSuccessAnimation();
         }
     }
 
-    private void showInviteSuccessAnimation(){
+    private void showInviteSuccessAnimation() {
         Log.d("InviteFlowActivity", "showInviteSuccessAnimation()");
         getInvite().isSent = true;
         inviteSuccessTitle.setVisibility(View.VISIBLE);
@@ -307,7 +296,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        for(Fragment fragment: getSupportFragmentManager().getFragments()){
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
 

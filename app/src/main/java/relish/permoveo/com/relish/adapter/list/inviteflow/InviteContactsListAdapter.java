@@ -42,28 +42,6 @@ public class InviteContactsListAdapter extends RecyclerView.Adapter<InviteContac
         dataset = new ArrayList<>();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.contact_name)
-        TextView contactName;
-
-        @Bind(R.id.contact_image)
-        CircleImageView contactImage;
-
-        @Bind(R.id.root)
-        RelativeLayout root;
-
-        @Bind(R.id.ripple)
-        RippleView rippleView;
-
-        @Bind(R.id.contact_number)
-        TextView contactNumber;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-    }
-
     public void clear() {
         this.dataset.clear();
         notifyDataSetChanged();
@@ -182,5 +160,27 @@ public class InviteContactsListAdapter extends RecyclerView.Adapter<InviteContac
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.contact_name)
+        TextView contactName;
+
+        @Bind(R.id.contact_image)
+        CircleImageView contactImage;
+
+        @Bind(R.id.root)
+        RelativeLayout root;
+
+        @Bind(R.id.ripple)
+        RippleView rippleView;
+
+        @Bind(R.id.contact_number)
+        TextView contactNumber;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
     }
 }

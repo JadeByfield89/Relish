@@ -31,7 +31,7 @@
                 android:id="@+id/layout_invite"
                 layout="@layout/activity_invite_flow"
                 android:layout_height="match_parent"
-                android:layout_width="match_parent" />
+                android:layout_width="match_parent"/>
 
         </RelativeLayout>
     </RelativeLayout>
@@ -45,7 +45,8 @@
         android:layout_gravity="start"
         tools:layout="@layout/fragment_navigation_drawer"/>
 
-    <fragment android:id="@+id/filter_drawer"
+    <fragment
+        android:id="@+id/filter_drawer"
         android:name="relish.permoveo.com.relish.fragments.PlacesFilterFragment"
         android:layout_width="240dp"
         android:layout_height="match_parent"
@@ -53,7 +54,6 @@
         android:background="#fff"
         tools:layout="@layout/fragment_filter_places"
         />
-
 
 
 </android.support.v4.widget.DrawerLayout>

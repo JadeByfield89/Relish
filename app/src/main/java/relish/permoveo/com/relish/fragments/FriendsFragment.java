@@ -29,13 +29,11 @@ import relish.permoveo.com.relish.util.SharedPrefsUtil;
  */
 public class FriendsFragment extends Fragment {
 
-    private FriendsPagerAdapter adapter;
-
     @Bind(R.id.friends_tabs)
     PagerSlidingTabStrip tabs;
-
     @Bind(R.id.friends_pager)
     ViewPager viewPager;
+    private FriendsPagerAdapter adapter;
 
     public FriendsFragment() {
         // Required empty public constructor

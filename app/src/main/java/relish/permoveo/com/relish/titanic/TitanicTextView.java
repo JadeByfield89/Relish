@@ -20,10 +20,6 @@ import relish.permoveo.com.relish.R;
  */
 public class TitanicTextView extends TextView {
 
-    public interface AnimationSetupCallback {
-        public void onSetupAnimation(TitanicTextView titanicTextView);
-    }
-
     // callback fired at first onSizeChanged
     private AnimationSetupCallback animationSetupCallback;
     // wave shader coordinates
@@ -32,7 +28,6 @@ public class TitanicTextView extends TextView {
     private boolean sinking;
     // true after the first onSizeChanged
     private boolean setUp;
-
     // shader containing a repeated wave
     private BitmapShader shader;
     // shader matrix
@@ -41,7 +36,6 @@ public class TitanicTextView extends TextView {
     private Drawable wave;
     // (getHeight() - waveHeight) / 2
     private float offsetY;
-
     public TitanicTextView(Context context) {
         super(context);
         init();
@@ -175,5 +169,9 @@ public class TitanicTextView extends TextView {
         }
 
         super.onDraw(canvas);
+    }
+
+    public interface AnimationSetupCallback {
+        public void onSetupAnimation(TitanicTextView titanicTextView);
     }
 }

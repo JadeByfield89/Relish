@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@color/fragment_background"
-    android:id="@+id/rating_dialog_root"
-    android:minHeight="220dp"
-    android:layout_height="match_parent">
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:background="@color/fragment_background"
+              android:id="@+id/rating_dialog_root"
+              android:minHeight="220dp"
+              android:layout_height="match_parent">
 
 
     <TextView
@@ -16,7 +17,7 @@
         android:layout_marginTop="20dp"
         android:textSize="20sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
 
     <TextView
@@ -27,8 +28,7 @@
         android:layout_marginRight="40dp"
         android:textSize="18sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content"/>
 
 
     <RatingBar
@@ -39,7 +39,7 @@
         android:layout_marginTop="15dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
 
     <TextView
@@ -55,6 +55,6 @@
         android:visibility="gone"
         android:text="@string/settings_rating_dialog_thanks"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

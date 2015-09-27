@@ -23,11 +23,9 @@ import relish.permoveo.com.relish.interfaces.OnInviteSentListener;
  */
 public class EmptyCardFragment extends Fragment {
 
+    private static final int ANIMATION_DURATION = 500;
     @Bind(R.id.button_animate)
     Button animateButton;
-
-    private static final int ANIMATION_DURATION = 500;
-
 
     @Nullable
     @Override
@@ -67,7 +65,6 @@ public class EmptyCardFragment extends Fragment {
             }
         }).playOn(view);
     }
-
 
 
 }

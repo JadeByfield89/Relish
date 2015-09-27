@@ -20,16 +20,13 @@ import relish.permoveo.com.relish.util.TypefaceSpan;
 
 public class AddFriendsActivity extends RelishActivity {
 
-    private AddFriendsPagerAdapter adapter;
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-
     @Bind(R.id.add_friends_pager)
     ViewPager pager;
-
     @Bind(R.id.add_friends_tabs)
     PagerSlidingTabStrip tabs;
+    private AddFriendsPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

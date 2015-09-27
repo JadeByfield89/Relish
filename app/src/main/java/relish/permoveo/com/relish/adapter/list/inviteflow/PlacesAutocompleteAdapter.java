@@ -29,20 +29,6 @@ public class PlacesAutocompleteAdapter extends RecyclerView.Adapter<PlacesAutoco
         dataset = new ArrayList<>();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        @Bind(R.id.place_name)
-        TextView placeName;
-
-        @Bind(R.id.place_location)
-        TextView placeLocation;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-    }
-
     public void clear() {
         this.dataset.clear();
         notifyDataSetChanged();
@@ -63,25 +49,13 @@ public class PlacesAutocompleteAdapter extends RecyclerView.Adapter<PlacesAutoco
     public void onBindViewHolder(PlacesAutocompleteAdapter.ViewHolder holder, int position) {
         GooglePlace place = (GooglePlace) getItem(position);
 
-        String friendName = place.name.substring(0, 1).toUpperCase() + place.name.substring(1);
+        String placeName = place.name.substring(0, 1).toUpperCase() + place.name.substring(1);
 
-        holder.placeName.setText(friendName);
+        holder.placeName.setText(placeName);
         holder.placeName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
 
-        if (place.geometry.location.lat != 0.0d && place.geometry.location.lng != 0.0d) {
-            holder.placeLocation.setVisibility(View.VISIBLE);
-
-//            //Only remove the zip code if this string contains a number
-//            if(friend.address != null) {
-//                if (friend.address.matches(".*\\d+.*")) {
-//                    friend.address = friend.address.substring(0, friend.address.length() - 5);
-//                }
-//            }
-
-            holder.placeLocation.setTypeface(TypefaceUtil.PROXIMA_NOVA);
-        } else {
-            holder.placeLocation.setVisibility(View.GONE);
-        }
+        holder.placeLocation.setText(place.address.substring(0, place.address.lastIndexOf(',')));
+        holder.placeLocation.setTypeface(TypefaceUtil.PROXIMA_NOVA);
     }
 
     public Object getItem(final int position) {
@@ -96,5 +70,19 @@ public class PlacesAutocompleteAdapter extends RecyclerView.Adapter<PlacesAutoco
     @Override
     public int getItemCount() {
         return dataset.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        @Bind(R.id.place_name)
+        TextView placeName;
+
+        @Bind(R.id.place_location)
+        TextView placeLocation;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
     }
 }

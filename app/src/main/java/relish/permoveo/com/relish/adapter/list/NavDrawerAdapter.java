@@ -22,30 +22,13 @@ import relish.permoveo.com.relish.util.TypefaceUtil;
  */
 public class NavDrawerAdapter extends BaseAdapter {
 
-    private enum NavDrawerItemType {ITEM, DIVIDER}
-
     private ArrayList<NavDrawerItem> navDrawerItems;
     private LayoutInflater inflater;
-
     public NavDrawerAdapter(Context context,
                             ArrayList<NavDrawerItem> navDrawerItems) {
         this.inflater = LayoutInflater.from(context);
         this.navDrawerItems = navDrawerItems;
     }
-
-    static class ViewHolder {
-        @Bind(R.id.nav_drawer_item_icon)
-        public ImageView icon;
-        @Bind(R.id.nav_drawer_item_title)
-        public TextView title;
-        @Bind(R.id.nav_drawer_item_badge)
-        public TextView badge;
-
-        public ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
-    }
-
 
     public void set(String name, int count) {
         int index = -1;
@@ -123,5 +106,20 @@ public class NavDrawerAdapter extends BaseAdapter {
         }
 
         return convertView;
+    }
+
+    private enum NavDrawerItemType {ITEM, DIVIDER}
+
+    static class ViewHolder {
+        @Bind(R.id.nav_drawer_item_icon)
+        public ImageView icon;
+        @Bind(R.id.nav_drawer_item_title)
+        public TextView title;
+        @Bind(R.id.nav_drawer_item_badge)
+        public TextView badge;
+
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }

@@ -215,8 +215,8 @@ public class
                                                     }
 
                                                     // SEND INVITE VIA EMAIL IF EMAIL CONTACTS WERE SELECTED
-                                                    for(InvitePerson person: creator.getInvite().invited){
-                                                        if(person instanceof Contact) {
+                                                    for (InvitePerson person : creator.getInvite().invited) {
+                                                        if (person instanceof Contact) {
                                                             if (TextUtils.isEmpty(person.number) && !TextUtils.isEmpty(((Contact) person).email)) {
                                                                 Log.d("SendInviteFragment", "Sending invite to " + ((Contact) person).email);
                                                                 creator.getInvite().inviteId = "" + count;
@@ -241,8 +241,8 @@ public class
                                         // SENDING INVITE VIA PUSH NOTIFICATIONS
                                         ArrayList<String> friendsIds = new ArrayList<>();
                                         for (InvitePerson person : creator.getInvite().invited) {
-                                                if (person instanceof Friend)
-                                                    friendsIds.add(((Friend) person).id);
+                                            if (person instanceof Friend)
+                                                friendsIds.add(((Friend) person).id);
                                         }
 
                                         ParsePush parsePush = new ParsePush();

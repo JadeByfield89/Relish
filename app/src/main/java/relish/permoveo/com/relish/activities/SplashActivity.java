@@ -19,7 +19,7 @@ import relish.permoveo.com.relish.util.TypefaceUtil;
 
 public class SplashActivity extends RelishActivity {
 
-    private static final int SPLASH_DELAY = 100;
+    private static final int SPLASH_DELAY = 6000;
     private MediaPlayer mediaPlayer;
     private boolean isActivityOnScreen;
 
@@ -27,71 +27,88 @@ public class SplashActivity extends RelishActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
 
-        updateStatusBar(getResources().getColor(R.color.main_color_dark));
-
-        TitanicTextView splashText = ButterKnife.findById(this, R.id.tv_splash);
-
-        splashText.setTypeface(TypefaceUtil.BRANNBOLL_BOLD);
-
-        final Animation in = new AlphaAnimation(0.0f, 1.0f);
-        in.setDuration(2000);
-
-        mediaPlayer = MediaPlayer.create(this, R.raw.wine_pour);
-        Titanic titanic = new Titanic();
-        titanic.setAnimatorListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mediaPlayer.start();
-                    }
-                }, 1000);
+        if (SharedPrefsUtil.get.hasLaunchedPrior()) {
+            if (ParseUser.getCurrentUser() != null) {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Intent loginIntent = new Intent(this, SignupActivity.class);
+                startActivity(loginIntent);
+                finish();
             }
+        } else {
+            setContentView(R.layout.activity_splash);
 
-            @Override
-            public void onAnimationEnd(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
-        splashText.startAnimation(in);
-        titanic.start(splashText);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isActivityOnScreen) {
-                    if (ParseUser.getCurrentUser() == null) {
+            updateStatusBar(getResources().getColor(R.color.main_color_dark));
 
 
-                        if (!SharedPrefsUtil.get.hasLaunchedPrior()) {
-                            startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
-                            SharedPrefsUtil.get.setAppLaunched();
-                        } else {
-                            startActivity(new Intent(SplashActivity.this, SignupActivity.class));
+            TitanicTextView splashText = ButterKnife.findById(this, R.id.tv_splash);
+
+            splashText.setTypeface(TypefaceUtil.BRANNBOLL_BOLD);
+
+            final Animation in = new AlphaAnimation(0.0f, 1.0f);
+            in.setDuration(2000);
+
+            mediaPlayer = MediaPlayer.create(this, R.raw.wine_pour);
+            Titanic titanic = new Titanic();
+            titanic.setAnimatorListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mediaPlayer.start();
                         }
-
-                    } else {
-
-
-                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
-
-
-                    }
-                    finish();
+                    }, 1000);
                 }
-            }
-        }, SPLASH_DELAY);
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            splashText.startAnimation(in);
+            titanic.start(splashText);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (isActivityOnScreen) {
+                        if (ParseUser.getCurrentUser() == null) {
+
+
+                            if (!SharedPrefsUtil.get.hasLaunchedPrior()) {
+                                startActivity(new Intent(SplashActivity.this, WelcomeActivity.class));
+                                SharedPrefsUtil.get.setAppLaunched();
+                            } else {
+                                startActivity(new Intent(SplashActivity.this, SignupActivity.class));
+                            }
+
+                        } else {
+
+
+                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+
+
+                        }
+                        finish();
+                    }
+                }
+            }, SPLASH_DELAY);
+
+        }
+
+
     }
 
     @Override
@@ -105,5 +122,6 @@ public class SplashActivity extends RelishActivity {
         super.onPause();
         mediaPlayer.stop();
         isActivityOnScreen = false;
+
     }
 }

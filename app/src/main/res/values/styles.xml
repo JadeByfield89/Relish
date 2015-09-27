@@ -14,7 +14,7 @@
 
     <!-- Popup Menu Background Color styles -->
     <style name="MyPopupMenu"
-        parent="@android:style/Widget.Holo.ListPopupWindow">
+           parent="@android:style/Widget.Holo.ListPopupWindow">
         <item name="android:popupBackground">@color/fragment_background</item>
     </style>
     <!-- Popup Menu Text Color styles -->
@@ -22,7 +22,7 @@
         <item name="android:textColor">@color/main_color</item>
     </style>
 
-    <style name="AppTheme" parent="AppTheme.Base" />
+    <style name="AppTheme" parent="AppTheme.Base"/>
 
     <style name="CustomDigitsTheme" parent="Theme.AppCompat">
         <item name="android:textColorPrimary">@color/main_color</item>

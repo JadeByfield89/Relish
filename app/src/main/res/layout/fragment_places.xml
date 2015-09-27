@@ -1,11 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/root_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/fragment_background"
-    tools:context="relish.permoveo.com.relish.fragments.PlacesFragment">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/fragment_background"
+                tools:context="relish.permoveo.com.relish.fragments.PlacesFragment">
 
     <RelativeLayout
         android:id="@+id/header_layout"
@@ -16,7 +16,7 @@
             android:id="@+id/header_place_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"/>
 
         <FrameLayout
             android:id="@+id/header_place_details_frame"
@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:layout_above="@+id/header_place_name" />
+                    android:layout_above="@+id/header_place_name"/>
 
                 <TextView
                     android:id="@+id/header_place_name"
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
-                    android:layout_above="@+id/header_place_distance" />
+                    android:layout_above="@+id/header_place_distance"/>
 
                 <TextView
                     android:id="@+id/header_place_distance"
@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:textColor="@android:color/white"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
             </LinearLayout>
 
             <TextView
@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|bottom"
                 android:textColor="@color/main_color"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
         </FrameLayout>
 
     </RelativeLayout>
@@ -71,7 +71,7 @@
         android:id="@+id/recycler_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/fragment_background" />
+        android:background="@color/fragment_background"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/places_swipe_refresh"
@@ -83,7 +83,7 @@
             android:clipToPadding="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="none" />
+            android:scrollbars="none"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 
@@ -96,7 +96,7 @@
         android:text="@string/no_places"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <relish.permoveo.com.relish.view.BounceProgressBar
 
@@ -109,8 +109,7 @@
         bpb:shape="circle"
         bpb:singleSrcSize="14dp"
         bpb:speed="250"
-        bpb:src="@color/main_color" />
-
+        bpb:src="@color/main_color"/>
 
 
 </RelativeLayout>

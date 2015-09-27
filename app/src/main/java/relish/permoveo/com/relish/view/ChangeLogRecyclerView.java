@@ -3,6 +3,7 @@ package relish.permoveo.com.relish.view;
 /**
  * Created by byfieldj on 9/23/15.
  */
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.Toast;
+
 import it.gmariotti.changelibs.R.string;
 import it.gmariotti.changelibs.R.styleable;
 import it.gmariotti.changelibs.library.Constants;
@@ -22,15 +24,15 @@ import it.gmariotti.changelibs.library.parser.XmlParser;
 import relish.permoveo.com.relish.adapter.list.CustomChangeLogRecyclerAdapter;
 
 public class ChangeLogRecyclerView extends RecyclerView {
+    protected static String TAG = "ChangeLogRecyclerView";
     protected int mRowLayoutId;
     protected int mRowHeaderLayoutId;
     protected int mChangeLogFileResourceId;
     protected String mChangeLogFileResourceUrl;
-    protected static String TAG = "ChangeLogRecyclerView";
     protected CustomChangeLogRecyclerAdapter mAdapter;
 
     public ChangeLogRecyclerView(Context context) {
-        this(context, (AttributeSet)null);
+        this(context, (AttributeSet) null);
     }
 
     public ChangeLogRecyclerView(Context context, AttributeSet attrs) {
@@ -76,7 +78,7 @@ public class ChangeLogRecyclerView extends RecyclerView {
     protected void initAdapter() {
         try {
             XmlParser e;
-            if(this.mChangeLogFileResourceUrl != null) {
+            if (this.mChangeLogFileResourceUrl != null) {
                 e = new XmlParser(this.getContext(), this.mChangeLogFileResourceUrl);
             } else {
                 e = new XmlParser(this.getContext(), this.mChangeLogFileResourceId);
@@ -86,7 +88,7 @@ public class ChangeLogRecyclerView extends RecyclerView {
             this.mAdapter = new CustomChangeLogRecyclerAdapter(this.getContext(), chg.getRows());
             this.mAdapter.setRowLayoutId(this.mRowLayoutId);
             this.mAdapter.setRowHeaderLayoutId(this.mRowHeaderLayoutId);
-            if(this.mChangeLogFileResourceUrl != null && (this.mChangeLogFileResourceUrl == null || !Util.isConnected(this.getContext()))) {
+            if (this.mChangeLogFileResourceUrl != null && (this.mChangeLogFileResourceUrl == null || !Util.isConnected(this.getContext()))) {
                 Toast.makeText(this.getContext(), string.changelog_internal_error_internet_connection, Toast.LENGTH_LONG).show();
             } else {
                 (new ChangeLogRecyclerView.ParseAsyncTask(this.mAdapter, e)).execute(new Void[0]);
@@ -110,7 +112,7 @@ public class ChangeLogRecyclerView extends RecyclerView {
 
         protected ChangeLog doInBackground(Void... params) {
             try {
-                if(this.mParse != null) {
+                if (this.mParse != null) {
                     ChangeLog e = this.mParse.readChangeLogFile();
                     return e;
                 }
@@ -122,7 +124,7 @@ public class ChangeLogRecyclerView extends RecyclerView {
         }
 
         protected void onPostExecute(ChangeLog chg) {
-            if(chg != null) {
+            if (chg != null) {
                 this.mAdapter.add(chg.getRows());
             }
 

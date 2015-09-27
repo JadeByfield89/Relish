@@ -50,54 +50,38 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
  */
 public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFragment.onVenmoAccessTokenRetrievedListener {
 
+    private static final int REQUEST_CODE_VENMO_APP_SWITCH = 89;
+    private static final long TOKEN_EXPIRY_TIME = 1800000L;
     @Bind(R.id.tvHeading)
     TextView titleHeading;
-
     @Bind(R.id.ivSquareCash)
     ImageView squareIcon;
-
     @Bind(R.id.tvSquareCash)
     TextView titleSquareCash;
-
     @Bind(R.id.ivVenmo)
     ImageView venmo;
-
     @Bind(R.id.tvVenmo)
     TextView titleVenmo;
-
     @Bind(R.id.ivGoogleWallet)
     ImageView googleWallet;
-
     @Bind(R.id.tvGoogleWallet)
     TextView titleGoogleWallet;
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-
     @Bind(R.id.layout_pay)
     View payView;
-
     @Bind(R.id.bounce_progress)
     BounceProgressBar progress;
-
     @Bind(R.id.etAmount)
     EditText payAmount;
-
     @Bind(R.id.etEmailOrPhone)
     EditText emailOrPhone;
-
     @Bind(R.id.etNote)
     EditText note;
-
     @Bind(R.id.bSendMoney)
     Button sendMoney;
-
     private boolean payViewVisible;
-
-    private static final int REQUEST_CODE_VENMO_APP_SWITCH = 89;
     private boolean paymentSent;
-
-    private static final long TOKEN_EXPIRY_TIME = 1800000L;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -346,12 +330,11 @@ public class SendMoneyActivity extends RelishActivity implements VenmoWebviewFra
 
     private class MakeVenmoPaymentTask extends AsyncTask<Void, Void, String> {
 
-        private onVenmoPaymentSentListener listener;
         private static final String VENMO_PAYMENTS_ENDPOINT = "https://api.venmo.com/v1/payments";
-
         String who;
         String amount;
         String note;
+        private onVenmoPaymentSentListener listener;
 
 
         public MakeVenmoPaymentTask(final onVenmoPaymentSentListener listener, final String who, final String amount, final String note) {

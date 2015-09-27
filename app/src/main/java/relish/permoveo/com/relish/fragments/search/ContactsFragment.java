@@ -50,27 +50,22 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
  */
 public class ContactsFragment extends Fragment {
 
-    private MenuItem searchItem;
     private static final String[] PROJECTION = new String[]{
             ContactsContract.CommonDataKinds.Phone._ID,
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
             ContactsContract.CommonDataKinds.Phone.NUMBER,
             ContactsContract.CommonDataKinds.Phone.PHOTO_URI
     };
-
-    private ContactsAdapter adapter;
-
     @Bind(R.id.empty_contacts_container)
     LinearLayout emptyView;
-
     @Bind(R.id.bounce_progress)
     BounceProgressBar contactsProgress;
-
     @Bind(R.id.contacts_recycler)
     RecyclerView recyclerView;
-
     AlertDialog dialog;
     EditText dialogMessage;
+    private MenuItem searchItem;
+    private ContactsAdapter adapter;
 
     public ContactsFragment() {
         // Required empty public constructor

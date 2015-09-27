@@ -36,13 +36,10 @@ import com.wdullaer.materialdatetimepicker.R;
 public class TextViewWithCircularIndicator extends TextView {
 
     private static final int SELECTED_CIRCLE_ALPHA = 255;
-
-    Paint mCirclePaint = new Paint();
-
     private final int mRadius;
-    private int mCircleColor;
     private final String mItemIsSelectedText;
-
+    Paint mCirclePaint = new Paint();
+    private int mCircleColor;
     private boolean mDrawCircle;
 
     public TextViewWithCircularIndicator(Context context, AttributeSet attrs) {
@@ -72,6 +69,7 @@ public class TextViewWithCircularIndicator extends TextView {
 
     /**
      * Programmatically set the color state list (see mdtp_date_picker_year_selector)
+     *
      * @param accentColor pressed state text color
      * @return ColorStateList with pressed state
      */

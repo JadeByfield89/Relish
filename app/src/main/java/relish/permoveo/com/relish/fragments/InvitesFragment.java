@@ -58,49 +58,83 @@ import relish.permoveo.com.relish.view.RelishDrawerToggle;
  */
 public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDrawerSlideListener {
 
+    public final static float SCALE_FACTOR = 13f;
+    public final static int ANIMATION_DURATION = 250;
+    public final static int MINIMUN_X_DISTANCE = 200;
     private static final String TO_INVITE_DETAILS_PARAM = "to_invite_details_param";
     private static final String ACTION_PARAM = "action_param";
     private static final int INVITE_FLOW_REQUEST = 228;
-
     @Bind(R.id.invites_list_view)
     RecyclerView recyclerView;
-
     @Bind(R.id.empty_list_container)
     LinearLayout emptyView;
-
     @Bind(R.id.bounce_progress)
     BounceProgressBar progressBar;
-
     @Bind(R.id.empty_message)
     TextView emptyMessage;
-
     @Bind(R.id.fab_invite)
     FloatingActionButton inviteButton;
-
     private InvitesListAdapter adapter;
     private CircularRevealAnimator animator;
     private String inviteId;
     private boolean action;
-
-    public final static float SCALE_FACTOR = 13f;
-    public final static int ANIMATION_DURATION = 250;
-    public final static int MINIMUN_X_DISTANCE = 200;
-
     private boolean fromInvite;
     private boolean mRevealFlag;
     private ObjectAnimator revealAnimator;
     private ViewPropertyAnimator fabAnimator;
+    private AnimatorListenerAdapter mEndRevealListener = new AnimatorListenerAdapter() {
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            Log.d("onAnimationEnd", "onAnimationEnd");
+            revealAnimator.removeAllListeners();
+            revealAnimator.end();
+            revealAnimator.cancel();
+            fabAnimator.setListener(null);
+            fabAnimator.cancel();
+
+
+            inviteButton.setVisibility(View.INVISIBLE);
+            mRevealFlag = false;
+            //activity_container.setBackgroundColor(getResources()
+            // .getColor(R.color.main_color));
+            animator.getRevealContainer().setVisibility(View.VISIBLE);
+            animator.getToolbar().setVisibility(View.GONE);
+
+            /*for (int i = 0; i < activity_container.getChildCount(); i++) {
+                View v = activity_container.getChildAt(i);
+                android.view.ViewPropertyAnimator animator = v.animate()
+                        .scaleX(1).scaleY(1)
+                        .setDuration(ANIMATION_DURATION);
+
+                animator.setStartDelay(i * 50);
+                animator.start();
+            }
+
+            if(!alphaAnimationStarted) {
+                Animation in = new AlphaAnimation(0.0f, 1.0f);
+                in.setDuration(500);
+                invitePager.setAnimation(in);
+                alphaAnimationStarted = true;
+            }*/
+//            for (int i = 0; i < activity_container.getChildCount(); i++) {
+//                View v = activity_container.getChildAt(i);
+//                android.view.ViewPropertyAnimator animator = v.animate()
+//                        .scaleX(1).scaleY(1)
+//                        .setDuration(ANIMATION_DURATION);
+//
+//                animator.setStartDelay(i * 50);
+//                animator.start();
+//            }
+
+            startActivityForResult(new Intent(getActivity(), InviteFlowActivity.class), INVITE_FLOW_REQUEST);
+        }
+    };
 
     public InvitesFragment() {
         // Required empty public constructor
 
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof CircularRevealAnimator)
-            animator = (CircularRevealAnimator) context;
     }
 
     public static InvitesFragment newInstance(String inviteId, boolean action) {
@@ -110,6 +144,13 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
         args.putBoolean(ACTION_PARAM, action);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof CircularRevealAnimator)
+            animator = (CircularRevealAnimator) context;
     }
 
     @Override
@@ -262,57 +303,6 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
             inviteButton.setScaleY(1 - (slideOffset));
         }
     }
-
-    private AnimatorListenerAdapter mEndRevealListener = new AnimatorListenerAdapter() {
-
-        @Override
-        public void onAnimationEnd(Animator animation) {
-            super.onAnimationEnd(animation);
-            Log.d("onAnimationEnd", "onAnimationEnd");
-            revealAnimator.removeAllListeners();
-            revealAnimator.end();
-            revealAnimator.cancel();
-            fabAnimator.setListener(null);
-            fabAnimator.cancel();
-
-
-            inviteButton.setVisibility(View.INVISIBLE);
-            mRevealFlag = false;
-            //activity_container.setBackgroundColor(getResources()
-            // .getColor(R.color.main_color));
-            animator.getRevealContainer().setVisibility(View.VISIBLE);
-            animator.getToolbar().setVisibility(View.GONE);
-
-            /*for (int i = 0; i < activity_container.getChildCount(); i++) {
-                View v = activity_container.getChildAt(i);
-                android.view.ViewPropertyAnimator animator = v.animate()
-                        .scaleX(1).scaleY(1)
-                        .setDuration(ANIMATION_DURATION);
-
-                animator.setStartDelay(i * 50);
-                animator.start();
-            }
-
-            if(!alphaAnimationStarted) {
-                Animation in = new AlphaAnimation(0.0f, 1.0f);
-                in.setDuration(500);
-                invitePager.setAnimation(in);
-                alphaAnimationStarted = true;
-            }*/
-//            for (int i = 0; i < activity_container.getChildCount(); i++) {
-//                View v = activity_container.getChildAt(i);
-//                android.view.ViewPropertyAnimator animator = v.animate()
-//                        .scaleX(1).scaleY(1)
-//                        .setDuration(ANIMATION_DURATION);
-//
-//                animator.setStartDelay(i * 50);
-//                animator.start();
-//            }
-
-            startActivityForResult(new Intent(getActivity(), InviteFlowActivity.class), INVITE_FLOW_REQUEST);
-        }
-    };
-
 
     /**
      * We need this setter to translate between the information the animator

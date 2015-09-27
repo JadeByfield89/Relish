@@ -5,5 +5,6 @@ package relish.permoveo.com.relish.interfaces;
  */
 public interface PagerCallbacks {
     void next();
+
     void previous();
 }

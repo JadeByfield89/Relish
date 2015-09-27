@@ -37,7 +37,7 @@ public class RelishDrawerToggle extends BlurActionBarDrawerToggle {
         this.mainView = v;
     }
 
-    public void setBlurEnabled(boolean blur){
+    public void setBlurEnabled(boolean blur) {
         blurEnabled = blur;
         super.setBlurEnabled(blurEnabled);
     }

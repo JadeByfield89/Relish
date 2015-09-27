@@ -1,21 +1,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/fragment_background"
-    tools:context="relish.permoveo.com.relish.fragments.FriendsListFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/fragment_background"
+                tools:context="relish.permoveo.com.relish.fragments.FriendsListFragment">
 
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        card_view:cardElevation="4dp"
-        card_view:cardCornerRadius="1dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content">
+                                        card_view:cardElevation="4dp"
+                                        card_view:cardCornerRadius="1dp"
+                                        android:layout_marginBottom="8dp"
+                                        android:layout_marginTop="8dp"
+                                        android:layout_marginLeft="8dp"
+                                        android:layout_marginRight="8dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_width="wrap_content">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/friends_list_recycler"
@@ -27,7 +27,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:clipToPadding="false"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"/>
     </android.support.v7.widget.CardView>
 
 
@@ -45,7 +45,7 @@
         <ImageView
             android:src="@drawable/ic_freinds_empty"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/empty_message"
@@ -55,7 +55,7 @@
             android:textColor="@color/empty_color"
             android:text="@string/friends_list_empty"
             android:textSize="18sp"
-            android:gravity="center" />
+            android:gravity="center"/>
 
         <Button
             android:id="@+id/add_button"
@@ -66,18 +66,18 @@
             android:layout_marginBottom="5dp"
             android:textSize="13sp"
             android:text="Add Friends"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <relish.permoveo.com.relish.view.BounceProgressBar xmlns:bpb="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/bounce_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        bpb:shape="circle"
-        bpb:singleSrcSize="14dp"
-        bpb:speed="250"
-        bpb:src="@color/main_color" />
+                                                       android:id="@+id/bounce_progress"
+                                                       android:layout_width="wrap_content"
+                                                       android:layout_height="wrap_content"
+                                                       android:layout_centerHorizontal="true"
+                                                       android:layout_centerVertical="true"
+                                                       bpb:shape="circle"
+                                                       bpb:singleSrcSize="14dp"
+                                                       bpb:speed="250"
+                                                       bpb:src="@color/main_color"/>
 
 </RelativeLayout>

@@ -39,7 +39,8 @@ public class AmPmCirclesView extends View {
     // Alpha level for selected circle.
     private static final int SELECTED_ALPHA = Utils.SELECTED_ALPHA;
     private static final int SELECTED_ALPHA_THEME_DARK = Utils.SELECTED_ALPHA_THEME_DARK;
-
+    private static final int AM = TimePickerDialog.AM;
+    private static final int PM = TimePickerDialog.PM;
     private final Paint mPaint = new Paint();
     private int mSelectedAlpha;
     private int mTouchedColor;
@@ -52,10 +53,6 @@ public class AmPmCirclesView extends View {
     private String mAmText;
     private String mPmText;
     private boolean mIsInitialized;
-
-    private static final int AM = TimePickerDialog.AM;
-    private static final int PM = TimePickerDialog.PM;
-
     private boolean mDrawValuesReady;
     private int mAmPmCircleRadius;
     private int mAmXCenter;
@@ -137,16 +134,16 @@ public class AmPmCirclesView extends View {
             return -1;
         }
 
-        int squaredYDistance = (int) ((yCoord - mAmPmYCenter)*(yCoord - mAmPmYCenter));
+        int squaredYDistance = (int) ((yCoord - mAmPmYCenter) * (yCoord - mAmPmYCenter));
 
         int distanceToAmCenter =
-                (int) Math.sqrt((xCoord - mAmXCenter)*(xCoord - mAmXCenter) + squaredYDistance);
+                (int) Math.sqrt((xCoord - mAmXCenter) * (xCoord - mAmXCenter) + squaredYDistance);
         if (distanceToAmCenter <= mAmPmCircleRadius) {
             return AM;
         }
 
         int distanceToPmCenter =
-                (int) Math.sqrt((xCoord - mPmXCenter)*(xCoord - mPmXCenter) + squaredYDistance);
+                (int) Math.sqrt((xCoord - mPmXCenter) * (xCoord - mPmXCenter) + squaredYDistance);
         if (distanceToPmCenter <= mAmPmCircleRadius) {
             return PM;
         }
@@ -168,7 +165,7 @@ public class AmPmCirclesView extends View {
             int circleRadius =
                     (int) (Math.min(layoutXCenter, layoutYCenter) * mCircleRadiusMultiplier);
             mAmPmCircleRadius = (int) (circleRadius * mAmPmCircleRadiusMultiplier);
-            layoutYCenter += mAmPmCircleRadius*0.75;
+            layoutYCenter += mAmPmCircleRadius * 0.75;
             int textSize = mAmPmCircleRadius * 3 / 4;
             mPaint.setTextSize(textSize);
 

@@ -39,8 +39,8 @@ public class YelpCategoryFilter {
 
     }
 
-    public String lookupCategoryIdentifier(String title){
-      return  categoryMap.get(title);
+    public String lookupCategoryIdentifier(String title) {
+        return categoryMap.get(title);
     }
 
 }

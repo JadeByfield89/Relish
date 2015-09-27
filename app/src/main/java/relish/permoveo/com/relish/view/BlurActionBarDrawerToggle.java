@@ -37,40 +37,33 @@ import com.charbgr.BlurNavigationDrawer.Blur;
 
 public class BlurActionBarDrawerToggle extends ActionBarDrawerToggle {
 
-    private Context context;
-
-    /**
-     * the layout that we take snapshot
-     */
-    private DrawerLayout mDrawerLayout;
-
-    /**
-     * an imageview to display the blurred snapshot/bitmap
-     */
-    private ImageView mBlurredImageView;
-
-    /**
-     * Blur radius used for the background.
-     */
-    private int mBlurRadius = DEFAULT_BLUR_RADIUS;
-
     /**
      * Default Blur Radius
      */
 
     public static int DEFAULT_BLUR_RADIUS = 5;
-
-    /**
-     * Down scale factor to reduce blurring time and memory allocation.
-     */
-    private float mDownScaleFactor = DEFAULT_DOWNSCALEFACTOR;
-
     /**
      * Default Down Scale Factor
      */
 
     public static float DEFAULT_DOWNSCALEFACTOR = 5.0f;
-
+    private Context context;
+    /**
+     * the layout that we take snapshot
+     */
+    private DrawerLayout mDrawerLayout;
+    /**
+     * an imageview to display the blurred snapshot/bitmap
+     */
+    private ImageView mBlurredImageView;
+    /**
+     * Blur radius used for the background.
+     */
+    private int mBlurRadius = DEFAULT_BLUR_RADIUS;
+    /**
+     * Down scale factor to reduce blurring time and memory allocation.
+     */
+    private float mDownScaleFactor = DEFAULT_DOWNSCALEFACTOR;
     /**
      * Render flag
      * <p/>
@@ -87,7 +80,7 @@ public class BlurActionBarDrawerToggle extends ActionBarDrawerToggle {
     private boolean isOpening = false;
 
     public BlurActionBarDrawerToggle(Activity activity, DrawerLayout drawerLayout,
-                                      Toolbar toolbar, int openDrawerContentDescRes,
+                                     Toolbar toolbar, int openDrawerContentDescRes,
                                      int closeDrawerContentDescRes) {
         super(activity, drawerLayout, toolbar, openDrawerContentDescRes, closeDrawerContentDescRes);
         this.context = activity.getBaseContext();
@@ -160,7 +153,7 @@ public class BlurActionBarDrawerToggle extends ActionBarDrawerToggle {
 
     private void render() {
 
-        if(blurEnabled) {
+        if (blurEnabled) {
             if (prepareToRender) {
                 prepareToRender = false;
 
@@ -175,7 +168,7 @@ public class BlurActionBarDrawerToggle extends ActionBarDrawerToggle {
 
     }
 
-    public void setBlurEnabled(boolean blur){
+    public void setBlurEnabled(boolean blur) {
         this.blurEnabled = blur;
     }
 

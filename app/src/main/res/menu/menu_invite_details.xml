@@ -3,13 +3,15 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="relish.permoveo.com.relish.activities.InviteDetailsActivity">
 
-    <item android:id="@+id/action_edit"
-          android:title="@string/invite_edit"
-          android:orderInCategory="100"
-          app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_edit"
+        android:title="@string/invite_edit"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
 
-      <item android:id="@+id/action_cancel"
-          android:title="@string/invite_cancel"
-          android:orderInCategory="101"
-          app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_cancel"
+        android:title="@string/invite_cancel"
+        android:orderInCategory="101"
+        app:showAsAction="never"/>
 </menu>

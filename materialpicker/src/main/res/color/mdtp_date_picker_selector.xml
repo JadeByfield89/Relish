@@ -18,6 +18,6 @@
     <item android:state_pressed="true" android:color="@color/mdtp_white"/>
     <item android:state_pressed="false" android:state_selected="true" android:color="@color/mdtp_white"/>
     <item android:state_pressed="false" android:state_selected="false"
-        android:color="@color/mdtp_accent_color_focused"/>
+          android:color="@color/mdtp_accent_color_focused"/>
 
 </selector>

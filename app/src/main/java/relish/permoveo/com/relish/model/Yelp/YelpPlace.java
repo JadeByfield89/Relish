@@ -27,6 +27,10 @@ public class YelpPlace implements Serializable {
     public String snippet;
     @SerializedName("mobile_url")
     public String url;
+
+    @SerializedName("rating_img_url_large")
+    public String rating_img_url;
+
     public PlaceLocation location;
     public ArrayList<Review> reviews;
     public ArrayList<String> weekdayText;
@@ -70,16 +74,15 @@ public class YelpPlace implements Serializable {
      */
     public static class PlaceLocation implements Serializable {
 
-        public PlaceLocation() {}
-
+        public String address;
+        public double lat;
+        public double lng;
+        public PlaceLocation() {
+        }
         public PlaceLocation(String address, ParseGeoPoint location) {
             this.address = address;
             this.lat = location.getLatitude();
             this.lng = location.getLongitude();
         }
-
-        public String address;
-        public double lat;
-        public double lng;
     }
 }

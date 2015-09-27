@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/place_grid_item_root"
-    android:orientation="vertical"
-    android:descendantFocusability="blocksDescendants"
-    android:layout_width="match_parent"
-    android:padding="0dp"
-    app:cardCornerRadius="0dp"
-    android:layout_height="match_parent">
+                                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                                    android:id="@+id/place_grid_item_root"
+                                    android:orientation="vertical"
+                                    android:descendantFocusability="blocksDescendants"
+                                    android:layout_width="match_parent"
+                                    android:padding="0dp"
+                                    app:cardCornerRadius="0dp"
+                                    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:scaleType="centerCrop"
             android:background="@drawable/relish_avatar_placeholder"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -42,21 +42,21 @@
                     android:id="@+id/grid_item_rating_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp" />
+                    android:layout_marginBottom="2dp"/>
 
                 <TextView
                     android:id="@+id/grid_item_place_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/black"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/grid_item_place_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/place_grid_distance_color"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"/>
 
             </LinearLayout>
 
@@ -67,7 +67,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
                 android:textColor="@color/main_color"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
         </RelativeLayout>
 
     </RelativeLayout>

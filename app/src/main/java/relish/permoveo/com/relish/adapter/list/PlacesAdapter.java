@@ -30,61 +30,21 @@ import relish.permoveo.com.relish.view.RatingView;
  */
 public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final SparseArray<Double> positionHeightRatios = new SparseArray<>();
     private ArrayList<YelpPlace> dataset;
     private YelpPlace top;
     private Context context;
     private Random random;
-    private static final SparseArray<Double> positionHeightRatios = new SparseArray<>();
-
-    public YelpPlace getTop() {
-        return top;
-    }
-
-    static class HeaderViewHolder extends RecyclerView.ViewHolder {
-
-        public HeaderViewHolder(View itemView) {
-            super(itemView);
-        }
-    }
-
-    static class FooterViewHolder extends RecyclerView.ViewHolder {
-
-        public FooterViewHolder(View itemView) {
-            super(itemView);
-        }
-    }
-
-
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.place_grid_item_root)
-        public CardView placeRoot;
-
-        @Bind(R.id.grid_item_place_image)
-        public DynamicHeightImageView placeImage;
-
-        @Bind(R.id.grid_item_place_name)
-        public TextView placeName;
-
-        @Bind(R.id.grid_item_place_distance)
-        public TextView placeDistance;
-
-        @Bind(R.id.grid_item_place_cost)
-        public TextView placeCost;
-
-        @Bind(R.id.grid_item_rating_view)
-        public RatingView placeRating;
-
-        public ViewHolder(View view) {
-            super(view);
-            ButterKnife.bind(this, view);
-        }
-    }
 
     public PlacesAdapter(Context context) {
         super();
         this.random = new Random();
         this.context = context;
         dataset = new ArrayList<>();
+    }
+
+    public YelpPlace getTop() {
+        return top;
     }
 
     public void removeFooter() {
@@ -191,7 +151,6 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-
     @Override
     public int getItemViewType(int position) {
         if (position == 0)
@@ -232,5 +191,44 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private double getRandomHeightRatio() {
         return (random.nextDouble() / 2.0) + 0.6; // height will be 1.0 - 1.5
         // the width
+    }
+
+    static class HeaderViewHolder extends RecyclerView.ViewHolder {
+
+        public HeaderViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    static class FooterViewHolder extends RecyclerView.ViewHolder {
+
+        public FooterViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.place_grid_item_root)
+        public CardView placeRoot;
+
+        @Bind(R.id.grid_item_place_image)
+        public DynamicHeightImageView placeImage;
+
+        @Bind(R.id.grid_item_place_name)
+        public TextView placeName;
+
+        @Bind(R.id.grid_item_place_distance)
+        public TextView placeDistance;
+
+        @Bind(R.id.grid_item_place_cost)
+        public TextView placeCost;
+
+        @Bind(R.id.grid_item_rating_view)
+        public RatingView placeRating;
+
+        public ViewHolder(View view) {
+            super(view);
+            ButterKnife.bind(this, view);
+        }
     }
 }

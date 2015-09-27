@@ -99,7 +99,7 @@ public class TipCalculatorActivity extends RelishActivity {
         initViews();
     }
 
-    private void initViews(){
+    private void initViews() {
 
         totalAmount.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         etTotalAmount.setTypeface(TypefaceUtil.PROXIMA_NOVA);
@@ -122,6 +122,8 @@ public class TipCalculatorActivity extends RelishActivity {
             }
         });
 
+        etTotalAmount.setSelection(etTotalAmount.getText().length());
+
         etTotalAmount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -140,7 +142,7 @@ public class TipCalculatorActivity extends RelishActivity {
 
 
                     setTotalAmount(finalTotal);
-                }catch(NumberFormatException e){
+                } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
                 performCalculation(getAmountTotal(), getTipPercentage(), getNumberOfPeople());
@@ -208,17 +210,15 @@ public class TipCalculatorActivity extends RelishActivity {
         });
 
 
-
     }
 
-    private void performCalculation(final double total, final double tipPercentage, final int numberPeople){
+    private void performCalculation(final double total, final double tipPercentage, final int numberPeople) {
 
         //First, let's calculate the tip %
 
         double tipTotal = (total * tipPercentage) / 100;
         double tipRounded = (double) Math.round(tipTotal * 100) / 100;
         Log.d("TipCalc", "Rounded Tip -> " + tipRounded);
-
 
 
         // Add that to the total to get the new total + tip
@@ -234,35 +234,33 @@ public class TipCalculatorActivity extends RelishActivity {
         Log.d("TipCalc", "Rounded Divided Total -> " + roundedDividedTotal);
 
 
-
         DecimalFormat f = new DecimalFormat("##.00");
         String finalTip = f.format(tipRounded);
         Double finalTipDouble = Double.parseDouble(finalTip);
-        if(getTipPercentage() ==  0.0) {
+        if (getTipPercentage() == 0.0) {
             tipAmount.setText("" + "0.00");
-        }else{
+        } else {
             tipAmount.setText("" + finalTipDouble);
 
         }
 
 
         totalToPay.setText("" + roundedTotal);
-        if(getNumberOfPeople() == 0){
+        if (getNumberOfPeople() == 0) {
             totalPerPerson.setText("0.00");
 
-        }else {
+        } else {
             totalPerPerson.setText("" + roundedDividedTotal);
         }
 
 
-
     }
 
-    private void displayResults(final double tip, final double each, final double total){
+    private void displayResults(final double tip, final double each, final double total) {
         //Display the tip amount
-        tipAmount.setText(""+tip);
-        totalPerPerson.setText(""+each);
-        totalToPay.setText(""+total);
+        tipAmount.setText("" + tip);
+        totalPerPerson.setText("" + each);
+        totalToPay.setText("" + total);
     }
 
     @Override
@@ -277,28 +275,27 @@ public class TipCalculatorActivity extends RelishActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setTotalAmount(final double total){
+    private void setTotalAmount(final double total) {
         this.amountTotal = total;
     }
 
-    private double getAmountTotal(){
+    private double getAmountTotal() {
         return this.amountTotal;
     }
 
-    private void setTipPercentage(final double tip){
-        this.amountTipPercentage = tip;
-    }
-
-    private double getTipPercentage(){
+    private double getTipPercentage() {
         return this.amountTipPercentage;
     }
 
-    private void setNumberOfPeople(final int num){
-        this.amountNumPeople = num;
+    private void setTipPercentage(final double tip) {
+        this.amountTipPercentage = tip;
     }
 
-
-    private int getNumberOfPeople(){
+    private int getNumberOfPeople() {
         return this.amountNumPeople;
+    }
+
+    private void setNumberOfPeople(final int num) {
+        this.amountNumPeople = num;
     }
 }

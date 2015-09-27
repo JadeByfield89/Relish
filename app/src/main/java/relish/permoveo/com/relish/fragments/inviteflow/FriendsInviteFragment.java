@@ -65,6 +65,10 @@ public class FriendsInviteFragment extends Fragment {
         // Required empty public constructor
     }
 
+    private static String makeFragmentName(int viewId, int index) {
+        return "android:switcher:" + viewId + ":" + index;
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -83,14 +87,9 @@ public class FriendsInviteFragment extends Fragment {
         adapter = new FriendsInvitePagerAdapter(getChildFragmentManager());
     }
 
-
     private Fragment getActiveFragment(ViewPager container, int position) {
         String name = makeFragmentName(container.getId(), position);
         return getChildFragmentManager().findFragmentByTag(name);
-    }
-
-    private static String makeFragmentName(int viewId, int index) {
-        return "android:switcher:" + viewId + ":" + index;
     }
 
     @Override
@@ -152,7 +151,10 @@ public class FriendsInviteFragment extends Fragment {
             }
         });
 
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
+        searchView.setIconifiedByDefault(false);
+        inviteFriendsTitle.setVisibility(View.GONE);
+
+       /* searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 inviteFriendsTitle.setVisibility(View.GONE);
@@ -165,7 +167,8 @@ public class FriendsInviteFragment extends Fragment {
                 inviteFriendsTitle.setVisibility(View.VISIBLE);
                 return false;
             }
-        });
+        });*/
+
         ((AppCompatAutoCompleteTextView) searchView.findViewById(R.id.search_src_text)).setTextColor(getResources().getColor(android.R.color.black));
 
         setOnQueryTextListener(0);
@@ -201,7 +204,7 @@ public class FriendsInviteFragment extends Fragment {
         Log.d("FriendsInviteFragment", "FriendsInviteFragment onActivityResult");
         super.onActivityResult(requestCode, resultCode, data);
 
-        for(Fragment fragment: getChildFragmentManager().getFragments()){
+        for (Fragment fragment : getChildFragmentManager().getFragments()) {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
     }

@@ -31,7 +31,7 @@ public class EmailInviteManager {
         new SendEmailInviteTask().execute();
     }
 
-    private class SendEmailInviteTask extends AsyncTask<Void, Void, Void>{
+    private class SendEmailInviteTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... params) {

@@ -17,6 +17,7 @@ package relish.permoveo.com.relish.animation;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import relish.permoveo.com.relish.animation.PathPoint;
 
 /**

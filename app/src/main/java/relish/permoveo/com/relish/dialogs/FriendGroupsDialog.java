@@ -30,33 +30,24 @@ public class FriendGroupsDialog extends DialogFragment {
     public static final String FRIEND_BUNDLE = "friend_bundle";
     public static final String CHOSEN_GROUP = "choosen_group";
     public static final String CHOSEN_FRIEND = "choosen_friend";
-
-    private Friend friend;
-    private String group;
-
     @Bind(R.id.dialog_container)
     View container;
-
     @Bind(R.id.dialog_title)
     TextView dialogTitle;
-
     @Bind(R.id.add_friend_image)
     CircleImageView friendImage;
-
     @Bind(R.id.add_friend_message)
     TextView friendMessage;
-
     @Bind(R.id.add_friend_colleagues)
     TextView colleagues;
-
     @Bind(R.id.add_friend_friends)
     TextView friends;
-
     @Bind(R.id.add_friend_work)
     TextView work;
-
     @Bind(R.id.add_friend_button)
     TextView addFriendBtn;
+    private Friend friend;
+    private String group;
 
     public FriendGroupsDialog() {
         // Required empty public constructor

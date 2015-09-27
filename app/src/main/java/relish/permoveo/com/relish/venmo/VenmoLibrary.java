@@ -24,13 +24,14 @@ public class VenmoLibrary {
     private static final String VENMO_PACKAGE = "com.venmo";
     private static final String VENMO_ACTIVITY = "com.venmo.ComposeActivity";
 
-    public VenmoLibrary() {}
+    public VenmoLibrary() {
+    }
 
     /**
      * Takes the recipients, amount, and note, and returns an Intent object
      */
     public static Intent openVenmoPayment(String myAppId, String myAppName, String recipients,
-            String amount, String note, String txn) {
+                                          String amount, String note, String txn) {
         String venmo_uri = "venmosdk://paycharge?txn=" + txn;
 
         if (!recipients.equals("")) {
@@ -81,6 +82,35 @@ public class VenmoLibrary {
     }
 
     /**
+     * @return a boolean indicating whether or not the Venmo app is installed on a client's device.
+     */
+    public static boolean isVenmoInstalled(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        List<ResolveInfo> activities = packageManager.queryIntentActivities(new Intent()
+                .setComponent(new ComponentName(VENMO_PACKAGE, VENMO_ACTIVITY)), 0);
+
+        return activities.size() == 1 &&
+                VENMO_PACKAGE.equals(activities.get(0).activityInfo.packageName);
+    }
+
+    private static String hash_hmac(String payload, String app_secret, String algorithm) {
+        try {
+            Mac mac = Mac.getInstance(algorithm);
+            SecretKeySpec secret = new SecretKeySpec(app_secret.getBytes(), algorithm);
+            mac.init(secret);
+            byte[] digest = mac.doFinal(payload.getBytes());
+            return new String(digest);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    private static String base64_url_decode(String payload) {
+        String payload_modified = payload.replace('-', '+').replace('_', '/').trim();
+        return new String(Base64.decode(payload_modified, Base64.DEFAULT));
+    }
+
+    /**
      * Called once control has been given back to your app - it takes the signed_payload, decodes
      * it, and gives you the response object which gives you details about the transaction -
      * whether it was successful, the note, the amount,etc.
@@ -116,7 +146,6 @@ public class VenmoLibrary {
                 JSONArray response = new JSONArray(data);
 
 
-
                 JSONObject obj = (JSONObject) response.get(0);
 
                 String payment_id = obj.get("payment_id").toString();
@@ -136,35 +165,6 @@ public class VenmoLibrary {
 
         return myVenmoResponse;
 
-    }
-
-    /**
-    * @return a boolean indicating whether or not the Venmo app is installed on a client's device. 
-    */
-    public static boolean isVenmoInstalled(Context context) {
-        PackageManager packageManager = context.getPackageManager();
-        List<ResolveInfo> activities = packageManager.queryIntentActivities(new Intent()
-                .setComponent(new ComponentName(VENMO_PACKAGE, VENMO_ACTIVITY)), 0);
-
-        return activities.size() == 1 &&
-                VENMO_PACKAGE.equals(activities.get(0).activityInfo.packageName);
-    }
-
-    private static String hash_hmac(String payload, String app_secret, String algorithm) {
-        try {
-            Mac mac = Mac.getInstance(algorithm);
-            SecretKeySpec secret = new SecretKeySpec(app_secret.getBytes(), algorithm);
-            mac.init(secret);
-            byte[] digest = mac.doFinal(payload.getBytes());
-            return new String(digest);
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
-    private static String base64_url_decode(String payload) {
-        String payload_modified = payload.replace('-', '+').replace('_', '/').trim();
-        return new String(Base64.decode(payload_modified, Base64.DEFAULT));
     }
 
     /**

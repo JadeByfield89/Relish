@@ -1,10 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="@color/fragment_background"
-    tools:context="relish.permoveo.com.relish.fragments.InvitesFragment">
+                tools:context="relish.permoveo.com.relish.fragments.InvitesFragment">
 
 
     <android.support.v7.widget.RecyclerView
@@ -18,7 +18,7 @@
         android:scrollingCache="false"
         android:clipToPadding="false"
         android:fadeScrollbars="true"
-        android:scrollbarStyle="outsideOverlay" />
+        android:scrollbarStyle="outsideOverlay"/>
 
     <LinearLayout
         android:id="@+id/empty_list_container"
@@ -72,6 +72,6 @@
         android:src="@drawable/ic_editor_mode_edit"
         app:fab_colorNormal="@color/main_color"
         app:fab_colorPressed="@color/main_color_dark"
-        app:fab_shadow="true" />
+        app:fab_shadow="true"/>
 
 </RelativeLayout>

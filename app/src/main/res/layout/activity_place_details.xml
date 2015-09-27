@@ -1,11 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:id="@+id/place_details_container"
-    tools:context="relish.permoveo.com.relish.activities.PlaceDetailsActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:id="@+id/place_details_container"
+                tools:context="relish.permoveo.com.relish.activities.PlaceDetailsActivity">
 
 
     <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
@@ -23,7 +23,7 @@
                 android:id="@+id/header_place_details_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/featured_image_size"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"/>
 
             <ImageView
                 android:id="@+id/place_like"
@@ -34,13 +34,13 @@
                 android:layout_marginTop="?attr/actionBarSize"
                 android:layout_marginRight="24dp"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/ic_favorite" />
+                android:src="@drawable/ic_favorite"/>
 
             <View
                 android:id="@+id/anchor"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/featured_image_size"
-                android:minHeight="@dimen/featured_image_size" />
+                android:minHeight="@dimen/featured_image_size"/>
 
             <LinearLayout
                 android:id="@+id/place_details_info"
@@ -53,11 +53,18 @@
                 android:background="@android:color/white"
                 android:orientation="vertical">
 
+                <ImageView
+                    android:id="@+id/ivRatingImage"
+                    android:layout_marginBottom="12dp"
+                    android:layout_width="95dp"
+                    android:layout_height="20dp"/>
+
                 <relish.permoveo.com.relish.view.RatingView
                     android:id="@+id/place_details_rating_view"
                     android:layout_width="wrap_content"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp" />
+                    android:layout_marginBottom="12dp"/>
 
                 <TextView
                     android:id="@+id/place_details_name"
@@ -65,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/black"
                     android:layout_marginBottom="8dp"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"/>
 
                 <TextView
                     android:id="@+id/place_details_address"
@@ -73,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:textColor="@color/place_grid_distance_color"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/place_details_distance"
@@ -81,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:textColor="@color/place_grid_distance_color"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -95,7 +102,7 @@
                         android:layout_centerVertical="true"
                         android:clickable="true"
                         android:textColor="@color/link_color"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
 
 
                     <ImageView
@@ -105,7 +112,7 @@
                         android:src="@drawable/yelp_logo"
                         android:clickable="true"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true" />
+                        android:layout_centerVertical="true"/>
 
                 </RelativeLayout>
 
@@ -130,19 +137,19 @@
                     android:textColor="@android:color/black"
                     android:layout_marginBottom="8dp"
                     android:text="@string/reviews_title"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"/>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#dee0e2" />
+                    android:background="#dee0e2"/>
 
                 <LinearLayout
                     android:layout_marginTop="8dp"
                     android:orientation="vertical"
                     android:id="@+id/place_details_reviews"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"/>
 
             </LinearLayout>
 
@@ -150,7 +157,7 @@
                 android:layout_below="@+id/anchor"
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
-                android:background="@drawable/shadow" />
+                android:background="@drawable/shadow"/>
 
             <!--<TextView-->
             <!--android:id="@+id/body"-->
@@ -176,7 +183,7 @@
         android:text="@string/no_place_details"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <relish.permoveo.com.relish.view.BounceProgressBar
 
@@ -191,7 +198,7 @@
         bpb:shape="circle"
         bpb:singleSrcSize="14dp"
         bpb:speed="250"
-        bpb:src="@color/main_color" />
+        bpb:src="@color/main_color"/>
 
 
     <com.melnykov.fab.FloatingActionButton
@@ -205,7 +212,7 @@
         android:src="@drawable/ic_send"
         app:fab_colorNormal="@color/main_color"
         app:fab_colorPressed="@color/main_color_dark"
-        app:fab_shadow="true" />
+        app:fab_shadow="true"/>
 
 
     <com.melnykov.fab.FloatingActionButton
@@ -221,9 +228,9 @@
         android:src="@drawable/ic_send"
         app:fab_colorNormal="@color/main_color"
         app:fab_colorPressed="@color/main_color_dark"
-        app:fab_shadow="true" />
+        app:fab_shadow="true"/>
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <RelativeLayout
         android:id="@+id/reveal_container"
@@ -236,7 +243,7 @@
             android:id="@+id/layout_invite"
             layout="@layout/activity_invite_flow"
             android:layout_height="match_parent"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"/>
 
     </RelativeLayout>
 

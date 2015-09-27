@@ -40,31 +40,23 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
  */
 public class EmailInviteFragment extends Fragment implements ISelectable, Filterable {
 
-    private static final String[] PROJECTION = new String[] { ContactsContract.RawContacts._ID,
+    private static final String[] PROJECTION = new String[]{ContactsContract.RawContacts._ID,
             ContactsContract.Contacts.DISPLAY_NAME,
             ContactsContract.Contacts.PHOTO_ID,
             ContactsContract.CommonDataKinds.Email.DATA,
-            ContactsContract.CommonDataKinds.Photo.CONTACT_ID };
-
-    private InviteEmailListAdapter adapter;
-
-
-
+            ContactsContract.CommonDataKinds.Photo.CONTACT_ID};
     @Bind(R.id.email_empty_contacts_container)
     LinearLayout emptyView;
-
     @Bind(R.id.bounce_progress)
     BounceProgressBar contactsProgress;
-
     @Bind(R.id.email_contacts_invite_recycler)
     RecyclerView recyclerView;
-
     @Bind(R.id.email_empty_message)
     TextView emptyMessage;
-
+    private InviteEmailListAdapter adapter;
     private InviteCreator creator;
 
-    public EmailInviteFragment(){
+    public EmailInviteFragment() {
 
     }
 
@@ -105,7 +97,17 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
 
     }
 
-    private class LoadEmailContactsTask extends AsyncTask<Void, Void, Map<String, Contact>>{
+    @Override
+    public ArrayList<Contact> getSelection() {
+        return adapter != null ? adapter.getSelected() : new ArrayList<Contact>();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return adapter.getFilter();
+    }
+
+    private class LoadEmailContactsTask extends AsyncTask<Void, Void, Map<String, Contact>> {
 
         @Override
         protected Map<String, Contact> doInBackground(Void... params) {
@@ -159,10 +161,6 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
                     } while (cur.moveToNext());
 
 
-
-
-
-
                 }
 
                 cur.close();
@@ -170,7 +168,7 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
 
             }
 
-                return contacts;
+            return contacts;
         }
 
         @Override
@@ -196,16 +194,6 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
             }
         }
 
-    }
-
-    @Override
-    public ArrayList<Contact> getSelection() {
-        return adapter != null ? adapter.getSelected() : new ArrayList<Contact>();
-    }
-
-    @Override
-    public Filter getFilter() {
-        return adapter.getFilter();
     }
 
     /*public ArrayList<String> getEmailContacts() {

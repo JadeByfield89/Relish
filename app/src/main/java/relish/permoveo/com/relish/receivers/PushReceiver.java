@@ -40,45 +40,6 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
     private int notificationId = 1488;
     private Notification notification;
 
-    private class LoadAvatarTask extends AsyncTask<String, Void, Bitmap> {
-
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            return BitmapUtil.getBitmapFromURL(params[0]);
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            super.onPostExecute(bitmap);
-
-            if (bitmap != null) {
-                int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64.0f, context.getResources().getDisplayMetrics());
-                int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64.0f, context.getResources().getDisplayMetrics());
-                bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                    notification.largeIcon = BitmapUtil.getCircleBitmap(bitmap);
-                else
-                    notification.largeIcon = bitmap;
-
-                try {
-                    nm.notify(notificationId, notification);
-                } catch (SecurityException var6) {
-                    notification.defaults = 5;
-                    nm.notify(notificationId, notification);
-                }
-            } else {
-                notification.largeIcon = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_notification_icon);
-
-                try {
-                    nm.notify(notificationId, notification);
-                } catch (SecurityException var6) {
-                    notification.defaults = 5;
-                    nm.notify(notificationId, notification);
-                }
-            }
-        }
-    }
-
     @Override
     protected Class<? extends Activity> getActivity(Context context, Intent intent) {
         intent.putExtra(ConstantUtil.NOTIFICATION_ID_EXTRA, notificationId);
@@ -145,7 +106,7 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
             if (pushData != null && (pushData.has("alert") || pushData.has("title"))) {
                 String title = pushData.optString("title", context.getString(R.string.app_name));
                 String alert = pushData.optString("alert", "Notification received.");
-                if(pushData.has("type")){
+                if (pushData.has("type")) {
                     type = Invite.InviteType.parse(pushData.getString("type"));
                 }
                 String tickerText = String.format(Locale.getDefault(), "%s: %s", new Object[]{title, alert});
@@ -170,7 +131,7 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
                 Intent acceptIntent = new Intent(context, clazz);
                 acceptIntent.putExtras(extras);
                 acceptIntent.setPackage(packageName);
-                if(type.equals(Invite.InviteType.RECEIVED)) {
+                if (type.equals(Invite.InviteType.RECEIVED)) {
                     acceptIntent.putExtra(ConstantUtil.INVITE_ID_EXTRA, pushData.getString("id"));
                 }
                 acceptIntent.putExtra(ConstantUtil.NOTIFICATION_ACTION_EXTRA, true);
@@ -180,7 +141,7 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
                 Intent declineIntent = new Intent(context, clazz);
                 declineIntent.putExtras(extras);
                 declineIntent.setPackage(packageName);
-                if(type.equals(Invite.InviteType.RECEIVED)) {
+                if (type.equals(Invite.InviteType.RECEIVED)) {
                     declineIntent.putExtra(ConstantUtil.INVITE_ID_EXTRA, pushData.getString("id"));
                 }
                 declineIntent.putExtra(ConstantUtil.NOTIFICATION_ACTION_EXTRA, false);
@@ -225,5 +186,44 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private class LoadAvatarTask extends AsyncTask<String, Void, Bitmap> {
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            return BitmapUtil.getBitmapFromURL(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            super.onPostExecute(bitmap);
+
+            if (bitmap != null) {
+                int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64.0f, context.getResources().getDisplayMetrics());
+                int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 64.0f, context.getResources().getDisplayMetrics());
+                bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                    notification.largeIcon = BitmapUtil.getCircleBitmap(bitmap);
+                else
+                    notification.largeIcon = bitmap;
+
+                try {
+                    nm.notify(notificationId, notification);
+                } catch (SecurityException var6) {
+                    notification.defaults = 5;
+                    nm.notify(notificationId, notification);
+                }
+            } else {
+                notification.largeIcon = BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_notification_icon);
+
+                try {
+                    nm.notify(notificationId, notification);
+                } catch (SecurityException var6) {
+                    notification.defaults = 5;
+                    nm.notify(notificationId, notification);
+                }
+            }
+        }
     }
 }

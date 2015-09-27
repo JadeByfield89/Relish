@@ -5,9 +5,9 @@
 
     <ImageView
         android:id="@+id/place_marker"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_marker"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/ic_big_marker"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"/>
 
@@ -24,7 +24,7 @@
             android:includeFontPadding="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
+            android:textColor="@color/invite_details_input_color"
             android:textSize="18sp"/>
 
         <TextView
@@ -32,8 +32,9 @@
             android:includeFontPadding="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:layout_marginTop="4dp"
-            android:textColor="@color/dialog_button_idle"
+            android:textColor="#9b9b9b"
             android:textSize="13sp"/>
 
     </LinearLayout>

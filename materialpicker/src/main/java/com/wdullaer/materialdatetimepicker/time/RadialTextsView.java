@@ -40,12 +40,11 @@ public class RadialTextsView extends View {
 
     private final Paint mPaint = new Paint();
     private final Paint mSelectedPaint = new Paint();
-
+    ObjectAnimator mDisappearAnimator;
+    ObjectAnimator mReappearAnimator;
     private boolean mDrawValuesReady;
     private boolean mIsInitialized;
-
     private int selection = -1;
-
     private Typeface mTypefaceLight;
     private Typeface mTypefaceRegular;
     private String[] mTexts;
@@ -58,7 +57,6 @@ public class RadialTextsView extends View {
     private float mInnerNumbersRadiusMultiplier;
     private float mTextSizeMultiplier;
     private float mInnerTextSizeMultiplier;
-
     private int mXCenter;
     private int mYCenter;
     private float mCircleRadius;
@@ -69,12 +67,9 @@ public class RadialTextsView extends View {
     private float[] mTextGridWidths;
     private float[] mInnerTextGridHeights;
     private float[] mInnerTextGridWidths;
-
     private float mAnimationRadiusMultiplier;
     private float mTransitionMidRadiusMultiplier;
     private float mTransitionEndRadiusMultiplier;
-    ObjectAnimator mDisappearAnimator;
-    ObjectAnimator mReappearAnimator;
     private InvalidateUpdateListener mInvalidateUpdateListener;
 
     public RadialTextsView(Context context) {
@@ -83,7 +78,7 @@ public class RadialTextsView extends View {
     }
 
     public void initialize(Resources res, String[] texts, String[] innerTexts,
-            boolean is24HourMode, boolean disappearsOut) {
+                           boolean is24HourMode, boolean disappearsOut) {
         if (mIsInitialized) {
             Log.e(TAG, "This RadialTextsView may only be initialized once.");
             return;
@@ -144,8 +139,8 @@ public class RadialTextsView extends View {
         }
 
         mAnimationRadiusMultiplier = 1;
-        mTransitionMidRadiusMultiplier = 1f + (0.05f * (disappearsOut? -1 : 1));
-        mTransitionEndRadiusMultiplier = 1f + (0.3f * (disappearsOut? 1 : -1));
+        mTransitionMidRadiusMultiplier = 1f + (0.05f * (disappearsOut ? -1 : 1));
+        mTransitionEndRadiusMultiplier = 1f + (0.3f * (disappearsOut ? 1 : -1));
         mInvalidateUpdateListener = new InvalidateUpdateListener();
 
         mTextGridValuesDirty = true;
@@ -165,6 +160,7 @@ public class RadialTextsView extends View {
 
     /**
      * Set the value of the selected text. Depending on the theme this will be rendered differently
+     *
      * @param selection The text which is currently selected
      */
     protected void setSelection(int selection) {
@@ -204,7 +200,7 @@ public class RadialTextsView extends View {
                 // a slightly higher center. To keep the entire view centered vertically, we'll
                 // have to push it up by half the radius of the AM/PM circles.
                 float amPmCircleRadius = mCircleRadius * mAmPmCircleRadiusMultiplier;
-                mYCenter -= amPmCircleRadius *0.75;
+                mYCenter -= amPmCircleRadius * 0.75;
             }
 
             mTextSize = mCircleRadius * mTextSizeMultiplier;
@@ -251,7 +247,7 @@ public class RadialTextsView extends View {
      * textGridWidths parameters.
      */
     private void calculateGridSizes(float numbersRadius, float xCenter, float yCenter,
-            float textSize, float[] textGridHeights, float[] textGridWidths) {
+                                    float textSize, float[] textGridHeights, float[] textGridWidths) {
         /*
          * The numbers need to be drawn in a 7x7 grid, representing the points on the Unit Circle.
          */
@@ -285,7 +281,7 @@ public class RadialTextsView extends View {
      * Draw the 12 text values at the positions specified by the textGrid parameters.
      */
     private void drawTexts(Canvas canvas, float textSize, Typeface typeface, String[] texts,
-            float[] textGridWidths, float[] textGridHeights) {
+                           float[] textGridWidths, float[] textGridHeights) {
         mPaint.setTextSize(textSize);
         mPaint.setTypeface(typeface);
         canvas.drawText(texts[0], textGridWidths[3], textGridHeights[0], Integer.parseInt(texts[0]) == selection ? mSelectedPaint : mPaint);
@@ -298,8 +294,8 @@ public class RadialTextsView extends View {
         canvas.drawText(texts[7], textGridWidths[2], textGridHeights[5], Integer.parseInt(texts[7]) == selection ? mSelectedPaint : mPaint);
         canvas.drawText(texts[8], textGridWidths[1], textGridHeights[4], Integer.parseInt(texts[8]) == selection ? mSelectedPaint : mPaint);
         canvas.drawText(texts[9], textGridWidths[0], textGridHeights[3], Integer.parseInt(texts[9]) == selection ? mSelectedPaint : mPaint);
-        canvas.drawText(texts[10], textGridWidths[1], textGridHeights[2], Integer.parseInt(texts[10])  == selection ? mSelectedPaint : mPaint);
-        canvas.drawText(texts[11], textGridWidths[2], textGridHeights[1], Integer.parseInt(texts[11])  == selection ? mSelectedPaint : mPaint);
+        canvas.drawText(texts[10], textGridWidths[1], textGridHeights[2], Integer.parseInt(texts[10]) == selection ? mSelectedPaint : mPaint);
+        canvas.drawText(texts[11], textGridWidths[2], textGridHeights[1], Integer.parseInt(texts[11]) == selection ? mSelectedPaint : mPaint);
     }
 
     /**

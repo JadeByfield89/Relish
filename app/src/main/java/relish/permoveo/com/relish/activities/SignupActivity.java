@@ -170,18 +170,18 @@ public class SignupActivity extends RelishActivity {
         String fullname = fullName.getText().toString();
         String[] segments = fullname.split(" ");
 
-        if(TextUtils.isEmpty(fullName.getText())){
+        if (TextUtils.isEmpty(fullName.getText())) {
             Toast.makeText(this, "Please enter your full name", Toast.LENGTH_LONG).show();
-            return  false;
+            return false;
         }
-        if(segments.length < 2){
+        if (segments.length < 2) {
             Toast.makeText(this, "Please enter your full name", Toast.LENGTH_LONG).show();
             return false;
         }
 
-        if(segments.length > 2){
+        if (segments.length > 2) {
             Toast.makeText(this, "Please enter your first and last name only", Toast.LENGTH_LONG).show();
-            return  false;
+            return false;
         }
 
 

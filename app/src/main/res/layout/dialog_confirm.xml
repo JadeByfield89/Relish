@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/loader_background">
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/loader_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,12 +19,12 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:background="@drawable/relish_bg_pattern"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@color/main_color" />
+            android:background="@color/main_color"/>
 
         <TextView
             android:id="@+id/dialog_message"
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textColor="#747474"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                 android:textStyle="bold"
                 android:text="Go to Settings"
                 android:background="@drawable/dialog_button_left"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
             <TextView
                 android:id="@+id/right_button"
@@ -67,7 +67,7 @@
                 android:paddingBottom="16dp"
                 android:background="@drawable/dialog_button_right"
                 android:textSize="16sp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 

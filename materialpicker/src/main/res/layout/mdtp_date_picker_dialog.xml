@@ -15,26 +15,27 @@
      limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/mdtp_date_picker_component_width"
-    android:layout_height="wrap_content"
-    android:background="@color/mdtp_date_picker_view_animator"
-    android:gravity="center"
-    android:orientation="vertical" >
+              android:layout_width="@dimen/mdtp_date_picker_component_width"
+              android:layout_height="wrap_content"
+              android:background="@color/mdtp_date_picker_view_animator"
+              android:gravity="center"
+              android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
-            <include layout="@layout/mdtp_date_picker_selected_date" />
+            <include layout="@layout/mdtp_date_picker_selected_date"/>
 
-            <include layout="@layout/mdtp_date_picker_view_animator" />
+            <include layout="@layout/mdtp_date_picker_view_animator"/>
         </LinearLayout>
     </ScrollView>
 
-    <include layout="@layout/mdtp_done_button" />
+    <include layout="@layout/mdtp_done_button"/>
 
 </LinearLayout>

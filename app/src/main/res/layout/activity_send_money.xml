@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/fragment_background">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/fragment_background">
 
     <include
         android:id="@+id/layout_pay"
@@ -14,7 +14,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"/>
 
 
     <TextView
@@ -27,7 +27,7 @@
         android:text="@string/pay_how"
         android:textColor="@color/main_color"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivSquareCash"
@@ -36,7 +36,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="200dp"
         android:src="@drawable/payment_square_cash"
-        android:visibility="invisible" />
+        android:visibility="invisible"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivVenmo"
@@ -46,7 +46,7 @@
         android:layout_marginTop="210dp"
         android:layout_toRightOf="@id/ivSquareCash"
         android:src="@drawable/payment_venmo"
-        android:visibility="invisible" />
+        android:visibility="invisible"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ivGoogleWallet"
@@ -56,7 +56,7 @@
         android:layout_marginTop="210dp"
         android:layout_toRightOf="@id/ivVenmo"
         android:src="@drawable/payment_google_wallet"
-        android:visibility="invisible" />
+        android:visibility="invisible"/>
 
 
     <TextView
@@ -69,7 +69,7 @@
         android:text="@string/pay_square_cash"
         android:textColor="@color/main_color"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
 
     <TextView
@@ -84,7 +84,7 @@
         android:text="@string/pay_venmo"
         android:textColor="@color/main_color"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/tvGoogleWallet"
@@ -98,10 +98,10 @@
         android:text="@string/pay_google_wallet"
         android:textColor="@color/main_color"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
 
 </RelativeLayout>

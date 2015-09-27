@@ -12,9 +12,14 @@ import com.viewpagerindicator.CirclePageIndicator;
  */
 public interface CircularRevealAnimator {
     ViewGroup getActivityContainer();
+
     ViewGroup getRevealContainer();
+
     Toolbar getToolbar();
+
     CirclePageIndicator getPageIndicator();
+
     CardView getShareCard();
+
     ViewPager getInvitePager();
 }

@@ -5,5 +5,6 @@ package relish.permoveo.com.relish.interfaces;
  */
 public interface IRequestable {
     void completed(Object... params);
+
     void failed(Object... params);
 }

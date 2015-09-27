@@ -15,11 +15,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,8 +35,8 @@ public class LoginActivity extends RelishActivity {
 
     public static final int LOGIN_REQUEST = 321;
 
-    @Bind(R.id.et_username)
-    EditText usernameEt;
+    @Bind(R.id.et_email)
+    EditText emailEt;
 
     @Bind(R.id.et_password)
     EditText passwordEt;
@@ -64,7 +68,7 @@ public class LoginActivity extends RelishActivity {
         sloganLabel.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         relishLabel.setTypeface(TypefaceUtil.BRANNBOLL_BOLD);
         relishLabel.setIncludeFontPadding(false);
-        usernameEt.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        emailEt.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         passwordEt.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         signin.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         signupLabel.setTypeface(TypefaceUtil.PROXIMA_NOVA);
@@ -112,40 +116,57 @@ public class LoginActivity extends RelishActivity {
         if (validate()) {
             showLoader(getString(R.string.logging_in_loader_text));
 
-            final String username = usernameEt.getText().toString();
+            final String email = emailEt.getText().toString();
             final String password = passwordEt.getText().toString();
-            Log.d("Username: ", username);
+            Log.d("Username: ", email);
             Log.d("Password: ", password);
 
-            ParseUser.logInInBackground(username, password, new LogInCallback() {
+            // First, execute a Parse query for a user with this email
+            ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
+            userQuery.whereEqualTo("email", email);
+            userQuery.findInBackground(new FindCallback<ParseUser>() {
                 @Override
-                public void done(ParseUser parseUser, ParseException e) {
-                    hideLoader();
-                    if (e == null) {
-                        Location location = GPSTracker.get.getLocation();
-                        if (location != null && location.getLatitude() != 0.0d && location.getLongitude() != 0.0d) {
-                            ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
-                            ParseUser.getCurrentUser().saveInBackground();
-                        }
-                        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-                        installation.put("userId", parseUser.getObjectId());
-                        installation.saveInBackground();
+                public void done(List<ParseUser> list, ParseException e) {
 
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        setResult(RESULT_OK);
-                        finish();
-                    } else {
-                        Log.d("Parse Error Code: ", "" + e.getCode());
-                        Toast.makeText(LoginActivity.this, e.getLocalizedMessage() + e.getCode(), Toast.LENGTH_LONG).show();
+                    // Once a user with this email is found, get their username and try to log them in
+                    if (!list.isEmpty() && list.size() == 1) {
+                        ParseUser user = list.get(0);
+                        String userName = user.getUsername();
+                        ParseUser.logInInBackground(userName, password, new LogInCallback() {
+                            @Override
+                            public void done(ParseUser parseUser, ParseException e) {
+                                hideLoader();
+                                if (e == null) {
+                                    Location location = GPSTracker.get.getLocation();
+                                    if (location != null && location.getLatitude() != 0.0d && location.getLongitude() != 0.0d) {
+                                        ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
+                                        ParseUser.getCurrentUser().saveInBackground();
+                                    }
+                                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                                    installation.put("userId", parseUser.getObjectId());
+                                    installation.saveInBackground();
+
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    setResult(RESULT_OK);
+                                    finish();
+                                } else {
+                                    Log.d("Parse Error Code: ", "" + e.getCode());
+                                    Toast.makeText(LoginActivity.this, e.getLocalizedMessage() + e.getCode(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
                     }
                 }
             });
+
+
         }
     }
 
+
     private boolean validate() {
-        if (TextUtils.isEmpty(usernameEt.getText())) {
-            Toast.makeText(this, getString(R.string.error_username_empty), Toast.LENGTH_LONG).show();
+        if (TextUtils.isEmpty(emailEt.getText())) {
+            Toast.makeText(this, getString(R.string.error_email_empty), Toast.LENGTH_LONG).show();
             return false;
         } else if (TextUtils.isEmpty(passwordEt.getText()) || passwordEt.getText().length() < 3) {
             Toast.makeText(this, getString(R.string.error_password), Toast.LENGTH_LONG).show();

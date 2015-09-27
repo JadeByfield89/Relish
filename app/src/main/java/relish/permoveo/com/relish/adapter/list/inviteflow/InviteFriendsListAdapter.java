@@ -44,31 +44,6 @@ public class InviteFriendsListAdapter extends RecyclerView.Adapter<InviteFriends
         dataset = new ArrayList<>();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.friend_name)
-        TextView friendName;
-
-        @Bind(R.id.friend_image)
-        CircleImageView friendImage;
-
-        @Bind(R.id.friend_location)
-        TextView friendLocation;
-
-        @Bind(R.id.friend_location_container)
-        LinearLayout friendLocationContainer;
-
-        @Bind(R.id.root)
-        RelativeLayout root;
-
-        @Bind(R.id.ripple)
-        RippleView rippleView;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-    }
-
     public void clear() {
         this.dataset.clear();
         notifyDataSetChanged();
@@ -109,7 +84,7 @@ public class InviteFriendsListAdapter extends RecyclerView.Adapter<InviteFriends
             holder.friendLocationContainer.setVisibility(View.VISIBLE);
 
             //Only remove the zip code if this string contains a number
-            if(friend.address != null) {
+            if (friend.address != null) {
                 if (friend.address.matches(".*\\d+.*")) {
                     friend.address = friend.address.substring(0, friend.address.length() - 5);
                 }
@@ -212,5 +187,30 @@ public class InviteFriendsListAdapter extends RecyclerView.Adapter<InviteFriends
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.friend_name)
+        TextView friendName;
+
+        @Bind(R.id.friend_image)
+        CircleImageView friendImage;
+
+        @Bind(R.id.friend_location)
+        TextView friendLocation;
+
+        @Bind(R.id.friend_location_container)
+        LinearLayout friendLocationContainer;
+
+        @Bind(R.id.root)
+        RelativeLayout root;
+
+        @Bind(R.id.ripple)
+        RippleView rippleView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
     }
 }

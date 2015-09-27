@@ -2,6 +2,8 @@ package relish.permoveo.com.relish.model.google;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -21,12 +23,14 @@ public class GooglePlace implements Serializable {
     @SerializedName("place_id")
     public String placeId;
     public double rating;
-    private int priceLevel;
+    @SerializedName("formatted_address")
+    public String address;
     @SerializedName("opening_hours")
     public OpeningHours openingHours;
     public PlaceGeometry geometry;
     public ArrayList<GoogleReview> reviews;
     public List<PlacePhoto> photos;
+    private int priceLevel;
 
     public GooglePlace() {
         priceLevel = -1;
@@ -47,15 +51,28 @@ public class GooglePlace implements Serializable {
             case 0:
                 return "Free";
             case 1:
-                    return "$";
+                return "$";
             case 2:
-                    return "$$";
+                return "$$";
             case 3:
-                    return "$$$";
+                return "$$$";
             case 4:
                 return "$$$$";
-            }
+        }
         return "";
+    }
+
+    public String getHours() {
+        DateTime dateTime = new DateTime();
+        String hours = "";
+        if (openingHours != null && openingHours.weekdayText != null && openingHours.weekdayText.size() > 0) {
+            for (int i = 0; i < openingHours.weekdayText.size(); i++) {
+                if (i == dateTime.getDayOfWeek())
+                    hours = openingHours.weekdayText.get(i).substring(openingHours.weekdayText.get(i).indexOf(':') + 2,
+                            openingHours.weekdayText.get(i).length());
+            }
+        }
+        return hours;
     }
 
     public double getCalculatedDistance() {
@@ -79,19 +96,19 @@ public class GooglePlace implements Serializable {
 
         return ConstantUtil.PLACE_PHOTO_URL +
                 new StringBuilder()
-                .append("maxwidth=" + ConstantUtil.PLACE_PHOTO_WIDTH)
-                .append("&")
-                .append("maxheight=" + ConstantUtil.PLACE_PHOTO_HEIGHT)
-                .append("&")
-                .append("photoreference=" + photos.get(0).reference)
-                .append("&")
-                .append("key=" + ConstantUtil.GOOGLE_API_KEY)
-                .toString();
+                        .append("maxwidth=" + ConstantUtil.PLACE_PHOTO_WIDTH)
+                        .append("&")
+                        .append("maxheight=" + ConstantUtil.PLACE_PHOTO_HEIGHT)
+                        .append("&")
+                        .append("photoreference=" + photos.get(0).reference)
+                        .append("&")
+                        .append("key=" + ConstantUtil.GOOGLE_API_KEY)
+                        .toString();
     }
 
     public String getLargeImage() {
         if (photos == null || photos.size() == 0) return "";
-        String url =  ConstantUtil.PLACE_PHOTO_URL +
+        String url = ConstantUtil.PLACE_PHOTO_URL +
                 new StringBuilder()
                         .append("maxwidth=" + photos.get(0).width)
                         .append("&")

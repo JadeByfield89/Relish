@@ -15,8 +15,18 @@ public class BaseReview implements Review {
     }
 
     @Override
+    public void setAuthorName(String name) {
+
+    }
+
+    @Override
     public String getAuthorImage() {
         return null;
+    }
+
+    @Override
+    public void setAuthorImage(String image) {
+
     }
 
     @Override
@@ -32,16 +42,6 @@ public class BaseReview implements Review {
     @Override
     public float getRating() {
         return 0;
-    }
-
-    @Override
-    public void setAuthorImage(String image) {
-
-    }
-
-    @Override
-    public void setAuthorName(String name) {
-
     }
 
     @Override

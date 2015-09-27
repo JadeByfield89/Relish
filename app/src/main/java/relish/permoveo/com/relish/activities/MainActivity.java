@@ -63,49 +63,29 @@ import relish.permoveo.com.relish.view.RelishDrawerToggle;
 
 public class MainActivity extends RelishActivity implements CircularRevealAnimator, NavigationDrawerFragment.NavigationDrawerCallbacks, ToolbarCallbacks, NavigationDrawerManagementCallbacks, PlacesFilterFragment.OnFilterSelectionCompleteListener {
 
+    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
+    public boolean drawerOpen = false;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-
     @Bind(R.id.content_frame)
     FrameLayout contentFrame;
-
     @Bind(R.id.pager_invite)
     ViewPager invitePager;
-
     @Bind(R.id.pager_indicator)
     CirclePageIndicator pagerIndicator;
-
     @Bind(R.id.invite_share_card)
     CardView inviteShareCard;
-
     @Bind(R.id.main_activity_container)
     RelativeLayout activity_container;
-
     @Bind(R.id.reveal_container)
     RelativeLayout reveal_container;
-
-    private FakeInvitePagerAdapter invitePagerAdapter;
-
-    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-
-    private int mCurrentSelectedPosition = 0;
-    // nav drawer title
-    private CharSequence mDrawerTitle;
-    // used to store app title
-    private CharSequence mTitle;
-    private String[] navMenuTitles;
     RelishDrawerToggle drawerToggle;
-    private String inviteId = null;
-    private boolean action;
-    public boolean drawerOpen = false;
     Fragment current = null;
     Dialog d;
     NavigationDrawerFragment navDrawer;
     PlacesFilterFragment filterFragment;
-
     BroadcastReceiver locationReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -119,6 +99,15 @@ public class MainActivity extends RelishActivity implements CircularRevealAnimat
             LocalBroadcastManager.getInstance(MainActivity.this).unregisterReceiver(this);
         }
     };
+    private FakeInvitePagerAdapter invitePagerAdapter;
+    private int mCurrentSelectedPosition = 0;
+    // nav drawer title
+    private CharSequence mDrawerTitle;
+    // used to store app title
+    private CharSequence mTitle;
+    private String[] navMenuTitles;
+    private String inviteId = null;
+    private boolean action;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +127,7 @@ public class MainActivity extends RelishActivity implements CircularRevealAnimat
                 inviteId = getIntent().getExtras().getString(ConstantUtil.INVITE_ID_EXTRA);
                 action = getIntent().getBooleanExtra(ConstantUtil.NOTIFICATION_ACTION_EXTRA, false);
             }
-        }else if (savedInstanceState != null) {
+        } else if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
         }
 

@@ -43,52 +43,6 @@ public class Invite implements Serializable {
     public ArrayList<InvitePerson> accepted = new ArrayList<>();
     public ArrayList<InvitePerson> declined = new ArrayList<>();
 
-    public enum InviteType {
-        RECEIVED, RESPONSE, UPDATE;
-
-        public static InviteType parse(String type) {
-            switch (type) {
-                case "inviteReceived":
-                    return RECEIVED;
-                case "inviteResponse":
-                    return RESPONSE;
-                case "inviteUpdate":
-                    return UPDATE;
-            }
-            return null;
-        }
-
-        @Override
-        public String toString() {
-            switch (this) {
-                case RECEIVED:
-                    return "inviteReceived";
-                case RESPONSE:
-                    return "inviteResponse";
-                case UPDATE:
-                    return "inviteUpdate";
-            }
-            return super.toString();
-        }
-    }
-
-    public enum InviteStatus {
-        PENDING, ACCEPTED, DECLINED;
-
-        @Override
-        public String toString() {
-            switch (this) {
-                case PENDING:
-                    return "";
-                case ACCEPTED:
-                    return "Accepted";
-                case DECLINED:
-                    return "Declined";
-            }
-            return super.toString();
-        }
-    }
-
     public static Invite from(YelpPlace place) {
         Invite invite = new Invite();
         invite.name = place.name;
@@ -161,5 +115,51 @@ public class Invite implements Serializable {
 
     public String getFormattedAddress() {
         return location.address.substring(0, location.address.indexOf(','));
+    }
+
+    public enum InviteType {
+        RECEIVED, RESPONSE, UPDATE;
+
+        public static InviteType parse(String type) {
+            switch (type) {
+                case "inviteReceived":
+                    return RECEIVED;
+                case "inviteResponse":
+                    return RESPONSE;
+                case "inviteUpdate":
+                    return UPDATE;
+            }
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case RECEIVED:
+                    return "inviteReceived";
+                case RESPONSE:
+                    return "inviteResponse";
+                case UPDATE:
+                    return "inviteUpdate";
+            }
+            return super.toString();
+        }
+    }
+
+    public enum InviteStatus {
+        PENDING, ACCEPTED, DECLINED;
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case PENDING:
+                    return "";
+                case ACCEPTED:
+                    return "Accepted";
+                case DECLINED:
+                    return "Declined";
+            }
+            return super.toString();
+        }
     }
 }

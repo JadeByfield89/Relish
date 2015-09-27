@@ -38,6 +38,13 @@ public class RelishApplication extends Application {
 
     private static ArrayList<Contact> followersList;
 
+    public static ArrayList<Contact> getTwitterFollowersList() {
+        return followersList;
+    }
+
+    public static void setTwitterFollowersList(ArrayList<Contact> followers) {
+        followersList = followers;
+    }
 
     @Override
     public void onCreate() {
@@ -62,13 +69,5 @@ public class RelishApplication extends Application {
         super.attachBaseContext(base);
         MultiDex.install(base);
 
-    }
-
-    public static void setTwitterFollowersList(ArrayList<Contact> followers){
-        followersList = followers;
-    }
-
-    public static ArrayList<Contact> getTwitterFollowersList(){
-        return followersList;
     }
 }

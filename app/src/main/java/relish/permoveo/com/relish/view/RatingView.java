@@ -13,11 +13,11 @@ import relish.permoveo.com.relish.R;
  */
 public class RatingView extends LinearLayout {
 
-    private float rating;
-    private boolean isLarge;
     private static final float RATING_STAR_MARGIN_IN_DP = 4.0f;
     private static final float RATING_STAR_SIZE_IN_DP = 12.0f;
     private static final float RATING_STAR_LARGE_SIZE_IN_DP = 16.0f;
+    private float rating;
+    private boolean isLarge;
 
     public RatingView(Context context) {
         super(context);

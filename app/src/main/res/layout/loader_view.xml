@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/loader_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#80000000">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/loader_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#80000000">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
             bpb:shape="circle"
             bpb:singleSrcSize="14dp"
             bpb:speed="250"
-            bpb:src="@color/main_color" />
+            bpb:src="@color/main_color"/>
 
         <TextView
             android:id="@+id/loader_text"
@@ -39,7 +39,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:layout_below="@+id/bounce_progress"
             android:textColor="@android:color/black"
-            android:text="Loading..." />
+            android:text="Loading..."/>
 
     </RelativeLayout>
 

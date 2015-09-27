@@ -15,9 +15,9 @@
         <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
-        <include layout="@layout/toolbar" />
+        <include layout="@layout/toolbar"/>
 
         <RelativeLayout
             android:id="@+id/reveal_container"
@@ -30,7 +30,7 @@
                 android:id="@+id/layout_invite"
                 layout="@layout/activity_invite_flow"
                 android:layout_height="match_parent"
-                android:layout_width="match_parent" />
+                android:layout_width="match_parent"/>
 
         </RelativeLayout>
     </RelativeLayout>
@@ -41,9 +41,10 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        tools:layout="@layout/fragment_navigation_drawer" />
+        tools:layout="@layout/fragment_navigation_drawer"/>
 
-    <fragment android:id="@+id/filter_drawer"
+    <fragment
+        android:id="@+id/filter_drawer"
         android:name="relish.permoveo.com.relish.fragments.PlacesFilterFragment"
         android:layout_width="240dp"
         android:layout_height="match_parent"

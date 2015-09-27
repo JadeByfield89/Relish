@@ -15,19 +15,11 @@ import android.provider.Settings;
 public class HapticFeedbackController {
     private static final int VIBRATE_DELAY_MS = 125;
     private static final int VIBRATE_LENGTH_MS = 50;
-
-    private static boolean checkGlobalSetting(Context context) {
-        return Settings.System.getInt(context.getContentResolver(),
-                Settings.System.HAPTIC_FEEDBACK_ENABLED, 0) == 1;
-    }
-
     private final Context mContext;
     private final ContentObserver mContentObserver;
-
     private Vibrator mVibrator;
     private boolean mIsGloballyEnabled;
     private long mLastVibrate;
-
     public HapticFeedbackController(Context context) {
         mContext = context;
         mContentObserver = new ContentObserver(null) {
@@ -36,6 +28,11 @@ public class HapticFeedbackController {
                 mIsGloballyEnabled = checkGlobalSetting(mContext);
             }
         };
+    }
+
+    private static boolean checkGlobalSetting(Context context) {
+        return Settings.System.getInt(context.getContentResolver(),
+                Settings.System.HAPTIC_FEEDBACK_ENABLED, 0) == 1;
     }
 
     /**
@@ -54,8 +51,9 @@ public class HapticFeedbackController {
 
     /**
      * Method to verify that vibrate permission has been granted.
-     *
+     * <p/>
      * Allows users of the library to disabled vibrate support if desired.
+     *
      * @return true if Vibrate permission has been granted
      */
     private boolean hasVibratePermission(Context context) {
