@@ -152,7 +152,10 @@ public class FriendsInviteFragment extends Fragment {
             }
         });
 
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
+        searchView.setIconifiedByDefault(false);
+        inviteFriendsTitle.setVisibility(View.GONE);
+
+       /* searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 inviteFriendsTitle.setVisibility(View.GONE);
@@ -165,7 +168,8 @@ public class FriendsInviteFragment extends Fragment {
                 inviteFriendsTitle.setVisibility(View.VISIBLE);
                 return false;
             }
-        });
+        });*/
+
         ((AppCompatAutoCompleteTextView) searchView.findViewById(R.id.search_src_text)).setTextColor(getResources().getColor(android.R.color.black));
 
         setOnQueryTextListener(0);
