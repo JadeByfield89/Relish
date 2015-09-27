@@ -27,6 +27,10 @@ public class YelpPlace implements Serializable {
     public String snippet;
     @SerializedName("mobile_url")
     public String url;
+
+    @SerializedName("rating_img_url_large")
+    public String rating_img_url;
+
     public PlaceLocation location;
     public ArrayList<Review> reviews;
     public ArrayList<String> weekdayText;

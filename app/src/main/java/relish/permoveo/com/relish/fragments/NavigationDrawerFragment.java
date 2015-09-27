@@ -382,7 +382,7 @@ public class NavigationDrawerFragment extends Fragment {
         }
 
         // Set user name
-        String username = UserUtils.getFirstName().substring(0, 1).toUpperCase() + UserUtils.getFirstName().substring(1);
+        String username = UserUtils.getFirstName();
 
         headerUsername.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
         headerUsername.setText(username);

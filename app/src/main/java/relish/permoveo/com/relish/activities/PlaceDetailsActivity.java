@@ -181,6 +181,9 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
     @Bind(R.id.invite_share_card)
     CardView inviteShareCard;
 
+    @Bind(R.id.ivRatingImage)
+    ImageView ratingImage;
+
 
     private FloatingActionButton animatedFab;
     private FakeInvitePagerAdapter invitePagerAdapter;
@@ -370,6 +373,8 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         ratingView.setLarge(true);
         ratingView.setRating(fetchedPlace.rating);
 
+        Picasso.with(this).load(fetchedPlace.rating_img_url).fit().into(ratingImage);
+
         renderReviews();
 
         placeDetailsReviews.removeAllViews();
@@ -398,12 +403,12 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         ImageView reviewImage = reviewImageMap.get(review.getAuthorName());
         if (reviewImage != null) {
             if (TextUtils.isEmpty(review.getAuthorImage())) {
-                reviewImage.setImageResource(R.drawable.relish_avatar_placeholder);
+                reviewImage.setImageResource(R.drawable.avatar_placeholder);
             } else if (review.getLargeAuthorImage().equals(GOOGLE_DEFAULT_IMAGE)) {
-                reviewImage.setImageResource(R.drawable.relish_avatar_placeholder);
+                reviewImage.setImageResource(R.drawable.avatar_placeholder);
             } else {
                 Picasso.with(this)
-                        .load(review.getLargeAuthorImage()).placeholder(R.drawable.relish_avatar_placeholder).fit().centerCrop()
+                        .load(review.getLargeAuthorImage()).placeholder(R.drawable.avatar_placeholder).fit().centerCrop()
                         .into(reviewImage);
                 Log.d("PlaceDetailsActivity", "Review author image -> " + review.getLargeAuthorImage());
             }

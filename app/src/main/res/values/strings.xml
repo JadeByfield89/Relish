@@ -17,6 +17,7 @@
     <string name="button_login">Sign In</string>
     <string name="button_signup_with_facebook">Sign up with Facebook</string>
     <string name="button_signup">Sign Up</string>
+    <string name="error_email_empty">Email must not be empty!</string>
     <string name="error_username_empty">Username must not be empty!</string>
     <string name="error_email">Invalid email</string>
     <string name="error_password">Password must contain more than 3 characters!</string>
