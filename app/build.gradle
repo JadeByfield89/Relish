@@ -118,6 +118,7 @@ dependencies {
     compile 'com.github.gabrielemariotti.changeloglib:changelog:2.0.0'
     compile 'org.twitter4j:twitter4j-core:4.0.4'
     //compile 'com.googlecode.json-simple:json-simple:1.1.1'
+    compile files('libs/FlurryAnalytics-6.0.0.jar')
 }
 
 
