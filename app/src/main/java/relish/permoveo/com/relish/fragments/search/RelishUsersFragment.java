@@ -37,18 +37,15 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
  */
 public class RelishUsersFragment extends Fragment {
 
+    @Bind(R.id.bounce_progress)
+    BounceProgressBar bounceProgressBar;
+    @Bind(R.id.empty_query_container)
+    LinearLayout emptyView;
+    @Bind(R.id.add_friends_recycler)
+    RecyclerView recyclerView;
     private MenuItem searchItem;
     private AddFriendsListAdapter adapter;
     private String oldQuery;
-
-    @Bind(R.id.bounce_progress)
-    BounceProgressBar bounceProgressBar;
-
-    @Bind(R.id.empty_query_container)
-    LinearLayout emptyView;
-
-    @Bind(R.id.add_friends_recycler)
-    RecyclerView recyclerView;
 
     public RelishUsersFragment() {
         // Required empty public constructor

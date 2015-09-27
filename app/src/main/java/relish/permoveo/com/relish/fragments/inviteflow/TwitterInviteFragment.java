@@ -55,31 +55,24 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterInviteFragment extends Fragment implements ISelectable, Filterable {
 
+    /* Any number for uniquely distinguish your request */
+    public static final int WEBVIEW_REQUEST_CODE = 100;
     @Bind(R.id.twitter_invite_recycler)
     RecyclerView twitterRecycler;
-
     @Bind(R.id.bConnectTwitter)
     Button connectTwitter;
-
+    InviteTwitterListAdapter followersAdapter;
+    @Bind(R.id.empty_followers_container)
+    LinearLayout emptyView;
+    @Bind(R.id.bounce_progress)
+    BounceProgressBar progress;
+    @Bind(R.id.empty_message)
+    TextView emptyMessage;
     private String consumerKey = null;
     private String consumerSecret = null;
     private String callbackUrl = null;
     private String oAuthVerifier = null;
     private Twitter twitter;
-
-    InviteTwitterListAdapter followersAdapter;
-
-    @Bind(R.id.empty_followers_container)
-    LinearLayout emptyView;
-
-    @Bind(R.id.bounce_progress)
-    BounceProgressBar progress;
-
-    @Bind(R.id.empty_message)
-    TextView emptyMessage;
-
-    /* Any number for uniquely distinguish your request */
-    public static final int WEBVIEW_REQUEST_CODE = 100;
     private RequestToken requestToken;
 
     private String twitterUsername;
@@ -310,6 +303,11 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
 
     //--------------------------------- Log user in and get their followers in the background----//
 
+    @Override
+    public ArrayList<Contact> getSelection() {
+        return followersAdapter != null ? followersAdapter.getSelected() : new ArrayList<Contact>();
+    }
+
     private class LoginTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
@@ -440,11 +438,6 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
 
 
         }
-    }
-
-    @Override
-    public ArrayList<Contact> getSelection() {
-        return followersAdapter != null ? followersAdapter.getSelected() : new ArrayList<Contact>();
     }
 
 

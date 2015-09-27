@@ -31,8 +31,18 @@ public class GoogleReview extends BaseReview implements Serializable {
     }
 
     @Override
+    public void setAuthorName(String name) {
+        this.authorName = name;
+    }
+
+    @Override
     public String getAuthorImage() {
         return authorImage;
+    }
+
+    @Override
+    public void setAuthorImage(String image) {
+        this.authorImage = image;
     }
 
     @Override
@@ -48,16 +58,6 @@ public class GoogleReview extends BaseReview implements Serializable {
     @Override
     public float getRating() {
         return rating;
-    }
-
-    @Override
-    public void setAuthorImage(String image) {
-        this.authorImage = image;
-    }
-
-    @Override
-    public void setAuthorName(String name) {
-        this.authorName = name;
     }
 
     @Override

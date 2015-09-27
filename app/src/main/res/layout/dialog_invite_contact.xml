@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:id="@+id/dialog_root_view"
-    android:background="@color/fragment_background"
-    android:layout_height="300dp">
+                android:layout_width="match_parent"
+                android:id="@+id/dialog_root_view"
+                android:background="@color/fragment_background"
+                android:layout_height="300dp">
 
 
     <TextView
@@ -38,7 +38,7 @@
             android:layout_marginTop="5dp"
             android:id="@+id/contact_invite_message"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
 
     </LinearLayout>
@@ -62,7 +62,7 @@
             android:layout_marginRight="20dp"
             android:textColor="@color/dialog_button_idle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
 
         <TextView
@@ -72,8 +72,7 @@
             android:textSize="20sp"
             android:textColor="@color/main_color"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"/>
 
 
     </LinearLayout>

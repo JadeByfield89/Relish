@@ -14,13 +14,13 @@ public class FakeInvitePagerAdapter extends FragmentPagerAdapter {
 
     private static final int NUM_PAGES = 4;
 
-    public FakeInvitePagerAdapter(FragmentManager manager){
+    public FakeInvitePagerAdapter(FragmentManager manager) {
         super(manager);
     }
 
     @Override
     public Fragment getItem(int position) {
-        switch(position){
+        switch (position) {
             case 0:
                 return new EmptyCardFragment();
             case 1:

@@ -16,6 +16,7 @@ import org.scribe.oauth.OAuthService;
 import java.util.ArrayList;
 
 import relish.permoveo.com.relish.interfaces.IRequestable;
+import relish.permoveo.com.relish.model.google.GooglePlace;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.network.request.google.GoogleAuthorRequest;
 import relish.permoveo.com.relish.network.request.yelp.PlaceDetailsRequest;
@@ -30,7 +31,8 @@ public class API {
     /*=========================== YELP API ===========================*/
     public static OAuthService service;
     public static Token accessToken;
-
+    /*=========================== GOOGLE PLACES API ===========================*/
+    private static HttpTransport transport = new ApacheHttpTransport();
 
     public static void init(Context context) {
         service = new ServiceBuilder().provider(TwoStepOAuth.class).apiKey(ConstantUtil.YELP_CONSUMER_KEY).apiSecret(ConstantUtil.YELP_CONSUMER_SECRET).build();
@@ -38,9 +40,9 @@ public class API {
     }
 
     public static void yelpSearch(int page, final IRequestable callback, boolean byCategory, ArrayList<String> categories) {
-        if(byCategory) {
+        if (byCategory) {
             new SearchRequest(callback, categories).execute(page);
-        } else{
+        } else {
             new SearchRequest(callback).execute(page);
 
         }
@@ -49,9 +51,6 @@ public class API {
     public static void getYelpPlaceDetails(String id, final IRequestable callback) {
         new PlaceDetailsRequest(callback).execute(id);
     }
-
-    /*=========================== GOOGLE PLACES API ===========================*/
-    private static HttpTransport transport = new ApacheHttpTransport();
 
     public static HttpRequestFactory createRequestFactory() {
 
@@ -75,6 +74,34 @@ public class API {
 
     public static void getGoogleAuthorImage(String id, IRequestable callback) {
         new GoogleAuthorRequest(callback).execute(id);
+    }
+
+    private static ArrayList<GooglePlace> getFakeData() {
+        GooglePlace place1 = new GooglePlace();
+        place1.name = "Noah";
+        place1.address = "Beloyarskaya Str. 19, Yekaterinburg";
+        place1.rating = 4.0;
+
+        GooglePlace place2 = new GooglePlace();
+        place2.name = "Noah";
+        place2.address = "Beloyarskaya Str. 19, Yekaterinburg";
+        place2.rating = 4.0;
+
+        GooglePlace place3 = new GooglePlace();
+        place3.name = "Noah";
+        place3.address = "Beloyarskaya Str. 19, Yekaterinburg";
+        place3.rating = 4.0;
+
+        ArrayList<GooglePlace> places = new ArrayList<>();
+        places.add(place1);
+        places.add(place2);
+        places.add(place3);
+        return places;
+    }
+
+    public static void googlePlacesAutocomplete(String input, IRequestable callback) {
+        //callback.completed(getFakeData());
+        new PlacesAutocompleteRequest(callback).execute(input);
     }
 
 }

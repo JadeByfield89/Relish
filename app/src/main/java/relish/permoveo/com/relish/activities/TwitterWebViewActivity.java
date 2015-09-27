@@ -17,11 +17,9 @@ import relish.permoveo.com.relish.R;
  */
 public class TwitterWebViewActivity extends Activity {
 
-    @Bind(R.id.webView)
-     WebView webView;
-
     public static String EXTRA_URL = "extra_url";
-
+    @Bind(R.id.webView)
+    WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

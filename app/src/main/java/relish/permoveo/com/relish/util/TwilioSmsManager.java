@@ -29,16 +29,16 @@ public class TwilioSmsManager {
 
     public void sendInviteSmsViaTwilio(final String number, final String message) {
 
-       new SendSMSTask(number, message).execute();
+        new SendSMSTask(number, message).execute();
 
     }
 
-    private class SendSMSTask extends AsyncTask<Void, Void, Void>{
+    private class SendSMSTask extends AsyncTask<Void, Void, Void> {
 
         private String number;
         private String message;
 
-        private SendSMSTask(final String number, final String message){
+        private SendSMSTask(final String number, final String message) {
             this.number = number;
             this.message = message;
         }
@@ -69,9 +69,9 @@ public class TwilioSmsManager {
                 Response response = request.send();
                 Log.d("TwilioSmsManager", "Twilio SMS Response -> " + response.getBody());
 
-            }catch(OAuthException e){
+            } catch (OAuthException e) {
                 e.printStackTrace();
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

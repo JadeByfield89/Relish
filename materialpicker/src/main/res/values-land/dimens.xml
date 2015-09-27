@@ -19,7 +19,7 @@
 
 <resources
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <dimen name="mdtp_dialog_height">200dip</dimen>
     <dimen name="mdtp_left_side_width">270dip</dimen>
 

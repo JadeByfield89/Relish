@@ -17,7 +17,8 @@ public class Contact extends InvitePerson implements Serializable {
 
     public String twitterUsername;
 
-    public Contact() {}
+    public Contact() {
+    }
 
     public Contact(String id) {
         this.id = id;

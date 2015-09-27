@@ -80,8 +80,8 @@ public class SMSVerificationActivity extends RelishActivity {
 
     }
 
-    private void sendPhoneNumberToParse(final String number){
-        try{
+    private void sendPhoneNumberToParse(final String number) {
+        try {
             final ParseUser currentUser = ParseUser.getCurrentUser();
             currentUser.put("phoneNumber", number);
             currentUser.saveInBackground(new SaveCallback() {
@@ -132,12 +132,19 @@ public class SMSVerificationActivity extends RelishActivity {
                 }
             });
 
-        } catch(NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }
 
-    private class NewUserProcessTask extends AsyncTask<ArrayList<Invite>, Void , Void>  {
+    private void next(boolean toInviteList) {
+        Intent intent = new Intent(SMSVerificationActivity.this, MainActivity.class);
+        intent.putExtra(ConstantUtil.TO_INVITES_LIST, toInviteList);
+        startActivity(intent);
+        finish();
+    }
+
+    private class NewUserProcessTask extends AsyncTask<ArrayList<Invite>, Void, Void> {
 
         private Contact contact;
 
@@ -190,12 +197,5 @@ public class SMSVerificationActivity extends RelishActivity {
             ParseObject.createWithoutData("Contact", contact.id).deleteInBackground();
             next(true);
         }
-    }
-
-    private void next(boolean toInviteList) {
-        Intent intent = new Intent(SMSVerificationActivity.this, MainActivity.class);
-        intent.putExtra(ConstantUtil.TO_INVITES_LIST, toInviteList);
-        startActivity(intent);
-        finish();
     }
 }

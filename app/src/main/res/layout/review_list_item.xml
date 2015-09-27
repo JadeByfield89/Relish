@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="72dp">
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="72dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/review_image"
@@ -28,19 +28,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
         <ImageView
             android:id="@+id/review_rating_yelp"
             android:layout_marginTop="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-        
+
         <relish.permoveo.com.relish.view.RatingView
             android:id="@+id/review_rating"
             android:layout_marginTop="4dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/review_text"
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textColor="@color/place_grid_distance_color"
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/review_more"
@@ -62,7 +62,7 @@
             android:text="@string/read_more"
             android:clickable="true"
             android:textColor="@color/link_color"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
 
     </LinearLayout>
 
@@ -75,6 +75,6 @@
         android:layout_marginRight="16dp"
         android:layout_alignParentTop="true"
         android:textColor="@color/place_grid_distance_color"
-        android:textSize="12sp" />
+        android:textSize="12sp"/>
 
 </RelativeLayout>

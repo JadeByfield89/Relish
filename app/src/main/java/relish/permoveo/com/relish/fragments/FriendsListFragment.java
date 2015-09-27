@@ -34,22 +34,17 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
  */
 public class FriendsListFragment extends Fragment {
 
-    private FriendsListAdapter adapter;
-
     @Bind(R.id.empty_list_container)
     LinearLayout emptyView;
-
     @Bind(R.id.empty_message)
     TextView emptyMessage;
-
     @Bind(R.id.bounce_progress)
     BounceProgressBar bounceProgressBar;
-
     @Bind(R.id.friends_list_recycler)
     RecyclerView recyclerView;
-
     @Bind(R.id.add_button)
     Button addButton;
+    private FriendsListAdapter adapter;
 
     public FriendsListFragment() {
         // Required empty public constructor

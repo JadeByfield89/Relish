@@ -28,18 +28,17 @@ public class SplashActivity extends RelishActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(SharedPrefsUtil.get.hasLaunchedPrior()) {
-            if(ParseUser.getCurrentUser() != null) {
+        if (SharedPrefsUtil.get.hasLaunchedPrior()) {
+            if (ParseUser.getCurrentUser() != null) {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
-            }else{
+            } else {
                 Intent loginIntent = new Intent(this, SignupActivity.class);
                 startActivity(loginIntent);
                 finish();
             }
-        }else
-        {
+        } else {
             setContentView(R.layout.activity_splash);
 
             updateStatusBar(getResources().getColor(R.color.main_color_dark));
@@ -121,8 +120,8 @@ public class SplashActivity extends RelishActivity {
     @Override
     protected void onPause() {
         super.onPause();
-            mediaPlayer.stop();
-            isActivityOnScreen = false;
+        mediaPlayer.stop();
+        isActivityOnScreen = false;
 
     }
 }

@@ -33,12 +33,12 @@
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="120dp"/>-->
 
-            <!--<View-->
-                <!--android:id="@+id/shadow_top"-->
-                <!--android:layout_alignTop="@+id/map_snapshot"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="3dp"-->
-                <!--android:background="@drawable/shadow_color_light"/>-->
+        <!--<View-->
+        <!--android:id="@+id/shadow_top"-->
+        <!--android:layout_alignTop="@+id/map_snapshot"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="3dp"-->
+        <!--android:background="@drawable/shadow_color_light"/>-->
 
         <View
             android:id="@+id/shadow_bottom"
@@ -286,11 +286,11 @@
         </ScrollView>
 
         <!--<View-->
-            <!--android:id="@+id/shadow"-->
-            <!--android:layout_below="@+id/snapshot"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="3dp"-->
-            <!--android:background="@drawable/shadow_color_light"/>-->
+        <!--android:id="@+id/shadow"-->
+        <!--android:layout_below="@+id/snapshot"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="3dp"-->
+        <!--android:background="@drawable/shadow_color_light"/>-->
 
 
         <RelativeLayout

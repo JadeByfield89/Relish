@@ -1,10 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/drawer_view"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@android:color/white">
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/drawer_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white">
 
     <RelativeLayout
         android:id="@+id/nav_header"
@@ -16,7 +16,7 @@
             android:id="@+id/nav_header_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/header_2" />
+            android:src="@drawable/header_2"/>
 
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -26,7 +26,7 @@
             android:layout_marginTop="50dp"
             android:layout_marginLeft="12dp"
             android:layout_alignParentLeft="true"
-            android:src="@drawable/avatar_placeholder" />
+            android:src="@drawable/avatar_placeholder"/>
 
         <TextView
             android:id="@+id/nav_header_username"
@@ -41,7 +41,7 @@
             android:textStyle="bold"
             android:textColor="@android:color/white"
             android:layout_below="@+id/nav_header_avatar"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
 
         <TextView
@@ -55,7 +55,7 @@
             android:textSize="16sp"
             android:textColor="@android:color/white"
             android:layout_below="@+id/nav_header_username"
-             />
+            />
 
     </RelativeLayout>
 
@@ -69,7 +69,7 @@
         android:dividerHeight="0dp"
         android:layout_marginTop="8dp"
         tools:context=".NavigationDrawerFragment"
-        tools:listitem="@layout/nav_drawer_item" />
+        tools:listitem="@layout/nav_drawer_item"/>
 
 </RelativeLayout>
 

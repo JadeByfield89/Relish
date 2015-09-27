@@ -9,10 +9,10 @@
         android:id="@+id/invite_place_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"/>
 
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"/>
 
     <relish.permoveo.com.relish.view.NonSwipeableViewPager
         android:id="@+id/pager_invite"
@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/pager_indicator"
         android:layout_below="@+id/toolbar"
-        android:layout_marginTop="6dp" />
+        android:layout_marginTop="6dp"/>
 
     <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/pager_indicator"
@@ -34,7 +34,7 @@
         app:fillColor="@color/page_indicator_page_color"
         app:pageColor="@color/page_indicator_fill_color"
         app:radius="4dp"
-        app:strokeColor="@color/page_indicator_fill_color" />
+        app:strokeColor="@color/page_indicator_fill_color"/>
 
     <TextView
         android:id="@+id/invite_success_title"
@@ -45,7 +45,7 @@
         android:text="@string/invite_success"
         android:textColor="#fff"
         android:textSize="70sp"
-        android:visibility="invisible" />
+        android:visibility="invisible"/>
 
     <include
         android:id="@+id/layout_success"

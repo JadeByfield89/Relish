@@ -45,35 +45,6 @@ public class InviteTwitterListAdapter extends RecyclerView.Adapter<InviteTwitter
 
     }
 
-    public class CustomComparator implements Comparator<Contact> {
-        @Override
-        public int compare(Contact first, Contact second) {
-            return first.name.compareTo(second.name);
-        }
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.twitter_follower_name)
-        TextView contactName;
-
-        @Bind(R.id.twitter_follower_image)
-        CircleImageView contactImage;
-
-        @Bind(R.id.root)
-        RelativeLayout root;
-
-        @Bind(R.id.ripple)
-        RippleView rippleView;
-
-        @Bind(R.id.twitter_follower_username)
-        TextView contactUsername;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-    }
-
     public void clear() {
         this.dataset.clear();
         notifyDataSetChanged();
@@ -198,5 +169,34 @@ public class InviteTwitterListAdapter extends RecyclerView.Adapter<InviteTwitter
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.twitter_follower_name)
+        TextView contactName;
+
+        @Bind(R.id.twitter_follower_image)
+        CircleImageView contactImage;
+
+        @Bind(R.id.root)
+        RelativeLayout root;
+
+        @Bind(R.id.ripple)
+        RippleView rippleView;
+
+        @Bind(R.id.twitter_follower_username)
+        TextView contactUsername;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+    public class CustomComparator implements Comparator<Contact> {
+        @Override
+        public int compare(Contact first, Contact second) {
+            return first.name.compareTo(second.name);
+        }
     }
 }

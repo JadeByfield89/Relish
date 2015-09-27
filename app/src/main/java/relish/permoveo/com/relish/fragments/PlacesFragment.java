@@ -62,24 +62,11 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
 
     private static final String PAGE = "news_page";
     private static final String TOTAL_NEWS_COUNT = "news_total_count";
-
-    private ToolbarCallbacks toolbarCallbacks;
-    private int parallaxImageHeight;
-    private PlacesAdapter adapter;
-    private int page = 0;
-    private int total = Integer.MAX_VALUE;
-    private int previousTotal = 0;
-    private NavigationDrawerManagementCallbacks navigationDrawerManagementCallbacks;
-    private boolean loading = true;
-    private StaggeredGridLayoutManager staggeredGridLayoutManager;
     int firstVisibleItem, visibleItemCount, totalItemCount;
-
     @Bind(R.id.staggered_grid)
     ObservableRecyclerView recyclerView;
-
     @Bind(R.id.recycler_background)
     View recyclerBackground;
-
     @Bind(R.id.header_place_image)
     ImageView headerImage;
     //
@@ -94,22 +81,25 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     //
     @Bind(R.id.header_rating_view)
     RatingView headerRating;
-
     @Bind(R.id.header_place_details_frame)
     FrameLayout headerDetailsFrame;
-
     @Bind(R.id.places_inform_message)
     TextView placesMessage;
-
     @Bind(R.id.bounce_progress)
     BounceProgressBar bounceProgressBar;
-
     @Bind(R.id.places_swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
-
     @Bind(R.id.header_layout)
     RelativeLayout headerLayout;
-
+    private ToolbarCallbacks toolbarCallbacks;
+    private int parallaxImageHeight;
+    private PlacesAdapter adapter;
+    private int page = 0;
+    private int total = Integer.MAX_VALUE;
+    private int previousTotal = 0;
+    private NavigationDrawerManagementCallbacks navigationDrawerManagementCallbacks;
+    private boolean loading = true;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private ArrayList<String> categories;
     private boolean byCategory = false;
 
@@ -414,7 +404,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     }
 
 
-    public void setCategories(ArrayList<String> categories){
+    public void setCategories(ArrayList<String> categories) {
         this.categories = categories;
         byCategory = true;
     }

@@ -38,46 +38,6 @@ public class InvitesListAdapter extends RecyclerView.Adapter<InvitesListAdapter.
         this.context = context;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.invite_place_name)
-        TextView invitePlaceName;
-
-        @Bind(R.id.invite_place_address)
-        TextView invitePlaceAddress;
-
-        @Bind(R.id.invite_title)
-        TextView inviteTitle;
-
-        @Bind(R.id.invite_date_time)
-        TextView inviteDateTime;
-
-        @Bind(R.id.invite_map_snapshot)
-        SelectableRoundedImageView inviteMapSnapshot;
-
-        @Bind(R.id.first_person)
-        CircleImageView firstPerson;
-
-        @Bind(R.id.second_person)
-        CircleImageView secondPerson;
-
-        @Bind(R.id.third_person)
-        CircleImageView thirdPerson;
-
-        @Bind(R.id.more_persons)
-        TextView morePersons;
-
-        @Bind(R.id.invited_layout)
-        LinearLayout inviteLayout;
-
-        @Bind(R.id.invite_status)
-        TextView inviteStatus;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-    }
-
     public void clear() {
         this.dataset.clear();
         notifyDataSetChanged();
@@ -283,5 +243,45 @@ public class InvitesListAdapter extends RecyclerView.Adapter<InvitesListAdapter.
 
     public Object getItem(int position) {
         return dataset.get(position);
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.invite_place_name)
+        TextView invitePlaceName;
+
+        @Bind(R.id.invite_place_address)
+        TextView invitePlaceAddress;
+
+        @Bind(R.id.invite_title)
+        TextView inviteTitle;
+
+        @Bind(R.id.invite_date_time)
+        TextView inviteDateTime;
+
+        @Bind(R.id.invite_map_snapshot)
+        SelectableRoundedImageView inviteMapSnapshot;
+
+        @Bind(R.id.first_person)
+        CircleImageView firstPerson;
+
+        @Bind(R.id.second_person)
+        CircleImageView secondPerson;
+
+        @Bind(R.id.third_person)
+        CircleImageView thirdPerson;
+
+        @Bind(R.id.more_persons)
+        TextView morePersons;
+
+        @Bind(R.id.invited_layout)
+        LinearLayout inviteLayout;
+
+        @Bind(R.id.invite_status)
+        TextView inviteStatus;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
     }
 }

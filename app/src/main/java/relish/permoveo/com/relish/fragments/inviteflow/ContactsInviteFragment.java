@@ -54,21 +54,15 @@ public class ContactsInviteFragment extends Fragment implements ISelectable, Fil
             ContactsContract.CommonDataKinds.Phone.NUMBER,
             ContactsContract.CommonDataKinds.Phone.PHOTO_URI
     };
-
-    private InviteContactsListAdapter adapter;
-
     @Bind(R.id.empty_contacts_container)
     LinearLayout emptyView;
-
     @Bind(R.id.bounce_progress)
     BounceProgressBar contactsProgress;
-
     @Bind(R.id.contacts_invite_recycler)
     RecyclerView recyclerView;
-
     @Bind(R.id.empty_message)
     TextView emptyMessage;
-
+    private InviteContactsListAdapter adapter;
     private InviteCreator creator;
 
     public ContactsInviteFragment() {
@@ -122,6 +116,25 @@ public class ContactsInviteFragment extends Fragment implements ISelectable, Fil
         return adapter.getFilter();
     }
 
+    private String formatPhoneNumber(String number) {
+        String formattedNumber = number.replace("(", "");
+        formattedNumber = formattedNumber.replace(")", "");
+        formattedNumber = formattedNumber.replace("-", "");
+        formattedNumber = formattedNumber.replace(" ", "");
+
+        // Needs to prefixed with +1
+        if (formattedNumber.length() == 10) {
+            formattedNumber = "+1" + formattedNumber;
+        }
+        Log.d("ContactsInviteFragment", "formatted number" + formattedNumber);
+        return formattedNumber;
+    }
+
+    @Override
+    public ArrayList<Contact> getSelection() {
+        return adapter != null ? adapter.getSelected() : new ArrayList<Contact>();
+    }
+
     private class LoadContactsTask extends AsyncTask<Void, Void, Map<String, Contact>> {
 
         @Override
@@ -143,7 +156,7 @@ public class ContactsInviteFragment extends Fragment implements ISelectable, Fil
                             contact.name = cursor.getString(displayNameIndex);
                             contact.number = cursor.getString(phoneIndex).trim();
                             contact.number = formatPhoneNumber(contact.number);
-                            Log.d("ContactsInviteFragment ", "non formatted number " +  contact.number);
+                            Log.d("ContactsInviteFragment ", "non formatted number " + contact.number);
                             contact.image = cursor.getString(photoUriIndex);
 
                             if (!TextUtils.isEmpty(contact.image)) {
@@ -200,24 +213,5 @@ public class ContactsInviteFragment extends Fragment implements ISelectable, Fil
                 emptyView.setVisibility(View.VISIBLE);
             }
         }
-    }
-
-    private String formatPhoneNumber(String number){
-        String formattedNumber = number.replace("(", "");
-        formattedNumber = formattedNumber.replace(")","");
-        formattedNumber = formattedNumber.replace("-","");
-        formattedNumber = formattedNumber.replace(" ","");
-
-        // Needs to prefixed with +1
-        if(formattedNumber.length() == 10){
-            formattedNumber = "+1" + formattedNumber;
-        }
-        Log.d("ContactsInviteFragment", "formatted number" +formattedNumber);
-        return formattedNumber;
-    }
-
-    @Override
-    public ArrayList<Contact> getSelection() {
-        return adapter != null ? adapter.getSelected() : new ArrayList<Contact>();
     }
 }

@@ -42,28 +42,6 @@ public class InviteEmailListAdapter extends RecyclerView.Adapter<InviteEmailList
         dataset = new ArrayList<>();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.email_contact_name)
-        TextView emailContactName;
-
-        @Bind(R.id.email_contact_image)
-        CircleImageView emailContactImage;
-
-        @Bind(R.id.root)
-        RelativeLayout root;
-
-        @Bind(R.id.ripple)
-        RippleView rippleView;
-
-        @Bind(R.id.email_contact_email_address)
-        TextView emailContactEmail;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
-    }
-
     public void clear() {
         this.dataset.clear();
         notifyDataSetChanged();
@@ -182,5 +160,27 @@ public class InviteEmailListAdapter extends RecyclerView.Adapter<InviteEmailList
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.email_contact_name)
+        TextView emailContactName;
+
+        @Bind(R.id.email_contact_image)
+        CircleImageView emailContactImage;
+
+        @Bind(R.id.root)
+        RelativeLayout root;
+
+        @Bind(R.id.ripple)
+        RippleView rippleView;
+
+        @Bind(R.id.email_contact_email_address)
+        TextView emailContactEmail;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
     }
 }

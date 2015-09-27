@@ -12,7 +12,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -30,6 +32,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.parse.ParseException;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -37,6 +40,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.adapter.pager.FakeInvitePagerAdapter;
 import relish.permoveo.com.relish.fragments.FriendsFragment;
 import relish.permoveo.com.relish.fragments.InvitesFragment;
 import relish.permoveo.com.relish.fragments.NavigationDrawerFragment;
@@ -44,6 +48,7 @@ import relish.permoveo.com.relish.fragments.PlacesFilterFragment;
 import relish.permoveo.com.relish.fragments.PlacesFragment;
 import relish.permoveo.com.relish.fragments.SettingsFragment;
 import relish.permoveo.com.relish.gps.GPSTracker;
+import relish.permoveo.com.relish.interfaces.CircularRevealAnimator;
 import relish.permoveo.com.relish.interfaces.NavigationDrawerManagementCallbacks;
 import relish.permoveo.com.relish.interfaces.OnResumeLoadingCallbacks;
 import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
@@ -56,34 +61,31 @@ import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.view.RelishDrawerToggle;
 
 
-public class MainActivity extends RelishActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, ToolbarCallbacks, NavigationDrawerManagementCallbacks, PlacesFilterFragment.OnFilterSelectionCompleteListener {
-
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-
-    @Bind(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
-
-    @Bind(R.id.content_frame)
-    FrameLayout contentFrame;
+public class MainActivity extends RelishActivity implements CircularRevealAnimator, NavigationDrawerFragment.NavigationDrawerCallbacks, ToolbarCallbacks, NavigationDrawerManagementCallbacks, PlacesFilterFragment.OnFilterSelectionCompleteListener {
 
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-
-    private int mCurrentSelectedPosition = 0;
-    // nav drawer title
-    private CharSequence mDrawerTitle;
-    // used to store app title
-    private CharSequence mTitle;
-    private String[] navMenuTitles;
-    RelishDrawerToggle drawerToggle;
-    private String inviteId = null;
-    private boolean action;
     public boolean drawerOpen = false;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+    @Bind(R.id.content_frame)
+    FrameLayout contentFrame;
+    @Bind(R.id.pager_invite)
+    ViewPager invitePager;
+    @Bind(R.id.pager_indicator)
+    CirclePageIndicator pagerIndicator;
+    @Bind(R.id.invite_share_card)
+    CardView inviteShareCard;
+    @Bind(R.id.main_activity_container)
+    RelativeLayout activity_container;
+    @Bind(R.id.reveal_container)
+    RelativeLayout reveal_container;
+    RelishDrawerToggle drawerToggle;
     Fragment current = null;
     Dialog d;
     NavigationDrawerFragment navDrawer;
     PlacesFilterFragment filterFragment;
-
     BroadcastReceiver locationReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -97,6 +99,15 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
             LocalBroadcastManager.getInstance(MainActivity.this).unregisterReceiver(this);
         }
     };
+    private FakeInvitePagerAdapter invitePagerAdapter;
+    private int mCurrentSelectedPosition = 0;
+    // nav drawer title
+    private CharSequence mDrawerTitle;
+    // used to store app title
+    private CharSequence mTitle;
+    private String[] navMenuTitles;
+    private String inviteId = null;
+    private boolean action;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +127,7 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
                 inviteId = getIntent().getExtras().getString(ConstantUtil.INVITE_ID_EXTRA);
                 action = getIntent().getBooleanExtra(ConstantUtil.NOTIFICATION_ACTION_EXTRA, false);
             }
-        }else if (savedInstanceState != null) {
+        } else if (savedInstanceState != null) {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
         }
 
@@ -192,6 +203,9 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         setSupportActionBar(toolbar);
         getSupportActionBar().setElevation(7.0f);
 
+        invitePagerAdapter = new FakeInvitePagerAdapter(getSupportFragmentManager());
+        invitePager.setAdapter(invitePagerAdapter);
+        pagerIndicator.setViewPager(invitePager);
 
         updateToolbar(toolbar);
         navDrawer.selectItem(mCurrentSelectedPosition);
@@ -353,6 +367,21 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
         return toolbar;
     }
 
+    @Override
+    public CirclePageIndicator getPageIndicator() {
+        return pagerIndicator;
+    }
+
+    @Override
+    public CardView getShareCard() {
+        return inviteShareCard;
+    }
+
+    @Override
+    public ViewPager getInvitePager() {
+        return invitePager;
+    }
+
     private TextView getActionBarTextView() {
         TextView titleTextView = null;
 
@@ -383,5 +412,15 @@ public class MainActivity extends RelishActivity implements NavigationDrawerFrag
     @Override
     public void closeDrawer() {
         drawerLayout.closeDrawer(Gravity.RIGHT);
+    }
+
+    @Override
+    public ViewGroup getActivityContainer() {
+        return activity_container;
+    }
+
+    @Override
+    public ViewGroup getRevealContainer() {
+        return reveal_container;
     }
 }

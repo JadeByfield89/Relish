@@ -4,13 +4,13 @@
              android:layout_height="match_parent"
              tools:context="relish.permoveo.com.relish.fragments.SettingsFragment">
 
-   <android.support.v7.widget.RecyclerView
-       android:id="@+id/settings_recycler_view"
-       android:layout_marginRight="20dp"
-       android:layout_marginLeft="20dp"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/settings_recycler_view"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-   </android.support.v7.widget.RecyclerView>
+    </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

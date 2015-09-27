@@ -49,8 +49,8 @@ public class SearchRequest extends RelishRequest<Integer, Void, PlacesResponse> 
         Integer page = params[0];
         OAuthRequest request = new OAuthRequest(Verb.GET, ConstantUtil.YELP_PLACES_SEARCH_URL);
         request.addQuerystringParameter("limit", String.valueOf(ConstantUtil.PLACES_LIMIT_SEARCH));
-        request.addQuerystringParameter("ll", "34.0736" + "," + "-118.4");
-       //request.addQuerystringParameter("ll", String.valueOf(GPSTracker.get.getLocation().getLatitude()) + "," + String.valueOf(GPSTracker.get.getLocation().getLongitude()));
+//        request.addQuerystringParameter("ll", "34.0736" + "," + "-118.4");
+        request.addQuerystringParameter("ll", String.valueOf(GPSTracker.get.getLocation().getLatitude()) + "," + String.valueOf(GPSTracker.get.getLocation().getLongitude()));
 
         request.addQuerystringParameter("offset", String.valueOf(ConstantUtil.PLACES_LIMIT_SEARCH * page));
         //request.addQuerystringParameter("sort", String.valueOf(ConstantUtil.PLACES_SORTING_ORDER));
@@ -60,20 +60,18 @@ public class SearchRequest extends RelishRequest<Integer, Void, PlacesResponse> 
 
         Log.d("SearchRequest", "Categories size " + categories);
 
-        if(categories.size() == 1){
+        if (categories.size() == 1) {
             Log.d("SearchRequest", "Category size is 1");
             Log.d("SearchRequest", "Category filter is " + categories.get(0));
             request.addQuerystringParameter("category_filter", categories.get(0));
 
-        }
-
-        else if(categories.size() > 1) {
+        } else if (categories.size() > 1) {
             Log.d("SearchRequest", "Category size is greater than 1");
 
             for (String category : categories) {
-                if(categories.indexOf(category) == 0){
+                if (categories.indexOf(category) == 0) {
                     builder.append(category);
-                }else {
+                } else {
                     builder.append("," + category);
                 }
                 Log.d("SearchRequest", "Category filters are " + builder.toString());
@@ -84,13 +82,12 @@ public class SearchRequest extends RelishRequest<Integer, Void, PlacesResponse> 
         }
 
 
-
         API.service.signRequest(API.accessToken, request);
         PlacesResponse placesResponse = null;
         try {
             Response response = request.send();
             String json = response.getBody();
-            Log.d("Response: ",  json);
+            Log.d("Response: ", json);
 
             placesResponse = gson.fromJson(json, PlacesResponse.class);
         } catch (OAuthConnectionException e) {

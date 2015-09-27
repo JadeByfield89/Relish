@@ -21,7 +21,8 @@ android {
 
     repositories {
         flatDir {
-            dirs 'libs'}
+            dirs 'libs'
+        }
 
         mavenCentral()
         maven {
@@ -54,6 +55,10 @@ android {
         multiDexEnabled true
 
     }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+
     buildTypes {
         release {
             minifyEnabled false

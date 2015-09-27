@@ -3,6 +3,7 @@ package relish.permoveo.com.relish.adapter.list;
 /**
  * Created by byfieldj on 9/23/15.
  */
+
 import android.content.Context;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import it.gmariotti.changelibs.R.id;
 import it.gmariotti.changelibs.library.Constants;
 import it.gmariotti.changelibs.library.internal.ChangeLogRow;
@@ -36,11 +38,11 @@ public class CustomChangeLogRecyclerAdapter extends Adapter<ViewHolder> {
         this.mRowHeaderLayoutId = Constants.mRowHeaderLayoutId;
         this.mStringVersionHeader = Constants.mStringVersionHeader;
         this.mContext = mContext;
-        if(items == null) {
+        if (items == null) {
             items = new ArrayList();
         }
 
-        this.items = (List)items;
+        this.items = (List) items;
     }
 
     public void add(LinkedList<ChangeLogRow> rows) {
@@ -51,7 +53,7 @@ public class CustomChangeLogRecyclerAdapter extends Adapter<ViewHolder> {
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if(viewType == 1) {
+        if (viewType == 1) {
             view = LayoutInflater.from(parent.getContext()).inflate(this.mRowHeaderLayoutId, parent, false);
             return new CustomChangeLogRecyclerAdapter.ViewHolderHeader(view);
         } else {
@@ -61,26 +63,26 @@ public class CustomChangeLogRecyclerAdapter extends Adapter<ViewHolder> {
     }
 
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        if(this.isHeader(position)) {
-            this.populateViewHolderHeader((CustomChangeLogRecyclerAdapter.ViewHolderHeader)viewHolder, position);
+        if (this.isHeader(position)) {
+            this.populateViewHolderHeader((CustomChangeLogRecyclerAdapter.ViewHolderHeader) viewHolder, position);
         } else {
-            this.populateViewHolderRow((CustomChangeLogRecyclerAdapter.ViewHolderRow)viewHolder, position);
+            this.populateViewHolderRow((CustomChangeLogRecyclerAdapter.ViewHolderRow) viewHolder, position);
         }
 
     }
 
     private void populateViewHolderRow(CustomChangeLogRecyclerAdapter.ViewHolderRow viewHolder, int position) {
         ChangeLogRow item = this.getItem(position);
-        if(item != null) {
-            if(viewHolder.textRow != null) {
+        if (item != null) {
+            if (viewHolder.textRow != null) {
                 viewHolder.textRow.setText(Html.fromHtml(item.getChangeText(this.mContext)));
                 viewHolder.textRow.setMovementMethod(LinkMovementMethod.getInstance());
                 viewHolder.textRow.setTextColor(mContext.getResources().getColor(R.color.main_color));
 
             }
 
-            if(viewHolder.bulletRow != null) {
-                if(item.isBulletedList()) {
+            if (viewHolder.bulletRow != null) {
+                if (item.isBulletedList()) {
                     viewHolder.bulletRow.setVisibility(0);
                 } else {
                     viewHolder.bulletRow.setVisibility(8);
@@ -92,11 +94,11 @@ public class CustomChangeLogRecyclerAdapter extends Adapter<ViewHolder> {
 
     private void populateViewHolderHeader(CustomChangeLogRecyclerAdapter.ViewHolderHeader viewHolder, int position) {
         ChangeLogRow item = this.getItem(position);
-        if(item != null) {
-            if(viewHolder.versionHeader != null) {
+        if (item != null) {
+            if (viewHolder.versionHeader != null) {
                 StringBuilder sb = new StringBuilder();
                 String versionHeaderString = this.mContext.getString(this.mStringVersionHeader);
-                if(versionHeaderString != null) {
+                if (versionHeaderString != null) {
                     sb.append(versionHeaderString);
                 }
 
@@ -104,8 +106,8 @@ public class CustomChangeLogRecyclerAdapter extends Adapter<ViewHolder> {
                 viewHolder.versionHeader.setText(sb.toString());
             }
 
-            if(viewHolder.dateHeader != null) {
-                if(item.getChangeDate() != null) {
+            if (viewHolder.dateHeader != null) {
+                if (item.getChangeDate() != null) {
                     viewHolder.dateHeader.setText(item.getChangeDate());
                     viewHolder.dateHeader.setVisibility(View.VISIBLE);
                 } else {
@@ -122,11 +124,11 @@ public class CustomChangeLogRecyclerAdapter extends Adapter<ViewHolder> {
     }
 
     private ChangeLogRow getItem(int position) {
-        return (ChangeLogRow)this.items.get(position);
+        return (ChangeLogRow) this.items.get(position);
     }
 
     public int getItemViewType(int position) {
-        return this.isHeader(position)?1:0;
+        return this.isHeader(position) ? 1 : 0;
     }
 
     public int getItemCount() {
@@ -147,9 +149,9 @@ public class CustomChangeLogRecyclerAdapter extends Adapter<ViewHolder> {
 
         public ViewHolderRow(View itemView) {
             super(itemView);
-            this.textRow = (TextView)itemView.findViewById(id.chg_text);
+            this.textRow = (TextView) itemView.findViewById(id.chg_text);
             this.textRow.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
-            this.bulletRow = (TextView)itemView.findViewById(id.chg_textbullet);
+            this.bulletRow = (TextView) itemView.findViewById(id.chg_textbullet);
             this.bulletRow.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         }
     }
@@ -160,8 +162,8 @@ public class CustomChangeLogRecyclerAdapter extends Adapter<ViewHolder> {
 
         public ViewHolderHeader(View itemView) {
             super(itemView);
-            this.versionHeader = (TextView)itemView.findViewById(id.chg_headerVersion);
-            this.dateHeader = (TextView)itemView.findViewById(id.chg_headerDate);
+            this.versionHeader = (TextView) itemView.findViewById(id.chg_headerVersion);
+            this.dateHeader = (TextView) itemView.findViewById(id.chg_headerDate);
         }
     }
 }

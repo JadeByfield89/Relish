@@ -27,58 +27,52 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TOGGLE = 2;
     private ArrayList<Setting> settings;
 
+    public SettingsAdapter(ArrayList<Setting> settings) {
+        this.settings = settings;
+    }
+
     @Override
     public int getItemCount() {
         return settings.size();
     }
 
-    public SettingsAdapter(ArrayList<Setting> settings){
-        this.settings = settings;
-    }
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        if(viewType == NORMAL){
+        if (viewType == NORMAL) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_settings_item, parent, false);
             return new SettingsViewHolder(v);
-        }
-        else if(viewType == HEADER){
+        } else if (viewType == HEADER) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_settings_header, parent, false);
             return new SettingsHeaderViewHolder(v);
-        }
-
-        else if(viewType == TOGGLE){
+        } else if (viewType == TOGGLE) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_settings_toggle_item, parent, false);
             return new SettingsToggleViewHolder(v);
-        }
-
-        else
+        } else
             throw new RuntimeException("Could not inflate layout");
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof SettingsHeaderViewHolder){
+        if (holder instanceof SettingsHeaderViewHolder) {
             ((SettingsHeaderViewHolder) holder).header.setText(settings.get(position).getTitle());
-        }else if( holder instanceof SettingsViewHolder){
-           ((SettingsViewHolder) holder).title.setText(settings.get(position).getTitle());
-            if(settings.get(position).getSubtitle().isEmpty()){
+        } else if (holder instanceof SettingsViewHolder) {
+            ((SettingsViewHolder) holder).title.setText(settings.get(position).getTitle());
+            if (settings.get(position).getSubtitle().isEmpty()) {
                 ((SettingsViewHolder) holder).subtitle.setVisibility(View.GONE);
-            }else {
+            } else {
                 ((SettingsViewHolder) holder).subtitle.setVisibility(View.VISIBLE);
                 ((SettingsViewHolder) holder).subtitle.setText(settings.get(position).getSubtitle());
             }
 
-        }
-        else if(holder instanceof  SettingsToggleViewHolder){
-            if(position == 4){
+        } else if (holder instanceof SettingsToggleViewHolder) {
+            if (position == 4) {
                 ((SettingsToggleViewHolder) holder).toggle.setChecked(false);
             }
             ((SettingsToggleViewHolder) holder).title.setText(settings.get(position).getTitle());
-            if(settings.get(position).getSubtitle().isEmpty()){
+            if (settings.get(position).getSubtitle().isEmpty()) {
                 ((SettingsToggleViewHolder) holder).subtitle.setVisibility(View.GONE);
-            }else {
+            } else {
                 ((SettingsToggleViewHolder) holder).subtitle.setVisibility(View.VISIBLE);
                 ((SettingsToggleViewHolder) holder).subtitle.setText(settings.get(position).getSubtitle());
             }
@@ -87,7 +81,31 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-    public static class SettingsViewHolder extends RecyclerView.ViewHolder{
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return HEADER;
+        } else if (position == 5) {
+            return HEADER;
+        } else if (position == 4) {
+            return TOGGLE;
+        } else if (position == 10) {
+            return HEADER;
+        } else if (position == 1) {
+            return TOGGLE;
+        } else if (position == 3) {
+            return TOGGLE;
+        } else {
+            return NORMAL;
+        }
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    public static class SettingsViewHolder extends RecyclerView.ViewHolder {
 
         @Nullable
         @Bind(R.id.settings_title)
@@ -101,22 +119,22 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Bind(R.id.settings_toggle)
         public ToggleButton toggleButton;
 
-        public SettingsViewHolder(View view){
+        public SettingsViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this,view);
+            ButterKnife.bind(this, view);
             title.setTypeface(TypefaceUtil.PROXIMA_NOVA);
             subtitle.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         }
 
     }
 
-    public static class SettingsHeaderViewHolder extends  RecyclerView.ViewHolder{
+    public static class SettingsHeaderViewHolder extends RecyclerView.ViewHolder {
 
         @Nullable
         @Bind(R.id.settings_header)
         public TextView header;
 
-        public SettingsHeaderViewHolder(View view){
+        public SettingsHeaderViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             header.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
@@ -124,7 +142,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public static class SettingsToggleViewHolder extends  RecyclerView.ViewHolder{
+    public static class SettingsToggleViewHolder extends RecyclerView.ViewHolder {
 
         @Nullable
         @Bind(R.id.settings_toggle)
@@ -138,41 +156,11 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Bind(R.id.settings_subtitle)
         TextView subtitle;
 
-        public SettingsToggleViewHolder(View view){
+        public SettingsToggleViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             title.setTypeface(TypefaceUtil.PROXIMA_NOVA);
             subtitle.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         }
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if(position == 0){
-            return HEADER;
-        }
-        else if (position == 5){
-            return HEADER;
-        }
-        else if(position == 4){
-            return TOGGLE;
-        }
-        else if(position == 10){
-            return HEADER;
-        }
-        else if(position == 1){
-            return TOGGLE;
-        }
-        else if(position == 3){
-            return TOGGLE;
-        }
-        else{
-            return NORMAL;
-        }
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
     }
 }

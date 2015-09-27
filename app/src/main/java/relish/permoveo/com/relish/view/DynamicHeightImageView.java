@@ -16,15 +16,15 @@ public class DynamicHeightImageView extends ImageView {
         super(context);
     }
 
+    public double getHeightRatio() {
+        return mHeightRatio;
+    }
+
     public void setHeightRatio(double ratio) {
         if (ratio != mHeightRatio) {
             mHeightRatio = ratio;
             requestLayout();
         }
-    }
-
-    public double getHeightRatio() {
-        return mHeightRatio;
     }
 
     @Override

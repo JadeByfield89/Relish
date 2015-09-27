@@ -5,5 +5,6 @@ package relish.permoveo.com.relish.interfaces;
  */
 public interface NavigationDrawerManagementCallbacks {
     void openDrawer();
+
     void closeDrawer();
 }

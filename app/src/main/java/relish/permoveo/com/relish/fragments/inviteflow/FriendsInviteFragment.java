@@ -65,6 +65,10 @@ public class FriendsInviteFragment extends Fragment {
         // Required empty public constructor
     }
 
+    private static String makeFragmentName(int viewId, int index) {
+        return "android:switcher:" + viewId + ":" + index;
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -83,14 +87,9 @@ public class FriendsInviteFragment extends Fragment {
         adapter = new FriendsInvitePagerAdapter(getChildFragmentManager());
     }
 
-
     private Fragment getActiveFragment(ViewPager container, int position) {
         String name = makeFragmentName(container.getId(), position);
         return getChildFragmentManager().findFragmentByTag(name);
-    }
-
-    private static String makeFragmentName(int viewId, int index) {
-        return "android:switcher:" + viewId + ":" + index;
     }
 
     @Override
@@ -205,7 +204,7 @@ public class FriendsInviteFragment extends Fragment {
         Log.d("FriendsInviteFragment", "FriendsInviteFragment onActivityResult");
         super.onActivityResult(requestCode, resultCode, data);
 
-        for(Fragment fragment: getChildFragmentManager().getFragments()){
+        for (Fragment fragment : getChildFragmentManager().getFragments()) {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
     }

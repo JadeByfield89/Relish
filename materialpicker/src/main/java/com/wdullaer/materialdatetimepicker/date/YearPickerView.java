@@ -69,6 +69,10 @@ public class YearPickerView extends ListView implements OnItemClickListener, OnD
         onDateChanged();
     }
 
+    private static int getYearFromTextView(TextView view) {
+        return Integer.valueOf(view.getText().toString());
+    }
+
     private void init(Context context) {
         ArrayList<String> years = new ArrayList<String>();
         for (int year = mController.getMinYear(); year <= mController.getMaxYear(); year++) {
@@ -98,32 +102,6 @@ public class YearPickerView extends ListView implements OnItemClickListener, OnD
             }
             mController.onYearSelected(getYearFromTextView(clickedView));
             mAdapter.notifyDataSetChanged();
-        }
-    }
-
-    private static int getYearFromTextView(TextView view) {
-        return Integer.valueOf(view.getText().toString());
-    }
-
-    private class YearAdapter extends ArrayAdapter<String> {
-
-        public YearAdapter(Context context, int resource, List<String> objects) {
-            super(context, resource, objects);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextViewWithCircularIndicator v = (TextViewWithCircularIndicator)
-                    super.getView(position, convertView, parent);
-            v.setAccentColor(mAccentColor);
-            v.requestLayout();
-            int year = getYearFromTextView(v);
-            boolean selected = mController.getSelectedDay().year == year;
-            v.drawIndicator(selected);
-            if (selected) {
-                mSelectedView = v;
-            }
-            return v;
         }
     }
 
@@ -162,6 +140,28 @@ public class YearPickerView extends ListView implements OnItemClickListener, OnD
         if (event.getEventType() == AccessibilityEvent.TYPE_VIEW_SCROLLED) {
             event.setFromIndex(0);
             event.setToIndex(0);
+        }
+    }
+
+    private class YearAdapter extends ArrayAdapter<String> {
+
+        public YearAdapter(Context context, int resource, List<String> objects) {
+            super(context, resource, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            TextViewWithCircularIndicator v = (TextViewWithCircularIndicator)
+                    super.getView(position, convertView, parent);
+            v.setAccentColor(mAccentColor);
+            v.requestLayout();
+            int year = getYearFromTextView(v);
+            boolean selected = mController.getSelectedDay().year == year;
+            v.drawIndicator(selected);
+            if (selected) {
+                mSelectedView = v;
+            }
+            return v;
         }
     }
 }

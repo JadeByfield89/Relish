@@ -74,16 +74,15 @@ public class YelpPlace implements Serializable {
      */
     public static class PlaceLocation implements Serializable {
 
-        public PlaceLocation() {}
-
+        public String address;
+        public double lat;
+        public double lng;
+        public PlaceLocation() {
+        }
         public PlaceLocation(String address, ParseGeoPoint location) {
             this.address = address;
             this.lat = location.getLatitude();
             this.lng = location.getLongitude();
         }
-
-        public String address;
-        public double lat;
-        public double lng;
     }
 }

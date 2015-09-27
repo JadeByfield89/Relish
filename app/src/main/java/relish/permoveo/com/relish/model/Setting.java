@@ -11,25 +11,23 @@ public class Setting {
     private String subtitle;
     private boolean hasToggle;
 
-    public Setting(String title, String subtitle, boolean hasToggle){
+    public Setting(String title, String subtitle, boolean hasToggle) {
         this.title = title;
         this.subtitle = subtitle;
         this.hasToggle = hasToggle;
     }
 
-    public String getTitle(){
+    public String getTitle() {
         return title;
     }
 
-    public String getSubtitle(){
+    public String getSubtitle() {
         return subtitle;
     }
 
-    public boolean hasToggle(){
+    public boolean hasToggle() {
         return hasToggle;
     }
-
-
 
 
 }

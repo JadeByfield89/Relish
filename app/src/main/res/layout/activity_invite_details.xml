@@ -134,7 +134,6 @@
             </LinearLayout>
 
 
-
             <LinearLayout
                 android:layout_below="@+id/invite_details_info"
                 android:id="@+id/invite_grid"
@@ -167,9 +166,9 @@
                 </LinearLayout>
 
                 <!--<View-->
-                    <!--android:layout_width="1dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:background="#80000000"/>-->
+                <!--android:layout_width="1dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="#80000000"/>-->
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -193,9 +192,9 @@
                 </LinearLayout>
 
                 <!--<View-->
-                    <!--android:layout_width="1dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:background="#80000000"/>-->
+                <!--android:layout_width="1dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="#80000000"/>-->
 
                 <LinearLayout
                     android:gravity="center_horizontal"

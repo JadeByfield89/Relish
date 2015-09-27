@@ -19,11 +19,11 @@ public class InvitePagerAdapter extends FragmentPagerAdapter {
     private YelpPlace currentPlace;
 
 
-    public InvitePagerAdapter(FragmentManager manager){
+    public InvitePagerAdapter(FragmentManager manager) {
         super(manager);
     }
 
-    public InvitePagerAdapter(FragmentManager manager, YelpPlace currentPlace){
+    public InvitePagerAdapter(FragmentManager manager, YelpPlace currentPlace) {
         super(manager);
         this.currentPlace = currentPlace;
     }
@@ -31,9 +31,9 @@ public class InvitePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        switch(position){
+        switch (position) {
             case 0:
-                return PickPlaceInviteFragment.newInstance(currentPlace);
+                return currentPlace == null ? new PickPlaceInviteFragment() : PickPlaceInviteFragment.newInstance(currentPlace);
             case 1:
                 return new FriendsInviteFragment();
             case 2:

@@ -25,7 +25,7 @@ public class AnimationUtils {
     public static boolean wasAnimatedToTop;
     public static boolean wasAnimatedToBottom;
 
-    public static void animateFAB(FloatingActionButton fab, final boolean toTop, final boolean toBottom, float y){
+    public static void animateFAB(FloatingActionButton fab, final boolean toTop, final boolean toBottom, float y) {
 
         ViewPropertyAnimator.animate(fab).setInterpolator(new AccelerateDecelerateInterpolator())
                 .setDuration(300)
@@ -54,7 +54,7 @@ public class AnimationUtils {
 
     }
 
-    public static void animateFavoriteButton(final ParseUser user, final ImageView icon, final String placeId, final boolean isFavorite){
+    public static void animateFavoriteButton(final ParseUser user, final ImageView icon, final String placeId, final boolean isFavorite) {
 
         YoYo.with(Techniques.BounceIn)
                 .duration(500)

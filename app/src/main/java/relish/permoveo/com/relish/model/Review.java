@@ -8,17 +8,17 @@ public interface Review {
 
     String getAuthorName();
 
+    void setAuthorName(String name);
+
     String getAuthorImage();
+
+    void setAuthorImage(String image);
 
     String getText();
 
     long getTime();
 
     float getRating();
-
-    void setAuthorImage(String image);
-
-    void setAuthorName(String name);
 
     String getAuthorUrl();
 

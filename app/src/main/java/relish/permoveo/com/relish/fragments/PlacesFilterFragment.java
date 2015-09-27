@@ -22,7 +22,7 @@ import relish.permoveo.com.relish.util.TypefaceUtil;
 /**
  * Created by byfieldj on 8/16/15.
  */
-public class PlacesFilterFragment extends Fragment implements View.OnClickListener{
+public class PlacesFilterFragment extends Fragment implements View.OnClickListener {
 
 
     @Bind(R.id.filter_sort_by)
@@ -151,16 +151,16 @@ public class PlacesFilterFragment extends Fragment implements View.OnClickListen
         return v;
     }
 
-    private void setListenersToDistances(){
-        for(int i = 0; i < distanceContainer.getChildCount(); i++){
+    private void setListenersToDistances() {
+        for (int i = 0; i < distanceContainer.getChildCount(); i++) {
             final TextView distance = (TextView) distanceContainer.getChildAt(i);
             distance.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     view.setSelected(true);
-                    for(int i = 0; i < distanceContainer.getChildCount(); i++){
+                    for (int i = 0; i < distanceContainer.getChildCount(); i++) {
                         final TextView deselect = (TextView) distanceContainer.getChildAt(i);
-                        if(deselect.getId() != view.getId()){
+                        if (deselect.getId() != view.getId()) {
                             deselect.setSelected(false);
                         }
                     }
@@ -169,49 +169,47 @@ public class PlacesFilterFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    private void setListenersToCategories(){
-        for(int i = 0; i < categoriesContainer.getChildCount(); i++){
+    private void setListenersToCategories() {
+        for (int i = 0; i < categoriesContainer.getChildCount(); i++) {
             TextView category = (TextView) categoriesContainer.getChildAt(i);
             category.setOnClickListener(this);
         }
     }
 
-    private void clearCategorySelections(){
-        for(int i = 0; i < categoriesContainer.getChildCount(); i++){
+    private void clearCategorySelections() {
+        for (int i = 0; i < categoriesContainer.getChildCount(); i++) {
             TextView category = (TextView) categoriesContainer.getChildAt(i);
-            if(category.isSelected()){
+            if (category.isSelected()) {
                 category.setSelected(false);
             }
         }
     }
 
-    private void clearDistanceSelections(){
-        for(int i = 0; i < distanceContainer.getChildCount(); i++){
+    private void clearDistanceSelections() {
+        for (int i = 0; i < distanceContainer.getChildCount(); i++) {
             TextView distance = (TextView) distanceContainer.getChildAt(i);
-            if(distance.isSelected()){
+            if (distance.isSelected()) {
                 distance.setSelected(false);
             }
         }
     }
 
-    private void handleDistanceSelection(int selectedId){
+    private void handleDistanceSelection(int selectedId) {
 
     }
 
     @Override
     public void onClick(View view) {
 
-        if(view.getId() == R.id.filter_clear){
+        if (view.getId() == R.id.filter_clear) {
             clearCategorySelections();
             clearDistanceSelections();
             categoriesSelected.clear();
-        }
-        else if(view.getId() == R.id.filter_done){
+        } else if (view.getId() == R.id.filter_done) {
             mListener.onFilterSelectionComplete(categoriesSelected);
-        }
-        else {
+        } else {
             view.setSelected(true);
-            if(view instanceof TextView){
+            if (view instanceof TextView) {
                 YelpCategoryFilter yelpCategoryFilter = new YelpCategoryFilter();
                 String categoryTitle = ((TextView) view).getText().toString();
 
@@ -220,18 +218,18 @@ public class PlacesFilterFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    public interface OnFilterSelectionCompleteListener {
-
-        public void onFilterSelectionComplete(ArrayList<String> categories);
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try{
+        try {
             mListener = (OnFilterSelectionCompleteListener) activity;
-        }catch(ClassCastException e){
+        } catch (ClassCastException e) {
             e.printStackTrace();
         }
+    }
+
+    public interface OnFilterSelectionCompleteListener {
+
+        public void onFilterSelectionComplete(ArrayList<String> categories);
     }
 }

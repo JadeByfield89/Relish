@@ -37,20 +37,15 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
  */
 public class FriendsInviteListFragment extends Fragment implements ISelectable, Filterable {
 
-    private InviteFriendsListAdapter adapter;
-
     @Bind(R.id.empty_list_container)
     LinearLayout emptyView;
-
     @Bind(R.id.empty_message)
     TextView emptyMessage;
-
     @Bind(R.id.bounce_progress)
     BounceProgressBar bounceProgressBar;
-
     @Bind(R.id.invite_friends_list_recycler)
     RecyclerView recyclerView;
-
+    private InviteFriendsListAdapter adapter;
     private InviteCreator creator;
 
     public FriendsInviteListFragment() {

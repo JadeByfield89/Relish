@@ -87,9 +87,60 @@ import relish.permoveo.com.relish.view.RatingView;
 public class PlaceDetailsActivity extends RelishActivity implements ObservableScrollViewCallbacks {
 
     public static final String PASSED_PLACE = "passed_place_extra";
+    public final static float SCALE_FACTOR = 13f;
+    public final static int ANIMATION_DURATION = 250;
+    public final static int MINIMUN_X_DISTANCE = 200;
     private static final String FETCHED_PLACE = "fetched_place_extra";
     private static final int INVITE_FLOW_REQUEST = 228;
-
+    private static final String GOOGLE_DEFAULT_IMAGE = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=250";
+    @Bind(R.id.place_details_container)
+    RelativeLayout activity_container;
+    @Bind(R.id.reveal_container)
+    RelativeLayout reveal_container;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.bounce_progress)
+    BounceProgressBar bounceProgress;
+    @Bind(R.id.place_details_inform_message)
+    TextView placeDetailsMessage;
+    @Bind(R.id.header_place_details_image)
+    KenBurnsView placeDetailsImage;
+    @Bind(R.id.place_details_scroll_view)
+    ObservableScrollView placeDetalsScrollView;
+    @Bind(R.id.fab_place_details)
+    FloatingActionButton placeDetailsFab;
+    @Bind(R.id.fake_fab_place_details)
+    FloatingActionButton fakePlaceDetailsFab;
+    @Bind(R.id.place_details_rating_view)
+    RatingView ratingView;
+    @Bind(R.id.place_details_address)
+    TextView placeDetailsAddress;
+    @Bind(R.id.place_details_distance)
+    TextView placeDetailsDistance;
+    @Bind(R.id.place_details_phone)
+    TextView placeDetailsPhone;
+    @Bind(R.id.place_details_name)
+    TextView placeDetailsName;
+    @Bind(R.id.place_details_reviews_title)
+    TextView placeDetailsReviewsTitle;
+    @Bind(R.id.place_details_reviews_container)
+    LinearLayout placeDetailsReviewsContainer;
+    @Bind(R.id.place_details_reviews)
+    LinearLayout placeDetailsReviews;
+    @Bind(R.id.place_like)
+    ImageView placeLike;
+    @Bind(R.id.yelp_logo)
+    ImageView yelpLogo;
+    @Bind(R.id.layout_invite)
+    View layoutInvite;
+    @Bind(R.id.pager_invite)
+    ViewPager invitePager;
+    @Bind(R.id.pager_indicator)
+    CirclePageIndicator pagerIndicator;
+    @Bind(R.id.invite_share_card)
+    CardView inviteShareCard;
+    @Bind(R.id.ivRatingImage)
+    ImageView ratingImage;
     private YelpPlace passedPlace;
     private YelpPlace fetchedPlace;
     private int parallaxImageHeight;
@@ -99,107 +150,62 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
     private int fabShadowSize;
     private int[] fabLocation, fakeFabLocation;
     private Map<String, ImageView> reviewImageMap;
-
-    public final static float SCALE_FACTOR = 13f;
-    public final static int ANIMATION_DURATION = 250;
-
-    public final static int MINIMUN_X_DISTANCE = 200;
-
-    private static final String GOOGLE_DEFAULT_IMAGE = "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=250";
-
-
     private boolean mRevealFlag;
-    private float mFabSize;
-
-    @Bind(R.id.place_details_container)
-    RelativeLayout activity_container;
-
-
-    @Bind(R.id.reveal_container)
-    RelativeLayout reveal_container;
-
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-
-    @Bind(R.id.bounce_progress)
-    BounceProgressBar bounceProgress;
-
-    @Bind(R.id.place_details_inform_message)
-    TextView placeDetailsMessage;
-
-    @Bind(R.id.header_place_details_image)
-    KenBurnsView placeDetailsImage;
-
-    @Bind(R.id.place_details_scroll_view)
-    ObservableScrollView placeDetalsScrollView;
-
-    @Bind(R.id.fab_place_details)
-    FloatingActionButton placeDetailsFab;
-
-    @Bind(R.id.fake_fab_place_details)
-    FloatingActionButton fakePlaceDetailsFab;
-
-    @Bind(R.id.place_details_rating_view)
-    RatingView ratingView;
-
-    @Bind(R.id.place_details_address)
-    TextView placeDetailsAddress;
-
-    @Bind(R.id.place_details_distance)
-    TextView placeDetailsDistance;
-
-    @Bind(R.id.place_details_phone)
-    TextView placeDetailsPhone;
-
-    @Bind(R.id.place_details_name)
-    TextView placeDetailsName;
-
-    @Bind(R.id.place_details_reviews_title)
-    TextView placeDetailsReviewsTitle;
-
-    @Bind(R.id.place_details_reviews_container)
-    LinearLayout placeDetailsReviewsContainer;
-
-    @Bind(R.id.place_details_reviews)
-    LinearLayout placeDetailsReviews;
-
-    @Bind(R.id.place_like)
-    ImageView placeLike;
-
-    @Bind(R.id.yelp_logo)
-    ImageView yelpLogo;
-
-    @Bind(R.id.layout_invite)
-    View layoutInvite;
-
-    @Bind(R.id.pager_invite)
-    ViewPager invitePager;
-
-    @Bind(R.id.pager_indicator)
-    CirclePageIndicator pagerIndicator;
-
-    @Bind(R.id.invite_share_card)
-    CardView inviteShareCard;
-
-    @Bind(R.id.ivRatingImage)
-    ImageView ratingImage;
-
-
     private FloatingActionButton animatedFab;
     private FakeInvitePagerAdapter invitePagerAdapter;
     private ObjectAnimator revealAnimator;
     private ViewPropertyAnimator fabAnimator;
     private boolean fromInvite;
-
-    private class PlaceDetailsCallback extends IRequestableDefaultImpl {
+    private AnimatorListenerAdapter mEndRevealListener = new AnimatorListenerAdapter() {
 
         @Override
-        public void failed(Object... params) {
-            bounceProgress.setVisibility(View.GONE);
-            placeDetailsMessage.setVisibility(View.GONE);
-            renderPlaceDetails();
+        public void onAnimationEnd(Animator animation) {
+            super.onAnimationEnd(animation);
+            Log.d("onAnimationEnd", "onAnimationEnd");
+            revealAnimator.removeAllListeners();
+            revealAnimator.end();
+            revealAnimator.cancel();
+            fabAnimator.setListener(null);
+            fabAnimator.cancel();
+
+
+            animatedFab.setVisibility(View.INVISIBLE);
+            mRevealFlag = false;
+            //activity_container.setBackgroundColor(getResources()
+            // .getColor(R.color.main_color));
+            reveal_container.setVisibility(View.VISIBLE);
+            toolbar.setVisibility(View.GONE);
+
+            /*for (int i = 0; i < activity_container.getChildCount(); i++) {
+                View v = activity_container.getChildAt(i);
+                android.view.ViewPropertyAnimator animator = v.animate()
+                        .scaleX(1).scaleY(1)
+                        .setDuration(ANIMATION_DURATION);
+
+                animator.setStartDelay(i * 50);
+                animator.start();
+            }
+
+            if(!alphaAnimationStarted) {
+                Animation in = new AlphaAnimation(0.0f, 1.0f);
+                in.setDuration(500);
+                invitePager.setAnimation(in);
+                alphaAnimationStarted = true;
+            }*/
+//            for (int i = 0; i < activity_container.getChildCount(); i++) {
+//                View v = activity_container.getChildAt(i);
+//                android.view.ViewPropertyAnimator animator = v.animate()
+//                        .scaleX(1).scaleY(1)
+//                        .setDuration(ANIMATION_DURATION);
+//
+//                animator.setStartDelay(i * 50);
+//                animator.start();
+//            }
+
+            startActivityForResult(new Intent(PlaceDetailsActivity.this, InviteFlowActivity.class)
+                    .putExtra(InviteFlowActivity.PLACE_FOR_INVITE_EXTRA, fetchedPlace), INVITE_FLOW_REQUEST);
         }
-    }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -692,7 +698,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
                 if (Math.abs(startX - animatedFab.getX()) > MINIMUN_X_DISTANCE) {
 
                     if (!mRevealFlag) {
-                        activity_container.setY(activity_container.getY() + mFabSize / 2);
+                        activity_container.setY(activity_container.getY());
 
                         fabAnimator = animatedFab.animate()
                                 .scaleXBy(SCALE_FACTOR)
@@ -707,59 +713,6 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         });
     }
 
-
-    private AnimatorListenerAdapter mEndRevealListener = new AnimatorListenerAdapter() {
-
-        @Override
-        public void onAnimationEnd(Animator animation) {
-            super.onAnimationEnd(animation);
-            Log.d("onAnimationEnd", "onAnimationEnd");
-            revealAnimator.removeAllListeners();
-            revealAnimator.end();
-            revealAnimator.cancel();
-            fabAnimator.setListener(null);
-            fabAnimator.cancel();
-
-
-            animatedFab.setVisibility(View.INVISIBLE);
-            mRevealFlag = false;
-            //activity_container.setBackgroundColor(getResources()
-            // .getColor(R.color.main_color));
-            reveal_container.setVisibility(View.VISIBLE);
-            toolbar.setVisibility(View.GONE);
-
-            /*for (int i = 0; i < activity_container.getChildCount(); i++) {
-                View v = activity_container.getChildAt(i);
-                android.view.ViewPropertyAnimator animator = v.animate()
-                        .scaleX(1).scaleY(1)
-                        .setDuration(ANIMATION_DURATION);
-
-                animator.setStartDelay(i * 50);
-                animator.start();
-            }
-
-            if(!alphaAnimationStarted) {
-                Animation in = new AlphaAnimation(0.0f, 1.0f);
-                in.setDuration(500);
-                invitePager.setAnimation(in);
-                alphaAnimationStarted = true;
-            }*/
-//            for (int i = 0; i < activity_container.getChildCount(); i++) {
-//                View v = activity_container.getChildAt(i);
-//                android.view.ViewPropertyAnimator animator = v.animate()
-//                        .scaleX(1).scaleY(1)
-//                        .setDuration(ANIMATION_DURATION);
-//
-//                animator.setStartDelay(i * 50);
-//                animator.start();
-//            }
-
-            startActivityForResult(new Intent(PlaceDetailsActivity.this, InviteFlowActivity.class)
-                    .putExtra(InviteFlowActivity.PLACE_FOR_INVITE_EXTRA, fetchedPlace), INVITE_FLOW_REQUEST);
-        }
-    };
-
-
     /**
      * We need this setter to translate between the information the animator
      * produces (a new "PathPoint" describing the current animated location)
@@ -771,11 +724,10 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         animatedFab.setTranslationX(newLoc.mX);
 
         if (mRevealFlag)
-            animatedFab.setTranslationY(newLoc.mY - (mFabSize / 2));
+            animatedFab.setTranslationY(newLoc.mY);
         else
             animatedFab.setTranslationY(newLoc.mY);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -869,6 +821,16 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
                 revealAnimator.start();
             }
         }, 300);
+    }
+
+    private class PlaceDetailsCallback extends IRequestableDefaultImpl {
+
+        @Override
+        public void failed(Object... params) {
+            bounceProgress.setVisibility(View.GONE);
+            placeDetailsMessage.setVisibility(View.GONE);
+            renderPlaceDetails();
+        }
     }
 }
 

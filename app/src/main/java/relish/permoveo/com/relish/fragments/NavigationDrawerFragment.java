@@ -57,45 +57,33 @@ import relish.permoveo.com.relish.util.UserUtils;
 public class NavigationDrawerFragment extends Fragment {
 
     private static final String TAG = NavigationDrawerFragment.class.getSimpleName();
-
-    /**
-     * A pointer to the getCurrent callbacks instance (the Activity).
-     */
-    private NavigationDrawerCallbacks mCallbacks;
-
+    private static final int SELECT_PICTURE_REQUEST_CODE = 7;
+    final private int PICK_IMAGE = 1;
+    final private int CAPTURE_IMAGE = 2;
     /**
      * Helper component that ties the action bar to the navigation drawer.
      */
     @Bind(R.id.nav_menu)
     ListView mDrawerListView;
-
     @Bind(R.id.drawer_view)
     ViewGroup drawerView;
-
-    private String[] navMenuTitles;
-
     @Bind(R.id.nav_header_avatar)
     CircleImageView headerAvatar;
-
     @Bind(R.id.nav_header_username)
     TextView headerUsername;
-
     @Bind(R.id.nav_header_email)
     TextView headerEmail;
-
     @Bind(R.id.nav_header_background)
     KenBurnsView kenBurnsView;
-
     NavDrawerAdapter adapter;
-
+    /**
+     * A pointer to the getCurrent callbacks instance (the Activity).
+     */
+    private NavigationDrawerCallbacks mCallbacks;
+    private String[] navMenuTitles;
     private Uri outputFileUri;
-    private static final int SELECT_PICTURE_REQUEST_CODE = 7;
     private AlertDialog uploadDialog;
-
     private String selectedImagePath = "";
-    final private int PICK_IMAGE = 1;
-    final private int CAPTURE_IMAGE = 2;
-
     private String imgPath;
 
     public NavigationDrawerFragment() {

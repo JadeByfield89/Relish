@@ -21,20 +21,11 @@ public enum GPSTracker implements LocationListener {
     get;
 
     private static final String TAG = GPSTracker.class.getSimpleName();
-
-    public enum Provider {
-        NONE,
-        GPS,
-        NETWORK
-    }
-
+    private static final int TWO_MINUTES = 1000 * 60 * 2;
+    protected LocationManager locationManager;
     private Context context;
     private Location location;
-    protected LocationManager locationManager;
     private Handler mHandler;
-
-    private static final int TWO_MINUTES = 1000 * 60 * 2;
-
 
     private boolean isBetterLocation(Location location, Location currentBestLocation) {
         if (currentBestLocation == null) {
@@ -205,7 +196,7 @@ public enum GPSTracker implements LocationListener {
     public void onLocationChanged(Location location) {
         if (isBetterLocation(location, this.location)) {
             this.location = location;
-            if(ParseUser.getCurrentUser() != null) {
+            if (ParseUser.getCurrentUser() != null) {
                 ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
                 ParseUser.getCurrentUser().saveInBackground();
             }
@@ -250,6 +241,12 @@ public enum GPSTracker implements LocationListener {
             }
         });
 
+    }
+
+    public enum Provider {
+        NONE,
+        GPS,
+        NETWORK
     }
 
 }

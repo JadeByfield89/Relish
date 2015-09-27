@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/fragment_background"
-    tools:context="relish.permoveo.com.relish.fragments.search.RelishUsersFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/fragment_background"
+                tools:context="relish.permoveo.com.relish.fragments.search.RelishUsersFragment">
 
     <relish.permoveo.com.relish.view.BounceProgressBar
 
@@ -17,7 +17,7 @@
         bpb:shape="circle"
         bpb:singleSrcSize="14dp"
         bpb:speed="250"
-        bpb:src="@color/main_color" />
+        bpb:src="@color/main_color"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/add_friends_recycler"
@@ -28,7 +28,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:clipToPadding="false"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent"/>
 
     <LinearLayout
         android:id="@+id/empty_query_container"
@@ -44,7 +44,7 @@
         <ImageView
             android:src="@drawable/ic_freinds_empty"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/empty_message"
@@ -54,7 +54,7 @@
             android:textColor="@color/empty_color"
             android:text="@string/no_results_for_query"
             android:textSize="18sp"
-            android:gravity="center" />
+            android:gravity="center"/>
     </LinearLayout>
 
 </RelativeLayout>

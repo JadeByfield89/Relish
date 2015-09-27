@@ -28,27 +28,19 @@ import relish.permoveo.com.relish.util.TypefaceUtil;
 public class WelcomeActivity extends RelishActivity implements ViewPager.OnPageChangeListener {
 
 
+    private final int MAX_PAGE_INDEXES = 3;
     @Bind(R.id.pager_welcome)
     ViewPager viewPager;
-
     @Bind(R.id.pager_indicator)
     CirclePageIndicator pagerIndicator;
-
     @Bind(R.id.textview_skip)
     TextView skipText;
-
     @Bind(R.id.button_back)
     ImageButton backButton;
-
     @Bind(R.id.button_next)
     ImageButton nextButton;
-
     @Bind(R.id.textview_ok)
     TextView okText;
-
-    private final int MAX_PAGE_INDEXES = 3;
-
-
     private WelcomePagerAdapter pagerAdapter;
 
     @Override
@@ -76,7 +68,6 @@ public class WelcomeActivity extends RelishActivity implements ViewPager.OnPageC
 
 
         updateStatusBar(getResources().getColor(R.color.main_color_dark));
-
 
 
     }

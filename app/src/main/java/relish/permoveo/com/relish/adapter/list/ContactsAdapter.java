@@ -39,32 +39,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         dataset = new ArrayList<>();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.friend_name)
-        TextView contactName;
-
-        @Bind(R.id.friend_image)
-        CircleImageView contactImage;
-
-        @Bind(R.id.friend_btn)
-        ImageButton contactBtn;
-
-        public ViewHolder(View itemView, final ContactsButtonClickListener viewHolderClickListener) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-            contactBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    viewHolderClickListener.onClick((View) v.getParent());
-                }
-            });
-        }
-
-        public static interface ContactsButtonClickListener {
-            void onClick(View view);
-        }
-    }
-
     public void clear() {
         this.dataset.clear();
         notifyDataSetChanged();
@@ -180,6 +154,32 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.friend_name)
+        TextView contactName;
+
+        @Bind(R.id.friend_image)
+        CircleImageView contactImage;
+
+        @Bind(R.id.friend_btn)
+        ImageButton contactBtn;
+
+        public ViewHolder(View itemView, final ContactsButtonClickListener viewHolderClickListener) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+            contactBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    viewHolderClickListener.onClick((View) v.getParent());
+                }
+            });
+        }
+
+        public static interface ContactsButtonClickListener {
+            void onClick(View view);
+        }
     }
 
 }

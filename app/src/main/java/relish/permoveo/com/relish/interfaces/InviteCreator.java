@@ -7,5 +7,6 @@ import relish.permoveo.com.relish.model.Invite;
  */
 public interface InviteCreator {
     Invite getInvite();
+
     void updateInvite(Invite invite);
 }

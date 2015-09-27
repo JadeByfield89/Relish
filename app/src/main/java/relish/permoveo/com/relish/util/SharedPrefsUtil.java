@@ -16,6 +16,15 @@ import twitter4j.auth.AccessToken;
 public enum SharedPrefsUtil {
     get;
 
+    /* Shared preference keys */
+    private static final String PREF_NAME = "twitter_pref";
+    private static final String PREF_KEY_OAUTH_TOKEN = "oauth_token";
+    private static final String PREF_KEY_OAUTH_SECRET = "oauth_token_secret";
+    private static final String PREF_KEY_TWITTER_LOGIN = "is_twitter_loggedin";
+    private static final String PREF_USER_NAME = "twitter_user_name";
+    // Venmo access token
+    private static final String PREF_VENMO_TOKEN = "venmo_token";
+    private static final String PREF_VENMO_TOKEN_TIMESTAMP = "venmo_token_timestamp";
     public static String PARAM_APP_LAUNCHED = "appLaunched";
     public static String PARAM_LAST_VISIBLE_FRIENDS_COUNT = "last_visible_friends_count_for";
     public static String PARAM_LAST_VISIBLE_INVITES_COUNT = "last_visible_invites_count";
@@ -23,18 +32,6 @@ public enum SharedPrefsUtil {
     public static String PARAM_LOCATION_SHARING = "location_sharing";
     public static String PARAM_GOOGLE_CALENDAR_SYNC = "google_calendar_sync";
     private SharedPreferences sharedPreferences;
-
-
-    /* Shared preference keys */
-    private static final String PREF_NAME = "twitter_pref";
-    private static final String PREF_KEY_OAUTH_TOKEN = "oauth_token";
-    private static final String PREF_KEY_OAUTH_SECRET = "oauth_token_secret";
-    private static final String PREF_KEY_TWITTER_LOGIN = "is_twitter_loggedin";
-    private static final String PREF_USER_NAME = "twitter_user_name";
-
-    // Venmo access token
-    private static final String PREF_VENMO_TOKEN = "venmo_token";
-    private static final String PREF_VENMO_TOKEN_TIMESTAMP = "venmo_token_timestamp";
 
     public void init(final Context context) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -143,37 +140,37 @@ public enum SharedPrefsUtil {
         }
     }
 
-    public boolean isLoggedIntoTwitter(){
+    public boolean isLoggedIntoTwitter() {
         return sharedPreferences.getBoolean(PREF_KEY_TWITTER_LOGIN, false);
     }
 
-    public String getTwitterUsername(){
+    public String getTwitterUsername() {
         return sharedPreferences.getString(PREF_USER_NAME, "");
     }
 
-    public void setIsLoggedIntoTwitter(){
+    public void setIsLoggedIntoTwitter() {
         sharedPreferences.edit().putBoolean(PREF_KEY_TWITTER_LOGIN, true).commit();
     }
 
-    public String getSavedAccessToken(){
+    public String getSavedAccessToken() {
         return sharedPreferences.getString(PREF_KEY_OAUTH_TOKEN, "");
     }
 
-    public String getSavedAccessTokenSecret(){
+    public String getSavedAccessTokenSecret() {
         return sharedPreferences.getString(PREF_KEY_OAUTH_SECRET, "");
     }
 
-    public void saveVenmoAccessToken(String token){
+    public void saveVenmoAccessToken(String token) {
         long saveTime = System.currentTimeMillis();
         sharedPreferences.edit().putString(PREF_VENMO_TOKEN, token).commit();
         sharedPreferences.edit().putLong(PREF_VENMO_TOKEN_TIMESTAMP, saveTime).commit();
     }
 
-    public String getVenmoAccessToken(){
+    public String getVenmoAccessToken() {
         return sharedPreferences.getString(PREF_VENMO_TOKEN, "");
     }
 
-    public long getVenmoAccessTokenSaveTime(){
+    public long getVenmoAccessTokenSaveTime() {
         return sharedPreferences.getLong(PREF_VENMO_TOKEN_TIMESTAMP, 0);
     }
 

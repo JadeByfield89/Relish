@@ -22,17 +22,14 @@ import relish.permoveo.com.relish.util.TypefaceUtil;
  */
 public class WelcomeFragment extends Fragment {
 
-    @Bind(R.id.image_welcome)
-    ImageView imageView;
-
-    @Bind(R.id.text_header)
-    TextView headerText;
-
-    @Bind(R.id.text_sub)
-    TextView subText;
-
     public static final String EXTRA_IMAGE_ID = "image_id";
     public static final String EXTRA_POSITION = "position";
+    @Bind(R.id.image_welcome)
+    ImageView imageView;
+    @Bind(R.id.text_header)
+    TextView headerText;
+    @Bind(R.id.text_sub)
+    TextView subText;
     private int pagePosition;
     private int imageId;
 

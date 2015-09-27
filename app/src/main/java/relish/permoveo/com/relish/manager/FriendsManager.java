@@ -33,10 +33,6 @@ public class FriendsManager {
         context = aContext;
     }
 
-    public interface FriendsManagerCallback<T1, T2> {
-        void done(T1 t1, T2 t2);
-    }
-
     public static void findContact(String email, String phone, final FriendsManagerCallback callback) {
         ParseQuery<ParseObject> phoneQuery = ParseQuery.getQuery("Contact");
         phoneQuery.whereEqualTo("contactNumber", phone);
@@ -142,6 +138,10 @@ public class FriendsManager {
                 }
             }
         });
+    }
+
+    public interface FriendsManagerCallback<T1, T2> {
+        void done(T1 t1, T2 t2);
     }
 
     private static class FriendsGroupsCountTask extends AsyncTask<Void, Void, Integer> {

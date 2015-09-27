@@ -62,69 +62,70 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
     public static final String EXTRA_ACTION = "action_extra";
     public static final String SHARED_IMAGE_NAME = "InviteDetailsActivity:image";
     public static final String SHARED_TITLE_NAME = "InviteDetailsActivity:title";
-
+    @Bind(R.id.invite_details_container)
+    RelativeLayout activity_container;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.header_invite_details_image)
+    ImageView placeDetailsImage;
+    @Bind(R.id.invite_details_scroll_view)
+    ObservableScrollView placeDetalsScrollView;
+    @Bind(R.id.invite_details_rating_view)
+    RatingView ratingView;
+    @Bind(R.id.invite_details_address)
+    TextView placeDetailsAddress;
+    @Bind(R.id.invite_details_phone)
+    TextView placeDetailsPhone;
+    @Bind(R.id.invite_details_name)
+    TextView placeDetailsName;
+    @Bind(R.id.yelp_logo)
+    ImageView yelpLogo;
+    @Bind(R.id.accept_btn)
+    TextView acceptBtn;
+    @Bind(R.id.decline_btn)
+    TextView declineBtn;
+    @Bind(R.id.invited_clmn)
+    LinearLayout invitedClmnn;
+    @Bind(R.id.accepted_clmn)
+    LinearLayout acceptedClmn;
+    @Bind(R.id.declined_clmn)
+    LinearLayout declinedClmn;
+    @Bind(R.id.invited_title)
+    TextView invitedTitle;
+    @Bind(R.id.accepted_title)
+    TextView acceptedTitle;
+    @Bind(R.id.declined_title)
+    TextView declinedTitle;
+    @Bind(R.id.invite_details_note)
+    TextView inviteDetailsNote;
+    @Bind(R.id.invite_details_note_title)
+    TextView inviteDetailsNoteTitle;
     private Invite invite;
     private int parallaxImageHeight;
     private View currentViewInClmn;
     private boolean action = false;
     private boolean fromNotification = false;
 
-    @Bind(R.id.invite_details_container)
-    RelativeLayout activity_container;
+    public static void launch(Activity activity, View transitionImage, View transitionTitle, Invite invite, boolean action) {
+        ActivityOptionsCompat options =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
+                        Pair.create(transitionImage, SHARED_IMAGE_NAME),
+                        Pair.create(transitionTitle, SHARED_TITLE_NAME));
+        Intent intent = new Intent(activity, InviteDetailsActivity.class);
+        intent.putExtra(InviteDetailsActivity.EXTRA_INVITE, invite);
+        intent.putExtra(InviteDetailsActivity.EXTRA_ACTION, action);
+        ActivityCompat.startActivity(activity, intent, options.toBundle());
+    }
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-
-    @Bind(R.id.header_invite_details_image)
-    ImageView placeDetailsImage;
-
-    @Bind(R.id.invite_details_scroll_view)
-    ObservableScrollView placeDetalsScrollView;
-
-    @Bind(R.id.invite_details_rating_view)
-    RatingView ratingView;
-
-    @Bind(R.id.invite_details_address)
-    TextView placeDetailsAddress;
-
-    @Bind(R.id.invite_details_phone)
-    TextView placeDetailsPhone;
-
-    @Bind(R.id.invite_details_name)
-    TextView placeDetailsName;
-
-    @Bind(R.id.yelp_logo)
-    ImageView yelpLogo;
-
-    @Bind(R.id.accept_btn)
-    TextView acceptBtn;
-
-    @Bind(R.id.decline_btn)
-    TextView declineBtn;
-
-    @Bind(R.id.invited_clmn)
-    LinearLayout invitedClmnn;
-
-    @Bind(R.id.accepted_clmn)
-    LinearLayout acceptedClmn;
-
-    @Bind(R.id.declined_clmn)
-    LinearLayout declinedClmn;
-
-    @Bind(R.id.invited_title)
-    TextView invitedTitle;
-
-    @Bind(R.id.accepted_title)
-    TextView acceptedTitle;
-
-    @Bind(R.id.declined_title)
-    TextView declinedTitle;
-
-    @Bind(R.id.invite_details_note)
-    TextView inviteDetailsNote;
-
-    @Bind(R.id.invite_details_note_title)
-    TextView inviteDetailsNoteTitle;
+    public static void launch(Activity activity, View transitionImage, View transitionTitle, Invite invite) {
+        ActivityOptionsCompat options =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
+                        Pair.create(transitionImage, SHARED_IMAGE_NAME),
+                        Pair.create(transitionTitle, SHARED_TITLE_NAME));
+        Intent intent = new Intent(activity, InviteDetailsActivity.class);
+        intent.putExtra(InviteDetailsActivity.EXTRA_INVITE, invite);
+        ActivityCompat.startActivity(activity, intent, options.toBundle());
+    }
 
     @Bind(R.id.ivRatingImage)
     ImageView ratingImage;
@@ -723,28 +724,6 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
 
-    }
-
-    public static void launch(Activity activity, View transitionImage, View transitionTitle, Invite invite, boolean action) {
-        ActivityOptionsCompat options =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
-                        Pair.create(transitionImage, SHARED_IMAGE_NAME),
-                        Pair.create(transitionTitle, SHARED_TITLE_NAME));
-        Intent intent = new Intent(activity, InviteDetailsActivity.class);
-        intent.putExtra(InviteDetailsActivity.EXTRA_INVITE, invite);
-        intent.putExtra(InviteDetailsActivity.EXTRA_ACTION, action);
-        ActivityCompat.startActivity(activity, intent, options.toBundle());
-    }
-
-
-    public static void launch(Activity activity, View transitionImage, View transitionTitle, Invite invite) {
-        ActivityOptionsCompat options =
-                ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
-                        Pair.create(transitionImage, SHARED_IMAGE_NAME),
-                        Pair.create(transitionTitle, SHARED_TITLE_NAME));
-        Intent intent = new Intent(activity, InviteDetailsActivity.class);
-        intent.putExtra(InviteDetailsActivity.EXTRA_INVITE, invite);
-        ActivityCompat.startActivity(activity, intent, options.toBundle());
     }
 
     @Override

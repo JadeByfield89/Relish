@@ -50,6 +50,10 @@ public class BounceProgressBar extends View {
 
     private static final String TAG = BounceProgressBar.class.getSimpleName();
     /**
+     * bitmap(or drawable) count of BounceProgressBar
+     */
+    private static final int count = 3;
+    /**
      * the drawable(bitmap) bounce speed,the bounce animation one-way duration
      */
     private int speed;
@@ -77,7 +81,6 @@ public class BounceProgressBar extends View {
      * BounceProgressBar Widget's height
      */
     private int mHeight;
-
     /**
      * 第一个图像的top位置
      */
@@ -98,10 +101,6 @@ public class BounceProgressBar extends View {
     private Bitmap secondBitmap;
     private Bitmap thirdBitmap;
     /**
-     * bitmap(or drawable) count of BounceProgressBar
-     */
-    private static final int count = 3;
-    /**
      * The first bitmap's location of the horizontal position
      */
     private float firstDX;
@@ -115,14 +114,60 @@ public class BounceProgressBar extends View {
     private float thirdDX;
 
     private AnimatorSet bouncer;
+    /**
+     * firstBitmapTop's Property. The change of the height through canvas is
+     * onDraw() method.
+     */
+    private Property<BounceProgressBar, Integer> firstBitmapTopProperty = new Property<BounceProgressBar, Integer>(
+            Integer.class, "firstDrawableTop") {
+        @Override
+        public Integer get(BounceProgressBar obj) {
+            return obj.firstBitmapTop;
+        }
 
-    public static interface Shape {
-        static final int original = 0;
-        static final int circle = 1;
-        static final int pentagon = 2;
-        static final int rhombus = 3;
-        static final int heart = 4;
-    }
+        public void set(BounceProgressBar obj, Integer value) {
+            obj.firstBitmapTop = value;
+            invalidate();
+        }
+
+        ;
+    };
+    /**
+     * secondBitmapTop's Property. The change of the height through canvas is
+     * onDraw() method.
+     */
+    private Property<BounceProgressBar, Integer> secondBitmapTopProperty = new Property<BounceProgressBar, Integer>(
+            Integer.class, "secondDrawableTop") {
+        @Override
+        public Integer get(BounceProgressBar obj) {
+            return obj.secondBitmapTop;
+        }
+
+        public void set(BounceProgressBar obj, Integer value) {
+            obj.secondBitmapTop = value;
+            invalidate();
+        }
+
+        ;
+    };
+    /**
+     * thirdBitmapTop's Property. The change of the height through canvas is
+     * onDraw() method.
+     */
+    private Property<BounceProgressBar, Integer> thirdBitmapTopProperty = new Property<BounceProgressBar, Integer>(
+            Integer.class, "thirdDrawableTop") {
+        @Override
+        public Integer get(BounceProgressBar obj) {
+            return obj.thirdBitmapTop;
+        }
+
+        public void set(BounceProgressBar obj, Integer value) {
+            obj.thirdBitmapTop = value;
+            invalidate();
+        }
+
+        ;
+    };
 
     public BounceProgressBar(Context context) {
         this(context, null, 0);
@@ -338,61 +383,6 @@ public class BounceProgressBar extends View {
         return bitmap;
     }
 
-    /**
-     * firstBitmapTop's Property. The change of the height through canvas is
-     * onDraw() method.
-     */
-    private Property<BounceProgressBar, Integer> firstBitmapTopProperty = new Property<BounceProgressBar, Integer>(
-            Integer.class, "firstDrawableTop") {
-        @Override
-        public Integer get(BounceProgressBar obj) {
-            return obj.firstBitmapTop;
-        }
-
-        public void set(BounceProgressBar obj, Integer value) {
-            obj.firstBitmapTop = value;
-            invalidate();
-        }
-
-        ;
-    };
-    /**
-     * secondBitmapTop's Property. The change of the height through canvas is
-     * onDraw() method.
-     */
-    private Property<BounceProgressBar, Integer> secondBitmapTopProperty = new Property<BounceProgressBar, Integer>(
-            Integer.class, "secondDrawableTop") {
-        @Override
-        public Integer get(BounceProgressBar obj) {
-            return obj.secondBitmapTop;
-        }
-
-        public void set(BounceProgressBar obj, Integer value) {
-            obj.secondBitmapTop = value;
-            invalidate();
-        }
-
-        ;
-    };
-    /**
-     * thirdBitmapTop's Property. The change of the height through canvas is
-     * onDraw() method.
-     */
-    private Property<BounceProgressBar, Integer> thirdBitmapTopProperty = new Property<BounceProgressBar, Integer>(
-            Integer.class, "thirdDrawableTop") {
-        @Override
-        public Integer get(BounceProgressBar obj) {
-            return obj.thirdBitmapTop;
-        }
-
-        public void set(BounceProgressBar obj, Integer value) {
-            obj.thirdBitmapTop = value;
-            invalidate();
-        }
-
-        ;
-    };
-
     public void setDrawable(Drawable drawable) {
         setDrawable(drawable, shape);
     }
@@ -415,6 +405,14 @@ public class BounceProgressBar extends View {
     public void setSpeed(int speed) {
         this.speed = speed;
         requestLayout();
+    }
+
+    public static interface Shape {
+        static final int original = 0;
+        static final int circle = 1;
+        static final int pentagon = 2;
+        static final int rhombus = 3;
+        static final int heart = 4;
     }
 
 }
