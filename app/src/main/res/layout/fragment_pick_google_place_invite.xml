@@ -101,6 +101,11 @@
             android:layout_height="3dp"
             android:layout_above="@+id/invite_place_info_container"/>
 
+        <View
+            android:background="@drawable/shadow_reverse"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_above="@+id/autcomplete_places_list"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/autcomplete_places_list"

@@ -329,6 +329,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         if (TextUtils.isEmpty(fetchedPlace.image)) {
             placeDetailsImage.setBackgroundColor(getResources().getColor(R.color.photo_placeholder));
         } else {
+            //Log.d("PlaceDetailsActivity", "")
             Picasso.with(this)
                     .load(fetchedPlace.getOriginalImage())
                     .into(placeDetailsImage, new Callback() {

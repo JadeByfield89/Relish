@@ -26,6 +26,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -68,6 +69,9 @@ public class PickYelpPlaceInviteFragment extends Fragment {
     @Bind(R.id.button_next)
     Button next;
 
+    @Bind(R.id.ivRatingImage)
+    ImageView ratingImage;
+
     private YelpPlace currentPlace;
     private GoogleMap mMap;
     private Marker placeMarker;
@@ -108,6 +112,8 @@ public class PickYelpPlaceInviteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         return inflater.inflate(R.layout.fragment_pick_place_invite, container, false);
     }
 
@@ -208,6 +214,10 @@ public class PickYelpPlaceInviteFragment extends Fragment {
             invitePlace.clearFocus();
             close.setVisibility(View.GONE);
             //myLocation.setVisibility(View.VISIBLE);
+        }
+
+        if(!currentPlace.rating_img_url.isEmpty() && currentPlace.rating_img_url != null) {
+            Picasso.with(getContext()).load(currentPlace.rating_img_url).fit().into(ratingImage);
         }
 
         setUpMapIfNeeded();
