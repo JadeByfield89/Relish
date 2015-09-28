@@ -144,14 +144,15 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
                         .into((Target) invitePlaceImage.getTag());
             } else {
                 invitePlaceImage.setImageBitmap(BlurBuilder.blur(InviteFlowActivity.this,
-                        BitmapFactory.decodeResource(getResources(), R.drawable.login_signup_background), 10));
+                        BitmapFactory.decodeResource(getResources(), R.drawable.default_place_image), 10));
             }
         } else {
             getSupportActionBar().setTitle(getString(R.string.invite_first_step));
 
             invitePlaceImage.setImageBitmap(BlurBuilder.blur(InviteFlowActivity.this,
-                    BitmapFactory.decodeResource(getResources(), R.drawable.login_signup_background), 10));
+                    BitmapFactory.decodeResource(getResources(), R.drawable.default_place_image), 10));
         }
+
 
         invitePagerAdapter = new InvitePagerAdapter(getSupportFragmentManager(), currentPlace);
 
