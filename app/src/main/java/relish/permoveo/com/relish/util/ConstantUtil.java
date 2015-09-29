@@ -56,4 +56,7 @@ public class ConstantUtil {
     /*========================Square & Goole Wallet Package names==============*/
     public static final String SQUARE_CASH_PACKAGE = "com.squareup.cash";
     public static final String GOOGLE_WALLET_PACKAGE = "com.google.android.apps.gmoney";
+
+    /*========================Flurry API Key============================================*/
+    public static final String FLURRY_API_KEY = "4PTHWNSP9NDVMJJWTZFQ";
 }

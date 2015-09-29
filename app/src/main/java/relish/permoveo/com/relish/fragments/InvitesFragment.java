@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.flurry.android.FlurryAgent;
 import com.melnykov.fab.FloatingActionButton;
 import com.parse.ParseException;
 
@@ -46,6 +47,7 @@ import relish.permoveo.com.relish.animation.PathPoint;
 import relish.permoveo.com.relish.interfaces.CircularRevealAnimator;
 import relish.permoveo.com.relish.manager.InvitesManager;
 import relish.permoveo.com.relish.model.Invite;
+import relish.permoveo.com.relish.util.FlurryConstantUtil;
 import relish.permoveo.com.relish.util.RecyclerItemClickListener;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.util.VerticalSpaceItemDecoration;
@@ -206,6 +208,8 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
         inviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITES_FRAGMENT_FAB_TOUCHED);
 
                 animator.getInvitePager().setVisibility(View.VISIBLE);
                 animator.getPageIndicator().setVisibility(View.VISIBLE);

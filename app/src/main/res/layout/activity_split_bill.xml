@@ -24,9 +24,12 @@
             android:id="@+id/etTotal"
             android:textColor="#fff"
             android:textSize="55sp"
-            android:text="0.00"
+            android:text=""
+            android:hint="0.00"
+            android:textColorHint="#fff"
             android:textCursorDrawable="@drawable/calculator_text_cursor_drawable"
             android:cursorVisible="true"
+            android:imeOptions="actionNext"
             android:layout_marginTop="15dp"
             android:background="@null"
             android:inputType="numberDecimal"
@@ -59,11 +62,14 @@
         <EditText
             android:id="@+id/etTipPercentage"
             android:textColor="#fff"
-            android:text="0.0"
+            android:text=""
+            android:hint="0.00"
+            android:textColorHint="#fff"
             android:cursorVisible="true"
             android:textCursorDrawable="@null"
-
             android:background="@null"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
             android:inputType="numberDecimal"
             android:layout_below="@id/tvTipPercentage"
             android:layout_marginTop="10dp"
@@ -97,12 +103,14 @@
         <EditText
             android:id="@+id/etNumPeople"
             android:textColor="#fff"
-            android:text="0"
+            android:text=""
+            android:hint="0"
+            android:textColorHint="#fff"
             android:textCursorDrawable="@null"
-
             android:cursorVisible="true"
             android:inputType="number"
             android:background="@null"
+            android:imeOptions="actionDone"
             android:layout_below="@id/tvNumPeople"
             android:layout_alignLeft="@id/tvNumPeople"
             android:layout_marginTop="10dp"
@@ -131,7 +139,7 @@
         android:layout_below="@+id/calculator_input_container"/>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_below="@id/shadow"
@@ -141,9 +149,11 @@
 
 
         <ImageView
+            android:id="@+id/ivTipAmount"
             android:background="@drawable/ic_tip_amount"
             android:layout_width="wrap_content"
             android:layout_marginLeft="30dp"
+            android:layout_alignParentLeft="true"
             android:layout_height="wrap_content"/>
 
 
@@ -152,7 +162,8 @@
             android:layout_width="wrap_content"
             android:text="@string/calculator_tip_amount"
             android:textSize="17sp"
-            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/ivTipAmount"
+            android:layout_marginLeft="15dp"
             android:textColor="@color/drawer_item_text_color"
             android:layout_height="wrap_content"/>
 
@@ -161,25 +172,26 @@
             android:id="@+id/tvTipAmount"
             android:textColor="@color/drawer_item_text_color"
             android:textSize="17sp"
-            android:text="0.00"
+            android:layout_alignParentRight="true"
             android:background="@null"
             android:textStyle="bold"
-            android:layout_marginLeft="154dp"
-
+            android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-    </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_below="@id/llTipContainer"
         android:id="@+id/llTotalContainer"
+        android:weightSum="10"
         android:layout_marginTop="15dp"
         android:layout_height="wrap_content">
 
 
         <ImageView
+            android:id="@+id/ivTotalPerPerson"
             android:background="@drawable/ic_total_per_person"
             android:layout_width="wrap_content"
             android:layout_marginLeft="30dp"
@@ -191,6 +203,7 @@
             android:layout_width="wrap_content"
             android:text="@string/calculator_total_per_person"
             android:textSize="17sp"
+            android:layout_toRightOf="@id/ivTotalPerPerson"
             android:layout_marginLeft="20dp"
             android:textColor="@color/drawer_item_text_color"
             android:layout_height="wrap_content"/>
@@ -200,13 +213,14 @@
             android:id="@+id/tvTotalPerPerson"
             android:textColor="@color/drawer_item_text_color"
             android:textSize="17sp"
-            android:text="0.00"
+            android:text=""
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
             android:background="@null"
             android:textStyle="bold"
-            android:layout_marginLeft="118dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -240,13 +254,13 @@
         android:id="@+id/tvTotalToPay"
         android:textColor="@color/drawer_item_text_color"
         android:textSize="30sp"
-        android:text="0.00"
+        android:text=""
         android:background="@null"
-        android:textStyle="bold"
         android:layout_alignParentRight="true"
+        android:textStyle="bold"
         android:layout_below="@id/calculator_input_container"
         android:layout_marginTop="100dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginRight="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

@@ -216,7 +216,7 @@ public class PickYelpPlaceInviteFragment extends Fragment {
             //myLocation.setVisibility(View.VISIBLE);
         }
 
-        if(!currentPlace.rating_img_url.isEmpty() && currentPlace.rating_img_url != null) {
+        if(!currentPlace.rating_img_url.isEmpty()) {
             Picasso.with(getContext()).load(currentPlace.rating_img_url).fit().into(ratingImage);
         }
 

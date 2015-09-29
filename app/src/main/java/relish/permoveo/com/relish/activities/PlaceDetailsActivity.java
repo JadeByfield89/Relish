@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flaviofaria.kenburnsview.KenBurnsView;
+import com.flurry.android.FlurryAgent;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
@@ -76,6 +77,7 @@ import relish.permoveo.com.relish.model.google.GoogleReview;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.model.yelp.YelpReview;
 import relish.permoveo.com.relish.network.API;
+import relish.permoveo.com.relish.util.FlurryConstantUtil;
 import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.BounceProgressBar;
@@ -664,6 +666,9 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 
     @OnClick({R.id.fake_fab_place_details, R.id.fab_place_details})
     public void fabClicked() {
+
+        FlurryAgent.logEvent(FlurryConstantUtil.EVENT.PLACE_DETAILS_FAB_TOUCHED);
+
         invitePager.setVisibility(View.VISIBLE);
         pagerIndicator.setVisibility(View.VISIBLE);
         inviteShareCard.setVisibility(View.GONE);

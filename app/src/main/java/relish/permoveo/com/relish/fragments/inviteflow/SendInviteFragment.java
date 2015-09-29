@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -63,6 +64,7 @@ import relish.permoveo.com.relish.model.Friend;
 import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.InvitePerson;
 import relish.permoveo.com.relish.util.ConstantUtil;
+import relish.permoveo.com.relish.util.FlurryConstantUtil;
 import relish.permoveo.com.relish.util.TwilioSmsManager;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.util.UserUtils;
@@ -266,7 +268,7 @@ public class
 
                                     }
                                 });
-
+                            FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITE_SENT);
 
                         } else {
                             if (isAdded()) {

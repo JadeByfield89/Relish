@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -122,7 +123,7 @@ public class TipCalculatorActivity extends RelishActivity {
             }
         });
 
-        etTotalAmount.setSelection(etTotalAmount.getText().length());
+        //etTotalAmount.setSelection(etTotalAmount.getText().length());
 
         etTotalAmount.addTextChangedListener(new TextWatcher() {
             @Override
@@ -133,23 +134,30 @@ public class TipCalculatorActivity extends RelishActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                try {
-                    DecimalFormat f = new DecimalFormat("##.00");
-                    Double total = Double.parseDouble(s.toString());
-                    String formattedTotal = f.format(total);
+                if(etTotalAmount.getText().toString().length() > 0) {
+                    try {
+                        DecimalFormat f = new DecimalFormat("##.00");
+                        Double total = Double.parseDouble(s.toString());
+                        String formattedTotal = f.format(total);
 
-                    Double finalTotal = Double.parseDouble(formattedTotal);
+                        Double finalTotal = Double.parseDouble(formattedTotal);
 
 
-                    setTotalAmount(finalTotal);
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
+                        setTotalAmount(finalTotal);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                    performCalculation(getAmountTotal(), getTipPercentage(), getNumberOfPeople());
+                }else{
+
+                      s = "BITCH";
+
                 }
-                performCalculation(getAmountTotal(), getTipPercentage(), getNumberOfPeople());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+
 
             }
         });
@@ -240,7 +248,7 @@ public class TipCalculatorActivity extends RelishActivity {
         if (getTipPercentage() == 0.0) {
             tipAmount.setText("" + "0.00");
         } else {
-            tipAmount.setText("" + finalTipDouble);
+            //tipAmount.setText("" + finalTipDouble);
 
         }
 
@@ -250,17 +258,60 @@ public class TipCalculatorActivity extends RelishActivity {
             totalPerPerson.setText("0.00");
 
         } else {
-            totalPerPerson.setText("" + roundedDividedTotal);
+            //totalPerPerson.setText("" + roundedDividedTotal);
         }
+
+
+        displayResults(finalTipDouble, roundedDividedTotal, roundedTotal);
+
 
 
     }
 
     private void displayResults(final double tip, final double each, final double total) {
-        //Display the tip amount
-        tipAmount.setText("" + tip);
-        totalPerPerson.setText("" + each);
-        totalToPay.setText("" + total);
+        Log.d("TipCalcActivity", "Total amount length " + etTotalAmount.getText().length());
+
+        if(etTotalAmount.getText().toString().isEmpty()) {
+            Log.d("TipCalcActivity", "Total amount is empty");
+            etTotalAmount.setText("");
+            etTotalAmount.setCursorVisible(true);
+            etTotalAmount.setSelection(0);
+        }
+
+        //TODO: HACKY ATTEMPT TO GET VALUES TO GET VALUES TO END IN DOUBLE DIGITS
+        // DELETE THIS UGLY SHIT AND MAKE IT BETTER
+
+        String stringTip = "" + tip;
+        if (stringTip.endsWith(".0")) {
+            stringTip = stringTip + "0";
+            tipAmount.setText(stringTip);
+        } else {
+            tipAmount.setText("" + tip);
+
+        }
+
+        String stringEach = "" + each;
+        if (stringEach.endsWith(".0")) {
+            stringEach = stringEach + "0";
+            totalPerPerson.setText(stringEach);
+        } else {
+            totalPerPerson.setText("" + each);
+
+        }
+
+        if(getNumberOfPeople() == 0){
+            totalPerPerson.setText("0.00");
+        }
+
+        String stringTotal = "" + total;
+        if (stringTotal.endsWith(".0")) {
+            stringTotal = stringTotal + "0";
+            totalToPay.setText(stringTotal);
+        } else {
+            totalToPay.setText("" + stringTotal);
+
+        }
+
     }
 
     @Override

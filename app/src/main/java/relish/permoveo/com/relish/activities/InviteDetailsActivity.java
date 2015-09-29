@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.flurry.android.FlurryAgent;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
@@ -52,6 +53,7 @@ import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.manager.InvitesManager;
 import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.InvitePerson;
+import relish.permoveo.com.relish.util.FlurryConstantUtil;
 import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.RatingView;
@@ -179,6 +181,8 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
                     openWebView();
             }
         });
+
+        FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITE_OPENED);
     }
 
     private void openWebView() {

@@ -91,7 +91,7 @@
 
     <string name="all_fields_error">Nice try, but one or more fields seem to be missing.</string>
     <string formatted="false" name="one_field_error">Oops! Please enter a %s for this invite.</string>
-    <string name="friends_error">Put the beer down, and please select friends/contacts for this invite.</string>
+    <string name="friends_error">Put the beer down, and please select some friends for this invite.</string>
 
     <string name="share_message">Share Invite</string>
     <string formatted="false" name="share_sms_message">YOU\'RE INVITED!\nHey, your friend %s just invited you to join them at %s, on %s, at %s via the Relish app! \nInvite Code: %s\n Reply &quot;YES %s&quot; to accept your invite, or &quot;NO %s&quot; to decline. \n\nYou can also download the Relish app to see who else is going, and get more details at http://relishwith.us</string>

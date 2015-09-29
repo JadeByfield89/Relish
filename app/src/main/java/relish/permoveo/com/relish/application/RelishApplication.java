@@ -7,6 +7,7 @@ import android.support.multidex.MultiDex;
 import com.crashlytics.android.Crashlytics;
 import com.digits.sdk.android.Digits;
 import com.facebook.FacebookSdk;
+import com.flurry.android.FlurryAgent;
 import com.parse.Parse;
 import com.parse.ParseInstallation;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -61,6 +62,12 @@ public class RelishApplication extends Application {
         FriendsManager.initialize(this);
         InvitesManager.initialize(this);
         SharedPrefsUtil.get.init(this);
+
+        //Flurry config
+        FlurryAgent.setLogEnabled(false);
+        FlurryAgent.setLogEvents(true);
+
+        FlurryAgent.init(this, ConstantUtil.FLURRY_API_KEY);
 
     }
 
