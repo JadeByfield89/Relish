@@ -65,6 +65,7 @@ import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.InvitePerson;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.FlurryConstantUtil;
+import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TwilioSmsManager;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.util.UserUtils;
@@ -269,6 +270,8 @@ public class
                                     }
                                 });
                             FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITE_SENT);
+
+
 
                         } else {
                             if (isAdded()) {

@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.CompoundButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -97,10 +98,7 @@ public class SettingsFragment extends Fragment {
 
             //Sync with Google Calendar
             case 4:
-                SwitchCompat toggle = (SwitchCompat) view.findViewById(R.id.settings_toggle);
-                if(toggle.isChecked()){
-                    Log.d("SettingsFragment", "Toggle checked at position 4");
-                }
+
                 SharedPrefsUtil.get.toggleGoogleCalendarSync();
                 break;
 
@@ -288,10 +286,10 @@ public class SettingsFragment extends Fragment {
         Setting setting_logout = new Setting(getString(R.string.settings_item_logout), "", false);
         settings.add(setting_logout);
 
-        adapter = new SettingsAdapter(settings);
+        adapter = new SettingsAdapter(getActivity(), settings);
         settingsList.setAdapter(adapter);
 
-    }
 
+    }
 
 }

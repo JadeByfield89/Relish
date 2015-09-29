@@ -43,6 +43,7 @@ public class InvitesManager {
     public static int totalInvitesCount;
     public static int currentInviteId;
     private static Context context;
+    private static Invite currentInvite;
 
     public static void initialize(Context aContext) {
         context = aContext;
@@ -186,6 +187,7 @@ public class InvitesManager {
     }
 
     public static void createInvite(final Invite invite, final InvitesManagerCallback callback) {
+        currentInvite = invite;
         new CreateInviteWithContactsTask(callback).execute(invite);
     }
 
@@ -298,6 +300,24 @@ public class InvitesManager {
                     @Override
                     public void done(ParseException e) {
                         if (e == null) {
+
+                            //Add invite to Google Calendar
+                            if(SharedPrefsUtil.get.isGoogleCalendarSyncEnabled()){
+                                CalendarEventManager manager = new CalendarEventManager(context, currentInvite);
+                                manager.insertEventIntoCalender(new CalendarEventManager.OnEventInsertedListener() {
+                                    @Override
+                                    public void OnEventInserted(boolean succes) {
+                                        if(succes) {
+                                            Log.d("InvitesManager", "Invite added to calendar successfully");
+                                        }else{
+                                            Log.d("InvitesManager", "Error inserting event into calendar!");
+
+                                        }
+                                    }
+                                });
+                            }
+
+
                             if (SharedPrefsUtil.get.lastVisibleInvitesCount() == -1) {
                                 SharedPrefsUtil.get.setLastVisibleInvitesCount(1);
                             } else {
@@ -306,7 +326,7 @@ public class InvitesManager {
 
 
                             // Get a count of all Invite objects currently in parse
-                            ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
+                            /*ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
                             invitesQuery.countInBackground(new CountCallback() {
                                 public void done(int count, ParseException e) {
                                     if (e == null) {
@@ -323,7 +343,7 @@ public class InvitesManager {
                                         });
                                     }
                                 }
-                            });
+                            });*/
 
                             callback.done(inviteObj.getObjectId(), null);
 

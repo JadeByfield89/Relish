@@ -52,7 +52,9 @@ import relish.permoveo.com.relish.interfaces.CircularRevealAnimator;
 import relish.permoveo.com.relish.interfaces.NavigationDrawerManagementCallbacks;
 import relish.permoveo.com.relish.interfaces.OnResumeLoadingCallbacks;
 import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
+import relish.permoveo.com.relish.manager.CalendarEventManager;
 import relish.permoveo.com.relish.manager.FriendsManager;
+import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.util.ConnectionUtil;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.DialogUtil;
@@ -209,6 +211,17 @@ public class MainActivity extends RelishActivity implements CircularRevealAnimat
 
         updateToolbar(toolbar);
         navDrawer.selectItem(mCurrentSelectedPosition);
+
+        Invite invite = new Invite();
+        invite.title = "Picknick";
+        invite.note = "adfadad";
+        CalendarEventManager manager = new CalendarEventManager(this, invite);
+        manager.insertEventIntoCalender(new CalendarEventManager.OnEventInsertedListener() {
+            @Override
+            public void OnEventInserted(boolean succes) {
+
+            }
+        });
     }
 
 

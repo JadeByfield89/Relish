@@ -1,5 +1,8 @@
 package relish.permoveo.com.relish.adapter.list;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
@@ -12,12 +15,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.api.services.calendar.CalendarScopes;
+
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.model.Setting;
+import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
@@ -29,15 +37,19 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int NORMAL = 1;
     private static final int TOGGLE = 2;
     private ArrayList<Setting> settings;
+    private Context context;
 
-    public SettingsAdapter(ArrayList<Setting> settings) {
+
+    public SettingsAdapter(final Context context, final ArrayList<Setting> settings) {
         this.settings = settings;
+        this.context = context;
     }
 
     @Override
     public int getItemCount() {
         return settings.size();
     }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -70,7 +82,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         } else if (holder instanceof SettingsToggleViewHolder) {
             ((SettingsToggleViewHolder) holder).toggle.setTag(position);
-            ((SettingsToggleViewHolder) holder).toggle.setOnCheckedChangeListener(new OnSettingsCheckedChangeListener());
+            //((SettingsToggleViewHolder) holder).toggle.setOnCheckedChangeListener(new OnSettingsCheckedChangeListener());
             if (position == 4) {
                 ((SettingsToggleViewHolder) holder).toggle.setChecked(false);
             }
@@ -86,10 +98,18 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     }
 
-    public static class OnSettingsCheckedChangeListener implements CompoundButton.OnCheckedChangeListener{
+
+    public static class OnSettingsCheckedChangeListener implements CompoundButton.OnCheckedChangeListener {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-           Log.d("SettingsAdapter", "Toggle checked, position -> " + buttonView.getTag());
+            Log.d("SettingsAdapter", "Toggle checked, position -> " + buttonView.getTag());
+            int tag = (int) buttonView.getTag();
+            switch (tag) {
+                case 4:
+                    SharedPrefsUtil.get.toggleGoogleCalendarSync();
+                    break;
+
+            }
         }
     }
 
@@ -173,6 +193,10 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ButterKnife.bind(this, view);
             title.setTypeface(TypefaceUtil.PROXIMA_NOVA);
             subtitle.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+            toggle.setOnCheckedChangeListener(new OnSettingsCheckedChangeListener());
+
         }
     }
+
+
 }
