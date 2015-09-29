@@ -3,6 +3,7 @@ package relish.permoveo.com.relish.activities;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -151,7 +152,9 @@ public class LoginActivity extends RelishActivity {
                                     finish();
                                 } else {
                                     Log.d("Parse Error Code: ", "" + e.getCode());
-                                    Toast.makeText(LoginActivity.this, e.getLocalizedMessage() + e.getCode(), Toast.LENGTH_LONG).show();
+                                    Snackbar.make(passwordEt, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
+
+                                    // Toast.makeText(LoginActivity.this, e.getLocalizedMessage() + e.getCode(), Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
@@ -166,10 +169,14 @@ public class LoginActivity extends RelishActivity {
 
     private boolean validate() {
         if (TextUtils.isEmpty(emailEt.getText())) {
-            Toast.makeText(this, getString(R.string.error_email_empty), Toast.LENGTH_LONG).show();
+            Snackbar.make(passwordEt, getString(R.string.error_email_empty), Snackbar.LENGTH_LONG).show();
+
+            //Toast.makeText(this, getString(R.string.error_email_empty), Toast.LENGTH_LONG).show();
             return false;
         } else if (TextUtils.isEmpty(passwordEt.getText()) || passwordEt.getText().length() < 3) {
-            Toast.makeText(this, getString(R.string.error_password), Toast.LENGTH_LONG).show();
+            Snackbar.make(passwordEt, getString(R.string.error_password), Snackbar.LENGTH_LONG).show();
+
+            //Toast.makeText(this, getString(R.string.error_password), Toast.LENGTH_LONG).show();
             return false;
         }
         return true;

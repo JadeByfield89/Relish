@@ -3,10 +3,13 @@ package relish.permoveo.com.relish.adapter.list;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
@@ -66,6 +69,8 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
         } else if (holder instanceof SettingsToggleViewHolder) {
+            ((SettingsToggleViewHolder) holder).toggle.setTag(position);
+            ((SettingsToggleViewHolder) holder).toggle.setOnCheckedChangeListener(new OnSettingsCheckedChangeListener());
             if (position == 4) {
                 ((SettingsToggleViewHolder) holder).toggle.setChecked(false);
             }
@@ -79,6 +84,13 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         }
 
+    }
+
+    public static class OnSettingsCheckedChangeListener implements CompoundButton.OnCheckedChangeListener{
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+           Log.d("SettingsAdapter", "Toggle checked, position -> " + buttonView.getTag());
+        }
     }
 
     @Override

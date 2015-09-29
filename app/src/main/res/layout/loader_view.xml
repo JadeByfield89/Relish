@@ -7,23 +7,29 @@
                 android:background="#80000000">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:paddingTop="5dp"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
         android:paddingBottom="5dp"
-        android:paddingRight="15dp"
         android:background="@drawable/loader_background"
         android:layout_centerInParent="true">
+
+
+        <View
+            android:id="@+id/dialog_title_container"
+            android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/relish_bg_pattern"
+            android:layout_height="55dp"/>
+
 
         <relish.permoveo.com.relish.view.BounceProgressBar
 
             xmlns:bpb="http://schemas.android.com/apk/res-auto"
             android:id="@+id/bounce_progress"
+            android:layout_marginTop="70dp"
+            android:layout_marginLeft="60dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             bpb:shape="circle"
             bpb:singleSrcSize="14dp"
             bpb:speed="250"
@@ -37,7 +43,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:layout_below="@+id/bounce_progress"
+            android:layout_alignTop="@id/bounce_progress"
             android:textColor="@android:color/black"
             android:text="Loading..."/>
 

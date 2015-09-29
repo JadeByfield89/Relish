@@ -2,6 +2,7 @@ package relish.permoveo.com.relish.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.KeyEvent;
@@ -153,13 +154,16 @@ public class SignupActivity extends RelishActivity {
                                     startActivity(new Intent(SignupActivity.this, SMSVerificationActivity.class));
                                     finish();
                                 } else {
-                                    Toast.makeText(SignupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                    Snackbar.make(passwordEt, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
+                                    //Toast.makeText(SignupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
                     } else {
                         hideLoader();
-                        Toast.makeText(SignupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        Snackbar.make(passwordEt, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
+
+                        //Toast.makeText(SignupActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -171,28 +175,40 @@ public class SignupActivity extends RelishActivity {
         String[] segments = fullname.split(" ");
 
         if (TextUtils.isEmpty(fullName.getText())) {
-            Toast.makeText(this, "Please enter your full name", Toast.LENGTH_LONG).show();
+            Snackbar.make(passwordEt, "Please enter your full name", Snackbar.LENGTH_LONG).show();
+
+            //Toast.makeText(this, "Please enter your full name", Toast.LENGTH_LONG).show();
             return false;
         }
         if (segments.length < 2) {
-            Toast.makeText(this, "Please enter your full name", Toast.LENGTH_LONG).show();
+            Snackbar.make(passwordEt, "Please enter your full name", Snackbar.LENGTH_LONG).show();
+
+            //Toast.makeText(this, "Please enter your full name", Toast.LENGTH_LONG).show();
             return false;
         }
 
         if (segments.length > 2) {
-            Toast.makeText(this, "Please enter your first and last name only", Toast.LENGTH_LONG).show();
+            Snackbar.make(passwordEt, "Please enter your first and last name only", Snackbar.LENGTH_LONG).show();
+
+            //Toast.makeText(this, "Please enter your first and last name only", Toast.LENGTH_LONG).show();
             return false;
         }
 
 
         if (TextUtils.isEmpty(usernameEt.getText())) {
-            Toast.makeText(this, getString(R.string.error_username_empty), Toast.LENGTH_LONG).show();
+            Snackbar.make(passwordEt, getString(R.string.error_username_empty), Snackbar.LENGTH_LONG).show();
+
+            //Toast.makeText(this, getString(R.string.error_username_empty), Toast.LENGTH_LONG).show();
             return false;
         } else if (TextUtils.isEmpty(emailEt.getText()) || !Patterns.EMAIL_ADDRESS.matcher(emailEt.getText()).matches()) {
-            Toast.makeText(this, getString(R.string.error_email), Toast.LENGTH_LONG).show();
+            Snackbar.make(passwordEt, getString(R.string.error_email), Snackbar.LENGTH_LONG).show();
+
+            //Toast.makeText(this, getString(R.string.error_email), Toast.LENGTH_LONG).show();
             return false;
         } else if (TextUtils.isEmpty(passwordEt.getText()) || passwordEt.getText().length() < 3) {
-            Toast.makeText(this, getString(R.string.error_password), Toast.LENGTH_LONG).show();
+            Snackbar.make(passwordEt, getString(R.string.error_password), Snackbar.LENGTH_LONG).show();
+
+            //Toast.makeText(this, getString(R.string.error_password), Toast.LENGTH_LONG).show();
             return false;
         }
         return true;

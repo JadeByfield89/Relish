@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +97,10 @@ public class SettingsFragment extends Fragment {
 
             //Sync with Google Calendar
             case 4:
+                SwitchCompat toggle = (SwitchCompat) view.findViewById(R.id.settings_toggle);
+                if(toggle.isChecked()){
+                    Log.d("SettingsFragment", "Toggle checked at position 4");
+                }
                 SharedPrefsUtil.get.toggleGoogleCalendarSync();
                 break;
 

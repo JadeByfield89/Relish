@@ -106,7 +106,7 @@ public enum SharedPrefsUtil {
     }
 
     public boolean isGoogleCalendarSyncEnabled() {
-        return sharedPreferences.getBoolean(PARAM_LOCATION_SHARING, false);
+        return sharedPreferences.getBoolean(PARAM_GOOGLE_CALENDAR_SYNC, false);
 
     }
 

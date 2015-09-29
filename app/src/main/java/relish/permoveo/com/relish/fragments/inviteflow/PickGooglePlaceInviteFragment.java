@@ -119,6 +119,8 @@ public class PickGooglePlaceInviteFragment extends Fragment {
     private InviteCreator creator;
     private PlacesAutocompleteAdapter adapter;
 
+    private GooglePlace googlePlace;
+    private List<GooglePlace> googlePlaces;
     public PickGooglePlaceInviteFragment() {
         // Required empty public constructor
     }
@@ -149,6 +151,8 @@ public class PickGooglePlaceInviteFragment extends Fragment {
         if (getArguments() != null) {
             currentPlace = (YelpPlace) getArguments().getSerializable(PLACE_FOR_INVITE);
         }
+
+        googlePlace = new GooglePlace();
     }
 
     @Override
@@ -216,6 +220,9 @@ public class PickGooglePlaceInviteFragment extends Fragment {
                 imm.hideSoftInputFromWindow(invitePlace.getWindowToken(), 0);
 
                 GooglePlace place = (GooglePlace) adapter.getItem(position);
+
+                animateMapToPlace(place);
+
                 invitePlace.setText(place.name);
                 invitePlaceName.setText(place.name);
                 invitePlaceName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
@@ -259,8 +266,14 @@ public class PickGooglePlaceInviteFragment extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (pagerCallbacks != null)
-                    pagerCallbacks.next();
+                if (!TextUtils.isEmpty(invitePlace.getText().toString()) && googlePlace != null) {
+                    if (pagerCallbacks != null)
+                        pagerCallbacks.next();
+                }else{
+                    YoYo.with(Techniques.Shake)
+                            .playOn(invitePickPlaceCard);
+                    Snackbar.make(invitePlace, "Please select a location", Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -309,9 +322,9 @@ public class PickGooglePlaceInviteFragment extends Fragment {
                             close.setVisibility(View.VISIBLE);
                             bounceProgressBar.setVisibility(View.GONE);
 
-                            List<GooglePlace> places = (List<GooglePlace>) params[0];
-                            if (places != null && places.size() != 0) {
-                                adapter.swap(new ArrayList<>(places));
+                            googlePlaces = (List<GooglePlace>) params[0];
+                            if (googlePlaces != null && googlePlaces.size() != 0) {
+                                adapter.swap(new ArrayList<>(googlePlaces));
                                 collapseMapWithPlaces();
                             }
                         }
@@ -547,6 +560,24 @@ public class PickGooglePlaceInviteFragment extends Fragment {
             set.playTogether(mapHeightAnimator, slideAnimator, fadeAnimator);
             set.start();
         }
+    }
+
+    private void animateMapToPlace(GooglePlace place) {
+
+        mMap.clear();
+        placeMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(place.geometry.location.lat, place.geometry.location.lng)));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(place.geometry.location.lat, place.geometry.location.lng), 17.0f), new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+
     }
 
     private void collapseMapWithDetails() {

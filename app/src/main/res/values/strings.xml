@@ -17,10 +17,10 @@
     <string name="button_login">Sign In</string>
     <string name="button_signup_with_facebook">Sign up with Facebook</string>
     <string name="button_signup">Sign Up</string>
-    <string name="error_email_empty">Email must not be empty!</string>
-    <string name="error_username_empty">Username must not be empty!</string>
+    <string name="error_email_empty">Please enter a valid email address</string>
+    <string name="error_username_empty">Please enter a username</string>
     <string name="error_email">Invalid email</string>
-    <string name="error_password">Password must contain more than 3 characters!</string>
+    <string name="error_password">Password must contain more than 3 characters</string>
     <string name="signing_up_loader_text">Signing up…</string>
     <string name="logging_in_loader_text">Logging in…</string>
     <string name="menu_open">open</string>
@@ -218,7 +218,7 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="pay_square_cash">Square Cash</string>
     <string name="pay_venmo">Venmo</string>
     <string name="pay_google_wallet">Google Wallet</string>
-    <string name="pay_how">How do you want to pay your friends?</string>
+    <string name="pay_how">How do you want to send money?</string>
     <string name="title_activity_send_money">Send Money</string>
 
     <!-- Edit Invite -->
