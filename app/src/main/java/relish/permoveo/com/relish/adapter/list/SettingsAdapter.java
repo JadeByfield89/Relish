@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.andexert.library.RippleView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.api.services.calendar.CalendarScopes;
@@ -36,6 +37,8 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int HEADER = 0;
     private static final int NORMAL = 1;
     private static final int TOGGLE = 2;
+    private static final int RIPPLE_ANIMATION_DURATION = 400;
+
     private ArrayList<Setting> settings;
     private Context context;
 
@@ -68,21 +71,32 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof SettingsHeaderViewHolder) {
             ((SettingsHeaderViewHolder) holder).header.setText(settings.get(position).getTitle());
         } else if (holder instanceof SettingsViewHolder) {
             ((SettingsViewHolder) holder).title.setText(settings.get(position).getTitle());
             if (settings.get(position).getSubtitle().isEmpty()) {
                 ((SettingsViewHolder) holder).subtitle.setVisibility(View.GONE);
+                ((SettingsViewHolder) holder).rippleView.setRippleDuration(RIPPLE_ANIMATION_DURATION);
+                ((SettingsViewHolder) holder).rippleView.setRippleColor(R.color.drawer_item_pressed_background);
+
+
             } else {
                 ((SettingsViewHolder) holder).subtitle.setVisibility(View.VISIBLE);
                 ((SettingsViewHolder) holder).subtitle.setText(settings.get(position).getSubtitle());
+                ((SettingsViewHolder) holder).rippleView.setRippleDuration(RIPPLE_ANIMATION_DURATION);
+                ((SettingsViewHolder) holder).rippleView.setRippleColor(R.color.drawer_item_pressed_background);
+
+
             }
 
         } else if (holder instanceof SettingsToggleViewHolder) {
             ((SettingsToggleViewHolder) holder).toggle.setTag(position);
             //((SettingsToggleViewHolder) holder).toggle.setOnCheckedChangeListener(new OnSettingsCheckedChangeListener());
+            ((SettingsToggleViewHolder) holder).rippleView.setRippleDuration(RIPPLE_ANIMATION_DURATION);
+            ((SettingsToggleViewHolder) holder).rippleView.setRippleColor(R.color.drawer_item_pressed_background);
+
             if (position == 4) {
                 ((SettingsToggleViewHolder) holder).toggle.setChecked(false);
             }
@@ -92,6 +106,13 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             } else {
                 ((SettingsToggleViewHolder) holder).subtitle.setVisibility(View.VISIBLE);
                 ((SettingsToggleViewHolder) holder).subtitle.setText(settings.get(position).getSubtitle());
+
+                ((SettingsToggleViewHolder) holder).rippleView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((SettingsToggleViewHolder) holder).rippleView.setRippleColor(R.color.drawer_item_pressed_background);
+                    }
+                });
             }
 
         }
@@ -151,6 +172,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Bind(R.id.settings_toggle)
         public ToggleButton toggleButton;
 
+        @Bind(R.id.ripple)
+        RippleView rippleView;
+
         public SettingsViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -187,6 +211,9 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Nullable
         @Bind(R.id.settings_subtitle)
         TextView subtitle;
+
+        @Bind(R.id.ripple)
+        RippleView rippleView;
 
         public SettingsToggleViewHolder(View view) {
             super(view);

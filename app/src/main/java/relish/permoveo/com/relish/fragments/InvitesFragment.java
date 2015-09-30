@@ -61,7 +61,7 @@ import relish.permoveo.com.relish.view.RelishDrawerToggle;
 public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDrawerSlideListener {
 
     public final static float SCALE_FACTOR = 13f;
-    public final static int ANIMATION_DURATION = 250;
+    public final static int ANIMATION_DURATION = 200;
     public final static int MINIMUN_X_DISTANCE = 200;
     private static final String TO_INVITE_DETAILS_PARAM = "to_invite_details_param";
     private static final String ACTION_PARAM = "action_param";
