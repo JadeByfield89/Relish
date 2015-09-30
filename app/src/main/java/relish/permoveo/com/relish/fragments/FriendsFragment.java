@@ -84,15 +84,16 @@ public class FriendsFragment extends Fragment {
             @Override
             public void done(final Integer count, ParseException e) {
                 if (e == null) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (SharedPrefsUtil.get.lastVisibleFriendsCount() == -1)
-                                SharedPrefsUtil.get.setLastVisibleFriendsCount(count);
+                    if (isAdded())
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (SharedPrefsUtil.get.lastVisibleFriendsCount() == -1)
+                                    SharedPrefsUtil.get.setLastVisibleFriendsCount(count);
 
-                            adapter.swap(count, count - SharedPrefsUtil.get.lastVisibleFriendsCount());
-                        }
-                    });
+                                adapter.swap(count, count - SharedPrefsUtil.get.lastVisibleFriendsCount());
+                            }
+                        });
                 } else {
                     e.printStackTrace();
                 }
