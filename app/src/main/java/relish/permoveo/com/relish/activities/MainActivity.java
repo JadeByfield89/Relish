@@ -214,7 +214,7 @@ public class MainActivity extends RelishActivity implements CircularRevealAnimat
         updateToolbar(toolbar);
         navDrawer.selectItem(mCurrentSelectedPosition);
 
-        Invite invite = new Invite();
+        /*Invite invite = new Invite();
         invite.title = "Pants";
         invite.note = "adfadad";
         CalendarEventManager manager = new CalendarEventManager(this, invite);
@@ -223,7 +223,7 @@ public class MainActivity extends RelishActivity implements CircularRevealAnimat
             public void OnEventInserted(boolean succes) {
 
             }
-        });
+        });*/
 
     }
 

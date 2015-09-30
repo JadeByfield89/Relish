@@ -12,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -252,12 +253,16 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
 
     @Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+        Log.d("PlacesFragment", "onScrollChanged");
+        Log.d("PlacesFragment", "onScrollChanged scrollY " + scrollY);
         int baseColor = getResources().getColor(R.color.main_color);
         float alpha = Math.min(1, (float) scrollY / parallaxImageHeight);
         toolbarCallbacks.getToolbar().setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
         ViewHelper.setTranslationY(headerImage, -scrollY / 2);
 
+
         // Translate list background
+
         ViewHelper.setTranslationY(recyclerBackground, Math.max(0, -scrollY + parallaxImageHeight));
 
 
@@ -299,15 +304,15 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     }
 
     public void reloadData() {
-        //headerLayout.setVisibility(View.INVISIBLE);
-        //swipeRefreshLayout.setVisibility(View.INVISIBLE);
+        headerLayout.setVisibility(View.GONE);
+        swipeRefreshLayout.setVisibility(View.GONE);
         bounceProgressBar.setVisibility(View.VISIBLE);
         renderHeader(null);
         recyclerView.scrollToPosition(0);
         page = 0;
         total = Integer.MAX_VALUE;
         adapter.clear();
-        loadData(true, byCategory);
+        loadData(false, byCategory);
     }
 
     private void initialRender() {
@@ -352,7 +357,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     }
 
     @Override
-    public void loadData(final boolean loadMore, boolean byCategory) {
+    public void loadData(final boolean loadMore, final boolean byCategory) {
         if (total > adapter.getItemCount()) {
             loading = true;
             renderHeader(null);
@@ -363,8 +368,16 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
                     swipeRefreshLayout.setVisibility(View.VISIBLE);
                     bounceProgressBar.setVisibility(View.GONE);
                     placesMessage.setVisibility(View.GONE);
-//                    recyclerBackground.setVisibility(View.VISIBLE);
-//                    recyclerView.setVisibility(View.VISIBLE);
+
+                    
+                    if (!loadMore && byCategory) {
+                        Log.d("PlacesFragment", "Reloading data for category");
+                        recyclerView.scrollToPosition(0);
+                        adapter.notifyDataSetChanged();
+                        renderHeader(adapter.getTop());
+
+                    }
+
                     ArrayList<YelpPlace> places = new ArrayList<>((List<YelpPlace>) params[1]);
                     if (places.size() == 0) {
                         if (!loadMore)

@@ -17,7 +17,7 @@ public class ConstantUtil {
     /*========================= YELP PLACES API CONSTANTS ========================= */
     public static final String YELP_PLACES_SEARCH_URL = "http://api.yelp.com/v2/search";
     public static final String YELP_PLACE_DETAILS = "http://api.yelp.com/v2/business";
-    public static final int PLACES_LIMIT_SEARCH = 10;
+    public static final int PLACES_LIMIT_SEARCH = 20;
     public static final int PLACES_SORTING_ORDER = 1;
     public static final int PLACES_RADIUS_SEARCH = 4000;
 

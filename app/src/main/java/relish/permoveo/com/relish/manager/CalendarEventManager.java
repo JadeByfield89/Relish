@@ -86,7 +86,7 @@ public class CalendarEventManager {
 
 
 
-            // 
+            //
             ContentResolver resolver = context.getContentResolver();
             ContentValues contentValues = new ContentValues();
             contentValues.put(CalendarContract.Calendars.SYNC_EVENTS, 1);
