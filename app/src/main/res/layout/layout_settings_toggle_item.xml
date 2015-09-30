@@ -1,47 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
-                android:clickable="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<com.andexert.library.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ripple"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:rv_alpha="255"
+    app:rv_centered="true"
+    app:rv_type="rectangle">
 
 
-    <TextView
-        android:id="@+id/settings_title"
-        android:layout_centerVertical="true"
-        android:textSize="16sp"
-        android:includeFontPadding="false"
-        android:text="Sample Settings Item"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/settings_subtitle"
-        android:layout_below="@id/settings_title"
-        android:textSize="14sp"
-        android:includeFontPadding="false"
-        android:layout_marginTop="8dp"
-        android:text="Subtitle"
-        android:textColor="#939a9c"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-
-    <View
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:visibility="visible"
-        android:layout_marginTop="8dp"
-        android:layout_below="@+id/settings_subtitle"
-        android:background="@color/friends_list_divider"/>
+        android:layout_height="match_parent">
 
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/settings_toggle"
-        android:layout_alignParentRight="true"
-        android:checked="true"
-        android:layout_centerVertical="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/settings_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="20dp"
+            android:includeFontPadding="false"
+            android:text="Sample Settings Item"
+            android:textSize="16sp" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/settings_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/settings_title"
+            android:layout_marginTop="8dp"
+            android:includeFontPadding="false"
+            android:text="Subtitle"
+            android:textColor="#939a9c"
+            android:textSize="14sp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/settings_subtitle"
+            android:layout_marginTop="8dp"
+            android:background="@color/friends_list_divider"
+            android:visibility="visible" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/settings_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:checked="true" />
+    </RelativeLayout>
+
+</com.andexert.library.RippleView>

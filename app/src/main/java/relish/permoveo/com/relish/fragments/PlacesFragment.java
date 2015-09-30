@@ -244,9 +244,6 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
 
                 headerRating.setRating(restaurant.rating);
 
-//        headerPlaceCost.setText(place.getPriceLevel());
-//        headerPlaceCost.setTypeface(TypefaceUtil.PROXIMA_NOVA);
-//        headerPlaceCost.setIncludeFontPadding(false);
             }
         }
     }
@@ -262,7 +259,6 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
 
 
         // Translate list background
-
         ViewHelper.setTranslationY(recyclerBackground, Math.max(0, -scrollY + parallaxImageHeight));
 
 
@@ -304,11 +300,14 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     }
 
     public void reloadData() {
-        headerLayout.setVisibility(View.GONE);
-        swipeRefreshLayout.setVisibility(View.GONE);
-        bounceProgressBar.setVisibility(View.VISIBLE);
+        Log.d("PlacesFragment", "reloadData");
+        headerLayout.setVisibility(View.INVISIBLE);
         renderHeader(null);
+        bounceProgressBar.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setVisibility(View.GONE);
         recyclerView.scrollToPosition(0);
+        recyclerView.setVisibility(View.INVISIBLE);
+
         page = 0;
         total = Integer.MAX_VALUE;
         adapter.clear();
@@ -343,8 +342,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     }
 
     private void showErrorText(String message, boolean header) {
-//        recyclerView.setVisibility(View.GONE);
-//        recyclerBackground.setVisibility(View.GONE);
+
         if (header) {
             toolbarCallbacks.getToolbar().setBackgroundColor(getResources().getColor(R.color.main_color));
 //            placesHeaderProgress.setVisibility(View.GONE);
@@ -369,7 +367,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
                     bounceProgressBar.setVisibility(View.GONE);
                     placesMessage.setVisibility(View.GONE);
 
-                    
+
                     if (!loadMore && byCategory) {
                         Log.d("PlacesFragment", "Reloading data for category");
                         recyclerView.scrollToPosition(0);
@@ -388,6 +386,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
                         adapter.addAll(places);
                         renderHeader(adapter.getTop());
                         total = (Integer) params[0];
+                        recyclerView.setVisibility(View.VISIBLE);
 
                         if (adapter.getItemCount() == 0) {
                             showErrorText(getString(R.string.no_places), false);

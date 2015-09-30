@@ -91,7 +91,7 @@ public class YelpPlaceDetailsActivity extends RelishActivity implements Observab
     public static final String PASSED_YELP_PLACE = "passed_yelp_place_extra";
 
     public final static float SCALE_FACTOR = 13f;
-    public final static int ANIMATION_DURATION = 250;
+    public final static int ANIMATION_DURATION = 200;
     public final static int MINIMUN_X_DISTANCE = 200;
     private static final String FETCHED_PLACE = "fetched_place_extra";
     private static final int INVITE_FLOW_REQUEST = 228;

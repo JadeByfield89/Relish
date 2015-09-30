@@ -326,7 +326,7 @@ public class InvitesManager {
                         if (e == null) {
 
                             //Add invite to Google Calendar
-                            if(SharedPrefsUtil.get.isGoogleCalendarSyncEnabled()){
+                            /*if(SharedPrefsUtil.get.isGoogleCalendarSyncEnabled()){
                                 CalendarEventManager manager = new CalendarEventManager(context, currentInvite);
                                 manager.insertEventIntoCalender(new CalendarEventManager.OnEventInsertedListener() {
                                     @Override
@@ -339,7 +339,7 @@ public class InvitesManager {
                                         }
                                     }
                                 });
-                            }
+                            }*/
 
 
                             if (SharedPrefsUtil.get.lastVisibleInvitesCount() == -1) {
@@ -350,7 +350,7 @@ public class InvitesManager {
 
 
                             // Get a count of all Invite objects currently in parse
-                            /*ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
+                            ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
                             invitesQuery.countInBackground(new CountCallback() {
                                 public void done(int count, ParseException e) {
                                     if (e == null) {
@@ -367,7 +367,7 @@ public class InvitesManager {
                                         });
                                     }
                                 }
-                            });*/
+                            });
 
                             callback.done(inviteObj.getObjectId(), null);
 
