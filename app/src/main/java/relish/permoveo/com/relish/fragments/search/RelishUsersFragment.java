@@ -16,10 +16,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.dd.CircularProgressButton;
 import com.parse.ParseException;
 
 import java.util.ArrayList;
@@ -58,20 +58,22 @@ public class RelishUsersFragment extends Fragment {
         adapter = new AddFriendsListAdapter(getActivity(), new AddFriendsListAdapter.ViewHolder.AddFriendButtonClickListener() {
             @Override
             public void onClick(final View view) {
-                final ImageButton current = (ImageButton) view.findViewById(R.id.friend_btn);
+                final CircularProgressButton current = (CircularProgressButton) view.findViewById(R.id.friend_btn);
                 int position = recyclerView.getChildPosition(view);
                 final Friend friend = (Friend) adapter.getItem(position);
-                if (!friend.isMyFriend) {
-//                    current.setProgress(50);
+                if (current.getProgress() != 100) {
+                    current.setProgress(50);
+
                     FriendsManager.addFriend(friend.id, new FriendsManager.FriendsManagerCallback<Object, ParseException>() {
                         @Override
                         public void done(Object o, ParseException e) {
                             if (e == null) {
-//                                current.setCompleteText("Friends");
-                                current.setBackgroundResource(R.drawable.ic_invited);
+                                current.setCompleteText("Friends");
+                                current.setProgress(100);
+//                                current.setBackgroundResource(R.drawable.ic_invited);
                             } else {
-                                current.setBackgroundResource(R.drawable.ic_content_send);
-//                                current.setProgress(0);
+//                                current.setBackgroundResource(R.drawable.ic_content_send);
+                                current.setProgress(0);
                                 if (isAdded())
                                     Toast.makeText(getActivity(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                             }

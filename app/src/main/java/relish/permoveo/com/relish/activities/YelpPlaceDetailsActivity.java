@@ -86,9 +86,10 @@ import relish.permoveo.com.relish.view.RatingView;
 //import relish.permoveo.com.relish.animation.ViewPropertyAnimator;
 
 
-public class PlaceDetailsActivity extends RelishActivity implements ObservableScrollViewCallbacks {
+public class YelpPlaceDetailsActivity extends RelishActivity implements ObservableScrollViewCallbacks {
 
-    public static final String PASSED_PLACE = "passed_place_extra";
+    public static final String PASSED_YELP_PLACE = "passed_yelp_place_extra";
+
     public final static float SCALE_FACTOR = 13f;
     public final static int ANIMATION_DURATION = 250;
     public final static int MINIMUN_X_DISTANCE = 200;
@@ -204,7 +205,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 //                animator.start();
 //            }
 
-            startActivityForResult(new Intent(PlaceDetailsActivity.this, InviteFlowActivity.class)
+            startActivityForResult(new Intent(YelpPlaceDetailsActivity.this, InviteFlowActivity.class)
                     .putExtra(InviteFlowActivity.PLACE_FOR_INVITE_EXTRA, fetchedPlace), INVITE_FLOW_REQUEST);
         }
     };
@@ -218,9 +219,10 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(FETCHED_PLACE))
                 fetchedPlace = (YelpPlace) savedInstanceState.getSerializable(FETCHED_PLACE);
-            passedPlace = (YelpPlace) savedInstanceState.getSerializable(PASSED_PLACE);
-        } else if (getIntent().hasExtra(PASSED_PLACE))
-            passedPlace = (YelpPlace) getIntent().getSerializableExtra(PASSED_PLACE);
+            passedPlace = (YelpPlace) savedInstanceState.getSerializable(PASSED_YELP_PLACE);
+        } else if (getIntent().hasExtra(PASSED_YELP_PLACE)) {
+            passedPlace = (YelpPlace) getIntent().getSerializableExtra(PASSED_YELP_PLACE);
+        }
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -373,7 +375,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
                 public void onClick(View v) {
                     Intent intent = new Intent(Intent.ACTION_DIAL);
                     intent.setData(Uri.parse("tel:" + fetchedPlace.phone));
-                    PlaceDetailsActivity.this.startActivity(intent);
+                    YelpPlaceDetailsActivity.this.startActivity(intent);
                 }
             });
         } else {
@@ -578,9 +580,9 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
                 bounceProgress.setVisibility(View.GONE);
                 placeDetailsMessage.setVisibility(View.VISIBLE);
                 if (params == null || params.length == 0) {
-                    Toast.makeText(PlaceDetailsActivity.this, getString(R.string.problems_with_loading), Toast.LENGTH_LONG).show();
+                    Toast.makeText(YelpPlaceDetailsActivity.this, getString(R.string.problems_with_loading), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(PlaceDetailsActivity.this, (String) params[0], Toast.LENGTH_LONG).show();
+                    Toast.makeText(YelpPlaceDetailsActivity.this, (String) params[0], Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -595,7 +597,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(PASSED_PLACE, passedPlace);
+        outState.putSerializable(PASSED_YELP_PLACE, passedPlace);
         if (fetchedPlace != null)
             outState.putSerializable(FETCHED_PLACE, fetchedPlace);
         super.onSaveInstanceState(outState);
@@ -779,7 +781,7 @@ public class PlaceDetailsActivity extends RelishActivity implements ObservableSc
                 path.moveTo(-600, 50);
                 path.curveTo(-200, 200, -400, 100, 0, 0);
 
-                revealAnimator = ObjectAnimator.ofObject(PlaceDetailsActivity.this, "fabLoc",
+                revealAnimator = ObjectAnimator.ofObject(YelpPlaceDetailsActivity.this, "fabLoc",
                         new PathEvaluator(), path.getPoints().toArray());
 
                 revealAnimator.setInterpolator(new DecelerateInterpolator());

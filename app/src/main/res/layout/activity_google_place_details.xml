@@ -19,6 +19,13 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white">
 
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/map"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="@dimen/featured_image_size"/>
+
             <com.flaviofaria.kenburnsview.KenBurnsView
                 android:id="@+id/header_place_details_image"
                 android:layout_width="match_parent"
@@ -28,6 +35,7 @@
             <ImageView
                 android:id="@+id/place_like"
                 android:layout_width="44dp"
+                android:visibility="gone"
                 android:layout_height="44dp"
                 android:clickable="true"
                 android:layout_alignParentRight="true"
@@ -52,12 +60,6 @@
                 android:layout_below="@+id/anchor"
                 android:background="@android:color/white"
                 android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/ivRatingImage"
-                    android:layout_marginBottom="12dp"
-                    android:layout_width="95dp"
-                    android:layout_height="20dp"/>
 
                 <relish.permoveo.com.relish.view.RatingView
                     android:id="@+id/place_details_rating_view"
@@ -103,16 +105,6 @@
                         android:clickable="true"
                         android:textColor="@color/link_color"
                         android:textSize="16sp"/>
-
-
-                    <ImageView
-                        android:id="@+id/yelp_logo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/yelp_logo"
-                        android:clickable="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"/>
 
                 </RelativeLayout>
 
@@ -185,7 +177,6 @@
         android:layout_height="wrap_content"/>
 
     <relish.permoveo.com.relish.view.BounceProgressBar
-
         xmlns:bpb="http://schemas.android.com/apk/res-auto"
         android:id="@+id/bounce_progress"
         android:layout_width="wrap_content"
@@ -199,51 +190,6 @@
         bpb:speed="250"
         bpb:src="@color/main_color"/>
 
-
-    <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/fab_place_details"
-        android:layout_width="@dimen/fab_size"
-        android:layout_height="@dimen/fab_size"
-        android:layout_marginTop="@dimen/fab_top_margin"
-        android:layout_marginRight="20dp"
-        android:layout_alignParentRight="true"
-        android:elevation="10dp"
-        android:src="@drawable/ic_send"
-        app:fab_colorNormal="@color/main_color"
-        app:fab_colorPressed="@color/main_color_dark"
-        app:fab_shadow="true"/>
-
-
-    <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/fake_fab_place_details"
-        android:layout_width="@dimen/fab_size"
-        android:layout_height="@dimen/fab_size"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="16dp"
-        android:visibility="invisible"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:elevation="10dp"
-        android:src="@drawable/ic_send"
-        app:fab_colorNormal="@color/main_color"
-        app:fab_colorPressed="@color/main_color_dark"
-        app:fab_shadow="true"/>
-
     <include layout="@layout/toolbar"/>
-
-    <RelativeLayout
-        android:id="@+id/reveal_container"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:visibility="invisible"
-        android:background="@color/main_color">
-
-        <include
-            android:id="@+id/layout_invite"
-            layout="@layout/activity_invite_flow"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"/>
-
-    </RelativeLayout>
 
 </RelativeLayout>

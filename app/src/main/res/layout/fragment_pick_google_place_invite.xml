@@ -84,6 +84,7 @@
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/map"
+            android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/invite_place_info_container"
@@ -96,6 +97,7 @@
             android:layout_below="@+id/search_container"/>
 
         <View
+            android:id="@+id/bottom_shadow"
             android:background="@drawable/shadow_reverse"
             android:layout_width="match_parent"
             android:layout_height="3dp"

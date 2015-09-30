@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.LogInCallback;
@@ -130,34 +129,42 @@ public class LoginActivity extends RelishActivity {
                 public void done(List<ParseUser> list, ParseException e) {
 
                     // Once a user with this email is found, get their username and try to log them in
-                    if (!list.isEmpty() && list.size() == 1) {
-                        ParseUser user = list.get(0);
-                        String userName = user.getUsername();
-                        ParseUser.logInInBackground(userName, password, new LogInCallback() {
-                            @Override
-                            public void done(ParseUser parseUser, ParseException e) {
-                                hideLoader();
-                                if (e == null) {
-                                    Location location = GPSTracker.get.getLocation();
-                                    if (location != null && location.getLatitude() != 0.0d && location.getLongitude() != 0.0d) {
-                                        ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
-                                        ParseUser.getCurrentUser().saveInBackground();
+                    if (e == null) {
+                        if (!list.isEmpty() && list.size() == 1) {
+                            ParseUser user = list.get(0);
+                            String userName = user.getUsername();
+                            ParseUser.logInInBackground(userName, password, new LogInCallback() {
+                                @Override
+                                public void done(ParseUser parseUser, ParseException e) {
+                                    hideLoader();
+                                    if (e == null) {
+                                        Location location = GPSTracker.get.getLocation();
+                                        if (location != null && location.getLatitude() != 0.0d && location.getLongitude() != 0.0d) {
+                                            ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
+                                            ParseUser.getCurrentUser().saveInBackground();
+                                        }
+                                        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                                        installation.put("userId", parseUser.getObjectId());
+                                        installation.saveInBackground();
+
+                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                        setResult(RESULT_OK);
+                                        finish();
+                                    } else {
+                                        Log.d("Parse Error Code: ", "" + e.getCode());
+                                        Snackbar.make(passwordEt, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
+
+                                        // Toast.makeText(LoginActivity.this, e.getLocalizedMessage() + e.getCode(), Toast.LENGTH_LONG).show();
                                     }
-                                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-                                    installation.put("userId", parseUser.getObjectId());
-                                    installation.saveInBackground();
-
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                    setResult(RESULT_OK);
-                                    finish();
-                                } else {
-                                    Log.d("Parse Error Code: ", "" + e.getCode());
-                                    Snackbar.make(passwordEt, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
-
-                                    // Toast.makeText(LoginActivity.this, e.getLocalizedMessage() + e.getCode(), Toast.LENGTH_LONG).show();
                                 }
-                            }
-                        });
+                            });
+                        } else {
+                            hideLoader();
+                            Snackbar.make(passwordEt, getString(R.string.user_not_found), Snackbar.LENGTH_LONG).show();
+                        }
+                    } else {
+                        hideLoader();
+                        Snackbar.make(passwordEt, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
                     }
                 }
             });

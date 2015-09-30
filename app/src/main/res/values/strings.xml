@@ -17,6 +17,7 @@
     <string name="button_login">Sign In</string>
     <string name="button_signup_with_facebook">Sign up with Facebook</string>
     <string name="button_signup">Sign Up</string>
+    <string name="user_not_found">User not found</string>
     <string name="error_email_empty">Please enter a valid email address</string>
     <string name="error_username_empty">Please enter a username</string>
     <string name="error_email">Invalid email</string>
@@ -229,6 +230,7 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="twitter_connect">Connect Twitter Account</string>
     <string name="twitter_signin">Sign in with Twitter</string>
     <string name="twitter_followers_empty">You haven\'t connected your Twitter account yet.</string>
+    <string name="title_activity_google_place_details">GooglePlaceDetailsActivity</string>
 
 
 </resources>

@@ -41,6 +41,9 @@ public class PlaceDetailsRequest extends RelishRequest<String, Void, PlaceDetail
         String id = params[0];
         if (id.endsWith("var-miami-beach-2"))
             id = "bolivar-miami-beach-2";
+        else if (id.endsWith("var Resto Lounge"))
+            id = "Bolivar Resto Lounge";
+
         OAuthRequest request = new OAuthRequest(Verb.GET, ConstantUtil.YELP_PLACE_DETAILS + "/" + id);
 
         API.service.signRequest(API.accessToken, request);

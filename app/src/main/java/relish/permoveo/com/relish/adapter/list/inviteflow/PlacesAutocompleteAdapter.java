@@ -2,6 +2,7 @@ package relish.permoveo.com.relish.adapter.list.inviteflow;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,7 @@ public class PlacesAutocompleteAdapter extends RecyclerView.Adapter<PlacesAutoco
         holder.placeName.setText(placeName);
         holder.placeName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
 
-        if(place.address != null & !place.address.isEmpty()) {
+        if(place.address != null && !TextUtils.isEmpty(place.address) && place.address.contains(",")) {
             holder.placeLocation.setText(place.address.substring(0, place.address.lastIndexOf(',')));
         }
         holder.placeLocation.setTypeface(TypefaceUtil.PROXIMA_NOVA);

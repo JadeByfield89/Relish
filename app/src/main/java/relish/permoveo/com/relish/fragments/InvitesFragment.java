@@ -22,8 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,6 +47,7 @@ import relish.permoveo.com.relish.manager.InvitesManager;
 import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.util.FlurryConstantUtil;
 import relish.permoveo.com.relish.util.RecyclerItemClickListener;
+import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.util.VerticalSpaceItemDecoration;
 import relish.permoveo.com.relish.view.BounceProgressBar;
@@ -102,7 +101,7 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
             //activity_container.setBackgroundColor(getResources()
             // .getColor(R.color.main_color));
             animator.getRevealContainer().setVisibility(View.VISIBLE);
-            animator.getToolbar().setVisibility(View.GONE);
+            animator.getToolbar().setVisibility(View.INVISIBLE);
 
             /*for (int i = 0; i < activity_container.getChildCount(); i++) {
                 View v = activity_container.getChildAt(i);
@@ -277,6 +276,8 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
                         recyclerView.setVisibility(View.VISIBLE);
                         adapter.swap(invites);
 
+                        SharedPrefsUtil.get.setLastVisibleInvitesCount(invites.size());
+
                         if (!TextUtils.isEmpty(inviteId) && adapter.getChildById(inviteId) != null) {
                             startActivity(new Intent(getActivity(), InviteDetailsActivity.class)
                                     .putExtra(InviteDetailsActivity.EXTRA_INVITE, adapter.getChildById(inviteId))
@@ -366,6 +367,8 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
     }
 
     private void animateCurveFromInvite() {
+        animator.getToolbar().setVisibility(View.VISIBLE);
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -386,25 +389,24 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         inviteButton.setImageResource(R.drawable.ic_editor_mode_edit);
-                        Animation toolbarAnimation = new AlphaAnimation(0.0f, 1.0f);
-                        toolbarAnimation.setDuration(300);
-                        toolbarAnimation.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-                                animator.getToolbar().setVisibility(View.VISIBLE);
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-
-                            }
-                        });
-                        animator.getToolbar().setAnimation(toolbarAnimation);
+//                        Animation toolbarAnimation = new AlphaAnimation(0.0f, 1.0f);
+//                        toolbarAnimation.setDuration(300);
+//                        toolbarAnimation.setAnimationListener(new Animation.AnimationListener() {
+//                            @Override
+//                            public void onAnimationStart(Animation animation) {
+//                            }
+//
+//                            @Override
+//                            public void onAnimationEnd(Animation animation) {
+//
+//                            }
+//
+//                            @Override
+//                            public void onAnimationRepeat(Animation animation) {
+//
+//                            }
+//                        });
+//                        animator.getToolbar().setAnimation(toolbarAnimation);
                     }
 
                     @Override

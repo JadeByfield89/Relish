@@ -3,6 +3,8 @@ package relish.permoveo.com.relish.fragments.inviteflow;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -47,11 +50,13 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.activities.GooglePlaceDetailsActivity;
 import relish.permoveo.com.relish.adapter.list.inviteflow.PlacesAutocompleteAdapter;
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.interfaces.PagerCallbacks;
+import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.google.GooglePlace;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.network.API;
@@ -112,10 +117,14 @@ public class PickGooglePlaceInviteFragment extends Fragment {
     @Bind(R.id.autcomplete_places_list)
     RecyclerView recyclerView;
 
+    @Bind(R.id.bottom_shadow)
+    View shadowBottom;
+
     private YelpPlace currentPlace;
     private GoogleMap mMap;
     private Marker placeMarker;
     private PagerCallbacks pagerCallbacks;
+    private int wholeHeight;
     private InviteCreator creator;
     private PlacesAutocompleteAdapter adapter;
 
@@ -206,6 +215,18 @@ public class PickGooglePlaceInviteFragment extends Fragment {
 
         mapView.onCreate(savedInstanceState);
 
+        invitePickPlaceCard.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if (Build.VERSION.SDK_INT < 16) {
+                    invitePickPlaceCard.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    invitePickPlaceCard.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+                wholeHeight = invitePickPlaceCard.getHeight() - searchContainer.getHeight() - next.getHeight();
+            }
+        });
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(false);
@@ -220,6 +241,7 @@ public class PickGooglePlaceInviteFragment extends Fragment {
                 imm.hideSoftInputFromWindow(invitePlace.getWindowToken(), 0);
 
                 GooglePlace place = (GooglePlace) adapter.getItem(position);
+                googlePlace = place;
 
                 animateMapToPlace(place);
 
@@ -266,10 +288,11 @@ public class PickGooglePlaceInviteFragment extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!TextUtils.isEmpty(invitePlace.getText().toString()) && googlePlace != null) {
+                if (placeInfoContainer.isShown() && googlePlace != null) {
+                    creator.updateInvite(Invite.from(googlePlace));
                     if (pagerCallbacks != null)
                         pagerCallbacks.next();
-                }else{
+                } else {
                     YoYo.with(Techniques.Shake)
                             .playOn(invitePickPlaceCard);
                     Snackbar.make(invitePlace, "Please select a location", Snackbar.LENGTH_SHORT).show();
@@ -334,10 +357,11 @@ public class PickGooglePlaceInviteFragment extends Fragment {
                             close.setVisibility(View.VISIBLE);
                             bounceProgressBar.setVisibility(View.GONE);
 
-                            YoYo.with(Techniques.Shake)
-                                    .playOn(invitePickPlaceCard);
-                            if (params != null && params.length > 0)
+                            if (params != null && params.length > 0) {
+                                YoYo.with(Techniques.Shake)
+                                        .playOn(invitePickPlaceCard);
                                 Snackbar.make(invitePickPlaceCard, (String) params[0], Snackbar.LENGTH_LONG).show();
+                            }
                         }
                     });
                 } else {
@@ -427,6 +451,15 @@ public class PickGooglePlaceInviteFragment extends Fragment {
             close.setVisibility(View.GONE);
             myLocation.setVisibility(View.VISIBLE);
         }
+
+        placeInfoContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (googlePlace != null)
+                    startActivity(new Intent(getActivity(), GooglePlaceDetailsActivity.class)
+                            .putExtra(GooglePlaceDetailsActivity.PASSED_GOOGLE_PLACE, googlePlace));
+            }
+        });
 
         setUpMapIfNeeded();
     }
@@ -582,7 +615,8 @@ public class PickGooglePlaceInviteFragment extends Fragment {
 
     private void collapseMapWithDetails() {
         if (!placeInfoContainer.isShown()) {
-            int collapsedHeight = placeInfoContainer.getTop();
+            shadowBottom.setVisibility(View.GONE);
+            int collapsedHeight = placeInfoContainer.getHeight() * 2 + 2 * getResources().getDimensionPixelSize(R.dimen.place_info_container_height);
             int expandedHeight = mapView.getHeight();
 
             ValueAnimator mapHeightAnimator = ValueAnimator.ofInt(expandedHeight, collapsedHeight);
@@ -635,6 +669,7 @@ public class PickGooglePlaceInviteFragment extends Fragment {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
+                    shadowBottom.setVisibility(View.VISIBLE);
                 }
 
                 @Override
@@ -654,8 +689,9 @@ public class PickGooglePlaceInviteFragment extends Fragment {
 
     private void expandMapWithDetails() {
         if (placeInfoContainer.isShown()) {
+            shadowBottom.setVisibility(View.GONE);
             int collapsedHeight = mapView.getHeight();
-            int expandedHeight = mapView.getHeight() + placeInfoContainer.getHeight();
+            int expandedHeight = wholeHeight;
 
             ValueAnimator mapHeightAnimator = ValueAnimator.ofInt(collapsedHeight, expandedHeight);
             mapHeightAnimator.setDuration(700);
@@ -669,7 +705,8 @@ public class PickGooglePlaceInviteFragment extends Fragment {
             mapHeightAnimator.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
-
+                    ((RelativeLayout.LayoutParams) mapView.getLayoutParams()).addRule(RelativeLayout.ABOVE, 0);
+                    mapView.requestLayout();
                 }
 
                 @Override
@@ -706,6 +743,7 @@ public class PickGooglePlaceInviteFragment extends Fragment {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     placeInfoContainer.setVisibility(View.GONE);
+                    shadowBottom.setVisibility(View.VISIBLE);
                 }
 
                 @Override

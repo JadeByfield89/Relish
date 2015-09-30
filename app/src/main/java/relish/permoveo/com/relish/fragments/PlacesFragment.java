@@ -39,7 +39,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
-import relish.permoveo.com.relish.activities.PlaceDetailsActivity;
+import relish.permoveo.com.relish.activities.YelpPlaceDetailsActivity;
 import relish.permoveo.com.relish.adapter.list.PlacesAdapter;
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
@@ -176,8 +176,8 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             @Override
             public void onItemClick(View view, int position) {
                 YelpPlace restaurant = (YelpPlace) adapter.getItem(position);
-                startActivity(new Intent(getActivity(), PlaceDetailsActivity.class)
-                        .putExtra(PlaceDetailsActivity.PASSED_PLACE, restaurant));
+                startActivity(new Intent(getActivity(), YelpPlaceDetailsActivity.class)
+                        .putExtra(YelpPlaceDetailsActivity.PASSED_YELP_PLACE, restaurant));
             }
         }));
 

@@ -84,5 +84,11 @@ public class YelpPlace implements Serializable {
             this.lat = location.getLatitude();
             this.lng = location.getLongitude();
         }
+
+        public PlaceLocation(String address, double lat, double lng) {
+            this.address = address;
+            this.lat = lat;
+            this.lng = lng;
+        }
     }
 }

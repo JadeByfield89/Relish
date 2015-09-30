@@ -12,6 +12,7 @@ import org.joda.time.format.DateTimeFormatter;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import relish.permoveo.com.relish.model.google.GooglePlace;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.util.StaticMapsUtil;
 
@@ -53,6 +54,19 @@ public class Invite implements Serializable {
         invite.rating = place.rating;
         invite.location = place.location;
         invite.mapSnapshot = StaticMapsUtil.buildUrl(place.location.lat, place.location.lng);
+        return invite;
+    }
+
+    public static Invite from(GooglePlace place) {
+        Invite invite = new Invite();
+        invite.name = place.name;
+        if (!TextUtils.isEmpty(place.getLargeImage()))
+            invite.image = place.getLargeImage();
+        if (!TextUtils.isEmpty(place.phone))
+            invite.phone = place.phone;
+        invite.rating = (float) place.rating;
+        invite.location = new YelpPlace.PlaceLocation(place.address, place.geometry.location.lat, place.geometry.location.lng);
+        invite.mapSnapshot = StaticMapsUtil.buildUrl(place.geometry.location.lat, place.geometry.location.lng);
         return invite;
     }
 
@@ -114,7 +128,10 @@ public class Invite implements Serializable {
     }
 
     public String getFormattedAddress() {
-        return location.address.substring(0, location.address.indexOf(','));
+        if (location.address.contains(","))
+            return location.address.substring(0, location.address.lastIndexOf(','));
+        else
+            return location.address;
     }
 
     public enum InviteType {

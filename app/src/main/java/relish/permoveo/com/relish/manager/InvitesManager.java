@@ -2,12 +2,10 @@ package relish.permoveo.com.relish.manager;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -47,6 +45,32 @@ public class InvitesManager {
 
     public static void initialize(Context aContext) {
         context = aContext;
+    }
+
+    public static void retrieveInvitesCount(final InvitesManagerCallback callback) {
+        ParseQuery<ParseObject> creatorQuery = ParseQuery.getQuery("Invite");
+        creatorQuery.whereEqualTo("creatorId", ParseUser.getCurrentUser().getObjectId());
+
+        ParseQuery<ParseObject> acceptedQuery = ParseQuery.getQuery("Invite");
+        acceptedQuery.whereEqualTo("acceptedFriends", ParseUser.getCurrentUser().getObjectId());
+
+        ParseQuery<ParseObject> declinedQuery = ParseQuery.getQuery("Invite");
+        declinedQuery.whereEqualTo("declinedFriends", ParseUser.getCurrentUser().getObjectId());
+
+        ParseQuery<ParseObject> invitedQuery = ParseQuery.getQuery("Invite");
+        invitedQuery.whereEqualTo("invitedFriends", ParseUser.getCurrentUser().getObjectId());
+
+        ParseQuery<ParseObject> query = ParseQuery.or(Arrays.asList(creatorQuery, acceptedQuery, declinedQuery, invitedQuery));
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                    callback.done(list == null ? 0 : list.size(), null);
+                } else {
+                    callback.done(null, e);
+                }
+            }
+        });
     }
 
     public static void retrieveInvitesList(final InvitesManagerCallback callback) {
@@ -321,7 +345,7 @@ public class InvitesManager {
                             if (SharedPrefsUtil.get.lastVisibleInvitesCount() == -1) {
                                 SharedPrefsUtil.get.setLastVisibleInvitesCount(1);
                             } else {
-                                SharedPrefsUtil.get.setLastVisibleInvitesCount(SharedPrefsUtil.get.lastVisibleFriendsCount() + 1);
+                                SharedPrefsUtil.get.setLastVisibleInvitesCount(SharedPrefsUtil.get.lastVisibleInvitesCount() + 1);
                             }
 
 

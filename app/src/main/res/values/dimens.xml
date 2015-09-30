@@ -15,4 +15,6 @@
     <dimen name="search_container_expanded">-2px</dimen>
     <dimen name="map_container_collapsed">96dp</dimen>
     <dimen name="map_container_expanded">-1px</dimen>
+    <dimen name="place_info_container_height">118dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

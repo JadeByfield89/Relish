@@ -5,7 +5,7 @@
                 android:layout_height="match_parent"
                 android:background="#fff"
                 android:id="@+id/invite_details_container"
-                tools:context="relish.permoveo.com.relish.activities.PlaceDetailsActivity">
+                tools:context="relish.permoveo.com.relish.activities.YelpPlaceDetailsActivity">
 
 
     <com.github.ksoichiro.android.observablescrollview.ObservableScrollView

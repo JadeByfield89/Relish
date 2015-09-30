@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -37,7 +36,6 @@ import com.viewpagerindicator.CirclePageIndicator;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,9 +52,8 @@ import relish.permoveo.com.relish.interfaces.CircularRevealAnimator;
 import relish.permoveo.com.relish.interfaces.NavigationDrawerManagementCallbacks;
 import relish.permoveo.com.relish.interfaces.OnResumeLoadingCallbacks;
 import relish.permoveo.com.relish.interfaces.ToolbarCallbacks;
-import relish.permoveo.com.relish.manager.CalendarEventManager;
 import relish.permoveo.com.relish.manager.FriendsManager;
-import relish.permoveo.com.relish.model.Invite;
+import relish.permoveo.com.relish.manager.InvitesManager;
 import relish.permoveo.com.relish.util.ConnectionUtil;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.DialogUtil;
@@ -192,6 +189,20 @@ public class MainActivity extends RelishActivity implements CircularRevealAnimat
                                 count -= SharedPrefsUtil.get.lastVisibleFriendsCount();
 
                             navDrawer.reloadWithData("Friends", count);
+                        }
+                    }
+                });
+                InvitesManager.retrieveInvitesCount(new InvitesManager.InvitesManagerCallback<Integer, ParseException>() {
+                    @Override
+                    public void done(Integer count, ParseException e) {
+                        if (e == null && drawerOpen) {
+                            if (SharedPrefsUtil.get.lastVisibleInvitesCount() == -1)
+                                return;
+
+                            if (SharedPrefsUtil.get.lastVisibleInvitesCount() != -1)
+                                count -= SharedPrefsUtil.get.lastVisibleInvitesCount();
+
+                            navDrawer.reloadWithData("Invites", count);
                         }
                     }
                 });

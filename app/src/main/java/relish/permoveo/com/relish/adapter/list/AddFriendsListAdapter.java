@@ -6,9 +6,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.dd.CircularProgressButton;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -72,18 +72,23 @@ public class AddFriendsListAdapter extends RecyclerView.Adapter<AddFriendsListAd
         holder.friendName.setIncludeFontPadding(false);
         holder.friendName.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
-//        holder.friendBtn.setTypeface(TypefaceUtil.PROXIMA_NOVA);
-//        holder.friendBtn.setIncludeFontPadding(true);
-//        holder.friendBtn.setIndeterminateProgressMode(true);
-//        holder.friendBtn.setTransformationMethod(null);
-//
-//        holder.friendBtn.setCompleteText("Friends");
+        holder.friendBtn.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+        holder.friendBtn.setIncludeFontPadding(true);
+        holder.friendBtn.setIndeterminateProgressMode(true);
+        holder.friendBtn.setTransformationMethod(null);
+
+        holder.friendBtn.setCompleteText("Friends");
         if (friend.isMyFriend) {
-            holder.friendBtn.setBackgroundResource(R.drawable.ic_invited);
-            holder.friendBtn.setTag(true);
+            holder.friendBtn.setProgress(100);
+            holder.friendBtn.setText("Friends");
+
+//            holder.friendBtn.setBackgroundResource(R.drawable.ic_invited);
+//            holder.friendBtn.setTag(true);
         } else {
-            holder.friendBtn.setBackgroundResource(R.drawable.ic_content_send);
-            holder.friendBtn.setTag(false);
+            holder.friendBtn.setProgress(0);
+
+//            holder.friendBtn.setBackgroundResource(R.drawable.ic_content_send);
+//            holder.friendBtn.setTag(false);
         }
     }
 
@@ -109,7 +114,7 @@ public class AddFriendsListAdapter extends RecyclerView.Adapter<AddFriendsListAd
         CircleImageView friendImage;
 
         @Bind(R.id.friend_btn)
-        ImageButton friendBtn;
+        CircularProgressButton friendBtn;
 
         public ViewHolder(View itemView, final AddFriendButtonClickListener viewHolderClickListener) {
             super(itemView);
