@@ -12,6 +12,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import relish.permoveo.com.relish.interfaces.IRequestable;
 import relish.permoveo.com.relish.model.Review;
@@ -39,36 +41,41 @@ public class PlaceDetailsRequest extends RelishRequest<String, Void, PlaceDetail
     @Override
     protected PlaceDetailsResponse doInBackground(String... params) {
         String id = params[0];
-        if (id.endsWith("var-miami-beach-2"))
-            id = "bolivar-miami-beach-2";
-        else if (id.endsWith("var Resto Lounge"))
-            id = "Bolivar Resto Lounge";
+//        if (id.endsWith("var-miami-beach-2"))
+//            id = "bolivar-miami-beach-2";
+//        else if (id.endsWith("var Resto Lounge"))
+//            id = "Bolivar Resto Lounge";
 
-        OAuthRequest request = new OAuthRequest(Verb.GET, ConstantUtil.YELP_PLACE_DETAILS + "/" + id);
-
-        API.service.signRequest(API.accessToken, request);
-        PlaceDetailsResponse placeDetailsResponse = null;
+        OAuthRequest request = null;
         try {
-            Response response = request.send();
-            InputStream stream = response.getStream();
-            BufferedReader r = new BufferedReader(new InputStreamReader(stream));
-            StringBuilder json = new StringBuilder();
-            String line;
+            request = new OAuthRequest(Verb.GET, ConstantUtil.YELP_PLACE_DETAILS + "/" + URLEncoder.encode(id, "UTF-8"));
+
+            API.service.signRequest(API.accessToken, request);
+            PlaceDetailsResponse placeDetailsResponse = null;
             try {
-                while ((line = r.readLine()) != null) {
-                    json.append(line);
+                Response response = request.send();
+                InputStream stream = response.getStream();
+                BufferedReader r = new BufferedReader(new InputStreamReader(stream));
+                StringBuilder json = new StringBuilder();
+                String line;
+                try {
+                    while ((line = r.readLine()) != null) {
+                        json.append(line);
+                    }
+                    String jsonString = json.toString();
+                    JsonParser parser = new JsonParser();
+                    if (!parser.parse(jsonString).getAsJsonObject().has("error")) {
+                        jsonString = "{place:" + jsonString + "}";
+                    }
+                    placeDetailsResponse = gson.fromJson(jsonString, PlaceDetailsResponse.class);
+                    return placeDetailsResponse;
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                String jsonString = json.toString();
-                JsonParser parser = new JsonParser();
-                if (!parser.parse(jsonString).getAsJsonObject().has("error")) {
-                    jsonString = "{place:" + jsonString + "}";
-                }
-                placeDetailsResponse = gson.fromJson(jsonString, PlaceDetailsResponse.class);
-                return placeDetailsResponse;
-            } catch (IOException e) {
+            } catch (OAuthConnectionException e) {
                 e.printStackTrace();
             }
-        } catch (OAuthConnectionException e) {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return null;

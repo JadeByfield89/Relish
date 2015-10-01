@@ -129,7 +129,7 @@ public class Invite implements Serializable {
 
     public String getFormattedAddress() {
         if (location.address.contains(","))
-            return location.address.substring(0, location.address.lastIndexOf(','));
+            return location.address.substring(0, location.address.indexOf(','));
         else
             return location.address;
     }
