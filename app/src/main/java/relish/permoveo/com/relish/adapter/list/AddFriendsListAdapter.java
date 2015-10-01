@@ -57,12 +57,12 @@ public class AddFriendsListAdapter extends RecyclerView.Adapter<AddFriendsListAd
         Friend friend = (Friend) getItem(position);
 
         if (TextUtils.isEmpty(friend.image)) {
-            holder.friendImage.setImageResource(R.drawable.relish_avatar_placeholder);
+            holder.friendImage.setImageResource(R.drawable.default_profile_image);
         } else {
             Picasso.with(context)
                     .load(friend.image)
-                    .placeholder(R.drawable.relish_avatar_placeholder).fit().centerCrop()
-                    .error(R.drawable.relish_avatar_placeholder)
+                    .placeholder(R.drawable.default_profile_image).fit().centerCrop()
+                    .error(R.drawable.default_profile_image)
                     .into(holder.friendImage);
         }
 

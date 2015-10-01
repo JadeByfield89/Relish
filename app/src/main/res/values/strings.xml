@@ -95,7 +95,7 @@
     <string name="friends_error">Put the beer down, and please select some friends for this invite.</string>
 
     <string name="share_message">Share Invite</string>
-    <string formatted="false" name="share_sms_message">YOU\'RE INVITED!\nHey, your friend %s just invited you to join them at %s, on %s, at %s via the Relish app! \nInvite Code: %s\n Reply &quot;YES %s&quot; to accept your invite, or &quot;NO %s&quot; to decline. \n\nYou can also download the Relish app to see who else is going, and get more details at http://relishwith.us</string>
+    <string formatted="false" name="share_sms_message">Hey, your friend %s just invited you to join them at %s, on %s, at %s via Relish! \nInvite Code: %s\n\nReply YES %s to accept your invite, or NO %s to decline. \n\nYou can also download the Relish app to see who else is going, and get more details at http://relishwith.us</string>
     <string formatted="false" name="share_push_message">Hey, %s has just invited you to eat at %s, on %s, at %s!</string>
     <string formatted="false" name="share_social">I\'ve just invited some friends to join me at %s via the #RelishApp! http://relishwith.us</string>
     <string formatted="fasle" name="user_response">%s has responded to your invite!</string>
