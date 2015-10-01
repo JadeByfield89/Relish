@@ -596,7 +596,6 @@ public class PickGooglePlaceInviteFragment extends Fragment {
     }
 
     private void animateMapToPlace(GooglePlace place) {
-
         mMap.clear();
         placeMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(place.geometry.location.lat, place.geometry.location.lng)));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(place.geometry.location.lat, place.geometry.location.lng), 17.0f), new GoogleMap.CancelableCallback() {

@@ -406,8 +406,10 @@ public class GooglePlaceDetailsActivity extends RelishActivity implements Observ
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(PASSED_GOOGLE_PLACE, passedPlace);
         super.onSaveInstanceState(outState);
+        map.onSaveInstanceState(outState);
+
+        outState.putSerializable(PASSED_GOOGLE_PLACE, passedPlace);
     }
 
     @Override
