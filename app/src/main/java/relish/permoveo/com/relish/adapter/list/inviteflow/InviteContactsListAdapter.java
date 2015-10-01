@@ -63,12 +63,12 @@ public class InviteContactsListAdapter extends RecyclerView.Adapter<InviteContac
         final Contact contact = (Contact) getItem(position);
 
         if (TextUtils.isEmpty(contact.image)) {
-            holder.contactImage.setImageResource(R.drawable.relish_avatar_placeholder);
+            holder.contactImage.setImageResource(R.drawable.default_profile_image);
         } else {
             Picasso.with(context)
                     .load(contact.image)
-                    .placeholder(R.drawable.relish_avatar_placeholder).fit().centerCrop()
-                    .error(R.drawable.relish_avatar_placeholder)
+                    .placeholder(R.drawable.default_profile_image).fit().centerCrop()
+                    .error(R.drawable.default_profile_image)
                     .into(holder.contactImage);
         }
 
