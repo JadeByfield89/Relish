@@ -178,6 +178,7 @@ public class GooglePlaceDetailsActivity extends RelishActivity implements Observ
         mMap.setMyLocationEnabled(true);
 
         if (passedPlace.geometry != null) {
+            toolbar.setBackgroundColor(getResources().getColor(R.color.main_color));
             mMap.addMarker(new MarkerOptions().position(new LatLng(passedPlace.geometry.location.lat, passedPlace.geometry.location.lng)));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(passedPlace.geometry.location.lat, passedPlace.geometry.location.lng), 17.0f), new GoogleMap.CancelableCallback() {
                 @Override

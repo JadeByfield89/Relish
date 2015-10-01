@@ -32,6 +32,7 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -167,6 +168,12 @@ public class ContactsFragment extends Fragment {
         getActivity().registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals("SMS_SENT")) {
+                    Toast.makeText(getContext(), "Message sent", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Error sending message", Toast.LENGTH_SHORT).show();
+
+                }
                 if (getResultCode() == Activity.RESULT_OK) {
                     adapter.update(contact);
                 }

@@ -33,7 +33,7 @@ import relish.permoveo.com.relish.util.TypefaceUtil;
  */
 public class InviteFriendsListAdapter extends RecyclerView.Adapter<InviteFriendsListAdapter.ViewHolder> implements Filterable {
 
-    private static final int RIPPLE_ANIMATION_DURATION = 400;
+    private static final int RIPPLE_ANIMATION_DURATION = 230;
     private ArrayList<Friend> dataset;
     private ArrayList<Friend> originalValues;
     private Context context;
