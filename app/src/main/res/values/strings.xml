@@ -83,9 +83,9 @@
     <string name="reminder_1_hour">1 hour before</string>
     <string name="reminder_2_hours">2 hours before</string>
 
-    <string name="invited_title">Awaiting response</string>
-    <string name="accepted_title">Who\’s going</string>
-    <string name="declined_title">Who isn\'t going</string>
+    <string name="invited_title">AWAITING RESPONSE</string>
+    <string name="accepted_title">WHO\'S GOING</string>
+    <string name="declined_title">WHO ISN\'T GOING</string>
 
     <string name="accept_btn">Accept</string>
     <string name="decline_btn">Decline</string>

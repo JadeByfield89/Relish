@@ -2,25 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:gravity="center"
-              android:paddingTop="8dp"
-              android:paddingBottom="8dp"
-              android:layout_height="48dp">
+              android:paddingBottom="12dp"
+              android:gravity="center_vertical"
+              android:layout_height="72dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/invite_person_image"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginRight="8dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="16dp"
         android:src="@drawable/relish_avatar_placeholder"/>
 
     <TextView
         android:id="@+id/invite_person_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
         android:textColor="@android:color/black"
         android:textSize="16sp"/>
-
 
 </LinearLayout>

@@ -3,10 +3,8 @@ package relish.permoveo.com.relish.util;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Base64;
-import android.util.Log;
 
 import com.parse.ParseFile;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import relish.permoveo.com.relish.activities.SignupActivity;
@@ -47,7 +45,6 @@ public class UserUtils {
     }
 
     public static String getFirstName() {
-
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             String fullname = currentUser.get("fullName").toString();
