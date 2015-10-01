@@ -17,6 +17,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -302,13 +303,17 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
 
         if (!ParseUser.getCurrentUser().getObjectId().equals(invite.creatorId)) {
             declinedClmn.setVisibility(View.GONE);
+            invitedClmnn.setVisibility(View.GONE);
+            ((LinearLayout.LayoutParams) acceptedClmn.getLayoutParams()).bottomMargin = 0;
+            acceptedClmn.requestLayout();
         } else {
             declinedClmn.setVisibility(View.VISIBLE);
+            invitedClmnn.setVisibility(View.VISIBLE);
             renderColumn(declinedClmn, invite.declined);
+            renderColumn(invitedClmnn, invite.invited);
         }
 
         renderColumn(acceptedClmn, invite.accepted);
-        renderColumn(invitedClmnn, invite.invited);
     }
 
     private void renderColumn(ViewGroup column, ArrayList<InvitePerson> persons) {
@@ -319,7 +324,7 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
         if (persons.size() > 0) {
             for (InvitePerson person : persons) {
                 if (person.id.equals(ParseUser.getCurrentUser().getObjectId())) {
-                    person.name = "me";
+                    person.name = "Me";
                 }
 
                 View result = addInvitePerson(column, person);
@@ -352,6 +357,7 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
         if (!TextUtils.isEmpty(person.name)) {
             personName.setText(person.name);
         } else {
+            personName.setGravity(Gravity.CENTER);
             personName.setText("—");
             personImage.setVisibility(View.GONE);
         }
@@ -400,7 +406,12 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
                                             })
                                             .duration(600)
                                             .playOn(acceptBtn);
-                                    YoYo.with(Techniques.FadeOut)
+
+                                    InvitePerson me = invite.getPersonById(ParseUser.getCurrentUser().getObjectId());
+                                    me.name = "Me";
+                                    currentViewInClmn = addInvitePerson(acceptedClmn, invite.getPersonById(ParseUser.getCurrentUser().getObjectId()), true);
+                                    currentViewInClmn.setVisibility(View.GONE);
+                                    YoYo.with(Techniques.FadeIn)
                                             .withListener(new Animator.AnimatorListener() {
                                                 @Override
                                                 public void onAnimationStart(Animator animation) {
@@ -409,36 +420,7 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
 
                                                 @Override
                                                 public void onAnimationEnd(Animator animation) {
-                                                    currentViewInClmn.setVisibility(View.GONE);
-                                                    invitedClmnn.removeView(currentViewInClmn);
-                                                    if (invitedClmnn.getChildCount() == 1) {
-                                                        addInvitePerson(invitedClmnn, new InvitePerson());
-                                                    }
-                                                    acceptedClmn.addView(currentViewInClmn);
-                                                    YoYo.with(Techniques.FadeIn)
-                                                            .withListener(new Animator.AnimatorListener() {
-                                                                @Override
-                                                                public void onAnimationStart(Animator animation) {
-
-                                                                }
-
-                                                                @Override
-                                                                public void onAnimationEnd(Animator animation) {
-                                                                    currentViewInClmn.setVisibility(View.VISIBLE);
-                                                                }
-
-                                                                @Override
-                                                                public void onAnimationCancel(Animator animation) {
-
-                                                                }
-
-                                                                @Override
-                                                                public void onAnimationRepeat(Animator animation) {
-
-                                                                }
-                                                            })
-                                                            .duration(600)
-                                                            .playOn(currentViewInClmn);
+                                                    currentViewInClmn.setVisibility(View.VISIBLE);
                                                 }
 
                                                 @Override
@@ -573,33 +555,33 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
                                             })
                                             .duration(600)
                                             .playOn(declineBtn);
-                                    YoYo.with(Techniques.FadeOut)
-                                            .withListener(new Animator.AnimatorListener() {
-                                                @Override
-                                                public void onAnimationStart(Animator animation) {
-
-                                                }
-
-                                                @Override
-                                                public void onAnimationEnd(Animator animation) {
-                                                    invitedClmnn.removeView(currentViewInClmn);
-                                                    if (invitedClmnn.getChildCount() == 1) {
-                                                        addInvitePerson(invitedClmnn, new InvitePerson());
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onAnimationCancel(Animator animation) {
-
-                                                }
-
-                                                @Override
-                                                public void onAnimationRepeat(Animator animation) {
-
-                                                }
-                                            })
-                                            .duration(600)
-                                            .playOn(currentViewInClmn);
+//                                    YoYo.with(Techniques.FadeOut)
+//                                            .withListener(new Animator.AnimatorListener() {
+//                                                @Override
+//                                                public void onAnimationStart(Animator animation) {
+//
+//                                                }
+//
+//                                                @Override
+//                                                public void onAnimationEnd(Animator animation) {
+//                                                    invitedClmnn.removeView(currentViewInClmn);
+//                                                    if (invitedClmnn.getChildCount() == 1) {
+//                                                        addInvitePerson(invitedClmnn, new InvitePerson());
+//                                                    }
+//                                                }
+//
+//                                                @Override
+//                                                public void onAnimationCancel(Animator animation) {
+//
+//                                                }
+//
+//                                                @Override
+//                                                public void onAnimationRepeat(Animator animation) {
+//
+//                                                }
+//                                            })
+//                                            .duration(600)
+//                                            .playOn(currentViewInClmn);
                                     break;
                                 case ACCEPTED:
                                     YoYo.with(Techniques.SlideOutRight)
