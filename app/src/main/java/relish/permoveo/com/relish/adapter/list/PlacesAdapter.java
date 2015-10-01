@@ -10,6 +10,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -108,7 +109,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             double positionHeight = getPositionRatio(position);
             vh.placeImage.setHeightRatio(positionHeight);
             if (TextUtils.isEmpty(place.image)) {
-                vh.placeImage.setImageDrawable(null);
+                vh.placeImage.setImageDrawable(context.getResources().getDrawable(R.drawable.relish_food_placeholder));
             } else {
                 Log.d("IMAGE URL -> ", place.getLargeImage());
                 Picasso.with(context)
@@ -131,7 +132,8 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             vh.placeName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
             vh.placeName.setIncludeFontPadding(false);
 
-            vh.placeRating.setRating(place.rating);
+            //vh.placeRating.setRating(place.rating);
+            Picasso.with(context).load(place.rating_img_url).fit().into(vh.ratingImage);
         } else if (viewHolder instanceof HeaderViewHolder) {
             StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) viewHolder.itemView.getLayoutParams();
             if (params == null) {
@@ -225,6 +227,9 @@ public class PlacesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         @Bind(R.id.grid_item_rating_view)
         public RatingView placeRating;
+
+        @Bind(R.id.ivRatingImage)
+        ImageView ratingImage;
 
         public ViewHolder(View view) {
             super(view);

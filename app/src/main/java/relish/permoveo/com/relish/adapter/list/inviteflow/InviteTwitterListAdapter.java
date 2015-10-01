@@ -33,7 +33,7 @@ import relish.permoveo.com.relish.util.TypefaceUtil;
  */
 public class InviteTwitterListAdapter extends RecyclerView.Adapter<InviteTwitterListAdapter.ViewHolder> implements Filterable {
 
-    private static final int RIPPLE_ANIMATION_DURATION = 400;
+    private static final int RIPPLE_ANIMATION_DURATION = 230;
     private ArrayList<Contact> dataset;
     private ArrayList<Contact> originalValues;
     private Context context;

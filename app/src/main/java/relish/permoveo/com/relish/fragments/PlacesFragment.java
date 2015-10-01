@@ -92,6 +92,10 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.header_layout)
     RelativeLayout headerLayout;
+
+    @Bind(R.id.ivRatingImage)
+    ImageView ratingImage;
+
     private ToolbarCallbacks toolbarCallbacks;
     private int parallaxImageHeight;
     private PlacesAdapter adapter;
@@ -243,6 +247,7 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
                 headerPlaceDistance.setIncludeFontPadding(false);
 
                 headerRating.setRating(restaurant.rating);
+                //Picasso.with(getContext()).load(restaurant.rating_img_url).fit().into(ratingImage);
 
             }
         }
