@@ -350,7 +350,7 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
         personName.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         if (!TextUtils.isEmpty(person.image)) {
             Picasso.with(this)
-                    .load(person.image).placeholder(R.drawable.relish_avatar_placeholder).fit().centerCrop()
+                    .load(person.image).placeholder(R.drawable.default_profile_image).fit().centerCrop()
                     .into(personImage);
         }
 

@@ -1,11 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#fff"
-                android:id="@+id/invite_details_container"
-                tools:context="relish.permoveo.com.relish.activities.YelpPlaceDetailsActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/invite_details_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    tools:context="relish.permoveo.com.relish.activities.YelpPlaceDetailsActivity">
 
 
     <com.github.ksoichiro.android.observablescrollview.ObservableScrollView
@@ -23,24 +23,24 @@
                 android:id="@+id/header_invite_details_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/invite_image_size"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop" />
 
             <View
                 android:id="@+id/anchor"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/invite_image_size"
-                android:minHeight="@dimen/invite_image_size"/>
+                android:minHeight="@dimen/invite_image_size" />
 
             <LinearLayout
                 android:id="@+id/invite_details_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="32dp"
-                android:paddingLeft="24dp"
-                android:paddingRight="24dp"
                 android:layout_below="@+id/anchor"
                 android:background="#fff"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:paddingTop="32dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -49,28 +49,28 @@
 
                     <ImageView
                         android:id="@+id/ivRatingImage"
-                        android:layout_marginBottom="12dp"
-                        android:layout_centerVertical="true"
-                        android:visibility="gone"
                         android:layout_width="95dp"
-                        android:layout_height="20dp" />
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="12dp"
+                        android:visibility="gone" />
 
                     <relish.permoveo.com.relish.view.RatingView
                         android:id="@+id/invite_details_rating_view"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true" />
 
                     <TextView
-                        android:includeFontPadding="false"
                         android:id="@+id/invite_detals_date_time"
-                        android:textSize="16sp"
-                        android:textColor="@color/empty_color"
-                        android:layout_centerVertical="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"/>
+                        android:layout_centerVertical="true"
+                        android:includeFontPadding="false"
+                        android:textColor="@color/empty_color"
+                        android:textSize="16sp" />
 
                 </RelativeLayout>
 
@@ -78,19 +78,19 @@
                     android:id="@+id/invite_details_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:includeFontPadding="false"
                     android:textColor="@android:color/black"
-                    android:layout_marginBottom="8dp"
-                    android:textSize="22sp"/>
+                    android:textSize="22sp" />
 
                 <TextView
                     android:id="@+id/invite_details_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
                     android:layout_marginBottom="8dp"
+                    android:includeFontPadding="false"
                     android:textColor="@color/place_grid_distance_color"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp" />
 
 
                 <RelativeLayout
@@ -105,17 +105,17 @@
                         android:layout_centerVertical="true"
                         android:clickable="true"
                         android:textColor="@color/link_color"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
 
 
                     <ImageView
                         android:id="@+id/yelp_logo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/yelp_logo"
-                        android:clickable="true"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"/>
+                        android:layout_centerVertical="true"
+                        android:clickable="true"
+                        android:src="@drawable/yelp_logo" />
 
                 </RelativeLayout>
 
@@ -123,156 +123,170 @@
                 <View
                     android:id="@+id/divider1"
                     android:layout_width="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginBottom="8dp"
                     android:layout_height="1dp"
+                    android:layout_alignParentRight="true"
                     android:layout_below="@id/invite_details_info"
-                    android:background="#dee0e2"
-                    />
+                    android:layout_marginBottom="8dp"
+                    android:background="#dee0e2" />
 
 
             </LinearLayout>
 
 
-            <LinearLayout
-                android:layout_below="@+id/invite_details_info"
-                android:id="@+id/invite_grid"
-                android:background="#fff"
-                android:paddingLeft="24dp"
-                android:layout_marginBottom="24dp"
-                android:paddingRight="24dp"
+            <android.support.v7.widget.CardView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/invite_details_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_below="@id/invite_details_info"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:background="@android:color/white"
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="2dp">
 
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:id="@+id/accepted_clmn"
-                    android:layout_marginBottom="16dp"
+                    android:id="@+id/invite_grid"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/invite_details_info"
+                    android:layout_marginBottom="24dp"
+                    android:background="#fff"
+                    android:orientation="vertical"
+                    android:paddingLeft="24dp"
+                    android:paddingRight="24dp">
 
-                    <TextView
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:id="@+id/accepted_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:textColor="@color/main_color"
-                        android:text="@string/accepted_title"
-                        android:textSize="18sp"/>
+                    <LinearLayout
+                        android:id="@+id/accepted_clmn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/accepted_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:text="@string/accepted_title"
+                            android:textColor="@color/main_color"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/invited_clmn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/invited_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:text="@string/invited_title"
+                            android:textColor="@color/main_color"
+                            android:textSize="18sp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/declined_clmn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/declined_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="48dp"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:text="@string/declined_title"
+                            android:textColor="@color/main_color"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/invited_clmn"
+                <TextView
+                    android:id="@+id/invite_details_note_title"
                     android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="16dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/declined_clmn"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:includeFontPadding="false"
+                    android:text="Note"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
 
-                    <TextView
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:id="@+id/invited_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:textColor="@color/main_color"
-                        android:text="@string/invited_title"
-                        android:textSize="18sp"/>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/declined_clmn"
+                <TextView
+                    android:id="@+id/invite_details_note"
                     android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:id="@+id/declined_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:textColor="@color/main_color"
-                        android:text="@string/declined_title"
-                        android:textSize="18sp"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/invite_details_note_title"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
-                android:textSize="18sp"
-                android:layout_below="@+id/invite_grid"
-                android:includeFontPadding="false"
-                android:text="Note"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"/>
-
-            <TextView
-                android:id="@+id/invite_details_note"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="24dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="24dp"
-                android:textSize="16sp"
-                android:layout_below="@+id/invite_details_note_title"
-                android:includeFontPadding="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/place_grid_distance_color"/>
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/invite_details_note_title"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginTop="8dp"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/place_grid_distance_color"
+                    android:textSize="16sp" />
+            </android.support.v7.widget.CardView>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingRight="24dp"
-                android:background="#fff"
-                android:paddingLeft="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/invite_details_card"
                 android:layout_marginBottom="24dp"
-                android:layout_below="@+id/invite_details_note"
+                android:layout_marginTop="12dp"
+                android:background="#fff"
                 android:orientation="horizontal"
-                android:layout_alignParentRight="true">
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp">
 
                 <TextView
                     android:id="@+id/accept_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:paddingTop="8dp"
+                    android:layout_marginRight="4dp"
+                    android:background="@drawable/invite_accept_decline_button_background"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
                     android:paddingBottom="8dp"
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp"
-                    android:layout_marginRight="4dp"
+                    android:paddingTop="8dp"
                     android:text="@string/accept_btn"
-                    android:gravity="center"
-                    android:includeFontPadding="false"
                     android:textColor="@color/add_friend_radio_color"
-                    android:background="@drawable/invite_accept_decline_button_background"
-                    android:clickable="true"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/decline_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
                     android:layout_marginLeft="4dp"
-                    android:paddingTop="8dp"
+                    android:background="@drawable/invite_accept_decline_button_background"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
                     android:paddingBottom="8dp"
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp"
-                    android:includeFontPadding="false"
+                    android:paddingTop="8dp"
                     android:text="@string/decline_btn"
-                    android:gravity="center"
                     android:textColor="@color/add_friend_radio_color"
-                    android:background="@drawable/invite_accept_decline_button_background"
-                    android:clickable="true"/>
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -311,10 +325,10 @@
             <!--</LinearLayout>-->
 
             <View
-                android:layout_below="@+id/anchor"
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
-                android:background="@drawable/shadow"/>
+                android:layout_below="@+id/anchor"
+                android:background="@drawable/shadow" />
 
             <!--<TextView-->
             <!--android:id="@+id/body"-->
@@ -330,6 +344,6 @@
         </RelativeLayout>
     </com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
 
-    <include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
 
 </RelativeLayout>

@@ -11,7 +11,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginRight="16dp"
-        android:src="@drawable/relish_avatar_placeholder"/>
+        android:src="@drawable/default_profile_image"/>
 
     <TextView
         android:id="@+id/invite_person_name"

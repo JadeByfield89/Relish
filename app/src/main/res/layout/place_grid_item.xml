@@ -41,7 +41,7 @@
                 <ImageView
                     android:id="@+id/ivRatingImage"
                     android:layout_marginBottom="2dp"
-                    android:layout_width="70dp"
+                    android:layout_width="75dp"
                     android:layout_height="16dp"/>
 
                 <relish.permoveo.com.relish.view.RatingView
