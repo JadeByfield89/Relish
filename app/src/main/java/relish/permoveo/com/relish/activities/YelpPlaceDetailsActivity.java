@@ -6,12 +6,17 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +31,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -89,6 +95,8 @@ import relish.permoveo.com.relish.view.RatingView;
 public class YelpPlaceDetailsActivity extends RelishActivity implements ObservableScrollViewCallbacks {
 
     public static final String PASSED_YELP_PLACE = "passed_yelp_place_extra";
+    public static final String EXTRA_START_DRAWING_LOCATION = "start_drawing_location_extra";
+    public static final String SHARED_IMAGE_NAME = "YelpPlaceDetailsActivity:image";
 
     public final static float SCALE_FACTOR = 13f;
     public final static int ANIMATION_DURATION = 200;
@@ -159,6 +167,7 @@ public class YelpPlaceDetailsActivity extends RelishActivity implements Observab
     private ObjectAnimator revealAnimator;
     private ViewPropertyAnimator fabAnimator;
     private boolean fromInvite;
+    private int drawingStartLocation;
     private AnimatorListenerAdapter mEndRevealListener = new AnimatorListenerAdapter() {
 
         @Override
@@ -210,17 +219,54 @@ public class YelpPlaceDetailsActivity extends RelishActivity implements Observab
         }
     };
 
+    public static void launch(Activity activity, View transitionImage, YelpPlace place) {
+        ActivityOptionsCompat options =
+                ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
+                        Pair.create(transitionImage, SHARED_IMAGE_NAME));
+        Intent intent = new Intent(activity, YelpPlaceDetailsActivity.class);
+        intent.putExtra(YelpPlaceDetailsActivity.PASSED_YELP_PLACE, place);
+        ActivityCompat.startActivity(activity, intent, options.toBundle());
+    }
+
+    public static void launch(Activity activity, int location, YelpPlace place) {
+        Intent intent = new Intent(activity, YelpPlaceDetailsActivity.class);
+        intent.putExtra(YelpPlaceDetailsActivity.PASSED_YELP_PLACE, place);
+        intent.putExtra(YelpPlaceDetailsActivity.EXTRA_START_DRAWING_LOCATION, location);
+        activity.startActivity(intent);
+        activity.overridePendingTransition(0, 0);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_details);
         ButterKnife.bind(this);
 
+        placeDetailsImage.setVisibility(View.GONE);
+        ratingView.setVisibility(View.GONE);
+        placeDetailsName.setVisibility(View.GONE);
+        placeDetailsAddress.setVisibility(View.GONE);
+        placeDetailsPhone.setVisibility(View.GONE);
+        placeDetailsReviewsContainer.setVisibility(View.GONE);
+
+//        ViewCompat.setTransitionName(placeDetailsImage, SHARED_IMAGE_NAME);
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey(FETCHED_PLACE))
                 fetchedPlace = (YelpPlace) savedInstanceState.getSerializable(FETCHED_PLACE);
             passedPlace = (YelpPlace) savedInstanceState.getSerializable(PASSED_YELP_PLACE);
         } else if (getIntent().hasExtra(PASSED_YELP_PLACE)) {
+            if (getIntent().hasExtra(EXTRA_START_DRAWING_LOCATION)) {
+                drawingStartLocation = getIntent().getIntExtra(EXTRA_START_DRAWING_LOCATION, 0);
+                placeDetalsScrollView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        placeDetalsScrollView.getViewTreeObserver().removeOnPreDrawListener(this);
+                        startIntroAnimation();
+                        return true;
+                    }
+                });
+            }
+
             passedPlace = (YelpPlace) getIntent().getSerializableExtra(PASSED_YELP_PLACE);
         }
 
@@ -286,6 +332,72 @@ public class YelpPlaceDetailsActivity extends RelishActivity implements Observab
         invitePager.setAdapter(invitePagerAdapter);
         pagerIndicator.setViewPager(invitePager);
         animatedFab = placeDetailsFab;
+    }
+
+
+    private void startIntroAnimation() {
+        placeDetalsScrollView.setScaleY(0.1f);
+        placeDetalsScrollView.setPivotY(drawingStartLocation);
+//        llAddComment.setTranslationY(100);
+
+        placeDetalsScrollView.animate()
+                .scaleY(1)
+                .setDuration(200)
+                .setInterpolator(new AccelerateInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(android.animation.Animator animation) {
+                        super.onAnimationEnd(animation);
+                        animateContent();
+                    }
+                })
+                .start();
+    }
+
+    private void animateContent() {
+        ArrayList<View> views = new ArrayList<>();
+        views.add(placeDetailsImage);
+        views.add(ratingView);
+        views.add(placeDetailsName);
+        views.add(placeDetailsAddress);
+        views.add(placeDetailsPhone);
+        views.add(placeDetailsReviewsContainer);
+
+        for (int i = 0; i < views.size(); i++) {
+            runEnterAnimation(views.get(i), i);
+        }
+    }
+
+    private void runEnterAnimation(final View view, int position) {
+        view.setTranslationY(100);
+        view.setAlpha(0.f);
+        view.animate()
+                .translationY(0).alpha(1.f)
+                .setStartDelay(50 * position)
+                .setInterpolator(new DecelerateInterpolator(2.f))
+                .setListener(new android.animation.Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(android.animation.Animator animation) {
+                        view.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(android.animation.Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationCancel(android.animation.Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(android.animation.Animator animation) {
+
+                    }
+                })
+                .setDuration(300)
+                .start();
     }
 
     @OnClick(R.id.yelp_logo)
@@ -608,7 +720,7 @@ public class YelpPlaceDetailsActivity extends RelishActivity implements Observab
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            finish();
+            onBackPressed();
             return true;
         }
 

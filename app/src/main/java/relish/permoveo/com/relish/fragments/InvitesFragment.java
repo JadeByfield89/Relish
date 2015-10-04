@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -193,21 +194,30 @@ public class InvitesFragment extends Fragment implements RelishDrawerToggle.OnDr
             @Override
             public void onItemClick(View view, int position) {
                 Invite invite = (Invite) adapter.getItem(position);
-                View image = view.findViewById(R.id.invite_map_snapshot);
-                View title = view.findViewById(R.id.invite_title);
-                ViewCompat.setTransitionName(image, InviteDetailsActivity.SHARED_IMAGE_NAME);
-                ViewCompat.setTransitionName(title, InviteDetailsActivity.SHARED_TITLE_NAME);
-                if (!TextUtils.isEmpty(inviteId))
-                    InviteDetailsActivity.launch(getActivity(), image, title, invite, action);
-                else
-                    InviteDetailsActivity.launch(getActivity(), image, title, invite);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    View image = view.findViewById(R.id.invite_map_snapshot);
+                    View title = view.findViewById(R.id.invite_title);
+                    ViewCompat.setTransitionName(image, InviteDetailsActivity.SHARED_IMAGE_NAME);
+                    ViewCompat.setTransitionName(title, InviteDetailsActivity.SHARED_TITLE_NAME);
+                    if (!TextUtils.isEmpty(inviteId))
+                        InviteDetailsActivity.launch(getActivity(), image, title, invite, action);
+                    else
+                        InviteDetailsActivity.launch(getActivity(), image, title, invite);
+                } else {
+                    int[] startingLocation = new int[2];
+                    view.getLocationOnScreen(startingLocation);
+
+                    if (!TextUtils.isEmpty(inviteId))
+                        InviteDetailsActivity.launch(getActivity(), startingLocation[1], invite, action);
+                    else
+                        InviteDetailsActivity.launch(getActivity(), startingLocation[1], invite);
+                }
             }
         }));
 
         inviteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITES_FRAGMENT_FAB_TOUCHED);
 
                 animator.getInvitePager().setVisibility(View.VISIBLE);

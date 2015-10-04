@@ -53,6 +53,9 @@
 
         <!-- OverFlow Menu Text Color -->
         <item name="android:textColor">@color/main_color</item>
+
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
     <!-- Set Custom Icon for Overflow Button in ActionBar -->
@@ -120,5 +123,4 @@
     </style>
     <style name="Theme.MyTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="Theme.MyTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
 </resources>
