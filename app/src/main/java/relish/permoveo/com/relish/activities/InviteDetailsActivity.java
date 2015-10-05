@@ -1,5 +1,6 @@
 package relish.permoveo.com.relish.activities;
 
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Paint;
@@ -11,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
 import android.text.Spannable;
@@ -23,7 +25,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -63,8 +68,11 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
 
     public static final String EXTRA_INVITE = "invite_extra";
     public static final String EXTRA_ACTION = "action_extra";
+    public static final String EXTRA_START_DRAWING_LOCATION = "start_drawing_location_extra";
     public static final String SHARED_IMAGE_NAME = "InviteDetailsActivity:image";
     public static final String SHARED_TITLE_NAME = "InviteDetailsActivity:title";
+    @Bind(R.id.invite_details_card)
+    CardView inviteDetailsCard;
     @Bind(R.id.invite_details_container)
     RelativeLayout activity_container;
     @Bind(R.id.toolbar)
@@ -106,6 +114,7 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
     private Invite invite;
     private int parallaxImageHeight;
     private View currentViewInClmn;
+    private int drawingStartLocation;
     private boolean action = false;
     private boolean fromNotification = false;
 
@@ -130,6 +139,23 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
         ActivityCompat.startActivity(activity, intent, options.toBundle());
     }
 
+    public static void launch(Activity activity, int location, Invite invite) {
+        Intent intent = new Intent(activity, InviteDetailsActivity.class);
+        intent.putExtra(InviteDetailsActivity.EXTRA_INVITE, invite);
+        intent.putExtra(InviteDetailsActivity.EXTRA_START_DRAWING_LOCATION, location);
+        activity.startActivity(intent);
+        activity.overridePendingTransition(0, 0);
+    }
+
+    public static void launch(Activity activity, int location, Invite invite, boolean action) {
+        Intent intent = new Intent(activity, InviteDetailsActivity.class);
+        intent.putExtra(InviteDetailsActivity.EXTRA_INVITE, invite);
+        intent.putExtra(InviteDetailsActivity.EXTRA_START_DRAWING_LOCATION, location);
+        intent.putExtra(InviteDetailsActivity.EXTRA_ACTION, action);
+        activity.startActivity(intent);
+        activity.overridePendingTransition(0, 0);
+    }
+
     @Bind(R.id.ivRatingImage)
     ImageView ratingImage;
 
@@ -149,6 +175,15 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
         setContentView(R.layout.activity_invite_details);
         ButterKnife.bind(this);
 
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            placeDetailsImage.setVisibility(View.GONE);
+            ratingView.setVisibility(View.GONE);
+            placeDetailsName.setVisibility(View.GONE);
+            placeDetailsAddress.setVisibility(View.GONE);
+            placeDetailsPhone.setVisibility(View.GONE);
+            inviteDetailsCard.setVisibility(View.GONE);
+        }
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setElevation(15.0f);
@@ -159,6 +194,18 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
             invite = (Invite) savedInstanceState.getSerializable(EXTRA_INVITE);
         } else if (getIntent().hasExtra(EXTRA_INVITE)) {
             invite = (Invite) getIntent().getSerializableExtra(EXTRA_INVITE);
+
+            if (getIntent().hasExtra(EXTRA_START_DRAWING_LOCATION)) {
+                drawingStartLocation = getIntent().getIntExtra(EXTRA_START_DRAWING_LOCATION, 0);
+                placeDetalsScrollView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        placeDetalsScrollView.getViewTreeObserver().removeOnPreDrawListener(this);
+                        startIntroAnimation();
+                        return true;
+                    }
+                });
+            }
 
             if (getIntent().hasExtra(EXTRA_ACTION)) {
                 fromNotification = true;
@@ -184,6 +231,71 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
         });
 
         FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITE_OPENED);
+    }
+
+    private void startIntroAnimation() {
+        placeDetalsScrollView.setScaleY(0.1f);
+        placeDetalsScrollView.setPivotY(drawingStartLocation);
+//        llAddComment.setTranslationY(100);
+
+        placeDetalsScrollView.animate()
+                .scaleY(1)
+                .setDuration(200)
+                .setInterpolator(new AccelerateInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(android.animation.Animator animation) {
+                        super.onAnimationEnd(animation);
+                        animateContent();
+                    }
+                })
+                .start();
+    }
+
+    private void animateContent() {
+        ArrayList<View> views = new ArrayList<>();
+        views.add(placeDetailsImage);
+        views.add(ratingView);
+        views.add(placeDetailsName);
+        views.add(placeDetailsAddress);
+        views.add(placeDetailsPhone);
+        views.add(inviteDetailsCard);
+
+        for (int i = 0; i < views.size(); i++) {
+            runEnterAnimation(views.get(i), i);
+        }
+    }
+
+    private void runEnterAnimation(final View view, int position) {
+        view.setTranslationY(100);
+        view.setAlpha(0.f);
+        view.animate()
+                .translationY(0).alpha(1.f)
+                .setStartDelay(50 * position)
+                .setInterpolator(new DecelerateInterpolator(2.f))
+                .setListener(new android.animation.Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(android.animation.Animator animation) {
+                        view.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(android.animation.Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationCancel(android.animation.Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(android.animation.Animator animation) {
+
+                    }
+                })
+                .setDuration(300)
+                .start();
     }
 
     private void openWebView() {

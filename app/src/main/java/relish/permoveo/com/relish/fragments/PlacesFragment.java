@@ -2,7 +2,6 @@ package relish.permoveo.com.relish.fragments;
 
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -180,8 +179,15 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
             @Override
             public void onItemClick(View view, int position) {
                 YelpPlace restaurant = (YelpPlace) adapter.getItem(position);
-                startActivity(new Intent(getActivity(), YelpPlaceDetailsActivity.class)
-                        .putExtra(YelpPlaceDetailsActivity.PASSED_YELP_PLACE, restaurant));
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    View image = view.findViewById(R.id.grid_item_place_image);
+//                    ViewCompat.setTransitionName(image, YelpPlaceDetailsActivity.SHARED_IMAGE_NAME);
+//                    YelpPlaceDetailsActivity.launch(getActivity(), image, restaurant);
+//                } else {
+                    int[] startingLocation = new int[2];
+                    view.getLocationOnScreen(startingLocation);
+                    YelpPlaceDetailsActivity.launch(getActivity(), startingLocation[1], restaurant);
+//                }
             }
         }));
 
