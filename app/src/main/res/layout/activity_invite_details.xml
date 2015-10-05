@@ -125,6 +125,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignParentRight="true"
+                    android:layout_marginLeft="-6dp"
+                    android:layout_marginRight="-6dp"
                     android:layout_below="@id/invite_details_info"
                     android:layout_marginBottom="8dp"
                     android:background="#dee0e2" />
