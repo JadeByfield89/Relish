@@ -83,7 +83,6 @@
         <activity
             android:name=".activities.YelpPlaceDetailsActivity"
             android:label="@string/title_activity_place_details"
-            android:theme="@style/CustomActionBarTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.AddFriendsActivity"

@@ -150,7 +150,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
             getSupportActionBar().setTitle(getString(R.string.invite_first_step));
 
             invitePlaceImage.setImageBitmap(BlurBuilder.blur(InviteFlowActivity.this,
-                    BitmapFactory.decodeResource(getResources(), R.drawable.relish_invite_bg_default), 10));
+                    BitmapFactory.decodeResource(getResources(), R.drawable.relish_invite_bg_default), 7));
         }
 
 
