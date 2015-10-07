@@ -342,7 +342,7 @@ public class YelpPlaceDetailsActivity extends RelishActivity implements Observab
 
         placeDetalsScrollView.animate()
                 .scaleY(1)
-                .setDuration(200)
+                .setDuration(500)
                 .setInterpolator(new AccelerateInterpolator())
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
@@ -396,7 +396,7 @@ public class YelpPlaceDetailsActivity extends RelishActivity implements Observab
 
                     }
                 })
-                .setDuration(300)
+                .setDuration(500)
                 .start();
     }
 
@@ -493,8 +493,8 @@ public class YelpPlaceDetailsActivity extends RelishActivity implements Observab
         } else {
             placeDetailsPhone.setVisibility(View.GONE);
         }
-        ratingView.setLarge(true);
-        ratingView.setRating(fetchedPlace.rating);
+        //ratingView.setLarge(true);
+        //ratingView.setRating(fetchedPlace.rating);
 
         Picasso.with(this).load(fetchedPlace.rating_img_url).fit().into(ratingImage);
 
