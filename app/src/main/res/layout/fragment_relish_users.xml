@@ -30,11 +30,11 @@
         android:clipToPadding="false"
         android:layout_width="match_parent"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/empty_query_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="70dp"
         android:layout_alignParentTop="true"
         android:orientation="vertical"
         android:layout_marginLeft="24dp"
@@ -42,12 +42,16 @@
         android:gravity="center">
 
         <ImageView
+            android:id="@+id/ivEmpty"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/ic_freinds_empty"
+            android:layout_marginTop="70dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/empty_message"
+            android:layout_below="@id/ivEmpty"
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,6 +59,6 @@
             android:text="@string/no_results_for_query"
             android:textSize="18sp"
             android:gravity="center"/>
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

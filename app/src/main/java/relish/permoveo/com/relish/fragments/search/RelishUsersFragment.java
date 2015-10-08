@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.dd.CircularProgressButton;
@@ -40,7 +41,7 @@ public class RelishUsersFragment extends Fragment {
     @Bind(R.id.bounce_progress)
     BounceProgressBar bounceProgressBar;
     @Bind(R.id.empty_query_container)
-    LinearLayout emptyView;
+    RelativeLayout emptyView;
     @Bind(R.id.add_friends_recycler)
     RecyclerView recyclerView;
     private MenuItem searchItem;

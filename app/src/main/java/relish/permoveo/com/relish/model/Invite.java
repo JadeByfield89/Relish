@@ -135,10 +135,12 @@ public class Invite implements Serializable {
     }
 
     public enum InviteType {
-        RECEIVED, RESPONSE, UPDATE;
+        DEFAULT, RECEIVED, RESPONSE, UPDATE;
 
         public static InviteType parse(String type) {
             switch (type) {
+                case "default":
+                    return DEFAULT;
                 case "inviteReceived":
                     return RECEIVED;
                 case "inviteResponse":

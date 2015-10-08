@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -32,6 +33,7 @@ import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
@@ -138,7 +140,12 @@ public class SignupActivity extends RelishActivity {
         });
 
         updateStatusBar(getResources().getColor(R.color.main_color_dark));
-        ParseFacebookUtils.initialize(getString(R.string.facebook_app_id));
+        try {
+            ParseFacebookUtils.initialize(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         FacebookSdk.sdkInitialize(this.getApplicationContext());
 
@@ -151,7 +158,7 @@ public class SignupActivity extends RelishActivity {
                 // TODO Auto-generated method stub
                 Log.d("SignupActivity", "On Success");
 
-                AccessToken token = result.getAccessToken();
+                final AccessToken token = result.getAccessToken();
                 SharedPrefsUtil.get.saveFacebookAccessToken(token);
 
 
@@ -165,14 +172,12 @@ public class SignupActivity extends RelishActivity {
                         Log.d("SignupActivity", "Facebook Name -> " + facebookName);
                         Log.d("SignupActivity", "Facebook Email -> " + facebookEmail);
 
+                        loginWithFacebook(token);
 
-                        //fbUser.setEmail(user.optString("email"));
-                        //fbUser.setName(user.optString("name"));
-                        //fbUser.setId(user.optString("id"));
+
                     }
                 }).executeAsync();
 
-                //Toast.makeText(SignupActivity.this, token.getToken(), Toast.LENGTH_SHORT).show();
 
             }
 
@@ -194,37 +199,42 @@ public class SignupActivity extends RelishActivity {
     private void signupWithFacebook() {
 
 
-        if(SharedPrefsUtil.get.getFacebookAccessToken().isEmpty()) {
-            //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends", "email"));
-            loginWithFacebook();
+        if (SharedPrefsUtil.get.getFacebookAccessToken().isEmpty()) {
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends", "email"));
+            //loginWithFacebook();
 
-        }
-        else{
+        } else {
 
         }
 
     }
 
-    private void loginWithFacebook(){
-        ParseFacebookUtils.logIn(Arrays.asList("public_profile", ParseFacebookUtils.Permissions.User.ABOUT_ME), SignupActivity.this, new LogInCallback() {
+    private void loginWithFacebook(final AccessToken token) {
+
+        ParseFacebookUtils.logInInBackground(token, new LogInCallback() {
             @Override
             public void done(ParseUser parseUser, ParseException e) {
-                if (parseUser == null) {
-                    Log.d("SignupActivity", "Uh oh. The user cancelled the Facebook login.");
-                }
 
-                else if (parseUser.isNew()) {
-                    Log.d("SignupActivity", "User signed up and logged in through Facebook!");
-                   // if(ParseFacebookUtils.getSession() != null) {
+                if (parseUser != null) {
 
+                    Log.d("SignupActivity", "Successfully logged in via Facebook");
+                    parseUser.put("email", facebookEmail);
+                    parseUser.put("fullName", facebookName);
+                    //parseUser.saveInBackground();
 
+                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                    installation.put("userId", parseUser.getObjectId());
+                    installation.saveInBackground();
 
-                    //}
+                    parseUser.signUpInBackground();
 
+                    Intent intent = new Intent(SignupActivity.this, SMSVerificationActivity.class);
+                    startActivity(intent);
                 }
 
             }
         });
+
     }
 
 

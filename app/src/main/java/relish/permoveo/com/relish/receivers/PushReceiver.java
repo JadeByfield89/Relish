@@ -100,7 +100,7 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
     @Override
     protected Notification getNotification(Context context, Intent intent) {
         JSONObject pushData = null;
-        Invite.InviteType type = null;
+        Invite.InviteType type = Invite.InviteType.DEFAULT;
         try {
             pushData = new JSONObject(intent.getStringExtra("com.parse.Data"));
             if (pushData != null && (pushData.has("alert") || pushData.has("title"))) {
@@ -131,7 +131,7 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
                 Intent acceptIntent = new Intent(context, clazz);
                 acceptIntent.putExtras(extras);
                 acceptIntent.setPackage(packageName);
-                if (type.equals(Invite.InviteType.RECEIVED)) {
+                if (type != null && type.equals(Invite.InviteType.RECEIVED)) {
                     acceptIntent.putExtra(ConstantUtil.INVITE_ID_EXTRA, pushData.getString("id"));
                 }
                 acceptIntent.putExtra(ConstantUtil.NOTIFICATION_ACTION_EXTRA, true);
@@ -141,7 +141,7 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
                 Intent declineIntent = new Intent(context, clazz);
                 declineIntent.putExtras(extras);
                 declineIntent.setPackage(packageName);
-                if (type.equals(Invite.InviteType.RECEIVED)) {
+                if (type != null && type.equals(Invite.InviteType.RECEIVED)) {
                     declineIntent.putExtra(ConstantUtil.INVITE_ID_EXTRA, pushData.getString("id"));
                 }
                 declineIntent.putExtra(ConstantUtil.NOTIFICATION_ACTION_EXTRA, false);
