@@ -31,6 +31,8 @@ public enum SharedPrefsUtil {
     public static String PARAM_PUSH_NOTIFICATIONS = "push_notifications";
     public static String PARAM_LOCATION_SHARING = "location_sharing";
     public static String PARAM_GOOGLE_CALENDAR_SYNC = "google_calendar_sync";
+
+    private static String PREF_FACEBOOK_ACCEESS_TOKEN = "faceook_access_token";
     private SharedPreferences sharedPreferences;
 
     public void init(final Context context) {
@@ -174,5 +176,12 @@ public enum SharedPrefsUtil {
         return sharedPreferences.getLong(PREF_VENMO_TOKEN_TIMESTAMP, 0);
     }
 
+    public void saveFacebookAccessToken(com.facebook.AccessToken token) {
+        sharedPreferences.edit().putString(PREF_FACEBOOK_ACCEESS_TOKEN, token.getToken()).commit();
+    }
+
+    public String getFacebookAccessToken() {
+        return sharedPreferences.getString(PREF_FACEBOOK_ACCEESS_TOKEN, "");
+    }
 }
 

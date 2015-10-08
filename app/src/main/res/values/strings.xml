@@ -232,5 +232,7 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
     <string name="twitter_followers_empty">You haven\'t connected your Twitter account yet.</string>
     <string name="title_activity_google_place_details">GooglePlaceDetailsActivity</string>
 
+    <string name="facebook_app_id">723238064487074</string>
+
 
 </resources>

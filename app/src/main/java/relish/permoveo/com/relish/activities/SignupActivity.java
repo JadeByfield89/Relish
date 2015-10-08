@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,15 +15,31 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphRequestAsyncTask;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+import org.json.JSONObject;
+
+import java.util.Arrays;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 public class SignupActivity extends RelishActivity {
@@ -62,6 +79,11 @@ public class SignupActivity extends RelishActivity {
 
     @Bind(R.id.et_fullname)
     EditText fullName;
+
+    private String facebookName;
+    private String facebookEmail;
+
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +125,7 @@ public class SignupActivity extends RelishActivity {
         facebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                signupWithFacebook();
             }
         });
 
@@ -116,7 +138,95 @@ public class SignupActivity extends RelishActivity {
         });
 
         updateStatusBar(getResources().getColor(R.color.main_color_dark));
+        ParseFacebookUtils.initialize(getString(R.string.facebook_app_id));
+
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
+
+        callbackManager = CallbackManager.Factory.create(); // declare it globally "CallbackManager callbackManager "
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
+            @Override
+            public void onSuccess(LoginResult result) {
+                // TODO Auto-generated method stub
+                Log.d("SignupActivity", "On Success");
+
+                AccessToken token = result.getAccessToken();
+                SharedPrefsUtil.get.saveFacebookAccessToken(token);
+
+
+                GraphRequestAsyncTask request = GraphRequest.newMeRequest(token, new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject user, GraphResponse graphResponse) {
+
+                        facebookEmail = user.optString("email");
+                        facebookName = user.optString("name");
+
+                        Log.d("SignupActivity", "Facebook Name -> " + facebookName);
+                        Log.d("SignupActivity", "Facebook Email -> " + facebookEmail);
+
+
+                        //fbUser.setEmail(user.optString("email"));
+                        //fbUser.setName(user.optString("name"));
+                        //fbUser.setId(user.optString("id"));
+                    }
+                }).executeAsync();
+
+                //Toast.makeText(SignupActivity.this, token.getToken(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                // TODO Auto-generated method stub
+                Log.d("SignupActivity", "On Error");
+            }
+
+            @Override
+            public void onCancel() {
+                // TODO Auto-generated method stub
+                Log.d("SignupActivity", "On Cancel");
+            }
+        });
     }
+
+
+    private void signupWithFacebook() {
+
+
+        if(SharedPrefsUtil.get.getFacebookAccessToken().isEmpty()) {
+            //LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends", "email"));
+            loginWithFacebook();
+
+        }
+        else{
+
+        }
+
+    }
+
+    private void loginWithFacebook(){
+        ParseFacebookUtils.logIn(Arrays.asList("public_profile", ParseFacebookUtils.Permissions.User.ABOUT_ME), SignupActivity.this, new LogInCallback() {
+            @Override
+            public void done(ParseUser parseUser, ParseException e) {
+                if (parseUser == null) {
+                    Log.d("SignupActivity", "Uh oh. The user cancelled the Facebook login.");
+                }
+
+                else if (parseUser.isNew()) {
+                    Log.d("SignupActivity", "User signed up and logged in through Facebook!");
+                   // if(ParseFacebookUtils.getSession() != null) {
+
+
+
+                    //}
+
+                }
+
+            }
+        });
+    }
+
 
     private void signup() {
         if (validate()) {
@@ -217,6 +327,8 @@ public class SignupActivity extends RelishActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == LoginActivity.LOGIN_REQUEST && resultCode == RESULT_OK) {
             finish();
         }

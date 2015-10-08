@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="relish.permoveo.com.relish"
-    android:installLocation="auto" >
+    android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -39,7 +39,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.MyTheme"
-        tools:replace="android:theme, android:icon" >
+        tools:replace="android:theme, android:icon">
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
@@ -47,7 +47,7 @@
         <activity
             android:name=".activities.SplashActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -92,16 +92,19 @@
             android:name=".activities.InviteFlowActivity"
             android:label="@string/title_activity_invite_flow"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="ef2c8cb00606afe7e4047d699a0b841de58e9467" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
 
         <service android:name="com.parse.PushService" />
 
-        <receiver android:name="com.parse.ParseBroadcastReceiver" >
+        <receiver android:name="com.parse.ParseBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -109,7 +112,7 @@
         </receiver>
         <receiver
             android:name="com.parse.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
@@ -119,7 +122,7 @@
         </receiver>
         <receiver
             android:name=".receivers.PushReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
@@ -131,8 +134,7 @@
             android:name=".activities.InviteDetailsActivity"
             android:label="@string/title_activity_calculator"
             android:screenOrientation="portrait"
-            android:theme="@style/CustomActionBarTheme" >
-        </activity>
+            android:theme="@style/CustomActionBarTheme"></activity>
         <activity
             android:name=".activities.TipCalculatorActivity"
             android:label="@string/title_activity_add_friends"
@@ -149,10 +151,15 @@
             android:name=".venmo.VenmoWebViewActivity"
             android:label="Venmo Webview Activity"
             android:screenOrientation="portrait" />
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
 
         <receiver
             android:name=".receivers.ReminderReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="relish.permoveo.com.relish.REMINDER" />
             </intent-filter>
@@ -161,8 +168,7 @@
         <activity
             android:name=".activities.GooglePlaceDetailsActivity"
             android:label="@string/title_activity_google_place_details"
-            android:theme="@style/Theme.MyTheme" >
-        </activity>
+            android:theme="@style/Theme.MyTheme"></activity>
     </application>
 
 </manifest>
