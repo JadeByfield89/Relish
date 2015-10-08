@@ -85,6 +85,7 @@ public class UserUtils {
     }
 
     public static void logoutUser(final Context context) {
+
         ParseUser.logOutInBackground();
         Intent intent = new Intent(context, SignupActivity.class);
         context.startActivity(intent);

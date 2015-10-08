@@ -100,7 +100,7 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
     @Override
     protected Notification getNotification(Context context, Intent intent) {
         JSONObject pushData = null;
-        Invite.InviteType type = Invite.InviteType.DEFAULT;
+        Invite.InviteType type = null;
         try {
             pushData = new JSONObject(intent.getStringExtra("com.parse.Data"));
             if (pushData != null && (pushData.has("alert") || pushData.has("title"))) {
@@ -164,15 +164,17 @@ public class PushReceiver extends ParsePushBroadcastReceiver {
                         .setAutoCancel(true)
                         .setDefaults(-1);
 
-                switch (type) {
-                    case RECEIVED:
-                        parseBuilder.addAction(R.drawable.ic_action_accept, context.getString(R.string.action_accept), pAcceptIntent);
-                        parseBuilder.addAction(R.drawable.ic_action_decline, context.getString(R.string.action_decline), pDeclineIntent);
-                        break;
-                    case RESPONSE:
-                        break;
-                    case UPDATE:
-                        break;
+                if(type != null) {
+                    switch (type) {
+                        case RECEIVED:
+                            parseBuilder.addAction(R.drawable.ic_action_accept, context.getString(R.string.action_accept), pAcceptIntent);
+                            parseBuilder.addAction(R.drawable.ic_action_decline, context.getString(R.string.action_decline), pDeclineIntent);
+                            break;
+                        case RESPONSE:
+                            break;
+                        case UPDATE:
+                            break;
+                    }
                 }
                 if (alert != null && alert.length() > 38) {
                     parseBuilder.setStyle((new NotificationCompat.BigTextStyle()).bigText(alert));

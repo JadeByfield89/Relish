@@ -59,6 +59,7 @@ import relish.permoveo.com.relish.interfaces.OnInviteSentListener;
 import relish.permoveo.com.relish.interfaces.RenderCallbacks;
 import relish.permoveo.com.relish.manager.EmailInviteManager;
 import relish.permoveo.com.relish.manager.InvitesManager;
+import relish.permoveo.com.relish.manager.TwitterInviteManager;
 import relish.permoveo.com.relish.model.Contact;
 import relish.permoveo.com.relish.model.Friend;
 import relish.permoveo.com.relish.model.Invite;
@@ -167,9 +168,9 @@ public class
                 sendButton.setText("");
                 sendButton.setEnabled(false);
                 progressBar.setVisibility(View.VISIBLE);
-                InvitesManager.createInvite(creator.getInvite(), new InvitesManager.InvitesManagerCallback<String, ParseException>() {
+                InvitesManager.createInvite(creator.getInvite(), new InvitesManager.InvitesManagerCallback<ParseObject, ParseException>() {
                     @Override
-                    public void done(final String objectId, ParseException e) {
+                    public void done(final ParseObject inviteObject, ParseException e) {
                         if (e == null) {
                             if (isAdded())
                                 getActivity().runOnUiThread(new Runnable() {
@@ -191,54 +192,76 @@ public class
                                             manager.set(AlarmManager.RTC_WAKEUP, when.getMillis() - creator.getInvite().reminder * 1000, pintent);
                                         }
 
+                                        String objectId = inviteObject.getObjectId();
+                                        String idSuffix = objectId.substring(objectId.length() - 3, objectId.length());
+                                        Log.d("SendInviteFragment", "Invite Id -> " + idSuffix);
+                                        idSuffix = idSuffix.toUpperCase();
+                                        inviteObject.put("inviteId", idSuffix);
+                                        inviteObject.saveInBackground();
+
+
+                                        //SENT VIA TWITTER IF TWITTER CONTACT WAS SELECTED
+                                        TwitterInviteManager twitterManager = new TwitterInviteManager();
+                                        for (InvitePerson person : creator.getInvite().invited) {
+                                            if (person instanceof Contact) {
+                                                if (TextUtils.isEmpty(person.number) && TextUtils.isEmpty(((Contact) person).email) && !TextUtils.isEmpty(((Contact) person).twitterUsername)) {
+                                                    String inviteMessage = ((Contact) person).twitterUsername + ", " + "@" + SharedPrefsUtil.get.getTwitterUsername() + " has invited you to lunch!";
+                                                    twitterManager.sendTwitterInvite(inviteMessage);
+                                                }
+                                            }
+                                        }
+
                                         // Get a count of all Invite objects currently in parse
                                         // and assign that count to be this invite's id
-                                        ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
-                                        invitesQuery.countInBackground(new CountCallback() {
-                                            public void done(int count, ParseException e) {
-                                                if (e == null) {
-                                                    Log.d("InvitesManager", "Parse Invites count-> " + count);
+                                        //ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
+                                        //invitesQuery.countInBackground(new CountCallback() {
+                                        //public void done(final int count, ParseException e) {
+                                        //if (e == null) {
+                                        //Log.d("SendInviteFragment", "Parse Invites count-> " + count);
 
-                                                    // SEND VIA SMS IF PHONE CONTACTS WERE SELECTED
-                                                    TwilioSmsManager manager = new TwilioSmsManager();
-                                                    for (InvitePerson person : creator.getInvite().invited) {
-                                                        if (person instanceof Contact) {
-                                                            if (!TextUtils.isEmpty(person.number)) {
-                                                                String senderName = UserUtils.getFullName();
-                                                                String smsMessage = String.format(getString(R.string.share_sms_message),
-                                                                         senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), count, count, count);
+                                        //inviteObject.put("inviteId", count);
+                                        //inviteObject.saveInBackground();
 
-                                                                if (!TextUtils.isEmpty(person.number)) {
-                                                                    manager.sendInviteSmsViaTwilio(person.number, smsMessage);
-                                                                } else {
-                                                                    Log.d("SendInviteFragment", "Can't send SMS, contact number is empty");
-                                                                }
-                                                            }
-                                                        }
+                                        // SEND VIA SMS IF PHONE CONTACTS WERE SELECTED
+                                        TwilioSmsManager manager = new TwilioSmsManager();
+                                        for (InvitePerson person : creator.getInvite().invited) {
+                                            if (person instanceof Contact) {
+                                                if (!TextUtils.isEmpty(person.number)) {
+                                                    String senderName = UserUtils.getFullName();
+                                                    String smsMessage = String.format(getString(R.string.share_sms_message),
+                                                            senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), idSuffix, idSuffix, idSuffix);
+
+                                                    if (!TextUtils.isEmpty(person.number)) {
+                                                        manager.sendInviteSmsViaTwilio(person.number, smsMessage);
+                                                    } else {
+                                                        Log.d("SendInviteFragment", "Can't send SMS, contact number is empty");
                                                     }
+                                                }
+                                            }
+                                        }
 
-                                                    // SEND INVITE VIA EMAIL IF EMAIL CONTACTS WERE SELECTED
-                                                    for (InvitePerson person : creator.getInvite().invited) {
-                                                        if (person instanceof Contact) {
-                                                            if (TextUtils.isEmpty(person.number) && !TextUtils.isEmpty(((Contact) person).email)) {
-                                                                Log.d("SendInviteFragment", "Sending invite to " + ((Contact) person).email);
-                                                                creator.getInvite().inviteId = "" + count;
-                                                                EmailInviteManager emailInviteManager = new EmailInviteManager((Contact) person, creator.getInvite());
-                                                                emailInviteManager.sendEmailInvite(new OnInviteSentListener() {
-                                                                    @Override
-                                                                    public void onInviteSent(boolean success) {
+                                        // SEND INVITE VIA EMAIL IF EMAIL CONTACTS WERE SELECTED
+                                        for (InvitePerson person : creator.getInvite().invited) {
+                                            if (person instanceof Contact) {
+                                                if (TextUtils.isEmpty(person.number) && !TextUtils.isEmpty(((Contact) person).email)) {
+                                                    Log.d("SendInviteFragment", "Sending invite to " + ((Contact) person).email);
+                                                    creator.getInvite().inviteId = idSuffix;
+                                                    EmailInviteManager emailInviteManager = new EmailInviteManager((Contact) person, creator.getInvite());
+                                                    emailInviteManager.sendEmailInvite(new OnInviteSentListener() {
+                                                        @Override
+                                                        public void onInviteSent(boolean success) {
 
-                                                                    }
-                                                                });
-
-                                                            }
                                                         }
-
-                                                    }
+                                                    });
 
                                                 }
                                             }
-                                        });
+
+                                        }
+
+                                        //}
+                                        //}
+                                        //});
 
 
                                         // SENDING INVITE VIA PUSH NOTIFICATIONS
@@ -254,7 +277,7 @@ public class
                                         JSONObject pushData = new JSONObject();
                                         try {
                                             pushData.put(ConstantUtil.SENDER_IMAGE_KEY, UserUtils.getUserAvatar());
-                                            pushData.put("id", objectId);
+                                            pushData.put("id", inviteObject.getObjectId());
                                             pushData.put("type", Invite.InviteType.RECEIVED.toString());
                                             pushData.put("title", creator.getInvite().title);
                                             pushData.put("alert", String.format(getString(R.string.share_push_message),
@@ -270,7 +293,6 @@ public class
                                     }
                                 });
                             FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITE_SENT);
-
 
 
                         } else {

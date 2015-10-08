@@ -201,7 +201,6 @@ public class SignupActivity extends RelishActivity {
 
         if (SharedPrefsUtil.get.getFacebookAccessToken().isEmpty()) {
             LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends", "email"));
-            //loginWithFacebook();
 
         } else {
 

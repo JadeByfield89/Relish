@@ -6,8 +6,8 @@
 
     <!-- Twitter Configurations -->
     <string name="twitter_callback">http://relishwith.us</string>
-    <string name="twitter_consumer_key">jFb3vKnA9TdIhqMjfcLkrNBA3</string>
-    <string name="twitter_consumer_secret">3yrTOQgmAi44rdQAXBIQ3EA9CedYgz6ofeTord8s2iV1mw3Jdo</string>
+    <string name="twitter_consumer_key">5xhVtybmql6mitz5qmCMFa3Ig</string>
+    <string name="twitter_consumer_secret">6sEM4GhGQgZFe0ZsgMiVFaxuMjsB7lo5lkvN5OKximF5NvLVcT</string>
     <string name="twitter_oauth_verifier">oauth_verifier</string>
     <!-- End Configurations -->
 </resources>

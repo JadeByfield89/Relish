@@ -1,6 +1,7 @@
 package relish.permoveo.com.relish.fragments.inviteflow;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,7 +34,10 @@ import relish.permoveo.com.relish.adapter.list.inviteflow.InviteContactsListAdap
 import relish.permoveo.com.relish.adapter.list.inviteflow.InviteTwitterListAdapter;
 import relish.permoveo.com.relish.application.RelishApplication;
 import relish.permoveo.com.relish.interfaces.ISelectable;
+import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.model.Contact;
+import relish.permoveo.com.relish.model.InvitePerson;
+import relish.permoveo.com.relish.util.RecyclerItemClickListener;
 import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.BounceProgressBar;
@@ -76,9 +80,19 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
     private RequestToken requestToken;
 
     private String twitterUsername;
+    private InviteCreator creator;
+
 
     public TwitterInviteFragment() {
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof InviteCreator) {
+            creator = (InviteCreator) context;
+        }
     }
 
     @Override
@@ -100,6 +114,7 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
         twitterRecycler.setHasFixedSize(false);
         twitterRecycler.setItemAnimator(new DefaultItemAnimator());
         twitterRecycler.setAdapter(followersAdapter);
+
 
         connectTwitter.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
         connectTwitter.setOnClickListener(new View.OnClickListener() {
@@ -308,6 +323,7 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
         return followersAdapter != null ? followersAdapter.getSelected() : new ArrayList<Contact>();
     }
 
+
     private class LoginTask extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... params) {
@@ -378,6 +394,7 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
                 // Original Twitter from login is still alive
                 if (twitter != null) {
                     user = twitter.showUser(userID);
+                    Log.d("TwitterInviteFragment", "Twitter username -> " + user.getScreenName());
                 }
 
                 //
@@ -421,8 +438,9 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
 
 
         @Override
-        protected void onPostExecute(ArrayList<Contact> contacts) {
+        protected void onPostExecute(final ArrayList<Contact> contacts) {
             super.onPostExecute(contacts);
+
 
             Toast.makeText(getContext(), twitterUsername, Toast.LENGTH_SHORT).show();
             Log.d("TwitterInviteFragment", "Followers Contacts -> " + contacts.size());
@@ -434,13 +452,35 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
             followersAdapter = new InviteTwitterListAdapter(getContext());
             followersAdapter.swap(contacts);
             twitterRecycler.setAdapter(followersAdapter);
-            //followersAdapter.notifyDataSetChanged();
+
+            twitterRecycler.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(View view, int position) {
+
+                    Log.d("TwitterInviteFragment", "Selection size -> " + getSelection());
+                    if (contacts != null && getSelection().size() > 0) {
+                        for (Contact contact : contacts) {
+                            if (contact.isSelected) {
+                                creator.getInvite().invited.add(contact);
+                                Log.d("TwitterInviteFragment", "Adding -> " + contact.twitterUsername);
+
+                            }
+                        }
+                    }
+                }
+
+                ;
+
+
+                //followersAdapter.notifyDataSetChanged();
+
+
+            }));
 
 
         }
     }
-
-
 }
 
 

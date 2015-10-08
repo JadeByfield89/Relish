@@ -21,7 +21,7 @@ public enum SharedPrefsUtil {
     private static final String PREF_KEY_OAUTH_TOKEN = "oauth_token";
     private static final String PREF_KEY_OAUTH_SECRET = "oauth_token_secret";
     private static final String PREF_KEY_TWITTER_LOGIN = "is_twitter_loggedin";
-    private static final String PREF_USER_NAME = "twitter_user_name";
+    private static final String PREF_TWITTER_USER_NAME = "twitter_user_name";
     // Venmo access token
     private static final String PREF_VENMO_TOKEN = "venmo_token";
     private static final String PREF_VENMO_TOKEN_TIMESTAMP = "venmo_token_timestamp";
@@ -134,7 +134,7 @@ public enum SharedPrefsUtil {
             Log.d("SharedPrefsUtil", "Saving Access Token Secret -> " + accessToken.getTokenSecret());
 
             e.putBoolean(PREF_KEY_TWITTER_LOGIN, true);
-            e.putString(PREF_USER_NAME, username);
+            e.putString(PREF_TWITTER_USER_NAME, username);
             e.commit();
 
         } catch (TwitterException e1) {
@@ -147,7 +147,7 @@ public enum SharedPrefsUtil {
     }
 
     public String getTwitterUsername() {
-        return sharedPreferences.getString(PREF_USER_NAME, "");
+        return sharedPreferences.getString(PREF_TWITTER_USER_NAME, "");
     }
 
     public void setIsLoggedIntoTwitter() {
@@ -183,5 +183,6 @@ public enum SharedPrefsUtil {
     public String getFacebookAccessToken() {
         return sharedPreferences.getString(PREF_FACEBOOK_ACCEESS_TOKEN, "");
     }
+
 }
 

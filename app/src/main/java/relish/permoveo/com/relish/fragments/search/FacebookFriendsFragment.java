@@ -18,6 +18,7 @@ import com.facebook.share.widget.ShareDialog;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +48,8 @@ public class FacebookFriendsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+
+        emptyMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
 
         emptyImage.setOnClickListener(new View.OnClickListener() {
             @Override
