@@ -224,7 +224,6 @@ public class DetailsInviteFragment extends Fragment implements RenderCallbacks, 
                 inviteTitle.setText("");
             }
 
-
             if (creator.getInvite().reminder != -1) {
                 reminderSpinner.setSelection(reminderAdapter.getPosition(creator.getInvite().reminder));
             } else {

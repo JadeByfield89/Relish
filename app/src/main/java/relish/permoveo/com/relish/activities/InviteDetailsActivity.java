@@ -56,9 +56,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.interfaces.OnBlurCompleteListener;
 import relish.permoveo.com.relish.manager.InvitesManager;
 import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.InvitePerson;
+import relish.permoveo.com.relish.util.BlurBehind;
 import relish.permoveo.com.relish.util.FlurryConstantUtil;
 import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.util.TypefaceUtil;
@@ -66,6 +68,7 @@ import relish.permoveo.com.relish.view.RatingView;
 
 public class InviteDetailsActivity extends RelishActivity implements ObservableScrollViewCallbacks {
 
+    public static final int EDIT_INVITE_REQUEST = 14228;
     public static final String EXTRA_INVITE = "invite_extra";
     public static final String EXTRA_ACTION = "action_extra";
     public static final String EXTRA_START_DRAWING_LOCATION = "start_drawing_location_extra";
@@ -308,6 +311,9 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_invite_details, menu);
+        if (!invite.creatorId.equals(ParseUser.getCurrentUser().getObjectId())) {
+            menu.findItem(R.id.action_edit).setVisible(false);
+        }
         return true;
     }
 
@@ -316,9 +322,21 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == android.R.id.home) {
-            onBackPressed();
-            return true;
+        switch (id) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+            case R.id.action_edit:
+                BlurBehind.getInstance().execute(InviteDetailsActivity.this, new OnBlurCompleteListener() {
+                    @Override
+                    public void onBlurComplete() {
+                        Intent intent = new Intent(InviteDetailsActivity.this, EditInviteActivity.class);
+                        intent.putExtra(EditInviteActivity.INVITE_EXTRA, invite);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivityForResult(intent, EDIT_INVITE_REQUEST);
+                    }
+                });
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -845,4 +863,11 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
         return titleTextView;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_INVITE_REQUEST && resultCode == RESULT_OK) {
+
+        }
+    }
 }

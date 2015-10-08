@@ -1,6 +1,7 @@
 package relish.permoveo.com.relish.fragments.inviteflow;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,23 +23,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
-import relish.permoveo.com.relish.activities.MainActivity;
 import relish.permoveo.com.relish.activities.TwitterWebViewActivity;
-import relish.permoveo.com.relish.adapter.list.inviteflow.InviteContactsListAdapter;
 import relish.permoveo.com.relish.adapter.list.inviteflow.InviteTwitterListAdapter;
 import relish.permoveo.com.relish.application.RelishApplication;
 import relish.permoveo.com.relish.interfaces.ISelectable;
+import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.model.Contact;
+import relish.permoveo.com.relish.model.InvitePerson;
 import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.BounceProgressBar;
-import twitter4j.IDs;
 import twitter4j.PagableResponseList;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -77,8 +76,18 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
 
     private String twitterUsername;
 
+    private InviteCreator creator;
+
     public TwitterInviteFragment() {
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof InviteCreator) {
+            creator = (InviteCreator) context;
+        }
     }
 
     @Override
@@ -181,13 +190,9 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
                     emptyView.setVisibility(View.GONE);
                     progress.setVisibility(View.VISIBLE);
 
-
                     new GetFollowersTask().execute();
-
-
                 }
             });
-
         }
     }
 
@@ -424,6 +429,15 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
         protected void onPostExecute(ArrayList<Contact> contacts) {
             super.onPostExecute(contacts);
 
+            for (Contact contact : contacts) {
+                for (InvitePerson invited : creator.getInvite().invited) {
+                    if (invited instanceof Contact && !TextUtils.isEmpty(((Contact) invited).twitterUsername)
+                            && ((Contact) invited).twitterUsername.equals(contact.twitterUsername)) {
+                        contact.isSelected = true;
+                    }
+                }
+            }
+
             Toast.makeText(getContext(), twitterUsername, Toast.LENGTH_SHORT).show();
             Log.d("TwitterInviteFragment", "Followers Contacts -> " + contacts.size());
             emptyView.setVisibility(View.GONE);
@@ -435,8 +449,6 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
             followersAdapter.swap(contacts);
             twitterRecycler.setAdapter(followersAdapter);
             //followersAdapter.notifyDataSetChanged();
-
-
         }
     }
 

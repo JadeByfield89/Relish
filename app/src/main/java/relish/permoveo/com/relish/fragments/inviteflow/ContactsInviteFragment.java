@@ -197,7 +197,8 @@ public class ContactsInviteFragment extends Fragment implements ISelectable, Fil
             if (contacts != null && contacts.size() > 0) {
                 for (Contact contact : contacts.values()) {
                     for (InvitePerson invited : creator.getInvite().invited) {
-                        if (invited instanceof Contact && ((Contact) invited).number.equals(contact.number)) {
+                        if (invited instanceof Contact && !TextUtils.isEmpty(((Contact) invited).number)
+                                && ((Contact) invited).number.equals(contact.number)) {
                             contact.isSelected = true;
                         }
                     }

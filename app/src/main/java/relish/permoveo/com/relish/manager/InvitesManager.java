@@ -423,9 +423,9 @@ public class InvitesManager {
                         contact.id = contactObj.getObjectId();
                         contact.name = contactObj.getString("contactName");
                         if (contactObj.containsKey("contactNumber"))
-                            contact.number = contactObj.getString("number");
+                            contact.number = contactObj.getString("contactNumber");
                         if (contactObj.containsKey("contactEmail"))
-                            contact.email = contactObj.getString("email");
+                            contact.email = contactObj.getString("contactEmail");
                         if (contactObj.containsKey("avatar")) {
                             ParseFile parseFile = (ParseFile) contactObj.get("avatar");
                             contact.image = parseFile.getUrl();

@@ -65,7 +65,6 @@ import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.InvitePerson;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.FlurryConstantUtil;
-import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TwilioSmsManager;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.util.UserUtils;
@@ -74,8 +73,7 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class
-        SendInviteFragment extends Fragment implements RenderCallbacks {
+public class SendInviteFragment extends Fragment implements RenderCallbacks {
 
     @Bind(R.id.invite_send_date_desc)
     TextView sendDateDesc;
@@ -191,82 +189,85 @@ public class
                                             manager.set(AlarmManager.RTC_WAKEUP, when.getMillis() - creator.getInvite().reminder * 1000, pintent);
                                         }
 
-                                        // Get a count of all Invite objects currently in parse
-                                        // and assign that count to be this invite's id
-                                        ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
-                                        invitesQuery.countInBackground(new CountCallback() {
-                                            public void done(int count, ParseException e) {
-                                                if (e == null) {
-                                                    Log.d("InvitesManager", "Parse Invites count-> " + count);
+                                        if (!creator.getInvite().isSent) {
+                                            // Get a count of all Invite objects currently in parse
+                                            // and assign that count to be this invite's id
+                                            ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
+                                            invitesQuery.countInBackground(new CountCallback() {
+                                                public void done(int count, ParseException e) {
+                                                    if (e == null) {
+                                                        Log.d("InvitesManager", "Parse Invites count-> " + count);
 
-                                                    // SEND VIA SMS IF PHONE CONTACTS WERE SELECTED
-                                                    TwilioSmsManager manager = new TwilioSmsManager();
-                                                    for (InvitePerson person : creator.getInvite().invited) {
-                                                        if (person instanceof Contact) {
-                                                            if (!TextUtils.isEmpty(person.number)) {
-                                                                String senderName = UserUtils.getFullName();
-                                                                String smsMessage = String.format(getString(R.string.share_sms_message),
-                                                                         senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), count, count, count);
-
+                                                        // SEND VIA SMS IF PHONE CONTACTS WERE SELECTED
+                                                        TwilioSmsManager manager = new TwilioSmsManager();
+                                                        for (InvitePerson person : creator.getInvite().invited) {
+                                                            if (person instanceof Contact) {
                                                                 if (!TextUtils.isEmpty(person.number)) {
-                                                                    manager.sendInviteSmsViaTwilio(person.number, smsMessage);
-                                                                } else {
-                                                                    Log.d("SendInviteFragment", "Can't send SMS, contact number is empty");
+                                                                    String senderName = UserUtils.getFullName();
+                                                                    String smsMessage = String.format(getString(R.string.share_sms_message),
+                                                                            senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), count, count, count);
+
+                                                                    if (!TextUtils.isEmpty(person.number)) {
+                                                                        manager.sendInviteSmsViaTwilio(person.number, smsMessage);
+                                                                    } else {
+                                                                        Log.d("SendInviteFragment", "Can't send SMS, contact number is empty");
+                                                                    }
                                                                 }
                                                             }
                                                         }
-                                                    }
 
-                                                    // SEND INVITE VIA EMAIL IF EMAIL CONTACTS WERE SELECTED
-                                                    for (InvitePerson person : creator.getInvite().invited) {
-                                                        if (person instanceof Contact) {
-                                                            if (TextUtils.isEmpty(person.number) && !TextUtils.isEmpty(((Contact) person).email)) {
-                                                                Log.d("SendInviteFragment", "Sending invite to " + ((Contact) person).email);
-                                                                creator.getInvite().inviteId = "" + count;
-                                                                EmailInviteManager emailInviteManager = new EmailInviteManager((Contact) person, creator.getInvite());
-                                                                emailInviteManager.sendEmailInvite(new OnInviteSentListener() {
-                                                                    @Override
-                                                                    public void onInviteSent(boolean success) {
+                                                        // SEND INVITE VIA EMAIL IF EMAIL CONTACTS WERE SELECTED
+                                                        for (InvitePerson person : creator.getInvite().invited) {
+                                                            if (person instanceof Contact) {
+                                                                if (TextUtils.isEmpty(person.number) && !TextUtils.isEmpty(((Contact) person).email)) {
+                                                                    Log.d("SendInviteFragment", "Sending invite to " + ((Contact) person).email);
+                                                                    creator.getInvite().inviteId = "" + count;
+                                                                    EmailInviteManager emailInviteManager = new EmailInviteManager((Contact) person, creator.getInvite());
+                                                                    emailInviteManager.sendEmailInvite(new OnInviteSentListener() {
+                                                                        @Override
+                                                                        public void onInviteSent(boolean success) {
 
-                                                                    }
-                                                                });
+                                                                        }
+                                                                    });
 
+                                                                }
                                                             }
+
                                                         }
 
                                                     }
-
                                                 }
+                                            });
+
+
+                                            // SENDING INVITE VIA PUSH NOTIFICATIONS
+                                            ArrayList<String> friendsIds = new ArrayList<>();
+                                            for (InvitePerson person : creator.getInvite().invited) {
+                                                if (person instanceof Friend)
+                                                    friendsIds.add(((Friend) person).id);
                                             }
-                                        });
 
-
-                                        // SENDING INVITE VIA PUSH NOTIFICATIONS
-                                        ArrayList<String> friendsIds = new ArrayList<>();
-                                        for (InvitePerson person : creator.getInvite().invited) {
-                                            if (person instanceof Friend)
-                                                friendsIds.add(((Friend) person).id);
+                                            ParsePush parsePush = new ParsePush();
+                                            ParseQuery pQuery = ParseInstallation.getQuery();
+                                            pQuery.whereContainedIn("userId", friendsIds);
+                                            JSONObject pushData = new JSONObject();
+                                            try {
+                                                pushData.put(ConstantUtil.SENDER_IMAGE_KEY, UserUtils.getUserAvatar());
+                                                pushData.put("id", objectId);
+                                                pushData.put("type", Invite.InviteType.RECEIVED.toString());
+                                                pushData.put("title", creator.getInvite().title);
+                                                pushData.put("alert", String.format(getString(R.string.share_push_message),
+                                                        UserUtils.getFirstName(), creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime()));
+                                            } catch (JSONException e1) {
+                                                e1.printStackTrace();
+                                            }
+                                            parsePush.setQuery(pQuery);
+                                            parsePush.setData(pushData);
+                                            parsePush.sendInBackground();
+                                            startSendAnimation(inviteSendRoot);
+                                        } else {
+                                            mListener.onInviteSent(true);
                                         }
-
-                                        ParsePush parsePush = new ParsePush();
-                                        ParseQuery pQuery = ParseInstallation.getQuery();
-                                        pQuery.whereContainedIn("userId", friendsIds);
-                                        JSONObject pushData = new JSONObject();
-                                        try {
-                                            pushData.put(ConstantUtil.SENDER_IMAGE_KEY, UserUtils.getUserAvatar());
-                                            pushData.put("id", objectId);
-                                            pushData.put("type", Invite.InviteType.RECEIVED.toString());
-                                            pushData.put("title", creator.getInvite().title);
-                                            pushData.put("alert", String.format(getString(R.string.share_push_message),
-                                                    UserUtils.getFirstName(), creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime()));
-                                        } catch (JSONException e1) {
-                                            e1.printStackTrace();
-                                        }
-                                        parsePush.setQuery(pQuery);
-                                        parsePush.setData(pushData);
-                                        parsePush.sendInBackground();
-                                        startSendAnimation(inviteSendRoot);
-
                                     }
                                 });
                             FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITE_SENT);
@@ -366,6 +367,8 @@ public class
             Picasso.with(getActivity())
                     .load(creator.getInvite().mapSnapshot)
                     .into(mapSnapshot);
+
+            sendButton.setText(creator.getInvite().isSent ? getString(R.string.invite_update) : getString(R.string.invite_send));
 
 //            if (!TextUtils.isEmpty(creator.getInvite().mapSnapshot)) {
 //                snapshot.setVisibility(View.VISIBLE);

@@ -56,7 +56,6 @@ import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.interfaces.PagerCallbacks;
-import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.google.GooglePlace;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.network.API;
@@ -120,13 +119,60 @@ public class PickGooglePlaceInviteFragment extends Fragment {
     @Bind(R.id.bottom_shadow)
     View shadowBottom;
 
-    private YelpPlace currentPlace;
     private GoogleMap mMap;
     private Marker placeMarker;
     private PagerCallbacks pagerCallbacks;
     private int wholeHeight;
     private InviteCreator creator;
     private PlacesAutocompleteAdapter adapter;
+
+    private TextWatcher searchQueryListener = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (!TextUtils.isEmpty(s)) {
+                close.setVisibility(View.GONE);
+                bounceProgressBar.setVisibility(View.VISIBLE);
+                API.googlePlacesAutocomplete(s.toString(), new IRequestable() {
+                    @Override
+                    public void completed(Object... params) {
+                        close.setVisibility(View.VISIBLE);
+                        bounceProgressBar.setVisibility(View.GONE);
+
+                        googlePlaces = (List<GooglePlace>) params[0];
+                        if (googlePlaces != null && googlePlaces.size() != 0) {
+                            adapter.swap(new ArrayList<>(googlePlaces));
+                            collapseMapWithPlaces();
+                        }
+                    }
+
+                    @Override
+                    public void failed(Object... params) {
+                        close.setVisibility(View.VISIBLE);
+                        bounceProgressBar.setVisibility(View.GONE);
+
+                        if (params != null && params.length > 0) {
+                            YoYo.with(Techniques.Shake)
+                                    .playOn(invitePickPlaceCard);
+                            Snackbar.make(invitePickPlaceCard, (String) params[0], Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            } else {
+                expandMapWithPlaces(null);
+//                    adapter.clear();
+            }
+        }
+    };
 
     private GooglePlace googlePlace;
     private List<GooglePlace> googlePlaces;
@@ -157,9 +203,9 @@ public class PickGooglePlaceInviteFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new PlacesAutocompleteAdapter(getActivity());
-        if (getArguments() != null) {
-            currentPlace = (YelpPlace) getArguments().getSerializable(PLACE_FOR_INVITE);
-        }
+//        if (getArguments() != null) {
+//            currentPlace = (YelpPlace) getArguments().getSerializable(PLACE_FOR_INVITE);
+//        }
 
         googlePlace = new GooglePlace();
     }
@@ -289,7 +335,7 @@ public class PickGooglePlaceInviteFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (placeInfoContainer.isShown() && googlePlace != null) {
-                    creator.updateInvite(Invite.from(googlePlace));
+                    creator.updateInviteWithGooglePlace(googlePlace);
                     if (pagerCallbacks != null)
                         pagerCallbacks.next();
                 } else {
@@ -323,53 +369,7 @@ public class PickGooglePlaceInviteFragment extends Fragment {
             }
         });
 
-        invitePlace.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!TextUtils.isEmpty(s)) {
-                    close.setVisibility(View.GONE);
-                    bounceProgressBar.setVisibility(View.VISIBLE);
-                    API.googlePlacesAutocomplete(s.toString(), new IRequestable() {
-                        @Override
-                        public void completed(Object... params) {
-                            close.setVisibility(View.VISIBLE);
-                            bounceProgressBar.setVisibility(View.GONE);
-
-                            googlePlaces = (List<GooglePlace>) params[0];
-                            if (googlePlaces != null && googlePlaces.size() != 0) {
-                                adapter.swap(new ArrayList<>(googlePlaces));
-                                collapseMapWithPlaces();
-                            }
-                        }
-
-                        @Override
-                        public void failed(Object... params) {
-                            close.setVisibility(View.VISIBLE);
-                            bounceProgressBar.setVisibility(View.GONE);
-
-                            if (params != null && params.length > 0) {
-                                YoYo.with(Techniques.Shake)
-                                        .playOn(invitePickPlaceCard);
-                                Snackbar.make(invitePickPlaceCard, (String) params[0], Snackbar.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-                } else {
-                    expandMapWithPlaces(null);
-//                    adapter.clear();
-                }
-            }
-        });
+        invitePlace.addTextChangedListener(searchQueryListener);
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -412,30 +412,51 @@ public class PickGooglePlaceInviteFragment extends Fragment {
         invitePlace.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         invitePlace.setIncludeFontPadding(false);
 
-        if (currentPlace != null) {
+        if (creator.getInvite() != null && creator.getInvite().location != null) {
             placeInfoContainer.setVisibility(View.VISIBLE);
 
-            invitePlace.setText(currentPlace.name);
-            invitePlaceName.setText(currentPlace.name);
+            invitePlace.removeTextChangedListener(searchQueryListener);
+            invitePlace.setText(creator.getInvite().name);
+            invitePlaceName.setText(creator.getInvite().name);
             invitePlaceName.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
             invitePlaceName.setIncludeFontPadding(false);
 
-            invitePlaceAddress.setText(currentPlace.location.address);
+            invitePlaceAddress.setText(creator.getInvite().location.address);
             invitePlaceAddress.setTypeface(TypefaceUtil.PROXIMA_NOVA);
             invitePlaceAddress.setIncludeFontPadding(false);
 
-            ratingView.setRating(currentPlace.rating);
+            ratingView.setRating(creator.getInvite().rating);
 
-            invitePlaceHours.setText(currentPlace.getHours());
-            invitePlaceHours.setTypeface(TypefaceUtil.PROXIMA_NOVA);
-            invitePlaceHours.setIncludeFontPadding(false);
+//            invitePlaceHours.setText(creator.getInvite().getHours());
+//            invitePlaceHours.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+//            invitePlaceHours.setIncludeFontPadding(false);
 
-            search.setVisibility(View.GONE);
-            close.setVisibility(View.GONE);
             myLocation.setVisibility(View.GONE);
-            invitePlace.setVisibility(View.GONE);
-            ((RelativeLayout.LayoutParams) searchContainer.getLayoutParams()).height = getResources().getDimensionPixelSize(R.dimen.search_container_collapsed);
-            searchContainer.requestLayout();
+            googlePlace = GooglePlace.from(creator.getInvite());
+//            placeInfoContainer.setVisibility(View.INVISIBLE);
+//            placeInfoContainer.requestLayout();
+//            expandMapWithPlaces(new Animator.AnimatorListener() {
+//                @Override
+//                public void onAnimationStart(Animator animation) {
+//
+//                }
+//
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    collapseMapWithDetails();
+//                }
+//
+//                @Override
+//                public void onAnimationCancel(Animator animation) {
+//
+//                }
+//
+//                @Override
+//                public void onAnimationRepeat(Animator animation) {
+//
+//                }
+//            });
+            invitePlace.addTextChangedListener(searchQueryListener);
         } else {
             placeInfoContainer.setVisibility(View.GONE);
             ((RelativeLayout.LayoutParams) mapView.getLayoutParams()).addRule(RelativeLayout.ABOVE, R.id.button_next);
@@ -483,10 +504,10 @@ public class PickGooglePlaceInviteFragment extends Fragment {
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMyLocationEnabled(true);
 
-        if (currentPlace != null) {
+        if (creator.getInvite() != null && creator.getInvite().location != null) {
             if (placeMarker == null) {
-                placeMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(currentPlace.location.lat, currentPlace.location.lng)));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentPlace.location.lat, currentPlace.location.lng), 17.0f), new GoogleMap.CancelableCallback() {
+                placeMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(creator.getInvite().location.lat, creator.getInvite().location.lng)));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(creator.getInvite().location.lat, creator.getInvite().location.lng), 17.0f), new GoogleMap.CancelableCallback() {
                     @Override
                     public void onFinish() {
 //                        mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {

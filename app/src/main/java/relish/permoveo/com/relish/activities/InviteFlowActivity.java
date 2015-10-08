@@ -36,6 +36,7 @@ import relish.permoveo.com.relish.interfaces.OnInviteSentListener;
 import relish.permoveo.com.relish.interfaces.PagerCallbacks;
 import relish.permoveo.com.relish.interfaces.RenderCallbacks;
 import relish.permoveo.com.relish.model.Invite;
+import relish.permoveo.com.relish.model.google.GooglePlace;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.util.BlurBuilder;
 import relish.permoveo.com.relish.util.FixedSpeedScroller;
@@ -224,7 +225,6 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
         } else {
             super.onBackPressed();
         }
-
     }
 
     @Override
@@ -277,8 +277,8 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
     }
 
     @Override
-    public void updateInvite(Invite invite) {
-        this.invite = invite;
+    public void updateInviteWithGooglePlace(GooglePlace googlePlace) {
+        this.invite.updateWithGooglePlace(googlePlace);
     }
 
     @Override

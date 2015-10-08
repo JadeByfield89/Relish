@@ -177,7 +177,8 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
             if (contacts != null && contacts.size() > 0) {
                 for (Contact contact : contacts.values()) {
                     for (InvitePerson invited : creator.getInvite().invited) {
-                        if (invited instanceof Contact && ((Contact) invited).number.equals(contact.number)) {
+                        if (invited instanceof Contact && !TextUtils.isEmpty(((Contact) invited).email)
+                                && ((Contact) invited).email.equals(contact.email)) {
                             contact.isSelected = true;
                         }
                     }
