@@ -57,17 +57,13 @@ public class Invite implements Serializable {
         return invite;
     }
 
-    public static Invite from(GooglePlace place) {
-        Invite invite = new Invite();
-        invite.name = place.name;
-        if (!TextUtils.isEmpty(place.getLargeImage()))
-            invite.image = place.getLargeImage();
-        if (!TextUtils.isEmpty(place.phone))
-            invite.phone = place.phone;
-        invite.rating = (float) place.rating;
-        invite.location = new YelpPlace.PlaceLocation(place.address, place.geometry.location.lat, place.geometry.location.lng);
-        invite.mapSnapshot = StaticMapsUtil.buildUrl(place.geometry.location.lat, place.geometry.location.lng);
-        return invite;
+    public void updateWithGooglePlace(GooglePlace place) {
+        name = place.name;
+        image = place.getLargeImage();
+        phone = place.phone;
+        rating = (float) place.rating;
+        location = new YelpPlace.PlaceLocation(place.address, place.geometry.location.lat, place.geometry.location.lng);
+        mapSnapshot = StaticMapsUtil.buildUrl(place.geometry.location.lat, place.geometry.location.lng);
     }
 
     public static Invite from(ParseObject parseObject) {

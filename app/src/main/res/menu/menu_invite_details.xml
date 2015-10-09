@@ -9,9 +9,9 @@
         android:orderInCategory="100"
         app:showAsAction="never"/>
 
-    <item
-        android:id="@+id/action_cancel"
-        android:title="@string/invite_cancel"
-        android:orderInCategory="101"
-        app:showAsAction="never"/>
+    <!--<item-->
+        <!--android:id="@+id/action_cancel"-->
+        <!--android:title="@string/invite_cancel"-->
+        <!--android:orderInCategory="101"-->
+        <!--app:showAsAction="never"/>-->
 </menu>

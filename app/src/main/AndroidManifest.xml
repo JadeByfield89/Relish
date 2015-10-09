@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="relish.permoveo.com.relish"
-    android:installLocation="auto">
+          android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -92,7 +92,7 @@
             android:name=".activities.InviteFlowActivity"
             android:label="@string/title_activity_invite_flow"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"
@@ -100,7 +100,6 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
 
         <service android:name="com.parse.PushService" />
 
@@ -134,7 +133,7 @@
             android:name=".activities.InviteDetailsActivity"
             android:label="@string/title_activity_calculator"
             android:screenOrientation="portrait"
-            android:theme="@style/CustomActionBarTheme"></activity>
+            android:theme="@style/CustomActionBarTheme"/>
         <activity
             android:name=".activities.TipCalculatorActivity"
             android:label="@string/title_activity_add_friends"
@@ -151,11 +150,11 @@
             android:name=".venmo.VenmoWebViewActivity"
             android:label="Venmo Webview Activity"
             android:screenOrientation="portrait" />
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
         <receiver
             android:name=".receivers.ReminderReceiver"
@@ -168,7 +167,11 @@
         <activity
             android:name=".activities.GooglePlaceDetailsActivity"
             android:label="@string/title_activity_google_place_details"
-            android:theme="@style/Theme.MyTheme"></activity>
+            android:theme="@style/Theme.MyTheme"/>
+        <activity
+            android:name=".activities.EditInviteActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

@@ -1,5 +1,7 @@
 package relish.permoveo.com.relish.model.google;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 
 import org.joda.time.DateTime;
@@ -10,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import relish.permoveo.com.relish.gps.GPSTracker;
+import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.LocationUtil;
 
@@ -20,6 +23,7 @@ public class GooglePlace implements Serializable {
     public String name;
     public String reference;
     public String id;
+    private String image;
     @SerializedName("place_id")
     public String placeId;
     public double rating;
@@ -44,6 +48,17 @@ public class GooglePlace implements Serializable {
 //        this.distance = distance;
         this.rating = rating;
         this.priceLevel = priceRanking;
+    }
+
+    public static GooglePlace from(Invite invite) {
+        GooglePlace place = new GooglePlace();
+        place.name = invite.name;
+        place.rating = invite.rating;
+        place.phone = invite.phone;
+        place.address = invite.location.address;
+        place.geometry = new PlaceGeometry(invite.location.lat, invite.location.lng);
+        place.image = invite.image;
+        return place;
     }
 
 
@@ -110,6 +125,7 @@ public class GooglePlace implements Serializable {
     }
 
     public String getLargeImage() {
+        if (!TextUtils.isEmpty(image)) return image;
         if (photos == null || photos.size() == 0) return "";
         String url = ConstantUtil.PLACE_PHOTO_URL +
                 new StringBuilder()
@@ -139,11 +155,20 @@ public class GooglePlace implements Serializable {
 
     public static class PlaceGeometry implements Serializable {
         public Location location;
+
+        public PlaceGeometry(double lat, double lng) {
+            this.location = new Location(lat, lng);
+        }
     }
 
     public static class Location implements Serializable {
         public double lat;
         public double lng;
+
+        public Location(double lat, double lng) {
+            this.lat = lat;
+            this.lng = lng;
+        }
     }
 
 }

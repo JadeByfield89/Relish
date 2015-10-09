@@ -53,9 +53,7 @@ public class InvitePagerAdapter extends FragmentPagerAdapter {
                 }
                 else if(getSource() == SOURCE_GOOGLE){
                     Log.d("InvitePagerAdapter", "Source is GOOGLE");
-
                     return currentPlace == null ? new PickGooglePlaceInviteFragment() : PickGooglePlaceInviteFragment.newInstance(currentPlace);
-
                 }
             case 1:
                 return new FriendsInviteFragment();

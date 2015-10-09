@@ -75,8 +75,7 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class
-        SendInviteFragment extends Fragment implements RenderCallbacks {
+public class SendInviteFragment extends Fragment implements RenderCallbacks {
 
     @Bind(R.id.invite_send_date_desc)
     TextView sendDateDesc;
@@ -199,103 +198,23 @@ public class
                                         inviteObject.put("inviteId", idSuffix);
                                         inviteObject.saveInBackground();
 
+                                        sendInviteViaSMS();
+                                        sendInviteViaTwitter();
+                                        sendInviteViaEmail(idSuffix);
+                                        sendInviteViaPush(inviteObject);
 
-                                        //SENT VIA TWITTER IF TWITTER CONTACT WAS SELECTED
-                                        TwitterInviteManager twitterManager = new TwitterInviteManager();
-                                        for (InvitePerson person : creator.getInvite().invited) {
-                                            if (person instanceof Contact) {
-                                                if (TextUtils.isEmpty(person.number) && TextUtils.isEmpty(((Contact) person).email) && !TextUtils.isEmpty(((Contact) person).twitterUsername)) {
-                                                    String inviteMessage = ((Contact) person).twitterUsername + ", " + "@" + SharedPrefsUtil.get.getTwitterUsername() + " has invited you to lunch!";
-                                                    twitterManager.sendTwitterInvite(inviteMessage);
-                                                }
-                                            }
-                                        }
-
-                                        // Get a count of all Invite objects currently in parse
-                                        // and assign that count to be this invite's id
-                                        //ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
-                                        //invitesQuery.countInBackground(new CountCallback() {
-                                        //public void done(final int count, ParseException e) {
-                                        //if (e == null) {
-                                        //Log.d("SendInviteFragment", "Parse Invites count-> " + count);
-
-                                        //inviteObject.put("inviteId", count);
-                                        //inviteObject.saveInBackground();
-
-                                        // SEND VIA SMS IF PHONE CONTACTS WERE SELECTED
-                                        TwilioSmsManager manager = new TwilioSmsManager();
-                                        for (InvitePerson person : creator.getInvite().invited) {
-                                            if (person instanceof Contact) {
-                                                if (!TextUtils.isEmpty(person.number)) {
-                                                    String senderName = UserUtils.getFullName();
-                                                    String smsMessage = String.format(getString(R.string.share_sms_message),
-                                                            senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), idSuffix, idSuffix, idSuffix);
-
-                                                    if (!TextUtils.isEmpty(person.number)) {
-                                                        manager.sendInviteSmsViaTwilio(person.number, smsMessage);
-                                                    } else {
-                                                        Log.d("SendInviteFragment", "Can't send SMS, contact number is empty");
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        // SEND INVITE VIA EMAIL IF EMAIL CONTACTS WERE SELECTED
-                                        for (InvitePerson person : creator.getInvite().invited) {
-                                            if (person instanceof Contact) {
-                                                if (TextUtils.isEmpty(person.number) && !TextUtils.isEmpty(((Contact) person).email)) {
-                                                    Log.d("SendInviteFragment", "Sending invite to " + ((Contact) person).email);
-                                                    creator.getInvite().inviteId = idSuffix;
-                                                    EmailInviteManager emailInviteManager = new EmailInviteManager((Contact) person, creator.getInvite());
-                                                    emailInviteManager.sendEmailInvite(new OnInviteSentListener() {
-                                                        @Override
-                                                        public void onInviteSent(boolean success) {
-
-                                                        }
-                                                    });
-
-                                                }
-                                            }
-
-                                        }
-
-                                        //}
-                                        //}
-                                        //});
-
-
-                                        // SENDING INVITE VIA PUSH NOTIFICATIONS
-                                        ArrayList<String> friendsIds = new ArrayList<>();
-                                        for (InvitePerson person : creator.getInvite().invited) {
-                                            if (person instanceof Friend)
-                                                friendsIds.add(((Friend) person).id);
-                                        }
-
-                                        ParsePush parsePush = new ParsePush();
-                                        ParseQuery pQuery = ParseInstallation.getQuery();
-                                        pQuery.whereContainedIn("userId", friendsIds);
-                                        JSONObject pushData = new JSONObject();
-                                        try {
-                                            pushData.put(ConstantUtil.SENDER_IMAGE_KEY, UserUtils.getUserAvatar());
-                                            pushData.put("id", inviteObject.getObjectId());
-                                            pushData.put("type", Invite.InviteType.RECEIVED.toString());
-                                            pushData.put("title", creator.getInvite().title);
-                                            pushData.put("alert", String.format(getString(R.string.share_push_message),
-                                                    UserUtils.getFirstName(), creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime()));
-                                        } catch (JSONException e1) {
-                                            e1.printStackTrace();
-                                        }
-                                        parsePush.setQuery(pQuery);
-                                        parsePush.setData(pushData);
-                                        parsePush.sendInBackground();
                                         startSendAnimation(inviteSendRoot);
+                                        mListener.onInviteSent(true);
+                                        FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITE_SENT);
+
 
                                     }
                                 });
-                            FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITE_SENT);
 
 
-                        } else {
+                        } else
+
+                        {
                             if (isAdded()) {
                                 sendButton.setText(getString(R.string.invite_send));
                                 sendButton.setEnabled(true);
@@ -303,91 +222,185 @@ public class
                                 Snackbar.make(inviteSendCard, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
                             }
                         }
+
+
                     }
                 });
             }
-        });
 
+
+            private void sendInviteViaSMS() {
+                // SEND VIA SMS IF PHONE CONTACTS WERE SELECTED
+                TwilioSmsManager manager = new TwilioSmsManager();
+                for (InvitePerson person : creator.getInvite().invited) {
+                    if (person instanceof Contact) {
+                        if (!TextUtils.isEmpty(person.number)) {
+                            String senderName = UserUtils.getFullName();
+                            String smsMessage = String.format(getString(R.string.share_sms_message),
+                                    senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), idSuffix, idSuffix, idSuffix);
+
+                            if (!TextUtils.isEmpty(person.number)) {
+                                manager.sendInviteSmsViaTwilio(person.number, smsMessage);
+                            } else {
+                                Log.d("SendInviteFragment", "Can't send SMS, contact number is empty");
+                            }
+                        }
+                    }
+                }
+            }
+
+            private void sendInviteViaTwitter() {
+                //SENT VIA TWITTER IF TWITTER CONTACT WAS SELECTED
+                TwitterInviteManager twitterManager = new TwitterInviteManager();
+                for (InvitePerson person : creator.getInvite().invited) {
+                    if (person instanceof Contact) {
+                        if (TextUtils.isEmpty(person.number) && TextUtils.isEmpty(((Contact) person).email) && !TextUtils.isEmpty(((Contact) person).twitterUsername)) {
+                            String inviteMessage = ((Contact) person).twitterUsername + ", " + "@" + SharedPrefsUtil.get.getTwitterUsername() + " has invited you to lunch!";
+                            twitterManager.sendTwitterInvite(inviteMessage);
+                        }
+                    }
+                }
+            }
+
+            private void sendInviteViaEmail(String idSuffix) {
+                // SEND INVITE VIA EMAIL IF EMAIL CONTACTS WERE SELECTED
+                for (InvitePerson person : creator.getInvite().invited) {
+                    if (person instanceof Contact) {
+                        if (TextUtils.isEmpty(person.number) && !TextUtils.isEmpty(((Contact) person).email)) {
+                            Log.d("SendInviteFragment", "Sending invite to " + ((Contact) person).email);
+                            creator.getInvite().inviteId = idSuffix;
+                            EmailInviteManager emailInviteManager = new EmailInviteManager((Contact) person, creator.getInvite());
+                            emailInviteManager.sendEmailInvite(new OnInviteSentListener() {
+                                @Override
+                                public void onInviteSent(boolean success) {
+
+                                }
+                            });
+
+                        }
+                    }
+
+                }
+            }
+
+            private void sendInviteViaPush(final ParseObject inviteObject) {
+                ArrayList<String> friendsIds = new ArrayList<>();
+                for (
+                        InvitePerson person
+                        : creator.getInvite().invited)
+
+                {
+                    if (person instanceof Friend)
+                        friendsIds.add(((Friend) person).id);
+                }
+
+
+                ParsePush parsePush = new ParsePush();
+                ParseQuery pQuery = ParseInstallation.getQuery();
+                pQuery.whereContainedIn("userId", friendsIds);
+                JSONObject pushData = new JSONObject();
+                try
+
+                {
+                    pushData.put(ConstantUtil.SENDER_IMAGE_KEY, UserUtils.getUserAvatar());
+                    pushData.put("id", inviteObject.getObjectId());
+                    pushData.put("type", Invite.InviteType.RECEIVED.toString());
+                    pushData.put("title", creator.getInvite().title);
+                    pushData.put("alert", String.format(getString(R.string.share_push_message),
+                            UserUtils.getFirstName(), creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime()));
+                } catch (
+                        JSONException e1
+                        )
+
+                {
+                    e1.printStackTrace();
+                }
+
+                parsePush.setQuery(pQuery);
+                parsePush.setData(pushData);
+                parsePush.sendInBackground();
+            }
+
+
+            private void startSendAnimation(View view) {
+                YoYo.with(Techniques.ZoomOutRight).duration(500).withListener(new com.nineoldandroids.animation.Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(com.nineoldandroids.animation.Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(com.nineoldandroids.animation.Animator animation) {
+                        mListener.onInviteSent(true);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(com.nineoldandroids.animation.Animator animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(com.nineoldandroids.animation.Animator animation) {
+
+                    }
+                }).playOn(view);
+            }
+
+            private void setUpMapIfNeeded() {
+                if (mMap == null) {
+                    mMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map))
+                            .getMap();
+                }
+                if (mMap != null) {
+                    setUpMap();
+                }
+            }
+
+            private void setUpMap() {
+                mMap.getUiSettings().setCompassEnabled(false);
+                mMap.getUiSettings().setZoomGesturesEnabled(false);
+                mMap.getUiSettings().setZoomControlsEnabled(false);
+                mMap.getUiSettings().setRotateGesturesEnabled(false);
+                mMap.getUiSettings().setMyLocationButtonEnabled(false);
+                mMap.getUiSettings().setMapToolbarEnabled(false);
+                mMap.setMyLocationEnabled(false);
+
+                if (creator.getInvite().location != null) {
+                    if (placeMarker == null) {
+                        placeMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(creator.getInvite().location.lat, creator.getInvite().location.lng)));
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(creator.getInvite().location.lat, creator.getInvite().location.lng), 18.0f));
+                    }
+                } else {
+                    if (GPSTracker.get.getLocation() != null) {
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(GPSTracker.get.getLocation().getLatitude(), GPSTracker.get.getLocation().getLongitude()), 18.0f));
+                    }
+                }
+            }
+
+            @Override
+            public void onResume() {
+                super.onResume();
 //        setUpMapIfNeeded();
-    }
-
-    private void startSendAnimation(View view) {
-        YoYo.with(Techniques.ZoomOutRight).duration(500).withListener(new com.nineoldandroids.animation.Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(com.nineoldandroids.animation.Animator animation) {
-
             }
 
             @Override
-            public void onAnimationEnd(com.nineoldandroids.animation.Animator animation) {
-                mListener.onInviteSent(true);
-            }
+            public void render() {
+                if (creator.getInvite() != null) {
+                    sendDate.setText(creator.getInvite().getFormattedDate());
+                    sendTime.setText(creator.getInvite().getFormattedTime());
 
-            @Override
-            public void onAnimationCancel(com.nineoldandroids.animation.Animator animation) {
+                    if (!TextUtils.isEmpty(creator.getInvite().note)) {
+                        sendNoteContainer.setVisibility(View.VISIBLE);
+                        sendNote.setText(creator.getInvite().note);
+                    } else {
+                        sendNoteContainer.setVisibility(View.GONE);
+                    }
 
-            }
+                    Picasso.with(getActivity())
+                            .load(creator.getInvite().mapSnapshot)
+                            .into(mapSnapshot);
 
-            @Override
-            public void onAnimationRepeat(com.nineoldandroids.animation.Animator animation) {
-
-            }
-        }).playOn(view);
-    }
-
-    private void setUpMapIfNeeded() {
-        if (mMap == null) {
-            mMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-        }
-        if (mMap != null) {
-            setUpMap();
-        }
-    }
-
-    private void setUpMap() {
-        mMap.getUiSettings().setCompassEnabled(false);
-        mMap.getUiSettings().setZoomGesturesEnabled(false);
-        mMap.getUiSettings().setZoomControlsEnabled(false);
-        mMap.getUiSettings().setRotateGesturesEnabled(false);
-        mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        mMap.getUiSettings().setMapToolbarEnabled(false);
-        mMap.setMyLocationEnabled(false);
-
-        if (creator.getInvite().location != null) {
-            if (placeMarker == null) {
-                placeMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(creator.getInvite().location.lat, creator.getInvite().location.lng)));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(creator.getInvite().location.lat, creator.getInvite().location.lng), 18.0f));
-            }
-        } else {
-            if (GPSTracker.get.getLocation() != null) {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(GPSTracker.get.getLocation().getLatitude(), GPSTracker.get.getLocation().getLongitude()), 18.0f));
-            }
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-//        setUpMapIfNeeded();
-    }
-
-    @Override
-    public void render() {
-        if (creator.getInvite() != null) {
-            sendDate.setText(creator.getInvite().getFormattedDate());
-            sendTime.setText(creator.getInvite().getFormattedTime());
-
-            if (!TextUtils.isEmpty(creator.getInvite().note)) {
-                sendNoteContainer.setVisibility(View.VISIBLE);
-                sendNote.setText(creator.getInvite().note);
-            } else {
-                sendNoteContainer.setVisibility(View.GONE);
-            }
-
-            Picasso.with(getActivity())
-                    .load(creator.getInvite().mapSnapshot)
-                    .into(mapSnapshot);
+                    sendButton.setText(creator.getInvite().isSent ? getString(R.string.invite_update) : getString(R.string.invite_send));
 
 //            if (!TextUtils.isEmpty(creator.getInvite().mapSnapshot)) {
 //                snapshot.setVisibility(View.VISIBLE);
@@ -397,178 +410,178 @@ public class
 //            } else {
 //            }
 
-            ArrayList<String> avatars = new ArrayList<>();
-            for (InvitePerson person : creator.getInvite().invited) {
-                if (!TextUtils.isEmpty(person.image) && avatars.size() < 3) {
-                    avatars.add(person.image);
+                    ArrayList<String> avatars = new ArrayList<>();
+                    for (InvitePerson person : creator.getInvite().invited) {
+                        if (!TextUtils.isEmpty(person.image) && avatars.size() < 3) {
+                            avatars.add(person.image);
+                        }
+                    }
+                    renderInvited(avatars);
+                } else {
+                    getActivity().finish();
                 }
             }
-            renderInvited(avatars);
-        } else {
-            getActivity().finish();
+
+            private void renderInvited(ArrayList<String> avatars) {
+                inviteLayout.setGravity(Gravity.RIGHT | Gravity.END | Gravity.CENTER_VERTICAL);
+                if (avatars.size() == 0) {
+                    firstPerson.setVisibility(View.GONE);
+                    secondPerson.setVisibility(View.GONE);
+                    thirdPerson.setVisibility(View.GONE);
+                    morePersons.setVisibility(View.VISIBLE);
+                    morePersons.setText(creator.getInvite().invited.size() +
+                            " " + getResources().getQuantityString(R.plurals.persons, creator.getInvite().invited.size()));
+                } else if (avatars.size() == 1) {
+                    firstPerson.setVisibility(View.VISIBLE);
+                    Picasso.with(getActivity())
+                            .load(avatars.get(0))
+                            .placeholder(R.drawable.relish_avatar_placeholder)
+                            .fit()
+                            .centerCrop()
+                            .error(R.drawable.relish_avatar_placeholder)
+                            .into(firstPerson);
+
+                    secondPerson.setVisibility(View.GONE);
+                    thirdPerson.setVisibility(View.GONE);
+                    if (creator.getInvite().invited.size() - 1 != 0) {
+                        morePersons.setVisibility(View.VISIBLE);
+                        morePersons.setText("+ " + (creator.getInvite().invited.size() - 1) + " " + getString(R.string.persons_more));
+                    } else {
+                        morePersons.setVisibility(View.GONE);
+                    }
+                } else if (avatars.size() == 2) {
+                    firstPerson.setVisibility(View.VISIBLE);
+                    Picasso.with(getActivity())
+                            .load(avatars.get(0))
+                            .placeholder(R.drawable.relish_avatar_placeholder)
+                            .fit()
+                            .centerCrop()
+                            .error(R.drawable.relish_avatar_placeholder)
+                            .into(firstPerson);
+
+                    secondPerson.setVisibility(View.VISIBLE);
+                    Picasso.with(getActivity())
+                            .load(avatars.get(1))
+                            .placeholder(R.drawable.relish_avatar_placeholder)
+                            .fit()
+                            .centerCrop()
+                            .error(R.drawable.relish_avatar_placeholder)
+                            .into(secondPerson);
+
+                    thirdPerson.setVisibility(View.GONE);
+                    if (creator.getInvite().invited.size() - 2 != 0) {
+                        morePersons.setVisibility(View.VISIBLE);
+                        morePersons.setText("+ " + (creator.getInvite().invited.size() - 2) + " " + getString(R.string.persons_more));
+                    } else {
+                        morePersons.setVisibility(View.GONE);
+                    }
+                } else if (avatars.size() == 3) {
+                    firstPerson.setVisibility(View.VISIBLE);
+                    Picasso.with(getActivity())
+                            .load(avatars.get(0))
+                            .placeholder(R.drawable.relish_avatar_placeholder)
+                            .fit()
+                            .centerCrop()
+                            .error(R.drawable.relish_avatar_placeholder)
+                            .into(firstPerson);
+
+                    secondPerson.setVisibility(View.VISIBLE);
+                    Picasso.with(getActivity())
+                            .load(avatars.get(1))
+                            .placeholder(R.drawable.relish_avatar_placeholder)
+                            .fit()
+                            .centerCrop()
+                            .error(R.drawable.relish_avatar_placeholder)
+                            .into(secondPerson);
+
+                    thirdPerson.setVisibility(View.VISIBLE);
+                    Picasso.with(getActivity())
+                            .load(avatars.get(2))
+                            .placeholder(R.drawable.relish_avatar_placeholder)
+                            .fit()
+                            .centerCrop()
+                            .error(R.drawable.relish_avatar_placeholder)
+                            .into(thirdPerson);
+
+                    if (creator.getInvite().invited.size() - 3 != 0) {
+                        morePersons.setVisibility(View.VISIBLE);
+                        morePersons.setText("+ " + (creator.getInvite().invited.size() - 3) + " " + getString(R.string.persons_more));
+                    } else {
+                        morePersons.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            private void setDescriptionTypeface() {
+                sendDateDesc.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+                sendSendToDesc.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+                sendTimeDesc.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+            }
+
+            private void setTypeface() {
+                sendNote.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+                morePersons.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+                sendDate.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+                sendTime.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
+            }
+
+            private void sendSMS(String phoneNumber, String message) {
+                String SENT = "SMS_SENT";
+                String DELIVERED = "SMS_DELIVERED";
+
+                PendingIntent sentPI = PendingIntent.getBroadcast(getActivity(), 0,
+                        new Intent(SENT), 0);
+
+                PendingIntent deliveredPI = PendingIntent.getBroadcast(getActivity(), 0,
+                        new Intent(DELIVERED), 0);
+
+                //---when the SMS has been sent---
+                getActivity().registerReceiver(new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context arg0, Intent arg1) {
+                        switch (getResultCode()) {
+                            case Activity.RESULT_OK:
+                                Toast.makeText(getActivity(), "SMS sent",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                            case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                                Toast.makeText(getActivity(), "Generic failure",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                            case SmsManager.RESULT_ERROR_NO_SERVICE:
+                                Toast.makeText(getActivity(), "No service",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                            case SmsManager.RESULT_ERROR_NULL_PDU:
+                                Toast.makeText(getActivity(), "Null PDU",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                            case SmsManager.RESULT_ERROR_RADIO_OFF:
+                                Toast.makeText(getActivity(), "Radio off",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                }, new IntentFilter(SENT));
+
+                //---when the SMS has been delivered---
+                getActivity().registerReceiver(new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context arg0, Intent arg1) {
+                        switch (getResultCode()) {
+                            case Activity.RESULT_OK:
+                                Toast.makeText(getActivity(), "SMS delivered",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                            case Activity.RESULT_CANCELED:
+                                Toast.makeText(getActivity(), "SMS not delivered",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                }, new IntentFilter(DELIVERED));
+
+                SmsManager sms = SmsManager.getDefault();
+                sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+            }
         }
-    }
-
-    private void renderInvited(ArrayList<String> avatars) {
-        inviteLayout.setGravity(Gravity.RIGHT | Gravity.END | Gravity.CENTER_VERTICAL);
-        if (avatars.size() == 0) {
-            firstPerson.setVisibility(View.GONE);
-            secondPerson.setVisibility(View.GONE);
-            thirdPerson.setVisibility(View.GONE);
-            morePersons.setVisibility(View.VISIBLE);
-            morePersons.setText(creator.getInvite().invited.size() +
-                    " " + getResources().getQuantityString(R.plurals.persons, creator.getInvite().invited.size()));
-        } else if (avatars.size() == 1) {
-            firstPerson.setVisibility(View.VISIBLE);
-            Picasso.with(getActivity())
-                    .load(avatars.get(0))
-                    .placeholder(R.drawable.relish_avatar_placeholder)
-                    .fit()
-                    .centerCrop()
-                    .error(R.drawable.relish_avatar_placeholder)
-                    .into(firstPerson);
-
-            secondPerson.setVisibility(View.GONE);
-            thirdPerson.setVisibility(View.GONE);
-            if (creator.getInvite().invited.size() - 1 != 0) {
-                morePersons.setVisibility(View.VISIBLE);
-                morePersons.setText("+ " + (creator.getInvite().invited.size() - 1) + " " + getString(R.string.persons_more));
-            } else {
-                morePersons.setVisibility(View.GONE);
-            }
-        } else if (avatars.size() == 2) {
-            firstPerson.setVisibility(View.VISIBLE);
-            Picasso.with(getActivity())
-                    .load(avatars.get(0))
-                    .placeholder(R.drawable.relish_avatar_placeholder)
-                    .fit()
-                    .centerCrop()
-                    .error(R.drawable.relish_avatar_placeholder)
-                    .into(firstPerson);
-
-            secondPerson.setVisibility(View.VISIBLE);
-            Picasso.with(getActivity())
-                    .load(avatars.get(1))
-                    .placeholder(R.drawable.relish_avatar_placeholder)
-                    .fit()
-                    .centerCrop()
-                    .error(R.drawable.relish_avatar_placeholder)
-                    .into(secondPerson);
-
-            thirdPerson.setVisibility(View.GONE);
-            if (creator.getInvite().invited.size() - 2 != 0) {
-                morePersons.setVisibility(View.VISIBLE);
-                morePersons.setText("+ " + (creator.getInvite().invited.size() - 2) + " " + getString(R.string.persons_more));
-            } else {
-                morePersons.setVisibility(View.GONE);
-            }
-        } else if (avatars.size() == 3) {
-            firstPerson.setVisibility(View.VISIBLE);
-            Picasso.with(getActivity())
-                    .load(avatars.get(0))
-                    .placeholder(R.drawable.relish_avatar_placeholder)
-                    .fit()
-                    .centerCrop()
-                    .error(R.drawable.relish_avatar_placeholder)
-                    .into(firstPerson);
-
-            secondPerson.setVisibility(View.VISIBLE);
-            Picasso.with(getActivity())
-                    .load(avatars.get(1))
-                    .placeholder(R.drawable.relish_avatar_placeholder)
-                    .fit()
-                    .centerCrop()
-                    .error(R.drawable.relish_avatar_placeholder)
-                    .into(secondPerson);
-
-            thirdPerson.setVisibility(View.VISIBLE);
-            Picasso.with(getActivity())
-                    .load(avatars.get(2))
-                    .placeholder(R.drawable.relish_avatar_placeholder)
-                    .fit()
-                    .centerCrop()
-                    .error(R.drawable.relish_avatar_placeholder)
-                    .into(thirdPerson);
-
-            if (creator.getInvite().invited.size() - 3 != 0) {
-                morePersons.setVisibility(View.VISIBLE);
-                morePersons.setText("+ " + (creator.getInvite().invited.size() - 3) + " " + getString(R.string.persons_more));
-            } else {
-                morePersons.setVisibility(View.GONE);
-            }
-        }
-    }
-
-    private void setDescriptionTypeface() {
-        sendDateDesc.setTypeface(TypefaceUtil.PROXIMA_NOVA);
-        sendSendToDesc.setTypeface(TypefaceUtil.PROXIMA_NOVA);
-        sendTimeDesc.setTypeface(TypefaceUtil.PROXIMA_NOVA);
-    }
-
-    private void setTypeface() {
-        sendNote.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
-        morePersons.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
-        sendDate.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
-        sendTime.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
-    }
-
-    private void sendSMS(String phoneNumber, String message) {
-        String SENT = "SMS_SENT";
-        String DELIVERED = "SMS_DELIVERED";
-
-        PendingIntent sentPI = PendingIntent.getBroadcast(getActivity(), 0,
-                new Intent(SENT), 0);
-
-        PendingIntent deliveredPI = PendingIntent.getBroadcast(getActivity(), 0,
-                new Intent(DELIVERED), 0);
-
-        //---when the SMS has been sent---
-        getActivity().registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context arg0, Intent arg1) {
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(getActivity(), "SMS sent",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        Toast.makeText(getActivity(), "Generic failure",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        Toast.makeText(getActivity(), "No service",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NULL_PDU:
-                        Toast.makeText(getActivity(), "Null PDU",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        Toast.makeText(getActivity(), "Radio off",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        }, new IntentFilter(SENT));
-
-        //---when the SMS has been delivered---
-        getActivity().registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context arg0, Intent arg1) {
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(getActivity(), "SMS delivered",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        Toast.makeText(getActivity(), "SMS not delivered",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        }, new IntentFilter(DELIVERED));
-
-        SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
-    }
-}
