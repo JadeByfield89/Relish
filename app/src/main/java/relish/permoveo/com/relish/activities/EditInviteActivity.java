@@ -37,6 +37,7 @@ import relish.permoveo.com.relish.interfaces.OnInviteSentListener;
 import relish.permoveo.com.relish.interfaces.PagerCallbacks;
 import relish.permoveo.com.relish.interfaces.RenderCallbacks;
 import relish.permoveo.com.relish.manager.EmailInviteManager;
+import relish.permoveo.com.relish.manager.TwitterInviteManager;
 import relish.permoveo.com.relish.model.Contact;
 import relish.permoveo.com.relish.model.Friend;
 import relish.permoveo.com.relish.model.Invite;
@@ -46,6 +47,7 @@ import relish.permoveo.com.relish.model.yelp.YelpPlace;
 import relish.permoveo.com.relish.util.BlurBehind;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.FixedSpeedScroller;
+import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TwilioSmsManager;
 import relish.permoveo.com.relish.util.UserUtils;
 import relish.permoveo.com.relish.view.NonSwipeableViewPager;
@@ -330,6 +332,16 @@ public class EditInviteActivity extends RelishActivity implements PagerCallbacks
                 }
             }
 
+        }
+
+        TwitterInviteManager twitterManager = new TwitterInviteManager();
+        for (InvitePerson person : invite.invited) {
+            if (person instanceof Contact) {
+                if (TextUtils.isEmpty(person.number) && TextUtils.isEmpty(((Contact) person).email) && !TextUtils.isEmpty(((Contact) person).twitterUsername)) {
+                    String inviteMessage = ((Contact) person).twitterUsername + ", " + "@" + SharedPrefsUtil.get.getTwitterUsername() + " has invited you to lunch!";
+                    twitterManager.sendTwitterInvite(inviteMessage);
+                }
+            }
         }
 
         // SENDING INVITE VIA PUSH NOTIFICATIONS

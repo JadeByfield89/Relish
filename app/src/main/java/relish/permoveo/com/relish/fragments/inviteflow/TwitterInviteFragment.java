@@ -22,7 +22,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseFile;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,7 +42,6 @@ import relish.permoveo.com.relish.interfaces.ISelectable;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.model.Contact;
 import relish.permoveo.com.relish.model.InvitePerson;
-
 import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.BounceProgressBar;
@@ -262,6 +269,31 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
                         Log.d("TwitterInviteFragment", "Follower username -> " + contact.twitterUsername);
 
                         contact.image = user.getProfileImageURL();
+
+                        if (!TextUtils.isEmpty(contact.image)) {
+                            try {
+                                URL url = new URL(contact.image);
+                                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                connection.setDoInput(true);
+                                connection.connect();
+                                InputStream inputStream = connection.getInputStream();
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                try {
+                                    byte[] buf = new byte[1024];
+                                    int n;
+                                    while (-1 != (n = inputStream.read(buf)))
+                                        baos.write(buf, 0, n);
+
+                                    String fileName = "avatar" + UUID.randomUUID().toString() + ".jpg";
+                                    contact.imageFile = new ParseFile(fileName, baos.toByteArray());
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
                         followersList.add(contact);
                         //} else {
                         //  break;

@@ -3,12 +3,9 @@ package relish.permoveo.com.relish.manager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.parse.CountCallback;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -272,11 +269,19 @@ public class InvitesManager {
                         emailQuery.whereEqualTo("contactEmail", contact.email);
                     }
 
+                    ParseQuery<ParseObject> twitterQuery = null;
+                    if (!TextUtils.isEmpty(contact.twitterUsername)) {
+                        twitterQuery = ParseQuery.getQuery("Contact");
+                        twitterQuery.whereEqualTo("twitterUsername", contact.twitterUsername);
+                    }
+
                     ArrayList<ParseQuery<ParseObject>> queries = new ArrayList<>();
                     if (phoneQuery != null)
                         queries.add(phoneQuery);
                     if (emailQuery != null)
                         queries.add(emailQuery);
+                    if (twitterQuery != null)
+                        queries.add(twitterQuery);
 
                     ParseQuery<ParseObject> query = ParseQuery.or(queries);
                     try {
@@ -290,6 +295,8 @@ public class InvitesManager {
                                 contactObj.put("contactEmail", contact.email);
                             if (!TextUtils.isEmpty(contact.number))
                                 contactObj.put("contactNumber", contact.number);
+                            if (!TextUtils.isEmpty(contact.twitterUsername))
+                                contactObj.put("twitterUsername", contact.twitterUsername);
                             if (!TextUtils.isEmpty(contact.image) && contact.imageFile != null) {
                                 contactObj.put("avatar", contact.imageFile);
                             }
@@ -439,11 +446,19 @@ public class InvitesManager {
                         emailQuery.whereEqualTo("contactEmail", contact.email);
                     }
 
+                    ParseQuery<ParseObject> twitterQuery = null;
+                    if (!TextUtils.isEmpty(contact.twitterUsername)) {
+                        twitterQuery = ParseQuery.getQuery("Contact");
+                        twitterQuery.whereEqualTo("twitterUsername", contact.twitterUsername);
+                    }
+
                     ArrayList<ParseQuery<ParseObject>> queries = new ArrayList<>();
                     if (phoneQuery != null)
                         queries.add(phoneQuery);
                     if (emailQuery != null)
                         queries.add(emailQuery);
+                    if (twitterQuery != null)
+                        queries.add(twitterQuery);
 
                     ParseQuery<ParseObject> query = ParseQuery.or(queries);
                     try {
@@ -457,6 +472,8 @@ public class InvitesManager {
                                 contactObj.put("contactEmail", contact.email);
                             if (!TextUtils.isEmpty(contact.number))
                                 contactObj.put("contactNumber", contact.number);
+                            if (!TextUtils.isEmpty(contact.twitterUsername))
+                                contactObj.put("twitterUsername", contact.twitterUsername);
                             if (!TextUtils.isEmpty(contact.image) && contact.imageFile != null) {
                                 contactObj.put("avatar", contact.imageFile);
                             }
@@ -660,6 +677,8 @@ public class InvitesManager {
                         contact.number = contactObj.getString("contactNumber");
                     if (contactObj.containsKey("contactEmail"))
                         contact.email = contactObj.getString("contactEmail");
+                    if (contactObj.containsKey("twitterUsername"))
+                        contact.twitterUsername = contactObj.getString("twitterUsername");
                     if (contactObj.containsKey("avatar")) {
                         ParseFile parseFile = (ParseFile) contactObj.get("avatar");
                         contact.image = parseFile.getUrl();

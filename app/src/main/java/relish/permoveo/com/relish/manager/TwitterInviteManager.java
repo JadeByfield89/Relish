@@ -12,7 +12,7 @@ import org.scribe.model.Verb;
  */
 public class TwitterInviteManager {
 
-    private static final String TWITTER_POST_URL = "www.relishwith.us/send_twitter.php";
+    private static final String TWITTER_POST_URL = "http://www.relishwith.us/send_twitter.php";
 
     public void sendTwitterInvite(final String inviteMessage){
         new SendTwitterInviteTask().execute(inviteMessage);
