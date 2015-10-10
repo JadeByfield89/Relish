@@ -198,20 +198,20 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                         inviteObject.put("inviteId", idSuffix);
                                         inviteObject.saveInBackground();
 
-                                        sendInviteViaSMS();
+                                        sendInviteViaSMS(idSuffix);
                                         sendInviteViaTwitter();
                                         sendInviteViaEmail(idSuffix);
                                         sendInviteViaPush(inviteObject);
 
-                                        startSendAnimation(inviteSendRoot);
-                                        mListener.onInviteSent(true);
-                                        FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITE_SENT);
-
-
                                     }
+
+
+
+
                                 });
 
-
+                            startSendAnimation(inviteSendRoot);
+                            FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITE_SENT);
                         } else
 
                         {
@@ -227,9 +227,11 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                     }
                 });
             }
+        });
+    }
 
 
-            private void sendInviteViaSMS() {
+            private void sendInviteViaSMS(String idSuffix) {
                 // SEND VIA SMS IF PHONE CONTACTS WERE SELECTED
                 TwilioSmsManager manager = new TwilioSmsManager();
                 for (InvitePerson person : creator.getInvite().invited) {
@@ -585,3 +587,4 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                 sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
             }
         }
+
