@@ -10,6 +10,7 @@ public class FlurryConstantUtil {
 
     public static class EVENT{
         public static final String INVITE_SENT = "invite_sent";
+        public static final String INVITE_UPDATED = "invite_updated";
         public static final String INVITE_OPENED = "invite_opened";
         public static final String PLACE_DETAILS_FAB_TOUCHED = "place_details_fab_touched";
         public static final String INVITES_FRAGMENT_FAB_TOUCHED = "invites_fragment_fab_touched";

@@ -10,6 +10,7 @@ import relish.permoveo.com.relish.fragments.inviteflow.FriendsInviteFragment;
 import relish.permoveo.com.relish.fragments.inviteflow.PickYelpPlaceInviteFragment;
 import relish.permoveo.com.relish.fragments.inviteflow.PickGooglePlaceInviteFragment;
 import relish.permoveo.com.relish.fragments.inviteflow.SendInviteFragment;
+import relish.permoveo.com.relish.fragments.inviteflow.UpdateInviteFragment;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
 
 /**
@@ -23,6 +24,7 @@ public class InvitePagerAdapter extends FragmentPagerAdapter {
     private static final int SOURCE_YELP = 1;
     private static final int SOURCE_GOOGLE = 0;
     private int source = 1;
+    private boolean isUpdateMode = false;
 
 
     public InvitePagerAdapter(FragmentManager manager) {
@@ -32,6 +34,10 @@ public class InvitePagerAdapter extends FragmentPagerAdapter {
     public InvitePagerAdapter(FragmentManager manager, YelpPlace currentPlace) {
         super(manager);
         this.currentPlace = currentPlace;
+    }
+
+    public void updateMode() {
+        isUpdateMode = true;
     }
 
     public void setSource(int source){
@@ -60,7 +66,7 @@ public class InvitePagerAdapter extends FragmentPagerAdapter {
             case 2:
                 return new DetailsInviteFragment();
             case 3:
-                return new SendInviteFragment();
+                return isUpdateMode ? new UpdateInviteFragment() : new SendInviteFragment();
             default:
                 return null;
         }

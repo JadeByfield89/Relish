@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -31,7 +30,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.ViewTreeObserver;
-import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -745,10 +743,11 @@ public class YelpPlaceDetailsActivity extends RelishActivity implements Observab
 
         //fab animation
         boolean isSignificantDelta = Math.abs(scrollY - lastScrollY) > mScrollThreshold;
+
         if (isSignificantDelta) {
             if (scrollY > lastScrollY) {
                 //to bottom
-                if (!AnimationUtils.wasAnimatedToBottom) {
+                if (!AnimationUtils.wasAnimatedToBottom || alpha < 0.1f) {
                     int y = fakeFabLocation[1] - fabHeight / 2
                             - (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? (int) (placeDetailsFab.getElevation() / 2) : 0)
                             + (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT ? getStatusBarHeight() : 0);

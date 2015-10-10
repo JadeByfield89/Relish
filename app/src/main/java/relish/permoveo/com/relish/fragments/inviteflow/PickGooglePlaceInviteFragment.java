@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -220,10 +219,10 @@ public class PickGooglePlaceInviteFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         try {
-            Fragment fragment = (getFragmentManager().findFragmentById(R.id.map));
-            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.remove(fragment);
-            ft.commit();
+//            Fragment fragment = (getFragmentManager().findFragmentById(R.id.map));
+//            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//            ft.remove(fragment);
+//            ft.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }

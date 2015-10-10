@@ -59,6 +59,8 @@
     <string name="relish_users_search_hint">Username or email</string>
     <string name="progress_button_idle">Add</string>
     <string name="progress_button_completed">Friends</string>
+    <string name="contacts_permission_declined">You didn\'t give an access to your contacts</string>
+    <string name="email_contacts_permission_declined">You didn\'t give an access to your email contacts</string>
     <string name="no_contacts">You don\'t seem to have any contacts</string>
     <string name="no_email_contacts">You don\'t seem to have any email contacts</string>
     <string name="no_results_for_query">No results for your query</string>
@@ -96,6 +98,7 @@
     <string name="friends_error">Put the beer down, and please select some friends for this invite.</string>
 
     <string name="share_message">Share Invite</string>
+    <string name="alert_update_push_message" formatted="false">%s has made a change to your invite!</string>
     <string name="share_sms_message" formatted="false">Hey, your friend %s just invited you to join them at %s, on %s, at %s via Relish! \nInvite Code: %s\n\nReply YES %s to accept your invite, or NO %s to decline. \n\nYou can also download the Relish app to see who else is going, and get more details at http://relishwith.us</string>
     <string name="share_push_message" formatted="false">Hey, %s has just invited you to eat at %s, on %s, at %s!</string>
     <string name="share_social" formatted="false">I\'ve just invited some friends to join me at %s via the #RelishApp! http://relishwith.us</string>

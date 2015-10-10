@@ -1,9 +1,13 @@
 package relish.permoveo.com.relish.fragments.inviteflow;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -20,15 +24,22 @@ import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.parse.ParseFile;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.list.inviteflow.InviteEmailListAdapter;
+import relish.permoveo.com.relish.interfaces.ContactsLoader;
 import relish.permoveo.com.relish.interfaces.ISelectable;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.model.Contact;
@@ -38,11 +49,11 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
 /**
  * Created by byfieldj on 9/16/15.
  */
-public class EmailInviteFragment extends Fragment implements ISelectable, Filterable {
+public class EmailInviteFragment extends Fragment implements ISelectable, Filterable, ContactsLoader {
 
     private static final String[] PROJECTION = new String[]{ContactsContract.RawContacts._ID,
             ContactsContract.Contacts.DISPLAY_NAME,
-            ContactsContract.Contacts.PHOTO_ID,
+            ContactsContract.Contacts.PHOTO_URI,
             ContactsContract.CommonDataKinds.Email.DATA,
             ContactsContract.CommonDataKinds.Photo.CONTACT_ID};
     @Bind(R.id.email_empty_contacts_container)
@@ -86,8 +97,11 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        new LoadEmailContactsTask().execute();
-
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            new LoadEmailContactsTask().execute();
+        } else if (getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            new LoadEmailContactsTask().execute();
+        }
     }
 
     @Override
@@ -105,6 +119,24 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
     @Override
     public Filter getFilter() {
         return adapter.getFilter();
+    }
+
+    @Override
+    public void loadContactsWithPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED
+                    && getActivity().checkSelfPermission(Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                adapter.clear();
+                contactsProgress.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.GONE);
+                emptyView.setVisibility(View.VISIBLE);
+                emptyMessage.setText(getString(R.string.email_contacts_permission_declined));
+            } else {
+                new LoadEmailContactsTask().execute();
+            }
+        } else {
+            new LoadEmailContactsTask().execute();
+        }
     }
 
     private class LoadEmailContactsTask extends AsyncTask<Void, Void, Map<String, Contact>> {
@@ -133,7 +165,7 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
 
                 if (cur.moveToFirst()) {
                     final int contactIdIndex = cur.getColumnIndex(ContactsContract.Contacts._ID);
-                    final int contactPhotoUriIndex = cur.getColumnIndex(ContactsContract.Contacts.PHOTO_ID);
+                    final int contactPhotoUriIndex = cur.getColumnIndex(ContactsContract.Contacts.PHOTO_URI);
 
                     do {
                         // names comes in hand sometimes
@@ -153,10 +185,29 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
                             contact.email = emlAddr;
                             contact.image = cur.getString(contactPhotoUriIndex);
 
+                            if (!TextUtils.isEmpty(contact.image)) {
+                                InputStream inputStream;
+                                try {
+                                    inputStream = getActivity().getContentResolver().openInputStream(Uri.parse(contact.image));
+                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                    try {
+                                        byte[] buf = new byte[1024];
+                                        int n;
+                                        while (-1 != (n = inputStream.read(buf)))
+                                            baos.write(buf, 0, n);
+
+                                        String fileName = "avatar" + UUID.randomUUID().toString() + ".jpg";
+                                        contact.imageFile = new ParseFile(fileName, baos.toByteArray());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
                             if (!contacts.containsKey(contact.name) && !TextUtils.isEmpty(contact.email))
                                 contacts.put(contact.name, contact);
-
-
                         }
                     } while (cur.moveToNext());
 

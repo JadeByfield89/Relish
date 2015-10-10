@@ -1,6 +1,7 @@
 package relish.permoveo.com.relish.fragments.search;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
@@ -9,9 +10,11 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -42,6 +45,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.list.ContactsAdapter;
+import relish.permoveo.com.relish.interfaces.ContactsLoader;
 import relish.permoveo.com.relish.model.Contact;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 import relish.permoveo.com.relish.view.BounceProgressBar;
@@ -49,7 +53,7 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ContactsFragment extends Fragment {
+public class ContactsFragment extends Fragment implements ContactsLoader {
 
     private static final String[] PROJECTION = new String[]{
             ContactsContract.CommonDataKinds.Phone._ID,
@@ -59,6 +63,8 @@ public class ContactsFragment extends Fragment {
     };
     @Bind(R.id.empty_contacts_container)
     LinearLayout emptyView;
+    @Bind(R.id.empty_message)
+    TextView emptyMessage;
     @Bind(R.id.bounce_progress)
     BounceProgressBar contactsProgress;
     @Bind(R.id.contacts_recycler)
@@ -158,7 +164,6 @@ public class ContactsFragment extends Fragment {
         dialog.show();
         dialog.getWindow().setLayout(1000, 1000);
 
-
     }
 
     private void sendSMSMessage(final Contact contact) {
@@ -192,12 +197,19 @@ public class ContactsFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_contacts, container, false);
         ButterKnife.bind(this, v);
 
+        emptyMessage.setTypeface(TypefaceUtil.PROXIMA_NOVA);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(false);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-        new LoadContactsTask().execute();
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            new LoadContactsTask().execute();
+        } else if (getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            new LoadContactsTask().execute();
+        }
         return v;
     }
 
@@ -234,6 +246,24 @@ public class ContactsFragment extends Fragment {
                 return true;
             }
         });
+    }
+
+    @Override
+    public void loadContactsWithPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED
+                    && getActivity().checkSelfPermission(Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                adapter.clear();
+                contactsProgress.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.GONE);
+                emptyView.setVisibility(View.VISIBLE);
+                emptyMessage.setText(getString(R.string.contacts_permission_declined));
+            } else {
+                new LoadContactsTask().execute();
+            }
+        } else {
+            new LoadContactsTask().execute();
+        }
     }
 
     private class LoadContactsTask extends AsyncTask<Void, Void, Map<String, Contact>> {

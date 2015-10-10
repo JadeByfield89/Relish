@@ -10,6 +10,7 @@ import org.scribe.model.Response;
 import org.scribe.model.Verb;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
@@ -49,7 +50,7 @@ public class SearchRequest extends RelishRequest<Integer, Void, PlacesResponse> 
         Integer page = params[0];
         OAuthRequest request = new OAuthRequest(Verb.GET, ConstantUtil.YELP_PLACES_SEARCH_URL);
         request.addQuerystringParameter("limit", String.valueOf(ConstantUtil.PLACES_LIMIT_SEARCH));
-        //request.addQuerystringParameter("ll", "25.7826123" + "," + "-80.1340772");
+//        request.addQuerystringParameter("ll", "25.7826123" + "," + "-80.1340772");
        request.addQuerystringParameter("ll", String.valueOf(GPSTracker.get.getLocation().getLatitude()) + "," + String.valueOf(GPSTracker.get.getLocation().getLongitude()));
 
         request.addQuerystringParameter("offset", String.valueOf(ConstantUtil.PLACES_LIMIT_SEARCH * page));
@@ -105,6 +106,14 @@ public class SearchRequest extends RelishRequest<Integer, Void, PlacesResponse> 
             } else if (!placesResponse.isSuccessful()) {
                 callback.failed(placesResponse.error.text);
             } else {
+                for (Iterator<YelpPlace> iter = placesResponse.restaurants.listIterator(); iter.hasNext(); ) {
+                    YelpPlace place = iter.next();
+                    if (place.location == null) {
+                        Log.d("Places", "Place " + place.name + " was removed because of null location");
+                        iter.remove();
+                    }
+                }
+
                 callback.completed(placesResponse.total, placesResponse.restaurants);
             }
         }

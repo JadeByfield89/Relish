@@ -13,8 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -22,7 +20,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
-import com.facebook.GraphRequestAsyncTask;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -33,10 +30,9 @@ import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -162,7 +158,7 @@ public class SignupActivity extends RelishActivity {
                 SharedPrefsUtil.get.saveFacebookAccessToken(token);
 
 
-                GraphRequestAsyncTask request = GraphRequest.newMeRequest(token, new GraphRequest.GraphJSONObjectCallback() {
+                GraphRequest request = GraphRequest.newMeRequest(token, new GraphRequest.GraphJSONObjectCallback() {
                     @Override
                     public void onCompleted(JSONObject user, GraphResponse graphResponse) {
 
@@ -176,9 +172,12 @@ public class SignupActivity extends RelishActivity {
 
 
                     }
-                }).executeAsync();
+                });
 
-
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "name,email");
+                request.setParameters(parameters);
+                request.executeAsync();
             }
 
             @Override
@@ -200,7 +199,9 @@ public class SignupActivity extends RelishActivity {
 
 
         if (SharedPrefsUtil.get.getFacebookAccessToken().isEmpty()) {
-            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends", "email"));
+
+            LoginManager.getInstance().logInWithReadPermissions(this, Collections.singletonList("public_profile, user_friends, email"));
+            //loginWithFacebook();
 
         } else {
 

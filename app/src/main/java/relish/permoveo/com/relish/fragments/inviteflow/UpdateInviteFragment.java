@@ -4,16 +4,12 @@ package relish.permoveo.com.relish.fragments.inviteflow;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.telephony.SmsManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,29 +19,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
-import com.flurry.android.FlurryAgent;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.joooonho.SelectableRoundedImageView;
-import com.parse.CountCallback;
 import com.parse.ParseException;
-import com.parse.ParseInstallation;
-import com.parse.ParseObject;
-import com.parse.ParsePush;
-import com.parse.ParseQuery;
 import com.squareup.picasso.Picasso;
 
 import org.joda.time.DateTime;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -53,29 +32,19 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import relish.permoveo.com.relish.R;
-import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.interfaces.OnInviteSentListener;
 import relish.permoveo.com.relish.interfaces.RenderCallbacks;
-import relish.permoveo.com.relish.manager.EmailInviteManager;
 import relish.permoveo.com.relish.manager.InvitesManager;
-import relish.permoveo.com.relish.manager.TwitterInviteManager;
-import relish.permoveo.com.relish.model.Contact;
-import relish.permoveo.com.relish.model.Friend;
-import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.InvitePerson;
 import relish.permoveo.com.relish.util.ConstantUtil;
-import relish.permoveo.com.relish.util.FlurryConstantUtil;
-import relish.permoveo.com.relish.util.SharedPrefsUtil;
-import relish.permoveo.com.relish.util.TwilioSmsManager;
 import relish.permoveo.com.relish.util.TypefaceUtil;
-import relish.permoveo.com.relish.util.UserUtils;
 import relish.permoveo.com.relish.view.BounceProgressBar;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SendInviteFragment extends Fragment implements RenderCallbacks {
+public class UpdateInviteFragment extends Fragment implements RenderCallbacks {
 
     @Bind(R.id.invite_send_date_desc)
     TextView sendDateDesc;
@@ -128,15 +97,12 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
     @Bind(R.id.map_snapshot)
     SelectableRoundedImageView mapSnapshot;
 
-
-    private InviteCreator creator;
-    private GoogleMap mMap;
-    private Marker placeMarker;
-    private OnInviteSentListener mListener;
-
-    public SendInviteFragment() {
+    public UpdateInviteFragment() {
         // Required empty public constructor
     }
+
+    private InviteCreator creator;
+    private OnInviteSentListener mListener;
 
     @Override
     public void onAttach(Activity activity) {
@@ -167,9 +133,9 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                 sendButton.setText("");
                 sendButton.setEnabled(false);
                 progressBar.setVisibility(View.VISIBLE);
-                InvitesManager.createInvite(creator.getInvite(), new InvitesManager.InvitesManagerCallback<ParseObject, ParseException>() {
+                InvitesManager.updateInvite(creator.getInvite(), new InvitesManager.InvitesManagerCallback<String, ParseException>() {
                     @Override
-                    public void done(final ParseObject inviteObject, ParseException e) {
+                    public void done(String s, ParseException e) {
                         if (e == null) {
                             if (isAdded())
                                 getActivity().runOnUiThread(new Runnable() {
@@ -191,190 +157,21 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                             manager.set(AlarmManager.RTC_WAKEUP, when.getMillis() - creator.getInvite().reminder * 1000, pintent);
                                         }
 
-                                        String objectId = inviteObject.getObjectId();
-                                        String idSuffix = objectId.substring(objectId.length() - 3, objectId.length());
-                                        Log.d("SendInviteFragment", "Invite Id -> " + idSuffix);
-                                        idSuffix = idSuffix.toUpperCase();
-                                        inviteObject.put("inviteId", idSuffix);
-                                        inviteObject.saveInBackground();
-
-                                        sendInviteViaSMS(idSuffix);
-                                        sendInviteViaTwitter();
-                                        sendInviteViaEmail(idSuffix);
-                                        sendInviteViaPush(inviteObject);
-
+                                        mListener.onInviteSent(true);
                                     }
-
-
                                 });
-
-                            FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITE_SENT);
-                        } else
-
-                        {
-
+                        } else {
                             if (isAdded()) {
-                                sendButton.setText(getString(R.string.invite_send));
+                                sendButton.setText(getString(R.string.invite_update));
                                 sendButton.setEnabled(true);
                                 progressBar.setVisibility(View.GONE);
                                 Snackbar.make(inviteSendCard, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
                             }
                         }
-
-
                     }
                 });
             }
         });
-    }
-
-
-    private void sendInviteViaSMS(String idSuffix) {
-        // SEND VIA SMS IF PHONE CONTACTS WERE SELECTED
-        TwilioSmsManager manager = new TwilioSmsManager();
-        for (InvitePerson person : creator.getInvite().invited) {
-            if (person instanceof Contact) {
-                if (!TextUtils.isEmpty(person.number)) {
-                    String senderName = UserUtils.getFullName();
-                    String smsMessage = String.format(getString(R.string.share_sms_message),
-                            senderName, creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime(), idSuffix, idSuffix, idSuffix);
-
-                    if (!TextUtils.isEmpty(person.number)) {
-                        manager.sendInviteSmsViaTwilio(person.number, smsMessage);
-                    } else {
-                        Log.d("SendInviteFragment", "Can't send SMS, contact number is empty");
-                    }
-                }
-            }
-        }
-    }
-
-    private void sendInviteViaTwitter() {
-        //SENT VIA TWITTER IF TWITTER CONTACT WAS SELECTED
-        TwitterInviteManager twitterManager = new TwitterInviteManager();
-        for (InvitePerson person : creator.getInvite().invited) {
-            if (person instanceof Contact) {
-                if (TextUtils.isEmpty(person.number) && TextUtils.isEmpty(((Contact) person).email) && !TextUtils.isEmpty(((Contact) person).twitterUsername)) {
-                    String inviteMessage = ((Contact) person).twitterUsername + ", " + "@" + SharedPrefsUtil.get.getTwitterUsername() + " has invited you to lunch!";
-                    twitterManager.sendTwitterInvite(inviteMessage);
-                }
-            }
-        }
-    }
-
-    private void sendInviteViaEmail(String idSuffix) {
-        // SEND INVITE VIA EMAIL IF EMAIL CONTACTS WERE SELECTED
-        for (InvitePerson person : creator.getInvite().invited) {
-            if (person instanceof Contact) {
-                if (TextUtils.isEmpty(person.number) && !TextUtils.isEmpty(((Contact) person).email)) {
-                    Log.d("SendInviteFragment", "Sending invite to " + ((Contact) person).email);
-                    creator.getInvite().inviteId = idSuffix;
-                    EmailInviteManager emailInviteManager = new EmailInviteManager((Contact) person, creator.getInvite());
-                    emailInviteManager.sendEmailInvite(new OnInviteSentListener() {
-                        @Override
-                        public void onInviteSent(boolean success) {
-
-                        }
-                    });
-
-                }
-            }
-
-        }
-    }
-
-    private void sendInviteViaPush(final ParseObject inviteObject) {
-        ArrayList<String> friendsIds = new ArrayList<>();
-        for (
-                InvitePerson person
-                : creator.getInvite().invited)
-
-        {
-            if (person instanceof Friend)
-                friendsIds.add(((Friend) person).id);
-        }
-
-
-        ParsePush parsePush = new ParsePush();
-        ParseQuery pQuery = ParseInstallation.getQuery();
-        pQuery.whereContainedIn("userId", friendsIds);
-        JSONObject pushData = new JSONObject();
-        try
-
-        {
-            pushData.put(ConstantUtil.SENDER_IMAGE_KEY, UserUtils.getUserAvatar());
-            pushData.put("id", inviteObject.getObjectId());
-            pushData.put("type", Invite.InviteType.RECEIVED.toString());
-            pushData.put("title", creator.getInvite().title);
-            pushData.put("alert", String.format(getString(R.string.share_push_message),
-                    UserUtils.getFirstName(), creator.getInvite().name, creator.getInvite().getFormattedDate(), creator.getInvite().getFormattedTime()));
-        } catch (
-                JSONException e1
-                )
-
-        {
-            e1.printStackTrace();
-        }
-
-        parsePush.setQuery(pQuery);
-        parsePush.setData(pushData);
-        parsePush.sendInBackground();
-    }
-
-
-    private void startSendAnimation(View view) {
-        YoYo.with(Techniques.ZoomOutRight).duration(500).withListener(new com.nineoldandroids.animation.Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(com.nineoldandroids.animation.Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(com.nineoldandroids.animation.Animator animation) {
-                mListener.onInviteSent(true);
-            }
-
-            @Override
-            public void onAnimationCancel(com.nineoldandroids.animation.Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(com.nineoldandroids.animation.Animator animation) {
-
-            }
-        }).playOn(view);
-    }
-
-    private void setUpMapIfNeeded() {
-        if (mMap == null) {
-            mMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-        }
-        if (mMap != null) {
-            setUpMap();
-        }
-    }
-
-    private void setUpMap() {
-        mMap.getUiSettings().setCompassEnabled(false);
-        mMap.getUiSettings().setZoomGesturesEnabled(false);
-        mMap.getUiSettings().setZoomControlsEnabled(false);
-        mMap.getUiSettings().setRotateGesturesEnabled(false);
-        mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        mMap.getUiSettings().setMapToolbarEnabled(false);
-        mMap.setMyLocationEnabled(false);
-
-        if (creator.getInvite().location != null) {
-            if (placeMarker == null) {
-                placeMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(creator.getInvite().location.lat, creator.getInvite().location.lng)));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(creator.getInvite().location.lat, creator.getInvite().location.lng), 18.0f));
-            }
-        } else {
-            if (GPSTracker.get.getLocation() != null) {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(GPSTracker.get.getLocation().getLatitude(), GPSTracker.get.getLocation().getLongitude()), 18.0f));
-            }
-        }
     }
 
     @Override
@@ -400,7 +197,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                     .load(creator.getInvite().mapSnapshot)
                     .into(mapSnapshot);
 
-            sendButton.setText(creator.getInvite().isSent ? getString(R.string.invite_update) : getString(R.string.invite_send));
+            sendButton.setText(getString(R.string.invite_update));
 
 //            if (!TextUtils.isEmpty(creator.getInvite().mapSnapshot)) {
 //                snapshot.setVisibility(View.VISIBLE);
@@ -525,64 +322,4 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
         sendTime.setTypeface(TypefaceUtil.PROXIMA_NOVA_BOLD);
     }
 
-    private void sendSMS(String phoneNumber, String message) {
-        String SENT = "SMS_SENT";
-        String DELIVERED = "SMS_DELIVERED";
-
-        PendingIntent sentPI = PendingIntent.getBroadcast(getActivity(), 0,
-                new Intent(SENT), 0);
-
-        PendingIntent deliveredPI = PendingIntent.getBroadcast(getActivity(), 0,
-                new Intent(DELIVERED), 0);
-
-        //---when the SMS has been sent---
-        getActivity().registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context arg0, Intent arg1) {
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(getActivity(), "SMS sent",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        Toast.makeText(getActivity(), "Generic failure",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        Toast.makeText(getActivity(), "No service",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_NULL_PDU:
-                        Toast.makeText(getActivity(), "Null PDU",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        Toast.makeText(getActivity(), "Radio off",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        }, new IntentFilter(SENT));
-
-        //---when the SMS has been delivered---
-        getActivity().registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context arg0, Intent arg1) {
-                switch (getResultCode()) {
-                    case Activity.RESULT_OK:
-                        Toast.makeText(getActivity(), "SMS delivered",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                    case Activity.RESULT_CANCELED:
-                        Toast.makeText(getActivity(), "SMS not delivered",
-                                Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        }, new IntentFilter(DELIVERED));
-
-        SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
-    }
 }
-
