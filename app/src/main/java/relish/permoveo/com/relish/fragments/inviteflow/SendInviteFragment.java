@@ -202,6 +202,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                         sendInviteViaTwitter();
                                         sendInviteViaEmail(idSuffix);
                                         sendInviteViaPush(inviteObject);
+                                        startSendAnimation(inviteSendRoot);
 
                                     }
 
