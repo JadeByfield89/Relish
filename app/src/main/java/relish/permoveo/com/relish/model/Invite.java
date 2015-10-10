@@ -25,6 +25,7 @@ public class Invite implements Serializable {
     public String name;
     public YelpPlace.PlaceLocation location;
     public float rating;
+    public String ratingImage;
     public String phone;
     public String url;
 
@@ -53,6 +54,8 @@ public class Invite implements Serializable {
             invite.phone = place.phone;
         if (!TextUtils.isEmpty(place.url))
             invite.url = place.url;
+        if (!TextUtils.isEmpty(place.rating_img_url))
+            invite.ratingImage = place.rating_img_url;
         invite.rating = place.rating;
         invite.location = place.location;
         invite.mapSnapshot = StaticMapsUtil.buildUrl(place.location.lat, place.location.lng);
@@ -63,6 +66,7 @@ public class Invite implements Serializable {
         name = place.name;
         image = place.getLargeImage();
         phone = place.phone;
+        ratingImage = "";
         rating = (float) place.rating;
         location = new YelpPlace.PlaceLocation(place.address, place.geometry.location.lat, place.geometry.location.lng);
         mapSnapshot = StaticMapsUtil.buildUrl(place.geometry.location.lat, place.geometry.location.lng);
@@ -74,6 +78,8 @@ public class Invite implements Serializable {
         invite.date = parseObject.getLong("date");
         invite.time = parseObject.getLong("time");
         invite.title = parseObject.getString("title");
+        if (parseObject.containsKey("ratingImage"))
+            invite.ratingImage = parseObject.getString("ratingImage");
         if (parseObject.containsKey("placeImage"))
             invite.image = parseObject.getString("placeImage");
         if (parseObject.containsKey("note"))

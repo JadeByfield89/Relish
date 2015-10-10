@@ -498,8 +498,17 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
         } else {
             placeDetailsPhone.setVisibility(View.GONE);
         }
-        ratingView.setLarge(true);
-        ratingView.setRating(invite.rating);
+
+        if (TextUtils.isEmpty(invite.ratingImage)) {
+            ratingView.setVisibility(View.VISIBLE);
+            ratingImage.setVisibility(View.GONE);
+            ratingView.setLarge(true);
+            ratingView.setRating(invite.rating);
+        } else {
+            ratingView.setVisibility(View.GONE);
+            ratingImage.setVisibility(View.VISIBLE);
+            Picasso.with(this).load(invite.ratingImage).fit().into(ratingImage);
+        }
 
         if (!TextUtils.isEmpty(invite.note)) {
             inviteDetailsNote.setVisibility(View.VISIBLE);

@@ -325,6 +325,10 @@ public class InvitesManager {
                 inviteObj.put("date", invite.date);
                 inviteObj.put("time", invite.time);
                 inviteObj.put("title", invite.title);
+                if (!TextUtils.isEmpty(invite.ratingImage))
+                    inviteObj.put("placeName", invite.ratingImage);
+                else
+                    inviteObj.put("placeName", "");
                 inviteObj.put("placeName", invite.name);
                 inviteObj.put("placeRating", invite.rating);
                 inviteObj.put("address", invite.location.address);
@@ -504,6 +508,8 @@ public class InvitesManager {
                 inviteObj.put("date", invite.date);
                 inviteObj.put("time", invite.time);
                 inviteObj.put("title", invite.title);
+                if (!TextUtils.isEmpty(invite.ratingImage))
+                    inviteObj.put("ratingImage", invite.ratingImage);
                 inviteObj.put("placeName", invite.name);
                 inviteObj.put("placeRating", invite.rating);
                 inviteObj.put("address", invite.location.address);
