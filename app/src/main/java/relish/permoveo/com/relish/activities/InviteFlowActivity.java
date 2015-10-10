@@ -1,10 +1,14 @@
 package relish.permoveo.com.relish.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
@@ -31,6 +35,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.pager.InvitePagerAdapter;
+import relish.permoveo.com.relish.interfaces.ContactsLoader;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.interfaces.OnInviteSentListener;
 import relish.permoveo.com.relish.interfaces.PagerCallbacks;
@@ -46,6 +51,7 @@ import relish.permoveo.com.relish.view.NonSwipeableViewPager;
 
 public class InviteFlowActivity extends RelishActivity implements PagerCallbacks, InviteCreator, OnInviteSentListener {
 
+    private static final int CONTACTS_PERMISSION_REQUEST = 222;
     public static final String PLACE_FOR_INVITE_EXTRA = "extra_place_for_invite";
     public static final String IS_INVITE_SENT_EXTRA = "extra_is_invite_sent";
     @Bind(R.id.pager_invite)
@@ -214,6 +220,18 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
                         String.format(getString(R.string.share_social), getInvite().name)));
             }
         });
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS},
+                        CONTACTS_PERMISSION_REQUEST);
+            }
+        }
+
     }
 
     @Override
@@ -311,5 +329,21 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
         super.onActivityResult(requestCode, resultCode, data);
 
         Log.d("InviteFlowAcitivty", "InviteflowActivity onActivityResult");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case CONTACTS_PERMISSION_REQUEST:
+                for (int i = 0; i < invitePagerAdapter.getCount(); i++) {
+                    String name = makeFragmentName(invitePager.getId(), i);
+                    Fragment fragment = getSupportFragmentManager().findFragmentByTag(name);
+                    if (fragment != null && fragment instanceof ContactsLoader) {
+                        ((ContactsLoader) fragment).loadContactsWithPermission();
+                    }
+                }
+                break;
+        }
     }
 }

@@ -156,7 +156,7 @@ public class InvitesManager {
                         pushData.put("id", invite.id);
                         pushData.put("type", Invite.InviteType.RESPONSE.toString());
                         pushData.put("title", invite.title);
-                        pushData.put("alert", String.format(context.getString(R.string.user_response), UserUtils.getUsername()));
+                        pushData.put("alert", String.format(context.getString(R.string.user_response), UserUtils.getFullName()));
                     } catch (JSONException e1) {
                         e1.printStackTrace();
                     }
@@ -196,7 +196,7 @@ public class InvitesManager {
                         pushData.put("id", invite.id);
                         pushData.put("type", Invite.InviteType.RESPONSE.toString());
                         pushData.put("title", invite.title);
-                        pushData.put("alert", String.format(context.getString(R.string.user_response), UserUtils.getUsername()));
+                        pushData.put("alert", String.format(context.getString(R.string.user_response), UserUtils.getFullName()));
                     } catch (JSONException e1) {
                         e1.printStackTrace();
                     }
@@ -216,8 +216,198 @@ public class InvitesManager {
         new CreateInviteWithContactsTask(callback).execute(invite);
     }
 
+    public static void updateInvite(final Invite invite, final InvitesManagerCallback callback) {
+        new UpdateInviteWithContactsTask(callback).execute(invite);
+    }
+
+    public static void retrieveInvite(String id, final InvitesManagerCallback callback) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Invite");
+        query.whereEqualTo("objectId", id);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (e == null) {
+                     if (list != null && list.size() > 0) {
+                        new LoadInvitesWithFriendsTask(ParseUser.getCurrentUser().getObjectId(), callback).execute(new ArrayList<>(list));
+                     } else {
+                         callback.done(null, null);
+                     }
+                } else {
+                    callback.done(null, e);
+                }
+            }
+        });
+    }
+
     public interface InvitesManagerCallback<T1, T2> {
         void done(T1 t1, T2 t2);
+    }
+
+    private static class UpdateInviteWithContactsTask extends AsyncTask<Invite, Void, Invite> {
+
+        private InvitesManagerCallback callback;
+
+        public UpdateInviteWithContactsTask(InvitesManagerCallback callback) {
+            this.callback = callback;
+        }
+
+        @Override
+        protected Invite doInBackground(Invite... params) {
+            Invite invite = params[0];
+            for (int i = 0; i < invite.invited.size(); i++) {
+                InvitePerson person = invite.invited.get(i);
+                if (person instanceof Contact) {
+                    Contact contact = (Contact) person;
+                    // check if the contact already exists
+                    ParseQuery<ParseObject> phoneQuery = null;
+                    if (!TextUtils.isEmpty(contact.number)) {
+                        phoneQuery = ParseQuery.getQuery("Contact");
+                        phoneQuery.whereEqualTo("contactNumber", contact.number);
+                    }
+
+                    ParseQuery<ParseObject> emailQuery = null;
+                    if (!TextUtils.isEmpty(contact.email)) {
+                        emailQuery = ParseQuery.getQuery("Contact");
+                        emailQuery.whereEqualTo("contactEmail", contact.email);
+                    }
+
+                    ArrayList<ParseQuery<ParseObject>> queries = new ArrayList<>();
+                    if (phoneQuery != null)
+                        queries.add(phoneQuery);
+                    if (emailQuery != null)
+                        queries.add(emailQuery);
+
+                    ParseQuery<ParseObject> query = ParseQuery.or(queries);
+                    try {
+                        List<ParseObject> result = query.find();
+                        if (result != null && result.size() > 0) {
+                            ParseObject contactObj = result.get(0);
+                            person.id = contactObj.getObjectId();
+                        } else {
+                            ParseObject contactObj = new ParseObject("Contact");
+                            if (!TextUtils.isEmpty(contact.email))
+                                contactObj.put("contactEmail", contact.email);
+                            if (!TextUtils.isEmpty(contact.number))
+                                contactObj.put("contactNumber", contact.number);
+                            if (!TextUtils.isEmpty(contact.image) && contact.imageFile != null) {
+                                contactObj.put("avatar", contact.imageFile);
+                            }
+                            contactObj.put("contactName", contact.name);
+                            try {
+                                contactObj.save();
+                                person.id = contactObj.getObjectId();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return invite;
+        }
+
+        @Override
+        protected void onPostExecute(Invite invite) {
+            super.onPostExecute(invite);
+            try {
+                final ParseObject inviteObj = ParseObject.createWithoutData("Invite", invite.id);
+                inviteObj.put("mapSnapshot", invite.mapSnapshot);
+                inviteObj.put("date", invite.date);
+                inviteObj.put("time", invite.time);
+                inviteObj.put("title", invite.title);
+                inviteObj.put("placeName", invite.name);
+                inviteObj.put("placeRating", invite.rating);
+                inviteObj.put("address", invite.location.address);
+                inviteObj.put("location", new ParseGeoPoint(invite.location.lat, invite.location.lng));
+                //inviteObj.put("inviteId", currentInviteId);
+                ArrayList<String> invitedContacts = new ArrayList<>();
+                ArrayList<String> invitedFriends = new ArrayList<>();
+                for (InvitePerson person : invite.invited) {
+                    if (person instanceof Contact)
+                        invitedContacts.add(person.id);
+                    else if (person instanceof Friend)
+                        invitedFriends.add(person.id);
+                }
+                inviteObj.addAllUnique("invitedContacts", invitedContacts);
+                inviteObj.addAllUnique("invitedFriends", invitedFriends);
+                if (!TextUtils.isEmpty(invite.image))
+                    inviteObj.put("placeImage", invite.image);
+                else
+                    inviteObj.put("placeImage", "");
+                if (!TextUtils.isEmpty(invite.note))
+                    inviteObj.put("note", invite.note);
+                else
+                    inviteObj.put("note", "");
+                if (!TextUtils.isEmpty(invite.phone))
+                    inviteObj.put("placePhone", invite.phone);
+                else
+                    inviteObj.put("placePhone", "");
+                if (!TextUtils.isEmpty(invite.url))
+                    inviteObj.put("placeUrl", invite.url);
+                else
+                    inviteObj.put("placeUrl", "");
+                inviteObj.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+
+                            //Add invite to Google Calendar
+                            /*if(SharedPrefsUtil.get.isGoogleCalendarSyncEnabled()){
+                                CalendarEventManager manager = new CalendarEventManager(context, currentInvite);
+                                manager.insertEventIntoCalender(new CalendarEventManager.OnEventInsertedListener() {
+                                    @Override
+                                    public void OnEventInserted(boolean succes) {
+                                        if(succes) {
+                                            Log.d("InvitesManager", "Invite added to calendar successfully");
+                                        }else{
+                                            Log.d("InvitesManager", "Error inserting event into calendar!");
+
+                                        }
+                                    }
+                                });
+                            }*/
+
+//
+//                            if (SharedPrefsUtil.get.lastVisibleInvitesCount() == -1) {
+//                                SharedPrefsUtil.get.setLastVisibleInvitesCount(1);
+//                            } else {
+//                                SharedPrefsUtil.get.setLastVisibleInvitesCount(SharedPrefsUtil.get.lastVisibleInvitesCount() + 1);
+//                            }
+
+
+                            // Get a count of all Invite objects currently in parse
+//                            ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
+//                            invitesQuery.countInBackground(new CountCallback() {
+//                                public void done(int count, ParseException e) {
+//                                    if (e == null) {
+//                                        totalInvitesCount = count;
+//                                        Log.d("InvitesManager", "Parse Invites count-> " + count);
+//                                        currentInviteId = count;
+//
+//                                        inviteObj.put("inviteId", currentInviteId);
+//
+//                                        inviteObj.saveInBackground(new SaveCallback() {
+//                                            @Override
+//                                            public void done(ParseException e) {
+//                                            }
+//                                        });
+//                                    }
+//                                }
+//                            });
+
+                            callback.done(inviteObj.getObjectId(), null);
+
+                        } else {
+                            callback.done(null, e);
+                        }
+                    }
+                });
+            } catch (Exception e) {
+                Toast.makeText(context, "An error has occured while sending this invite", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     private static class CreateInviteWithContactsTask extends AsyncTask<Invite, Void, Invite> {
@@ -292,6 +482,7 @@ public class InvitesManager {
                 final ParseObject inviteObj = new ParseObject("Invite");
                 inviteObj.put("creatorId", ParseUser.getCurrentUser().getObjectId());
                 inviteObj.put("mapSnapshot", invite.mapSnapshot);
+//                inviteObj.put("inviteId", invite.inviteId);
                 inviteObj.put("date", invite.date);
                 inviteObj.put("time", invite.time);
                 inviteObj.put("title", invite.title);
@@ -359,7 +550,7 @@ public class InvitesManager {
                                         Log.d("InvitesManager", "Parse Invites count-> " + count);
                                         currentInviteId = count;
 
-                                        inviteObj.put("inviteId", currentInviteId);
+                                        inviteObj.put("inviteId", String.valueOf(currentInviteId));
 
                                         inviteObj.saveInBackground(new SaveCallback() {
                                             @Override
@@ -383,7 +574,7 @@ public class InvitesManager {
         }
     }
 
-        private static class LoadInvitesWithFriendsTask extends AsyncTask<ArrayList<ParseObject>, Void, ArrayList<Invite>> {
+    private static class LoadInvitesWithFriendsTask extends AsyncTask<ArrayList<ParseObject>, Void, ArrayList<Invite>> {
 
             private InvitesManagerCallback callback;
             private String userId;

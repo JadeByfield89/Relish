@@ -29,6 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.pager.FriendsInvitePagerAdapter;
+import relish.permoveo.com.relish.interfaces.ContactsLoader;
 import relish.permoveo.com.relish.interfaces.ISelectable;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.interfaces.PagerCallbacks;
@@ -37,7 +38,7 @@ import relish.permoveo.com.relish.util.TypefaceUtil;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FriendsInviteFragment extends Fragment {
+public class FriendsInviteFragment extends Fragment implements ContactsLoader {
 
     @Bind(R.id.invite_friends_card)
     RelativeLayout inviteFriendsCard;
@@ -206,6 +207,17 @@ public class FriendsInviteFragment extends Fragment {
 
         for (Fragment fragment : getChildFragmentManager().getFragments()) {
             fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void loadContactsWithPermission() {
+        for (int i = 0; i < adapter.getCount(); i++) {
+            String name = makeFragmentName(viewPager.getId(), i);
+            Fragment fragment = getChildFragmentManager().findFragmentByTag(name);
+            if (fragment != null && fragment instanceof ContactsLoader) {
+                ((ContactsLoader) fragment).loadContactsWithPermission();
+            }
         }
     }
 }

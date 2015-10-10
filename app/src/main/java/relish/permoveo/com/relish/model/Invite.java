@@ -51,6 +51,8 @@ public class Invite implements Serializable {
             invite.image = place.getOriginalImage();
         if (!TextUtils.isEmpty(place.phone))
             invite.phone = place.phone;
+        if (!TextUtils.isEmpty(place.url))
+            invite.url = place.url;
         invite.rating = place.rating;
         invite.location = place.location;
         invite.mapSnapshot = StaticMapsUtil.buildUrl(place.location.lat, place.location.lng);
@@ -82,6 +84,8 @@ public class Invite implements Serializable {
             invite.rating = parseObject.getNumber("placeRating").floatValue();
         if (parseObject.containsKey("placeUrl"))
             invite.url = parseObject.getString("placeUrl");
+        if (parseObject.containsKey("inviteId"))
+            invite.inviteId = parseObject.getString("inviteId");
         invite.name = parseObject.getString("placeName");
         invite.mapSnapshot = parseObject.getString("mapSnapshot");
         invite.creatorId = parseObject.getString("creatorId");

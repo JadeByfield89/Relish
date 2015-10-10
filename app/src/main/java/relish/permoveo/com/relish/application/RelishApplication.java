@@ -2,6 +2,7 @@ package relish.permoveo.com.relish.application;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Build;
 import android.support.multidex.MultiDex;
 
 import com.crashlytics.android.Crashlytics;
@@ -26,7 +27,6 @@ import relish.permoveo.com.relish.network.API;
 import relish.permoveo.com.relish.util.ConstantUtil;
 import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
-import twitter4j.User;
 
 /**
  * Created by rom4ek on 20.07.2015.
@@ -56,12 +56,14 @@ public class RelishApplication extends Application {
         ParseInstallation.getCurrentInstallation().saveInBackground();
         FacebookSdk.sdkInitialize(getApplicationContext());
         TypefaceUtil.init(this);
-        GPSTracker.get.init(this);
         API.init(this);
         JodaTimeAndroid.init(this);
         FriendsManager.initialize(this);
         InvitesManager.initialize(this);
         SharedPrefsUtil.get.init(this);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            GPSTracker.get.init(this);
+        }
 
         //Flurry config
         FlurryAgent.setLogEnabled(false);
@@ -75,6 +77,5 @@ public class RelishApplication extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(base);
-
     }
 }

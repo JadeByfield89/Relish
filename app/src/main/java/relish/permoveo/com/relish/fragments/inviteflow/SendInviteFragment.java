@@ -189,7 +189,6 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                             manager.set(AlarmManager.RTC_WAKEUP, when.getMillis() - creator.getInvite().reminder * 1000, pintent);
                                         }
 
-                                        if (!creator.getInvite().isSent) {
                                             // Get a count of all Invite objects currently in parse
                                             // and assign that count to be this invite's id
                                             ParseQuery<ParseObject> invitesQuery = ParseQuery.getQuery("Invite");
@@ -264,16 +263,11 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                             parsePush.setQuery(pQuery);
                                             parsePush.setData(pushData);
                                             parsePush.sendInBackground();
-                                            startSendAnimation(inviteSendRoot);
-                                        } else {
-                                            mListener.onInviteSent(true);
-                                        }
+                                        startSendAnimation(inviteSendRoot);
+
                                     }
                                 });
                             FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITE_SENT);
-
-
-
                         } else {
                             if (isAdded()) {
                                 sendButton.setText(getString(R.string.invite_send));

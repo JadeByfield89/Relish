@@ -1,11 +1,14 @@
 package relish.permoveo.com.relish.fragments.inviteflow;
 
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -36,6 +39,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.list.inviteflow.InviteContactsListAdapter;
+import relish.permoveo.com.relish.interfaces.ContactsLoader;
 import relish.permoveo.com.relish.interfaces.ISelectable;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.model.Contact;
@@ -46,7 +50,7 @@ import relish.permoveo.com.relish.view.BounceProgressBar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ContactsInviteFragment extends Fragment implements ISelectable, Filterable {
+public class ContactsInviteFragment extends Fragment implements ISelectable, Filterable, ContactsLoader {
 
     private static final String[] PROJECTION = new String[]{
             ContactsContract.CommonDataKinds.Phone._ID,
@@ -108,7 +112,11 @@ public class ContactsInviteFragment extends Fragment implements ISelectable, Fil
         recyclerView.setHasFixedSize(false);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-        new LoadContactsTask().execute();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            new LoadContactsTask().execute();
+        } else if (getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            new LoadContactsTask().execute();
+        }
     }
 
     @Override
@@ -133,6 +141,24 @@ public class ContactsInviteFragment extends Fragment implements ISelectable, Fil
     @Override
     public ArrayList<Contact> getSelection() {
         return adapter != null ? adapter.getSelected() : new ArrayList<Contact>();
+    }
+
+    @Override
+    public void loadContactsWithPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED
+                    && getActivity().checkSelfPermission(Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                adapter.clear();
+                contactsProgress.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.GONE);
+                emptyView.setVisibility(View.VISIBLE);
+                emptyMessage.setText(getString(R.string.contacts_permission_declined));
+            } else {
+                new LoadContactsTask().execute();
+            }
+        } else {
+            new LoadContactsTask().execute();
+        }
     }
 
     private class LoadContactsTask extends AsyncTask<Void, Void, Map<String, Contact>> {

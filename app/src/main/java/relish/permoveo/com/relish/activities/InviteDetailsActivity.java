@@ -7,11 +7,13 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.telephony.PhoneNumberUtils;
@@ -47,6 +49,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+import com.viewpagerindicator.CirclePageIndicator;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -56,6 +59,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import relish.permoveo.com.relish.R;
+import relish.permoveo.com.relish.adapter.pager.FakeInvitePagerAdapter;
 import relish.permoveo.com.relish.interfaces.OnBlurCompleteListener;
 import relish.permoveo.com.relish.manager.InvitesManager;
 import relish.permoveo.com.relish.model.Invite;
@@ -64,6 +68,7 @@ import relish.permoveo.com.relish.util.BlurBehind;
 import relish.permoveo.com.relish.util.FlurryConstantUtil;
 import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.util.TypefaceUtil;
+import relish.permoveo.com.relish.view.NonSwipeableViewPager;
 import relish.permoveo.com.relish.view.RatingView;
 
 public class InviteDetailsActivity extends RelishActivity implements ObservableScrollViewCallbacks {
@@ -114,11 +119,22 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
     TextView inviteDetailsNote;
     @Bind(R.id.invite_details_note_title)
     TextView inviteDetailsNoteTitle;
+    @Bind(R.id.invite_details_swipe_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.pager_invite)
+    NonSwipeableViewPager fakeInvitePager;
+    @Bind(R.id.pager_indicator)
+    CirclePageIndicator fakePagerIndicator;
+    @Bind(R.id.fake_edit_layout)
+    RelativeLayout fakeEditLayout;
+
+    private FakeInvitePagerAdapter invitePagerAdapter;
     private Invite invite;
     private int parallaxImageHeight;
     private View currentViewInClmn;
     private int drawingStartLocation;
     private boolean action = false;
+    private boolean fromEdit = false;
     private boolean fromNotification = false;
 
     public static void launch(Activity activity, View transitionImage, View transitionTitle, Invite invite, boolean action) {
@@ -221,6 +237,9 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         getSupportActionBar().setTitle(s);
 
+        swipeRefreshLayout.setEnabled(false);
+        swipeRefreshLayout.setColorSchemeResources(R.color.main_color);
+
         parallaxImageHeight = getResources().getDimensionPixelSize(R.dimen.invite_image_size);
         toolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, getResources().getColor(R.color.main_color)));
         updateToolbar(toolbar);
@@ -234,6 +253,10 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
         });
 
         FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITE_OPENED);
+
+        invitePagerAdapter = new FakeInvitePagerAdapter(getSupportFragmentManager());
+        fakeInvitePager.setAdapter(invitePagerAdapter);
+        fakePagerIndicator.setViewPager(fakeInvitePager);
     }
 
     private void startIntroAnimation() {
@@ -327,15 +350,45 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
                 onBackPressed();
                 break;
             case R.id.action_edit:
-                BlurBehind.getInstance().execute(InviteDetailsActivity.this, new OnBlurCompleteListener() {
+                YoYo.with(Techniques.SlideInUp)
+                        .duration(500)
+                        .withListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+                                fakeEditLayout.setVisibility(View.VISIBLE);
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+
+                            }
+                        })
+                        .playOn(fakeEditLayout);
+                new Handler().postDelayed(new Runnable() {
                     @Override
-                    public void onBlurComplete() {
-                        Intent intent = new Intent(InviteDetailsActivity.this, EditInviteActivity.class);
-                        intent.putExtra(EditInviteActivity.INVITE_EXTRA, invite);
+                    public void run() {
+                        BlurBehind.getInstance().execute(InviteDetailsActivity.this, new OnBlurCompleteListener() {
+                            @Override
+                            public void onBlurComplete() {
+                                Intent intent = new Intent(InviteDetailsActivity.this, EditInviteActivity.class);
+                                intent.putExtra(EditInviteActivity.INVITE_EXTRA, invite);
 //                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivityForResult(intent, EDIT_INVITE_REQUEST);
+                                startActivityForResult(intent, EDIT_INVITE_REQUEST);
+                            }
+                        });
                     }
-                });
+                }, 400);
+
                 break;
         }
 
@@ -345,7 +398,58 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
     @Override
     protected void onResume() {
         super.onResume();
-        renderPlaceDetails();
+        if (!fromEdit)
+            renderPlaceDetails();
+        else {
+            fromEdit = false;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    YoYo.with(Techniques.SlideOutDown)
+                            .duration(500)
+                            .withListener(new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animation) {
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    fakeEditLayout.setVisibility(View.GONE);
+                                    if (swipeRefreshLayout.isRefreshing()) {
+                                        InvitesManager.retrieveInvite(invite.id, new InvitesManager.InvitesManagerCallback<ArrayList<Invite>, ParseException>() {
+                                            @Override
+                                            public void done(ArrayList<Invite> invites, ParseException e) {
+                                                if (invites != null && invites.size() > 0) {
+                                                    invite = invites.get(0);
+
+                                                    SpannableString s = new SpannableString(invite.title);
+                                                    s.setSpan(new TypefaceSpan(InviteDetailsActivity.this, "ProximaNovaBold.ttf"), 0, s.length(),
+                                                            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                                    getSupportActionBar().setTitle(s);
+
+                                                    renderPlaceDetails();
+                                                }
+                                                swipeRefreshLayout.setRefreshing(false);
+                                                swipeRefreshLayout.setEnabled(false);
+                                            }
+                                        });
+                                    }
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animation) {
+
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animation) {
+
+                                }
+                            })
+                            .playOn(fakeEditLayout);
+                }
+            }, 500);
+        }
     }
 
     private void renderPlaceDetails() {
@@ -866,8 +970,13 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == EDIT_INVITE_REQUEST && resultCode == RESULT_OK) {
+        if (requestCode == EDIT_INVITE_REQUEST) {
+            fromEdit = true;
 
+            if (resultCode == RESULT_OK) {
+                swipeRefreshLayout.setEnabled(true);
+                swipeRefreshLayout.setRefreshing(true);
+            }
         }
     }
 }
