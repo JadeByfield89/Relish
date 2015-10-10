@@ -10,6 +10,7 @@ import org.scribe.model.Response;
 import org.scribe.model.Verb;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.IRequestable;
@@ -105,6 +106,14 @@ public class SearchRequest extends RelishRequest<Integer, Void, PlacesResponse> 
             } else if (!placesResponse.isSuccessful()) {
                 callback.failed(placesResponse.error.text);
             } else {
+                for (Iterator<YelpPlace> iter = placesResponse.restaurants.listIterator(); iter.hasNext(); ) {
+                    YelpPlace place = iter.next();
+                    if (place.location == null) {
+                        Log.d("Places", "Place " + place.name + " was removed because of null location");
+                        iter.remove();
+                    }
+                }
+
                 callback.completed(placesResponse.total, placesResponse.restaurants);
             }
         }

@@ -261,8 +261,8 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
 
     @Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
-        Log.d("PlacesFragment", "onScrollChanged");
-        Log.d("PlacesFragment", "onScrollChanged scrollY " + scrollY);
+//        Log.d("PlacesFragment", "onScrollChanged");
+//        Log.d("PlacesFragment", "onScrollChanged scrollY " + scrollY);
         int baseColor = getResources().getColor(R.color.main_color);
         float alpha = Math.min(1, (float) scrollY / parallaxImageHeight);
         toolbarCallbacks.getToolbar().setBackgroundColor(ScrollUtils.getColorWithAlpha(alpha, baseColor));
