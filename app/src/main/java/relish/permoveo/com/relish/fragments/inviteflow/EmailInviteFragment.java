@@ -5,6 +5,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,10 +24,16 @@ import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.parse.ParseFile;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -46,7 +53,7 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
 
     private static final String[] PROJECTION = new String[]{ContactsContract.RawContacts._ID,
             ContactsContract.Contacts.DISPLAY_NAME,
-            ContactsContract.Contacts.PHOTO_ID,
+            ContactsContract.Contacts.PHOTO_URI,
             ContactsContract.CommonDataKinds.Email.DATA,
             ContactsContract.CommonDataKinds.Photo.CONTACT_ID};
     @Bind(R.id.email_empty_contacts_container)
@@ -158,7 +165,7 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
 
                 if (cur.moveToFirst()) {
                     final int contactIdIndex = cur.getColumnIndex(ContactsContract.Contacts._ID);
-                    final int contactPhotoUriIndex = cur.getColumnIndex(ContactsContract.Contacts.PHOTO_ID);
+                    final int contactPhotoUriIndex = cur.getColumnIndex(ContactsContract.Contacts.PHOTO_URI);
 
                     do {
                         // names comes in hand sometimes
@@ -178,10 +185,29 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
                             contact.email = emlAddr;
                             contact.image = cur.getString(contactPhotoUriIndex);
 
+                            if (!TextUtils.isEmpty(contact.image)) {
+                                InputStream inputStream;
+                                try {
+                                    inputStream = getActivity().getContentResolver().openInputStream(Uri.parse(contact.image));
+                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                    try {
+                                        byte[] buf = new byte[1024];
+                                        int n;
+                                        while (-1 != (n = inputStream.read(buf)))
+                                            baos.write(buf, 0, n);
+
+                                        String fileName = "avatar" + UUID.randomUUID().toString() + ".jpg";
+                                        contact.imageFile = new ParseFile(fileName, baos.toByteArray());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                } catch (FileNotFoundException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
                             if (!contacts.containsKey(contact.name) && !TextUtils.isEmpty(contact.email))
                                 contacts.put(contact.name, contact);
-
-
                         }
                     } while (cur.moveToNext());
 
