@@ -35,7 +35,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.joooonho.SelectableRoundedImageView;
-import com.parse.CountCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
@@ -57,6 +56,7 @@ import relish.permoveo.com.relish.gps.GPSTracker;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.interfaces.OnInviteSentListener;
 import relish.permoveo.com.relish.interfaces.RenderCallbacks;
+import relish.permoveo.com.relish.manager.CalendarEventManager;
 import relish.permoveo.com.relish.manager.EmailInviteManager;
 import relish.permoveo.com.relish.manager.InvitesManager;
 import relish.permoveo.com.relish.manager.TwitterInviteManager;
@@ -202,6 +202,16 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                         sendInviteViaTwitter();
                                         sendInviteViaEmail(idSuffix);
                                         sendInviteViaPush(inviteObject);
+
+                                        if (SharedPrefsUtil.get.isGoogleCalendarSyncEnabled()) {
+                                            CalendarEventManager.get.insertEventIntoCalender(creator.getInvite(), new CalendarEventManager.OnEventInsertedListener() {
+                                                @Override
+                                                public void OnEventInserted(boolean succes) {
+
+                                                }
+                                            });
+                                        }
+
                                         startSendAnimation(inviteSendRoot);
 
                                     }

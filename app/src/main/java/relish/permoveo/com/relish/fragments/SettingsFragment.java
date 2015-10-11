@@ -13,17 +13,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.CompoundButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
-import com.twitter.sdk.android.core.models.User;
 
 import java.util.ArrayList;
 
@@ -144,7 +139,7 @@ public class SettingsFragment extends Fragment {
 
             // Log out
             case 15:
-                UserUtils.logoutUser(getContext());
+                UserUtils.logoutUser(getActivity());
                 break;
 
         }

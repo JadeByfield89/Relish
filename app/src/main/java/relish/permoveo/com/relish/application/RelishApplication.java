@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import io.fabric.sdk.android.Fabric;
 import relish.permoveo.com.relish.gps.GPSTracker;
+import relish.permoveo.com.relish.manager.CalendarEventManager;
 import relish.permoveo.com.relish.manager.FriendsManager;
 import relish.permoveo.com.relish.manager.InvitesManager;
 import relish.permoveo.com.relish.model.Contact;
@@ -64,6 +65,7 @@ public class RelishApplication extends Application {
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         TypefaceUtil.init(this);
         API.init(this);
+        CalendarEventManager.get.init(this);
         JodaTimeAndroid.init(this);
         FriendsManager.initialize(this);
         InvitesManager.initialize(this);

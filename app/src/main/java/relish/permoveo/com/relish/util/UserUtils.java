@@ -1,6 +1,6 @@
 package relish.permoveo.com.relish.util;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.util.Base64;
 
@@ -84,11 +84,12 @@ public class UserUtils {
 
     }
 
-    public static void logoutUser(final Context context) {
-
+    public static void logoutUser(final Activity context) {
+        SharedPrefsUtil.get.clearAll();
         ParseUser.logOutInBackground();
         Intent intent = new Intent(context, SignupActivity.class);
         context.startActivity(intent);
+        context.finish();
     }
 
 

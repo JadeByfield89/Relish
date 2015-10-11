@@ -297,7 +297,6 @@ public class LoginActivity extends RelishActivity {
         }
     }
 
-
     private boolean validate() {
         if (TextUtils.isEmpty(emailEt.getText())) {
             Snackbar.make(passwordEt, getString(R.string.error_email_empty), Snackbar.LENGTH_LONG).show();
