@@ -10,6 +10,7 @@ import com.digits.sdk.android.Digits;
 import com.facebook.FacebookSdk;
 import com.flurry.android.FlurryAgent;
 import com.parse.Parse;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
@@ -54,7 +55,13 @@ public class RelishApplication extends Application {
         Fabric.with(this, new Crashlytics(), new TwitterCore(authConfig), new Digits());
         Parse.initialize(this, ConstantUtil.PARSE_APPLICATION_ID, ConstantUtil.PARSE_CLIENT_KEY);
         ParseInstallation.getCurrentInstallation().saveInBackground();
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        try {
+            ParseFacebookUtils.initialize(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
         TypefaceUtil.init(this);
         API.init(this);
         JodaTimeAndroid.init(this);

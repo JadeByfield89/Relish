@@ -19,20 +19,33 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.parse.FindCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseInstallation;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONObject;
+
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.gps.GPSTracker;
+import relish.permoveo.com.relish.util.SharedPrefsUtil;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 public class LoginActivity extends RelishActivity {
@@ -49,6 +62,9 @@ public class LoginActivity extends RelishActivity {
     @Bind(R.id.btn_signin)
     Button signin;
 
+    @Bind(R.id.btn_facebook)
+    Button facebook;
+
     @Bind(R.id.signup_label)
     TextView signupLabel;
 
@@ -63,6 +79,9 @@ public class LoginActivity extends RelishActivity {
 
     @Bind(R.id.slogan_label)
     TextView sloganLabel;
+
+    private CallbackManager callbackManager;
+    private String facebookEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +119,14 @@ public class LoginActivity extends RelishActivity {
             }
         });
 
+        facebook.setTransformationMethod(null);
+        facebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginWithFacebook();
+            }
+        });
+
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +145,76 @@ public class LoginActivity extends RelishActivity {
             }
         });
 
+
+        callbackManager = CallbackManager.Factory.create(); // declare it globally "CallbackManager callbackManager "
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
+            @Override
+            public void onSuccess(LoginResult result) {
+                // TODO Auto-generated method stub
+                Log.d("SignupActivity", "On Success");
+
+                showLoader(getString(R.string.logging_in_loader_text));
+
+                final AccessToken token = result.getAccessToken();
+                SharedPrefsUtil.get.saveFacebookAccessToken(token);
+
+                GraphRequest request = GraphRequest.newMeRequest(token, new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject user, GraphResponse graphResponse) {
+                        facebookEmail = user.optString("email");
+                        Log.d("LoginActivity", "Facebook Email -> " + facebookEmail);
+
+                        ParseFacebookUtils.logInInBackground(token, new LogInCallback() {
+                            @Override
+                            public void done(ParseUser parseUser, ParseException e) {
+                                hideLoader();
+
+                                if (e == null) {
+                                    Log.d("LoginActivity", "Successfully logged in via Facebook");
+
+                                    Location location = GPSTracker.get.getLocation();
+                                    if (location != null && location.getLatitude() != 0.0d && location.getLongitude() != 0.0d) {
+                                        ParseUser.getCurrentUser().put("location", new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
+                                        ParseUser.getCurrentUser().saveInBackground();
+                                    }
+
+                                    ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                                    installation.put("userId", parseUser.getObjectId());
+                                    installation.saveInBackground();
+
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    setResult(RESULT_OK);
+                                    finish();
+                                } else {
+                                    Log.d("Parse Error Code: ", "" + e.getCode());
+                                    Snackbar.make(passwordEt, e.getLocalizedMessage(), Snackbar.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
+                });
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "email");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                // TODO Auto-generated method stub
+                Log.d("LoginActivity", "On Error");
+            }
+
+            @Override
+            public void onCancel() {
+                // TODO Auto-generated method stub
+                Log.d("LoginActivity", "On Cancel");
+            }
+        });
+
         updateStatusBar(getResources().getColor(R.color.main_color_dark));
     }
 
@@ -128,6 +225,15 @@ public class LoginActivity extends RelishActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void loginWithFacebook() {
+        if (SharedPrefsUtil.get.getFacebookAccessToken().isEmpty()) {
+            LoginManager.getInstance().logInWithReadPermissions(this, Collections.singletonList("public_profile, user_friends, email"));
+            //loginWithFacebook();
+        } else {
+
+        }
     }
 
     private void auth() {
@@ -205,6 +311,12 @@ public class LoginActivity extends RelishActivity {
             return false;
         }
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

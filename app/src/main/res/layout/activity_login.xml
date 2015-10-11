@@ -133,6 +133,51 @@
                 android:layout_height="wrap_content"
                 android:text="@string/button_login"/>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_toLeftOf="@+id/or_label"
+                    android:layout_centerVertical="true"
+                    android:background="@color/signup_divider"/>
+
+                <TextView
+                    android:id="@+id/or_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="16sp"
+                    android:textColor="@color/signup_or_color"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="OR"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/or_label"
+                    android:background="@color/signup_divider"/>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btn_facebook"
+                android:layout_marginTop="12dp"
+                android:background="@color/facebook_color"
+                android:textColor="@android:color/white"
+                android:paddingBottom="10dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:paddingTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/button_signin_with_facebook"/>
+
             <View
                 android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
