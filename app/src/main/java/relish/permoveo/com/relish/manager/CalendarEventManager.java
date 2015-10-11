@@ -10,6 +10,8 @@ import android.os.AsyncTask;
 import android.provider.CalendarContract;
 import android.util.Log;
 
+import org.joda.time.DateTime;
+
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -18,24 +20,21 @@ import relish.permoveo.com.relish.model.Invite;
 /**
  * Created by byfieldj on 9/29/15.
  */
-public class CalendarEventManager {
+public enum CalendarEventManager {
+    get;
 
     long calID = 3;
-    private Invite invite;
     private OnEventInsertedListener listener;
     private Context context;
 
-    public CalendarEventManager(final Context context, final Invite invite) {
-        this.invite = invite;
+    public void init(final Context context) {
         this.context = context;
     }
 
-    public void insertEventIntoCalender(final OnEventInsertedListener listener) {
+    public void insertEventIntoCalender(Invite invite, final OnEventInsertedListener listener) {
         this.listener = listener;
         new InsertInviteTask(invite, listener).execute();
-
     }
-
 
     private class InsertInviteTask extends AsyncTask<Void, Void, Boolean> {
 
@@ -52,24 +51,32 @@ public class CalendarEventManager {
 
             //getLastCalendarId()
 
-            Calendar beginTime = Calendar.getInstance();
-            beginTime.set(2015, 9, 30, 7, 30);
-
-            Calendar endTime = Calendar.getInstance();
-            beginTime.set(2015, 10, 2, 8, 30);
+            DateTime time = new DateTime().withMillis(invite.time);
+            DateTime date = new DateTime().withMillis(invite.date);
+            DateTime when = new DateTime()
+                    .withYear(date.getYear())
+                    .withMonthOfYear(date.getMonthOfYear())
+                    .withDayOfMonth(date.getDayOfMonth())
+                    .withHourOfDay(time.getHourOfDay())
+                    .withMinuteOfHour(time.getMinuteOfHour());
 
             ContentResolver cr = context.getContentResolver();
             ContentValues values = new ContentValues();
-            values.put(CalendarContract.Events.DTSTART, beginTime.getTimeInMillis());
-            values.put(CalendarContract.Events.DTEND, endTime.getTimeInMillis());
-            values.put(CalendarContract.Events.TITLE, "Rock");
-            values.put(CalendarContract.Events.DESCRIPTION, "blah");
+            values.put(CalendarContract.Events.DTSTART, when.getMillis());
+//            values.put(CalendarContract.Events.ALL_DAY, true);
+            values.put(CalendarContract.Events.DTEND, when.plusHours(1).getMillis());
+            values.put(CalendarContract.Events.TITLE, invite.title);
+//            values.put(CalendarContract.Events.DESCRIPTION, "blah");
+
+            long calId = Long.parseLong(getCalendarId(context));
 
             Log.d("CalendarEventManager", "Calendar ID -> " + 1);
             values.put(CalendarContract.Events.CALENDAR_ID, 1);
-            values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
+            values.put(CalendarContract.Events.EVENT_TIMEZONE, when.getZone().getID());
             values.put(CalendarContract.Events.HAS_ALARM, 1);
+//            values.put(CalendarContract.Events.DURATION, 60 * 60 * 1000);
             values.put(CalendarContract.Events.AVAILABILITY, 0);
+            values.put(CalendarContract.Events.EVENT_LOCATION, invite.location.address);
             values.put(CalendarContract.Events.ACCESS_LEVEL, CalendarContract.Events.ACCESS_DEFAULT);
 
             //values.put(CalendarContract.Events.STATUS, 1);
@@ -83,19 +90,13 @@ public class CalendarEventManager {
             long eventID = Long.parseLong(pathSegment);
             Log.d("CalendarEventManager", "Event ID -> " + eventID);
 
-
-
-
             //
-            ContentResolver resolver = context.getContentResolver();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(CalendarContract.Calendars.SYNC_EVENTS, 1);
-            contentValues.put(CalendarContract.Calendars.VISIBLE, 1);
-
-            long calId = Long.parseLong(getCalendarId(context));
-            resolver.update(ContentUris.withAppendedId(CalendarContract.Calendars.CONTENT_URI, 1), contentValues, null, null);
-
-
+//            ContentResolver resolver = context.getContentResolver();
+//            ContentValues contentValues = new ContentValues();
+//            contentValues.put(CalendarContract.Calendars.SYNC_EVENTS, 1);
+//            contentValues.put(CalendarContract.Calendars.VISIBLE, 1);
+//
+//            resolver.update(ContentUris.withAppendedId(CalendarContract.Calendars.CONTENT_URI, 1), contentValues, null, null);
 
             if (pathSegment == null) {
                 return false;
@@ -107,13 +108,7 @@ public class CalendarEventManager {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-
-            if (aBoolean) {
-                listener.OnEventInserted(true);
-            } else {
-                listener.OnEventInserted(false);
-            }
-
+            listener.OnEventInserted(aBoolean);
         }
 
         public String getCalendarId(Context c) {

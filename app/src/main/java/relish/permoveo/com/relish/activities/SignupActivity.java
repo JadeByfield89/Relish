@@ -18,7 +18,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
@@ -136,14 +135,6 @@ public class SignupActivity extends RelishActivity {
         });
 
         updateStatusBar(getResources().getColor(R.color.main_color_dark));
-        try {
-            ParseFacebookUtils.initialize(this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        FacebookSdk.sdkInitialize(this.getApplicationContext());
 
         callbackManager = CallbackManager.Factory.create(); // declare it globally "CallbackManager callbackManager "
 
@@ -196,17 +187,12 @@ public class SignupActivity extends RelishActivity {
 
 
     private void signupWithFacebook() {
-
-
         if (SharedPrefsUtil.get.getFacebookAccessToken().isEmpty()) {
-
             LoginManager.getInstance().logInWithReadPermissions(this, Collections.singletonList("public_profile, user_friends, email"));
             //loginWithFacebook();
-
         } else {
 
         }
-
     }
 
     private void loginWithFacebook(final AccessToken token) {

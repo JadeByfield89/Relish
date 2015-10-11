@@ -35,6 +35,10 @@ public enum SharedPrefsUtil {
     private static String PREF_FACEBOOK_ACCEESS_TOKEN = "faceook_access_token";
     private SharedPreferences sharedPreferences;
 
+    public void clearAll() {
+        sharedPreferences.edit().clear().apply();
+    }
+
     public void init(final Context context) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
