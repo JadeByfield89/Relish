@@ -199,7 +199,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                         inviteObject.saveInBackground();
 
                                         sendInviteViaSMS(idSuffix);
-                                        sendInviteViaTwitter();
+                                        sendInviteViaTwitter(idSuffix);
                                         sendInviteViaEmail(idSuffix);
                                         sendInviteViaPush(inviteObject);
                                         startSendAnimation(inviteSendRoot);
@@ -250,13 +250,13 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
         }
     }
 
-    private void sendInviteViaTwitter() {
+    private void sendInviteViaTwitter(String inviteId) {
         //SENT VIA TWITTER IF TWITTER CONTACT WAS SELECTED
         TwitterInviteManager twitterManager = new TwitterInviteManager();
         for (InvitePerson person : creator.getInvite().invited) {
             if (person instanceof Contact) {
                 if (TextUtils.isEmpty(person.number) && TextUtils.isEmpty(((Contact) person).email) && !TextUtils.isEmpty(((Contact) person).twitterUsername)) {
-                    String inviteMessage = ((Contact) person).twitterUsername + ", " + "@" + SharedPrefsUtil.get.getTwitterUsername() + " has invited you to lunch!";
+                    String inviteMessage = ((Contact) person).twitterUsername + ", " + "@" + SharedPrefsUtil.get.getTwitterUsername() + " has invited you to lunch! Invite Code: " + inviteId;
                     twitterManager.sendTwitterInvite(inviteMessage);
                 }
             }
