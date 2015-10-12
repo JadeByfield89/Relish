@@ -203,14 +203,14 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                         sendInviteViaEmail(idSuffix);
                                         sendInviteViaPush(inviteObject);
 
-                                        if (SharedPrefsUtil.get.isGoogleCalendarSyncEnabled()) {
-                                            CalendarEventManager.get.insertEventIntoCalender(creator.getInvite(), new CalendarEventManager.OnEventInsertedListener() {
-                                                @Override
-                                                public void OnEventInserted(boolean succes) {
+                                        //if (SharedPrefsUtil.get.isGoogleCalendarSyncEnabled()) {
+                                        CalendarEventManager.get.insertEventIntoCalender(creator.getInvite(), new CalendarEventManager.OnEventInsertedListener() {
+                                            @Override
+                                            public void OnEventInserted(boolean succes) {
 
-                                                }
-                                            });
-                                        }
+                                            }
+                                        });
+                                        //}
 
                                         startSendAnimation(inviteSendRoot);
 
@@ -261,13 +261,25 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
     }
 
     private void sendInviteViaTwitter(String inviteId) {
+        final int maxCharCount = 140;
         //SENT VIA TWITTER IF TWITTER CONTACT WAS SELECTED
         TwitterInviteManager twitterManager = new TwitterInviteManager();
         for (InvitePerson person : creator.getInvite().invited) {
             if (person instanceof Contact) {
                 if (TextUtils.isEmpty(person.number) && TextUtils.isEmpty(((Contact) person).email) && !TextUtils.isEmpty(((Contact) person).twitterUsername)) {
-                    String inviteMessage = ((Contact) person).twitterUsername + ", " + "@" + SharedPrefsUtil.get.getTwitterUsername() + " has invited you to lunch! Invite Code: " + inviteId;
-                    twitterManager.sendTwitterInvite(inviteMessage);
+                    String inviteMessage = "Hey " + ((Contact) person).twitterUsername + ", " + "@" + SharedPrefsUtil.get.getTwitterUsername() + " has invited you to join them at " + creator.getInvite().name + ", on " + creator.getInvite().getFormattedDateTime() + " Invite Code: " + inviteId;
+
+                    if (inviteMessage.length() > maxCharCount) {
+                        String[] name_sections = creator.getInvite().name.split(" ");
+                        if (name_sections.length > 2) {
+                            inviteMessage = "Hey " + ((Contact) person).twitterUsername + ", " + "@" + SharedPrefsUtil.get.getTwitterUsername() + " has invited you to join them at " + name_sections[0] + ", on " + creator.getInvite().getFormattedDateTime() + " Invite Code: " + inviteId;
+                            twitterManager.sendTwitterInvite(inviteMessage);
+
+                        }
+                    } else {
+                        twitterManager.sendTwitterInvite(inviteMessage);
+
+                    }
                 }
             }
         }

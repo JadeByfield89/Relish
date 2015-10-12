@@ -7,8 +7,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +45,7 @@ public class SettingsFragment extends Fragment {
 
     private SettingsAdapter adapter;
     private float appRating;
+    private boolean isMinimumRatingMet;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -185,9 +188,11 @@ public class SettingsFragment extends Fragment {
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 setAppRating(rating);
                 if (rating > 3.0) {
+                    isMinimumRatingMet = true;
                     dialogThanks.setVisibility(View.VISIBLE);
                     dialogThanks.setText(getString(R.string.settings_rating_dialog_store));
                 } else {
+                    isMinimumRatingMet = false;
                     dialogThanks.setVisibility(View.VISIBLE);
                     dialogThanks.setText(getString(R.string.settings_rating_dialog_thanks));
 
@@ -195,8 +200,14 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-        stars.getDrawable(2).setColorFilter(Color.parseColor("#FF6724"), PorterDuff.Mode.SRC_ATOP);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+            stars.getDrawable(2).setColorFilter(Color.parseColor("#FF6724"), PorterDuff.Mode.SRC_ATOP);
+        } else {
+
+            Drawable drawable = ratingBar.getProgressDrawable();
+            drawable.setColorFilter(Color.parseColor("#FF6724"), PorterDuff.Mode.SRC_ATOP);
+        }
 
         dialogBuilder.setView(view);
 
@@ -208,12 +219,28 @@ public class SettingsFragment extends Fragment {
         dialogThanks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                if (isMinimumRatingMet) {
+                    openPlayStore();
+                    dialog.dismiss();
+
+                } else
+                    dialog.dismiss();
             }
         });
 
         dialog.show();
 
+
+    }
+
+    private void openPlayStore() {
+
+        final String appPackageName = "relish.permoveo.com.relish";
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
 
     }
 

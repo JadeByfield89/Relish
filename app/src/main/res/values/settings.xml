@@ -20,7 +20,7 @@
     <string name="settings_item_about_relish">About Relish</string>
     <string name="settings_item_contact_support">Contact Support</string>
     <string name="settings_item_version_number">Version Number</string>
-    <string name="settings_item_version_number_sub">0.8.0</string>
+    <string name="settings_item_version_number_sub">1.0.0</string>
     <string name="settings_item_change_password">Change Password</string>
     <string name="settings_item_logout">Logout</string>
 </resources>

@@ -78,7 +78,7 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyCDLHtKjC8m9rplq9GuiV4KaxKonAhS1AM" />
+            android:value="AIzaSyCg3UIODcxFDvR22qWZ352fAuMUJsHVw5A" />
 
         <activity
             android:name=".activities.YelpPlaceDetailsActivity"

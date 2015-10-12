@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog bulletedList="true">
 
-    <changelogversion changeDate="October 8th, 2015" versionName="1.0">
+    <changelogversion changeDate="October 12th, 2015" versionName="1.0">
         <changelogtext>Initial release!</changelogtext>
         <changelogtext>We're excited to finally have Relish out in the wild. We wanted to build an app
             that really helps to make the social dining experience easier and

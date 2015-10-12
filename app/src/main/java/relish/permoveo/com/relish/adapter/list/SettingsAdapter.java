@@ -98,7 +98,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ((SettingsToggleViewHolder) holder).rippleView.setRippleColor(R.color.drawer_item_pressed_background);
 
             if (position == 4) {
-                ((SettingsToggleViewHolder) holder).toggle.setChecked(false);
+                ((SettingsToggleViewHolder) holder).toggle.setChecked(SharedPrefsUtil.get.isGoogleCalendarSyncEnabled());
             }
             ((SettingsToggleViewHolder) holder).title.setText(settings.get(position).getTitle());
             if (settings.get(position).getSubtitle().isEmpty()) {
