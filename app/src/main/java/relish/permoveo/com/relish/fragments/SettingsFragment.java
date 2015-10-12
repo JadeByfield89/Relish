@@ -103,9 +103,9 @@ public class SettingsFragment extends Fragment {
             // Relish on Twitter
             case 6:
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=" + "jaybedreamin")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=" + "relishinvites")));
                 } catch (Exception e) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/" + "jaybedreamin")));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/#!/" + "relishinvites")));
                 }
                 break;
 
