@@ -110,7 +110,8 @@
     <string name="enter_time">Enter time</string>
     <string name="wrong_datetime">You\'re into time travel, huh? Please select a date &amp; time in the future.</string>
 
-
+    <string name="cancel_invite_title">Delete Invite</string>
+    <string name="cancel_invite_message">Do you really want to delete the invite?</string>
     <string name="action_accept">ACCEPT</string>
     <string name="action_decline">NO, THANKS</string>
     <!--Welcome Screens -->
@@ -229,7 +230,7 @@ Quam libero nulla netus eu porta curae, ut nulla bibendum facilisis et urna sed,
 
     <!-- Edit Invite -->
     <string name="invite_edit">Edit Invite</string>
-    <string name="invite_cancel">Cancel Invite</string>
+    <string name="invite_cancel">Delete Invite</string>
 
     <!-- Twitter -->
     <string name="twitter_connect">Connect Twitter Account</string>

@@ -2,6 +2,7 @@ package relish.permoveo.com.relish.activities;
 
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
@@ -35,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -51,6 +53,8 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.viewpagerindicator.CirclePageIndicator;
 
+import org.joda.time.DateTime;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -65,6 +69,7 @@ import relish.permoveo.com.relish.manager.InvitesManager;
 import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.InvitePerson;
 import relish.permoveo.com.relish.util.BlurBehind;
+import relish.permoveo.com.relish.util.DialogUtil;
 import relish.permoveo.com.relish.util.FlurryConstantUtil;
 import relish.permoveo.com.relish.util.TypefaceSpan;
 import relish.permoveo.com.relish.util.TypefaceUtil;
@@ -336,6 +341,18 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
         inflater.inflate(R.menu.menu_invite_details, menu);
         if (!invite.creatorId.equals(ParseUser.getCurrentUser().getObjectId())) {
             menu.findItem(R.id.action_edit).setVisible(false);
+            menu.findItem(R.id.action_cancel).setVisible(false);
+        } else {
+            DateTime time = new DateTime().withMillis(invite.time);
+            DateTime date = new DateTime().withMillis(invite.date);
+            DateTime when = new DateTime()
+                    .withYear(date.getYear())
+                    .withMonthOfYear(date.getMonthOfYear())
+                    .withDayOfMonth(date.getDayOfMonth())
+                    .withHourOfDay(time.getHourOfDay())
+                    .withMinuteOfHour(time.getMinuteOfHour());
+            if (when.isAfterNow())
+                menu.findItem(R.id.action_cancel).setVisible(false);
         }
         return true;
     }
@@ -388,7 +405,25 @@ public class InviteDetailsActivity extends RelishActivity implements ObservableS
                         });
                     }
                 }, 400);
+                break;
+            case R.id.action_cancel:
+                DialogUtil.showConfirmDialog(this, getString(R.string.cancel_invite_title), getString(R.string.cancel_invite_message), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, int which) {
+                        InvitesManager.deleteInvite(invite, new InvitesManager.InvitesManagerCallback<Boolean, ParseException>() {
+                            @Override
+                            public void done(Boolean success, ParseException e) {
+                                dialog.dismiss();
 
+                                if (success) {
+                                    InviteDetailsActivity.this.finish();
+                                } else {
+                                    Toast.makeText(InviteDetailsActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
+                });
                 break;
         }
 

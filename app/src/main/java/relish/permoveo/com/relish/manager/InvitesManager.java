@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -208,6 +209,22 @@ public class InvitesManager {
             }
         });
     }
+
+    public static void deleteInvite(final Invite invite, final InvitesManagerCallback callback) {
+        ParseObject inviteObj = ParseObject.createWithoutData("Invite", invite.id);
+        inviteObj.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    callback.done(true, null);
+                } else {
+                    callback.done(false, e);
+                }
+            }
+        });
+
+    }
+
 
     public static void createInvite(final Invite invite, final InvitesManagerCallback callback) {
         currentInvite = invite;

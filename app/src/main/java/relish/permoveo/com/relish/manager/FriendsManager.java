@@ -192,7 +192,7 @@ public class FriendsManager {
 
                 final Friend friend = new Friend();
                 friend.id = user.getObjectId();
-                friend.name = user.getUsername();
+                friend.name = user.getString("fullName");
                 if (user.containsKey("avatar")) {
                     ParseFile parseFile = (ParseFile) user.get("avatar");
                     friend.image = parseFile.getUrl();
