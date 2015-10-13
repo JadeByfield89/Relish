@@ -83,56 +83,58 @@ public class SMSVerificationActivity extends RelishActivity {
     private void sendPhoneNumberToParse(final String number) {
         try {
             final ParseUser currentUser = ParseUser.getCurrentUser();
-            currentUser.put("phoneNumber", number);
-            currentUser.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e == null) {
-                        SharedPrefsUtil.get.setPhoneNumberVerified(true);
+            if(currentUser != null && number != null) {
+                currentUser.put("phoneNumber", number);
+                currentUser.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            SharedPrefsUtil.get.setPhoneNumberVerified(true);
 
-                        // Start MainActivity ONLY once parse user account was created successfully
-                        // and phone number has been verified via Digits and saved to Parse
-                        FriendsManager.findContact(currentUser.getEmail(), number, new FriendsManager.FriendsManagerCallback<Contact, ParseException>() {
-                            @Override
-                            public void done(final Contact contact, ParseException e) {
-                                if (e == null) {
-                                    if (contact == null) {
-                                        // user wasn't associated with Contacts table, so he hasn't any invites, just go next
-                                        next(false);
-                                    } else {
-                                        // user was associated with Contacts table, so we will try to find invites associated with his contact id
-                                        InvitesManager.findInvites(contact.id, new InvitesManager.InvitesManagerCallback<ArrayList<Invite>, ParseException>() {
-                                            @Override
-                                            public void done(ArrayList<Invite> invites, ParseException e) {
-                                                if (e == null) {
-                                                    if (invites.size() == 0) {
-                                                        // no invites associated with the user contact id (they were expired by date),
-                                                        // so we will delete him from Contacts table
-                                                        // and just go next
-                                                        ParseObject.createWithoutData("Contact", contact.id).deleteInBackground();
-                                                        next(false);
+                            // Start MainActivity ONLY once parse user account was created successfully
+                            // and phone number has been verified via Digits and saved to Parse
+                            FriendsManager.findContact(currentUser.getEmail(), number, new FriendsManager.FriendsManagerCallback<Contact, ParseException>() {
+                                @Override
+                                public void done(final Contact contact, ParseException e) {
+                                    if (e == null) {
+                                        if (contact == null) {
+                                            // user wasn't associated with Contacts table, so he hasn't any invites, just go next
+                                            next(false);
+                                        } else {
+                                            // user was associated with Contacts table, so we will try to find invites associated with his contact id
+                                            InvitesManager.findInvites(contact.id, new InvitesManager.InvitesManagerCallback<ArrayList<Invite>, ParseException>() {
+                                                @Override
+                                                public void done(ArrayList<Invite> invites, ParseException e) {
+                                                    if (e == null) {
+                                                        if (invites.size() == 0) {
+                                                            // no invites associated with the user contact id (they were expired by date),
+                                                            // so we will delete him from Contacts table
+                                                            // and just go next
+                                                            ParseObject.createWithoutData("Contact", contact.id).deleteInBackground();
+                                                            next(false);
+                                                        } else {
+                                                            // some invites were found for the user contact id, so we will remove contact ids from ":contacts" lists
+                                                            // and add user ids to ":friends" lists
+                                                            // then again we will remove user from Contacts table and go next to Invites screen
+                                                            new NewUserProcessTask(contact).execute(invites);
+                                                        }
                                                     } else {
-                                                        // some invites were found for the user contact id, so we will remove contact ids from ":contacts" lists
-                                                        // and add user ids to ":friends" lists
-                                                        // then again we will remove user from Contacts table and go next to Invites screen
-                                                        new NewUserProcessTask(contact).execute(invites);
+                                                        Toast.makeText(SMSVerificationActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                                     }
-                                                } else {
-                                                    Toast.makeText(SMSVerificationActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                                 }
-                                            }
-                                        });
+                                            });
+                                        }
+                                    } else {
+                                        Toast.makeText(SMSVerificationActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                     }
-                                } else {
-                                    Toast.makeText(SMSVerificationActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                                 }
-                            }
-                        });
-                    } else {
-                        Toast.makeText(SMSVerificationActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                            });
+                        } else {
+                            Toast.makeText(SMSVerificationActivity.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
-                }
-            });
+                });
+            }
 
         } catch (NullPointerException e) {
             e.printStackTrace();
