@@ -201,7 +201,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
             @Override
             public void onClick(View v) {
                 startActivity(SharingUtil.getFacebookIntent(InviteFlowActivity.this,
-                        String.format(getString(R.string.share_social), getInvite().name)));
+                        String.format(getString(R.string.share_social), invite.name)));
             }
         });
 
@@ -209,7 +209,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
             @Override
             public void onClick(View v) {
                 startActivity(SharingUtil.getTwitterIntent(InviteFlowActivity.this,
-                        String.format(getString(R.string.share_social), getInvite().name)));
+                        String.format(getString(R.string.share_social), invite.name)));
             }
         });
 
@@ -217,7 +217,7 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
             @Override
             public void onClick(View v) {
                 startActivity(SharingUtil.getPlusIntent(InviteFlowActivity.this,
-                        String.format(getString(R.string.share_social), getInvite().name)));
+                        String.format(getString(R.string.share_social), invite.name)));
             }
         });
 
@@ -300,15 +300,16 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
     }
 
     @Override
-    public void onInviteSent(boolean success) {
+    public void onInviteSent(boolean success, Invite invite) {
         if (success) {
-            showInviteSuccessAnimation();
+            showInviteSuccessAnimation(invite);
         }
     }
 
-    private void showInviteSuccessAnimation() {
+    private void showInviteSuccessAnimation(final Invite invite) {
+        this.invite = invite;
         Log.d("InviteFlowActivity", "showInviteSuccessAnimation()");
-        getInvite().isSent = true;
+        invite.isSent = true;
         inviteSuccessTitle.setVisibility(View.VISIBLE);
         YoYo.with(Techniques.DropOut).duration(1000).playOn(inviteSuccessTitle);
 

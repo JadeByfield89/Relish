@@ -223,7 +223,7 @@ public class EditInviteActivity extends RelishActivity implements PagerCallbacks
     }
 
     @Override
-    public void onInviteSent(boolean success) {
+    public void onInviteSent(final boolean success, final Invite invite) {
         if (oldTime != invite.time || oldDate != invite.date || !oldLocation.address.equals(invite.location.address)) {
             notifyOldUsers();
         }
@@ -324,7 +324,7 @@ public class EditInviteActivity extends RelishActivity implements PagerCallbacks
                     EmailInviteManager emailInviteManager = new EmailInviteManager((Contact) person, invite);
                     emailInviteManager.sendEmailInvite(new OnInviteSentListener() {
                         @Override
-                        public void onInviteSent(boolean success) {
+                        public void onInviteSent(final boolean success, final Invite invite) {
 
                         }
                     });

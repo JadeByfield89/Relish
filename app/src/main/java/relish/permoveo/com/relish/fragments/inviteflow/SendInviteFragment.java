@@ -212,7 +212,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                         });
                                         }
 
-                                        startSendAnimation(inviteSendRoot);
+                                        startSendAnimation(inviteSendRoot, creator.getInvite());
 
                                     }
 
@@ -295,7 +295,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                     EmailInviteManager emailInviteManager = new EmailInviteManager((Contact) person, creator.getInvite());
                     emailInviteManager.sendEmailInvite(new OnInviteSentListener() {
                         @Override
-                        public void onInviteSent(boolean success) {
+                        public void onInviteSent(final boolean success, final Invite invite) {
 
                         }
                     });
@@ -345,7 +345,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
     }
 
 
-    private void startSendAnimation(View view) {
+    private void startSendAnimation(final View view, final Invite invite) {
         YoYo.with(Techniques.ZoomOutRight).duration(500).withListener(new com.nineoldandroids.animation.Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(com.nineoldandroids.animation.Animator animation) {
@@ -354,7 +354,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
 
             @Override
             public void onAnimationEnd(com.nineoldandroids.animation.Animator animation) {
-                mListener.onInviteSent(true);
+                mListener.onInviteSent(true, invite);
 
                 if(!creator.getInvite().ratingImage.isEmpty()) {
                     FlurryAgent.logEvent(FlurryConstantUtil.EVENT.YELP_INVITE_SENT);

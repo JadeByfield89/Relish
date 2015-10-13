@@ -157,7 +157,7 @@ public class UpdateInviteFragment extends Fragment implements RenderCallbacks {
                                             manager.set(AlarmManager.RTC_WAKEUP, when.getMillis() - creator.getInvite().reminder * 1000, pintent);
                                         }
 
-                                        mListener.onInviteSent(true);
+                                        mListener.onInviteSent(true, creator.getInvite());
                                     }
                                 });
                         } else {
