@@ -61,7 +61,7 @@ public class SMSVerificationActivity extends RelishActivity {
             @Override
             public void success(DigitsSession digitsSession, String number) {
                 sendPhoneNumberToParse(number);
-                Toast.makeText(getBaseContext(), "Success -> " + digitsSession.getAuthToken(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(), "Success -> " + digitsSession.getAuthToken(), Toast.LENGTH_SHORT).show();
                 Log.d("SMSVerification", "Number -> " + number);
             }
 

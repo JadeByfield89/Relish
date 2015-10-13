@@ -203,6 +203,8 @@ public class EmailInviteFragment extends Fragment implements ISelectable, Filter
                                     }
                                 } catch (FileNotFoundException e) {
                                     e.printStackTrace();
+                                }catch(NullPointerException e){
+                                    e.printStackTrace();
                                 }
                             }
 
