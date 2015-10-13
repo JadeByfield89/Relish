@@ -203,14 +203,14 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
                                         sendInviteViaEmail(idSuffix);
                                         sendInviteViaPush(inviteObject);
 
-                                        //if (SharedPrefsUtil.get.isGoogleCalendarSyncEnabled()) {
+                                        if (SharedPrefsUtil.get.isGoogleCalendarSyncEnabled()) {
                                         CalendarEventManager.get.insertEventIntoCalender(creator.getInvite(), new CalendarEventManager.OnEventInsertedListener() {
                                             @Override
                                             public void OnEventInserted(boolean succes) {
 
                                             }
                                         });
-                                        //}
+                                        }
 
                                         startSendAnimation(inviteSendRoot);
 
@@ -219,7 +219,7 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
 
                                 });
 
-                            FlurryAgent.logEvent(FlurryConstantUtil.EVENT.INVITE_SENT);
+
                         } else
 
                         {
@@ -355,6 +355,14 @@ public class SendInviteFragment extends Fragment implements RenderCallbacks {
             @Override
             public void onAnimationEnd(com.nineoldandroids.animation.Animator animation) {
                 mListener.onInviteSent(true);
+
+                if(!creator.getInvite().ratingImage.isEmpty()) {
+                    FlurryAgent.logEvent(FlurryConstantUtil.EVENT.YELP_INVITE_SENT);
+                }
+                else{
+                    FlurryAgent.logEvent(FlurryConstantUtil.EVENT.GOOGLE_INVITE_SENT);
+
+                }
             }
 
             @Override

@@ -229,7 +229,7 @@ public class SignupActivity extends RelishActivity {
             showLoader(getString(R.string.signing_up_loader_text));
 
             ParseUser user = new ParseUser();
-            final String username = usernameEt.getText().toString();
+            final String username = usernameEt.getText().toString().toLowerCase();
             String email = emailEt.getText().toString();
             final String password = passwordEt.getText().toString();
 

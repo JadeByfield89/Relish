@@ -88,6 +88,8 @@ public class SMSVerificationActivity extends RelishActivity {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
+                        SharedPrefsUtil.get.setPhoneNumberVerified(true);
+
                         // Start MainActivity ONLY once parse user account was created successfully
                         // and phone number has been verified via Digits and saved to Parse
                         FriendsManager.findContact(currentUser.getEmail(), number, new FriendsManager.FriendsManagerCallback<Contact, ParseException>() {
@@ -197,5 +199,13 @@ public class SMSVerificationActivity extends RelishActivity {
             ParseObject.createWithoutData("Contact", contact.id).deleteInBackground();
             next(true);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        // User has exited the SMS verification step
+        SharedPrefsUtil.get.setPhoneNumberVerified(false);
     }
 }

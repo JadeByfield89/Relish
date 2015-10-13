@@ -45,7 +45,7 @@ android {
         applicationId "relish.permoveo.com.relish"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 3
+        versionCode 5
         versionName "1.0"
 
         renderscriptTargetApi 23

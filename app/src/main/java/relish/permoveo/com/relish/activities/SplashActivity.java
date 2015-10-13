@@ -28,14 +28,18 @@ public class SplashActivity extends RelishActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (SharedPrefsUtil.get.hasLaunchedPrior()) {
+        if (SharedPrefsUtil.get.hasLaunchedPrior() && SharedPrefsUtil.get.isPhoneNumberVerified()) {
             if (ParseUser.getCurrentUser() != null) {
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
             } else {
                 Intent loginIntent = new Intent(this, SignupActivity.class);
                 startActivity(loginIntent);
+                finish();
+            }
+        } else if (SharedPrefsUtil.get.hasLaunchedPrior() && !SharedPrefsUtil.get.isPhoneNumberVerified()) {
+            if (ParseUser.getCurrentUser() != null) {
+                startActivity(new Intent(SplashActivity.this, SMSVerificationActivity.class));
                 finish();
             }
         } else {
@@ -95,7 +99,6 @@ public class SplashActivity extends RelishActivity {
                             }
 
                         } else {
-
 
                             startActivity(new Intent(SplashActivity.this, MainActivity.class));
 

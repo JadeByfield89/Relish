@@ -66,6 +66,7 @@ public class AddFriendsListAdapter extends RecyclerView.Adapter<AddFriendsListAd
                     .into(holder.friendImage);
         }
 
+
         String friendName = friend.name.substring(0, 1).toUpperCase() + friend.name.substring(1);
 
         holder.friendName.setText(friendName);

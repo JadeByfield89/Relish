@@ -31,6 +31,7 @@ public enum SharedPrefsUtil {
     public static String PARAM_PUSH_NOTIFICATIONS = "push_notifications";
     public static String PARAM_LOCATION_SHARING = "location_sharing";
     public static String PARAM_GOOGLE_CALENDAR_SYNC = "google_calendar_sync";
+    public static String PARAM_PHONE_VERIFIED = "phone_number_verified";
 
     private static String PREF_FACEBOOK_ACCEESS_TOKEN = "faceook_access_token";
     private SharedPreferences sharedPreferences;
@@ -186,6 +187,14 @@ public enum SharedPrefsUtil {
 
     public String getFacebookAccessToken() {
         return sharedPreferences.getString(PREF_FACEBOOK_ACCEESS_TOKEN, "");
+    }
+
+    public void setPhoneNumberVerified(boolean verified){
+        sharedPreferences.edit().putBoolean(PARAM_PHONE_VERIFIED,  verified).commit();
+    }
+
+    public boolean isPhoneNumberVerified(){
+        return sharedPreferences.getBoolean(PARAM_PHONE_VERIFIED, false);
     }
 
 }

@@ -59,6 +59,7 @@ public class FriendsManager {
     }
 
     public static void searchFriend(String query, final FriendsManagerCallback callback) {
+        query = query.toLowerCase();
         ParseQuery<ParseUser> usernameQuery = ParseUser.getQuery();
         usernameQuery.whereEqualTo("username", query);
 

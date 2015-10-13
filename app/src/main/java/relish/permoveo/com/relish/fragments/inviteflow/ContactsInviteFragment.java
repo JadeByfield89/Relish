@@ -134,6 +134,13 @@ public class ContactsInviteFragment extends Fragment implements ISelectable, Fil
         if (formattedNumber.length() == 10) {
             formattedNumber = "+1" + formattedNumber;
         }
+        else if(formattedNumber.length() == 11 && formattedNumber.startsWith("1")){
+            formattedNumber = "+" + formattedNumber;
+        }
+        else if(formattedNumber.length() == 11){
+            formattedNumber = "+" + formattedNumber;
+
+        }
         Log.d("ContactsInviteFragment", "formatted number" + formattedNumber);
         return formattedNumber;
     }
