@@ -123,7 +123,9 @@ public class SplashActivity extends RelishActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        mediaPlayer.stop();
+        if(mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
         isActivityOnScreen = false;
 
     }
