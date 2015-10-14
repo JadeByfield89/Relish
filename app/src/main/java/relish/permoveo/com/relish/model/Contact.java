@@ -13,7 +13,7 @@ public class Contact extends InvitePerson implements Serializable {
     public long longId;
     public String email;
     public boolean isInvited;
-    public ParseFile imageFile;
+    public transient ParseFile imageFile;
 
     public String twitterUsername;
 

@@ -11,5 +11,10 @@
         </changelogtext>
     </changelogversion>
 
+    <changelogversion changeDate="October 13th, 2015" versionName="1.0">
+        <changelogtext>Fixed Contacts photo bug!</changelogtext>
+        <changelogtext>Fixed sharing invite to twitter/fb/g+ bug</changelogtext>
+    </changelogversion>
+
 
 </changelog>

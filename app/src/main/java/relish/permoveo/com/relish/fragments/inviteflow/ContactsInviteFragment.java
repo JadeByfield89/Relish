@@ -210,6 +210,8 @@ public class ContactsInviteFragment extends Fragment implements ISelectable, Fil
                                     }
                                 } catch (FileNotFoundException e) {
                                     e.printStackTrace();
+                                }catch(Exception e){
+                                    e.printStackTrace();
                                 }
                             }
 
