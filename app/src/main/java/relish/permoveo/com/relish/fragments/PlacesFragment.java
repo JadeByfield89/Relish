@@ -1,10 +1,14 @@
 package relish.permoveo.com.relish.fragments;
 
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -120,7 +124,18 @@ public class PlacesFragment extends Fragment implements ObservableScrollViewCall
         if (activity instanceof ToolbarCallbacks)
             toolbarCallbacks = (ToolbarCallbacks) activity;
         adapter = new PlacesAdapter(activity);
-        GPSTracker.get.startOnMainLooper();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    && activity.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                GPSTracker.get.startOnMainLooper();
+//                ActivityCompat.requestPermissions(this,
+//                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+//                        LOCATION_PERMISSION_REQUEST);
+            }
+        } else {
+            GPSTracker.get.startOnMainLooper();
+        }
+//        GPSTracker.get.startOnMainLooper();
     }
 
     @Override

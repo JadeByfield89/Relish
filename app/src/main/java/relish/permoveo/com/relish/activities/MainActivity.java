@@ -90,6 +90,7 @@ public class MainActivity extends RelishActivity implements CircularRevealAnimat
     RelishDrawerToggle drawerToggle;
     Fragment current = null;
     Dialog d;
+    boolean isAfterPermissionRequest = false;
     NavigationDrawerFragment navDrawer;
     PlacesFilterFragment filterFragment;
     BroadcastReceiver locationReceiver = new BroadcastReceiver() {
@@ -254,20 +255,23 @@ public class MainActivity extends RelishActivity implements CircularRevealAnimat
                     d.dismiss();
                 }
             });
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        } else if (!isAfterPermissionRequest) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                        LOCATION_PERMISSION_REQUEST);
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                            LOCATION_PERMISSION_REQUEST);
+                } else {
+                    GPSTracker.get.init(this);
+                    checkGPSIsEnabled();
+                }
             } else {
-                GPSTracker.get.init(this);
                 checkGPSIsEnabled();
             }
-        } else {
-            checkGPSIsEnabled();
         }
+        isAfterPermissionRequest = false;
     }
 
     private void checkGPSIsEnabled() {
@@ -479,6 +483,7 @@ public class MainActivity extends RelishActivity implements CircularRevealAnimat
         switch (requestCode) {
             case LOCATION_PERMISSION_REQUEST:
                 // If request is cancelled, the result arrays are empty.
+                isAfterPermissionRequest = true;
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 

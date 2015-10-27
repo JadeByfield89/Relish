@@ -41,6 +41,10 @@ public class SplashActivity extends RelishActivity {
             if (ParseUser.getCurrentUser() != null) {
                 startActivity(new Intent(SplashActivity.this, SMSVerificationActivity.class));
                 finish();
+            } else {
+                Intent loginIntent = new Intent(this, SignupActivity.class);
+                startActivity(loginIntent);
+                finish();
             }
         } else {
             setContentView(R.layout.activity_splash);

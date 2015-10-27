@@ -182,10 +182,12 @@ public enum GPSTracker implements LocationListener {
     }
 
     public boolean isGpsEnabled() {
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        return locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
     public Provider getProvider() {
+        if (locationManager == null) return Provider.NONE;
+
         boolean gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         boolean networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         if (gpsEnabled)

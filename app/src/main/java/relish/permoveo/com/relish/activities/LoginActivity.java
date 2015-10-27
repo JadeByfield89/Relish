@@ -89,19 +89,6 @@ public class LoginActivity extends RelishActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-                        LOCATION_PERMISSION_REQUEST);
-                return;
-            }
-        } else {
-            GPSTracker.get.init(this);
-        }
-
         sloganLabel.setTypeface(TypefaceUtil.PROXIMA_NOVA);
         relishLabel.setTypeface(TypefaceUtil.BRANNBOLL_BOLD);
         relishLabel.setIncludeFontPadding(false);
@@ -216,6 +203,19 @@ public class LoginActivity extends RelishActivity {
         });
 
         updateStatusBar(getResources().getColor(R.color.main_color_dark));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                        LOCATION_PERMISSION_REQUEST);
+                return;
+            }
+        } else {
+            GPSTracker.get.init(this);
+        }
     }
 
     @Override
