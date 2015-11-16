@@ -118,7 +118,8 @@ public class InviteEmailListAdapter extends RecyclerView.Adapter<InviteEmailList
 
     public ArrayList<Contact> getSelected() {
         ArrayList<Contact> selected = new ArrayList<>();
-        for (Contact contact : dataset) {
+        ArrayList<Contact> selection = originalValues == null ? dataset : originalValues;
+        for (Contact contact : selection) {
             if (contact.isSelected)
                 selected.add(contact);
         }

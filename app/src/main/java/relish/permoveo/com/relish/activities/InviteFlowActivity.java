@@ -35,11 +35,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.adapter.pager.InvitePagerAdapter;
+import relish.permoveo.com.relish.application.RelishApplication;
 import relish.permoveo.com.relish.interfaces.ContactsLoader;
 import relish.permoveo.com.relish.interfaces.InviteCreator;
 import relish.permoveo.com.relish.interfaces.OnInviteSentListener;
 import relish.permoveo.com.relish.interfaces.PagerCallbacks;
 import relish.permoveo.com.relish.interfaces.RenderCallbacks;
+import relish.permoveo.com.relish.model.Contact;
 import relish.permoveo.com.relish.model.Invite;
 import relish.permoveo.com.relish.model.google.GooglePlace;
 import relish.permoveo.com.relish.model.yelp.YelpPlace;
@@ -242,6 +244,16 @@ public class InviteFlowActivity extends RelishActivity implements PagerCallbacks
             finish();
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (RelishApplication.getTwitterFollowersList() != null && RelishApplication.getTwitterFollowersList().size() > 0) {
+            for (Contact contact : RelishApplication.getTwitterFollowersList()) {
+                contact.isSelected = false;
+            }
         }
     }
 

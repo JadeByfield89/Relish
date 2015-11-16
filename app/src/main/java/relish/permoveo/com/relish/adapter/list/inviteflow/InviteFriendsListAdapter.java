@@ -145,7 +145,8 @@ public class InviteFriendsListAdapter extends RecyclerView.Adapter<InviteFriends
 
     public ArrayList<Friend> getSelected() {
         ArrayList<Friend> selected = new ArrayList<>();
-        for (Friend friend : dataset) {
+        ArrayList<Friend> selection = originalValues == null ? dataset : originalValues;
+        for (Friend friend : selection) {
             if (friend.isSelected)
                 selected.add(friend);
         }

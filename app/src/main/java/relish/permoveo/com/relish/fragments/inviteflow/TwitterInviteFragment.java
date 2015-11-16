@@ -131,6 +131,17 @@ public class TwitterInviteFragment extends Fragment implements ISelectable, Filt
             emptyView.setVisibility(View.GONE);
             twitterRecycler.setVisibility(View.VISIBLE);
             followersAdapter = new InviteTwitterListAdapter(getContext());
+
+            for (Contact contact : RelishApplication.getTwitterFollowersList()) {
+                for (InvitePerson invited : creator.getInvite().invited) {
+                    if (invited instanceof Contact && !TextUtils.isEmpty(((Contact) invited).twitterUsername)
+                            && ((Contact) invited).twitterUsername.equals(contact.twitterUsername)) {
+                        contact.isSelected = true;
+                    }
+                }
+            }
+
+
             followersAdapter.swap(RelishApplication.getTwitterFollowersList());
             twitterRecycler.setAdapter(followersAdapter);
         }

@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import relish.permoveo.com.relish.R;
 import relish.permoveo.com.relish.model.Contact;
+import relish.permoveo.com.relish.model.Friend;
 import relish.permoveo.com.relish.util.TypefaceUtil;
 
 /**
@@ -118,7 +119,8 @@ public class InviteContactsListAdapter extends RecyclerView.Adapter<InviteContac
 
     public ArrayList<Contact> getSelected() {
         ArrayList<Contact> selected = new ArrayList<>();
-        for (Contact contact : dataset) {
+        ArrayList<Contact> selection = originalValues == null ? dataset : originalValues;
+        for (Contact contact : selection) {
             if (contact.isSelected)
                 selected.add(contact);
         }
